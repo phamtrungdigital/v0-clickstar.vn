@@ -11,44 +11,40 @@ import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
 import { Footer } from '@/components/layout/footer'
+import { getPublishedPage } from '@/lib/cms/queries'
+import { getSection } from '@/lib/cms/types'
+import { notFound } from 'next/navigation'
 
-export default function Home() {
+export const dynamic = 'force-dynamic'
+
+export default async function Home() {
+  const page = await getPublishedPage('home')
+  if (!page) notFound()
+
+  const hero = getSection(page, 'hero')
+  const services = getSection(page, 'services')
+  const about = getSection(page, 'about')
+  const cta = getSection(page, 'cta')
+
   return (
     <div className="min-h-screen">
       <TopBanner />
       <MainNav />
-      
-      {/* Hero Section */}
-      <HeroSection />
 
-      {/* Services Section */}
-      <ServicesSection />
+      {hero && <HeroSection content={hero.content} />}
+      {services && <ServicesSection content={services.content} />}
+      {about && <AboutSection content={about.content} />}
 
-      {/* About + Video Section */}
-      <AboutSection />
-
-      {/* Stats Counter Section */}
+      {/* Sections still hardcoded — will migrate in Phase 2A.2 */}
       <StatsSection />
-
-      {/* Case Studies Section */}
       <CaseStudiesSection />
-
-      {/* Team Section */}
       <TeamSection />
-
-      {/* Testimonials Section */}
       <TestimonialsSection />
-
-      {/* FAQ Section */}
       <FAQSection />
-
-      {/* Blog Section */}
       <BlogSection />
 
-      {/* CTA Section */}
-      <CTASection />
+      {cta && <CTASection content={cta.content} />}
 
-      {/* Footer */}
       <Footer />
     </div>
   )

@@ -2,13 +2,14 @@
 
 import { Phone } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import type { HeroContent } from '@/lib/cms/types'
 
-export function HeroSection() {
+export function HeroSection({ content }: { content: HeroContent }) {
   const { t } = useLanguage()
-  
+
   return (
     <section className="relative bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-      {/* Gradient orbs - matching AI integration page */}
+      {/* Gradient orbs */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
@@ -24,10 +25,7 @@ export function HeroSection() {
           className="absolute bottom-0 w-full h-full"
           preserveAspectRatio="none"
         >
-          <path
-            d="M0 96V0C240 64 480 96 720 96C960 96 1200 64 1440 0V96H0Z"
-            fill="white"
-          />
+          <path d="M0 96V0C240 64 480 96 720 96C960 96 1200 64 1440 0V96H0Z" fill="white" />
         </svg>
       </div>
 
@@ -38,47 +36,48 @@ export function HeroSection() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-xs sm:text-sm uppercase tracking-wide px-4 py-2 rounded-full mb-6">
               <span className="w-2 h-2 bg-primary rounded-full" />
-              {t('Giải pháp chuyển đổi số toàn diện', 'Comprehensive Digital Transformation Solutions')}
+              {t(content.badge.vi, content.badge.en)}
             </div>
 
             {/* Heading */}
             <h1 className="text-4xl sm:text-5xl lg:text-[56px] xl:text-[64px] font-extrabold text-foreground leading-[1.1] tracking-tight text-balance">
-              {t('Đồng hành cùng ', 'Partnering with ')}
-              <span className="text-primary">500+</span>
-              {t(' doanh nghiệp ', ' businesses for ')}
-              <span className="text-primary">{t('chuyển đổi số', 'digital transformation')}</span>
-              {t(' thành công', ' success')}
+              {t(content.heading_lead.vi, content.heading_lead.en)}
+              <span className="text-primary">{content.heading_number}</span>
+              {t(content.heading_middle.vi, content.heading_middle.en)}
+              <span className="text-primary">
+                {t(content.heading_highlight.vi, content.heading_highlight.en)}
+              </span>
+              {t(content.heading_tail.vi, content.heading_tail.en)}
             </h1>
 
             {/* Description */}
             <p className="mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl text-pretty">
-              {t(
-                'Chúng tôi cung cấp giải pháp Digital Marketing, thiết kế Website, Dashboard dữ liệu và tích hợp AI giúp doanh nghiệp tối ưu vận hành và tăng trưởng bền vững.',
-                'We provide Digital Marketing, Website Design, Data Dashboard and AI Integration solutions to help businesses optimize operations and achieve sustainable growth.'
-              )}
+              {t(content.description.vi, content.description.en)}
             </p>
 
             {/* CTA Group */}
             <div className="mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
               {/* Primary CTA */}
               <a
-                href="#contact"
+                href={content.cta_href}
                 className="w-full sm:w-auto inline-flex items-center justify-center bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 rounded-full text-base sm:text-lg transition-all duration-200 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
               >
-                {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
+                {t(content.cta_label.vi, content.cta_label.en)}
               </a>
 
               {/* Phone Contact */}
               <a
-                href="tel:+84123456789"
+                href={`tel:${content.support_phone.replace(/[^+\d]/g, '')}`}
                 className="group flex items-center gap-3 text-foreground hover:text-primary transition-colors"
               >
                 <span className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow-md group-hover:shadow-lg transition-shadow">
                   <Phone className="w-5 h-5 text-primary" />
                 </span>
                 <span className="text-sm sm:text-base">
-                  <span className="block text-muted-foreground text-xs sm:text-sm">{t('Bạn cần hỗ trợ?', 'Need help?')}</span>
-                  <span className="font-semibold">+84 123 456 789</span>
+                  <span className="block text-muted-foreground text-xs sm:text-sm">
+                    {t(content.support_label.vi, content.support_label.en)}
+                  </span>
+                  <span className="font-semibold">{content.support_phone}</span>
                 </span>
               </a>
             </div>
@@ -87,13 +86,10 @@ export function HeroSection() {
           {/* Right Illustration */}
           <div className="relative flex items-center justify-center lg:justify-end">
             <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
-              
-              
-              {/* ClickStar Data Flow SVG */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/clickstar-data-flow.svg"
-                alt="Kiến trúc luồng dữ liệu ClickStar - MySQL và PostgreSQL hợp nhất qua ETL Pipeline vào Neon Postgres, phục vụ Dashboard và AI Analysis"
+                src={content.image_src}
+                alt={t(content.image_alt.vi, content.image_alt.en)}
                 className="w-full h-auto relative z-10 rounded-2xl"
               />
             </div>
