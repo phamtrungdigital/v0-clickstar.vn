@@ -15,9 +15,11 @@ export function CtaForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-cta.eyebrow" className="scroll-mt-32">
+        <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-cta.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -30,7 +32,7 @@ export function CtaForm({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-cta.cta" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="CTA — text nút"
           value={content.cta_label}
@@ -43,7 +45,7 @@ export function CtaForm({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-cta.phone" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Hotline — label"
           value={content.phone_label}
@@ -56,30 +58,31 @@ export function CtaForm({
         />
       </div>
 
-      <I18nInput
-        label="Trust label"
-        value={content.trust_label}
-        onChange={(v) => update('trust_label', v)}
-      />
-
-      <div>
-        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-          Đối tác (mỗi tên 1 dòng)
-        </label>
-        <textarea
-          value={content.partner_names.join('\n')}
-          onChange={(e) =>
-            update(
-              'partner_names',
-              e.target.value
-                .split('\n')
-                .map((s) => s.trim())
-                .filter(Boolean)
-            )
-          }
-          rows={6}
-          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm font-mono"
+      <div id="form-cta.partners" className="space-y-3 scroll-mt-32">
+        <I18nInput
+          label="Trust label"
+          value={content.trust_label}
+          onChange={(v) => update('trust_label', v)}
         />
+        <div>
+          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+            Đối tác (mỗi tên 1 dòng)
+          </label>
+          <textarea
+            value={content.partner_names.join('\n')}
+            onChange={(e) =>
+              update(
+                'partner_names',
+                e.target.value
+                  .split('\n')
+                  .map((s) => s.trim())
+                  .filter(Boolean)
+              )
+            }
+            rows={6}
+            className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm font-mono"
+          />
+        </div>
       </div>
     </div>
   )

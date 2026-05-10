@@ -15,9 +15,14 @@ export function HeroForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Badge" value={content.badge} onChange={(v) => update('badge', v)} />
+      <div id="form-hero.badge" className="scroll-mt-32">
+        <I18nInput label="Badge" value={content.badge} onChange={(v) => update('badge', v)} />
+      </div>
 
-      <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
+      <div
+        id="form-hero.heading"
+        className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
+      >
         <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
           Heading (5 phần ghép lại)
         </p>
@@ -48,14 +53,16 @@ export function HeroForm({
         />
       </div>
 
-      <I18nInput
-        label="Mô tả"
-        multiline
-        value={content.description}
-        onChange={(v) => update('description', v)}
-      />
+      <div id="form-hero.description" className="scroll-mt-32">
+        <I18nInput
+          label="Mô tả"
+          multiline
+          value={content.description}
+          onChange={(v) => update('description', v)}
+        />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-hero.cta" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="CTA — text nút"
           value={content.cta_label}
@@ -69,7 +76,7 @@ export function HeroForm({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-hero.support" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Hỗ trợ — label"
           value={content.support_label}
@@ -82,7 +89,7 @@ export function HeroForm({
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-hero.image" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <TextInput
           label="Hero image (URL)"
           value={content.image_src}

@@ -25,23 +25,29 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
   const { t } = useLanguage()
 
   return (
-    <section className="py-20 lg:py-28 bg-background">
+    <section data-cms-section="services" className="py-20 lg:py-28 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+          <span
+            data-cms-field="eyebrow"
+            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+          >
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">
+          <h2
+            data-cms-field="heading"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance"
+          >
             {t(content.heading_lead.vi, content.heading_lead.en)}
             <span className="text-primary">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
 
-          <p className="text-muted-foreground text-lg leading-relaxed">
+          <p data-cms-field="description" className="text-muted-foreground text-lg leading-relaxed">
             {t(content.description.vi, content.description.en)}
           </p>
         </div>
@@ -51,16 +57,17 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
           {content.services.map((service, index) => {
             const colors = colorMap[service.color] ?? colorMap.blue
             return (
-              <ServiceCard
-                key={index}
-                icon={renderIcon(service.icon, `w-6 h-6 ${colors.iconText}`)}
-                title={t(service.title.vi, service.title.en)}
-                description={t(service.description.vi, service.description.en)}
-                tag={t(service.tag.vi, service.tag.en)}
-                iconBgColor={colors.iconBg}
-                tagColor={colors.tag}
-                href={service.href}
-              />
+              <div key={index} data-cms-field="item" data-cms-item-index={index}>
+                <ServiceCard
+                  icon={renderIcon(service.icon, `w-6 h-6 ${colors.iconText}`)}
+                  title={t(service.title.vi, service.title.en)}
+                  description={t(service.description.vi, service.description.en)}
+                  tag={t(service.tag.vi, service.tag.en)}
+                  iconBgColor={colors.iconBg}
+                  tagColor={colors.tag}
+                  href={service.href}
+                />
+              </div>
             )
           })}
         </div>
@@ -68,6 +75,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
         {/* Bottom CTA Link */}
         <div className="text-center mt-14">
           <Link
+            data-cms-field="footer_link"
             href={content.footer_link_href}
             className="inline-flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors group"
           >
@@ -89,7 +97,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
         </div>
 
         {/* Data Pipeline Architecture Diagram */}
-        <div className="mt-16 lg:mt-24 pt-16 lg:pt-24 border-t border-border/50">
+        <div data-cms-field="pipeline" className="mt-16 lg:mt-24 pt-16 lg:pt-24 border-t border-border/50">
           <div className="text-center mb-10">
             <span className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />

@@ -15,9 +15,11 @@ export function AboutForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-about.eyebrow" className="scroll-mt-32">
+        <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -30,14 +32,19 @@ export function AboutForm({
         />
       </div>
 
-      <I18nInput
-        label="Mô tả"
-        multiline
-        value={content.description}
-        onChange={(v) => update('description', v)}
-      />
+      <div id="form-about.description" className="scroll-mt-32">
+        <I18nInput
+          label="Mô tả"
+          multiline
+          value={content.description}
+          onChange={(v) => update('description', v)}
+        />
+      </div>
 
-      <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
+      <div
+        id="form-about.stats"
+        className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
+      >
         <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
           3 chỉ số (stats)
         </p>
@@ -80,7 +87,7 @@ export function AboutForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about.cta" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="CTA — text"
           value={content.cta_label}
@@ -93,25 +100,27 @@ export function AboutForm({
         />
       </div>
 
-      <TextInput
-        label="Thumbnail image (URL)"
-        value={content.thumbnail_src}
-        onChange={(v) => update('thumbnail_src', v)}
-        hint="Phase 2B sẽ thêm upload"
-      />
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about.video" className="space-y-3 scroll-mt-32">
         <TextInput
-          label="Video embed URL"
-          value={content.video_embed_url}
-          onChange={(v) => update('video_embed_url', v)}
-          placeholder="https://www.youtube.com/embed/..."
+          label="Thumbnail image (URL)"
+          value={content.thumbnail_src}
+          onChange={(v) => update('thumbnail_src', v)}
+          hint="Phase 2B sẽ thêm upload"
         />
-        <TextInput
-          label="Thời lượng video"
-          value={content.video_duration}
-          onChange={(v) => update('video_duration', v)}
-          placeholder="2:45"
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <TextInput
+            label="Video embed URL"
+            value={content.video_embed_url}
+            onChange={(v) => update('video_embed_url', v)}
+            placeholder="https://www.youtube.com/embed/..."
+          />
+          <TextInput
+            label="Thời lượng video"
+            value={content.video_duration}
+            onChange={(v) => update('video_duration', v)}
+            placeholder="2:45"
+          />
+        </div>
       </div>
     </div>
   )

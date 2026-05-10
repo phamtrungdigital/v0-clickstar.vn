@@ -23,9 +23,15 @@ export function ServicesForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-services.eyebrow" className="scroll-mt-32">
+        <I18nInput
+          label="Eyebrow"
+          value={content.eyebrow}
+          onChange={(v) => update('eyebrow', v)}
+        />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-services.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -38,19 +44,25 @@ export function ServicesForm({
         />
       </div>
 
-      <I18nInput
-        label="Mô tả"
-        multiline
-        value={content.description}
-        onChange={(v) => update('description', v)}
-      />
+      <div id="form-services.description" className="scroll-mt-32">
+        <I18nInput
+          label="Mô tả"
+          multiline
+          value={content.description}
+          onChange={(v) => update('description', v)}
+        />
+      </div>
 
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
         <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
           {content.services.length} dịch vụ
         </p>
         {content.services.map((service, idx) => (
-          <details key={idx} className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700">
+          <details
+            key={idx}
+            id={`form-services.item.${idx}`}
+            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
+          >
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium select-none">
               {idx + 1}. {service.title.vi || `(chưa đặt tên ${idx + 1})`}
             </summary>
@@ -68,11 +80,18 @@ export function ServicesForm({
                   </label>
                   <select
                     value={service.color}
-                    onChange={(e) => updateService(idx, { ...service, color: e.target.value as ServiceItem['color'] })}
+                    onChange={(e) =>
+                      updateService(idx, {
+                        ...service,
+                        color: e.target.value as ServiceItem['color'],
+                      })
+                    }
                     className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
                   >
                     {COLORS.map((c) => (
-                      <option key={c} value={c}>{c}</option>
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -111,25 +130,30 @@ export function ServicesForm({
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-        <I18nInput
-          label="Footer link — prefix"
-          value={content.footer_link_prefix}
-          onChange={(v) => update('footer_link_prefix', v)}
-        />
-        <I18nInput
-          label="Footer link — text"
-          value={content.footer_link_label}
-          onChange={(v) => update('footer_link_label', v)}
+      <div id="form-services.footer_link" className="space-y-3 scroll-mt-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          <I18nInput
+            label="Footer link — prefix"
+            value={content.footer_link_prefix}
+            onChange={(v) => update('footer_link_prefix', v)}
+          />
+          <I18nInput
+            label="Footer link — text"
+            value={content.footer_link_label}
+            onChange={(v) => update('footer_link_label', v)}
+          />
+        </div>
+        <TextInput
+          label="Footer link — URL"
+          value={content.footer_link_href}
+          onChange={(v) => update('footer_link_href', v)}
         />
       </div>
-      <TextInput
-        label="Footer link — URL"
-        value={content.footer_link_href}
-        onChange={(v) => update('footer_link_href', v)}
-      />
 
-      <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
+      <div
+        id="form-services.pipeline"
+        className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
+      >
         <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
           Pipeline architecture diagram
         </p>

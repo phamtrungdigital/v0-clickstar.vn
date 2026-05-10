@@ -11,6 +11,7 @@ import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
 import { Footer } from '@/components/layout/footer'
+import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { getPublishedPage } from '@/lib/cms/queries'
 import { getSection } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
@@ -46,6 +47,7 @@ export default async function Home() {
       {cta && <CTASection content={cta.content} />}
 
       <Footer />
+      <EditModeOverlay />
     </div>
   )
 }

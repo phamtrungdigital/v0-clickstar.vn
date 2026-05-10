@@ -9,18 +9,24 @@ export function CTASection({ content }: { content: CtaContent }) {
   const { t } = useLanguage()
 
   return (
-    <section className="py-20 lg:py-28 bg-[#EEF3FF]">
+    <section data-cms-section="cta" className="py-20 lg:py-28 bg-[#EEF3FF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* CTA Content */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           {/* Badge */}
-          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+          <span
+            data-cms-field="eyebrow"
+            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+          >
             <span className="w-1.5 h-1.5 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
 
           {/* Heading */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-8 text-balance">
+          <h2
+            data-cms-field="heading"
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-8 text-balance"
+          >
             {t(content.heading_lead.vi, content.heading_lead.en)}
             <span className="text-primary">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
@@ -30,6 +36,7 @@ export function CTASection({ content }: { content: CtaContent }) {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <Link
+              data-cms-field="cta"
               href={content.cta_href}
               className="group inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5"
             >
@@ -45,6 +52,7 @@ export function CTASection({ content }: { content: CtaContent }) {
             </Link>
 
             <Link
+              data-cms-field="phone"
               href={`tel:${content.phone.replace(/[^+\d]/g, '')}`}
               className="inline-flex items-center gap-3 text-foreground hover:text-primary transition-colors"
             >
@@ -62,7 +70,7 @@ export function CTASection({ content }: { content: CtaContent }) {
         </div>
 
         {/* Partners */}
-        <div className="border-t border-primary/10 pt-12">
+        <div data-cms-field="partners" className="border-t border-primary/10 pt-12">
           <p className="text-center text-sm text-muted-foreground mb-8">
             {t(content.trust_label.vi, content.trust_label.en)}
           </p>

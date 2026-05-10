@@ -12,19 +12,25 @@ export function AboutSection({ content }: { content: AboutContent }) {
 
   return (
     <>
-      <section className="pt-16 pb-20 lg:pt-24 lg:pb-28 bg-background">
+      <section data-cms-section="about" className="pt-16 pb-20 lg:pt-24 lg:pb-28 bg-background">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-[40%_60%] gap-8 lg:gap-16 items-center">
             {/* Left Content */}
             <div className="order-2 lg:order-1">
               {/* Badge */}
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+              <span
+                data-cms-field="eyebrow"
+                className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+              >
                 <span className="w-1.5 h-1.5 bg-primary rounded-full" />
                 {t(content.eyebrow.vi, content.eyebrow.en)}
               </span>
 
               {/* Heading */}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">
+              <h2
+                data-cms-field="heading"
+                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance"
+              >
                 {t(content.heading_lead.vi, content.heading_lead.en)}
                 <span className="text-primary">
                   {t(content.heading_highlight.vi, content.heading_highlight.en)}
@@ -32,12 +38,15 @@ export function AboutSection({ content }: { content: AboutContent }) {
               </h2>
 
               {/* Description */}
-              <p className="text-muted-foreground text-lg leading-relaxed mb-8">
+              <p
+                data-cms-field="description"
+                className="text-muted-foreground text-lg leading-relaxed mb-8"
+              >
                 {t(content.description.vi, content.description.en)}
               </p>
 
               {/* Stats */}
-              <div className="grid grid-cols-3 gap-4 mb-8">
+              <div data-cms-field="stats" className="grid grid-cols-3 gap-4 mb-8">
                 <div>
                   <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
                     {content.stat1_value}
@@ -66,6 +75,7 @@ export function AboutSection({ content }: { content: AboutContent }) {
 
               {/* CTA Button */}
               <a
+                data-cms-field="cta"
                 href={content.cta_href}
                 className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 group"
               >
@@ -77,6 +87,7 @@ export function AboutSection({ content }: { content: AboutContent }) {
             {/* Right Video Thumbnail */}
             <div className="order-1 lg:order-2">
               <div
+                data-cms-field="video"
                 className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer group"
                 onClick={() => setIsVideoOpen(true)}
               >
