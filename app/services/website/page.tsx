@@ -369,7 +369,12 @@ export default function WebsiteDesignPage() {
       <MainNav />
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-purple-50 via-white to-blue-50 overflow-hidden">
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+          {/* Gradient orbs */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+          </div>
           {/* Background decoration */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl" />
@@ -419,7 +424,7 @@ export default function WebsiteDesignPage() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     href="#contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300 shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30"
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   >
                     {t('Nhận báo giá miễn phí', 'Get free quote')}
                     <ArrowRight className="w-5 h-5" />
@@ -935,7 +940,7 @@ export default function WebsiteDesignPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="tel:+84123456789"
-                className="inline-flex items-center justify-center gap-2 bg-white text-purple-600 font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all shadow-lg"
+                className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
               >
                 <Settings className="w-5 h-5" />
                 {t('Gọi ngay: +84 123 456 789', 'Call now: +84 123 456 789')}

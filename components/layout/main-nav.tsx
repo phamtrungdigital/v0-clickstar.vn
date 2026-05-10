@@ -23,16 +23,6 @@ const navItemsData = {
         { label: 'CRM & CDP', href: '/services/crm-cdp' },
       ]
     },
-    { 
-      label: 'Dự án', 
-      href: '#cases',
-      hasDropdown: true,
-      dropdownItems: [
-        { label: 'E-commerce', href: '#cases/ecommerce' },
-        { label: 'Doanh nghiệp', href: '#cases/enterprise' },
-        { label: 'Startup', href: '#cases/startup' },
-      ]
-    },
     { label: 'Giới thiệu', href: '/about' },
     { label: 'Bảng giá', href: '/pricing' },
     { label: 'Tin tức', href: '/blog' },
@@ -50,16 +40,6 @@ const navItemsData = {
         { label: 'AI Integration', href: '/services/ai-integration' },
         { label: 'AI Automation', href: '/services/automation' },
         { label: 'CRM & CDP', href: '/services/crm-cdp' },
-      ]
-    },
-    { 
-      label: 'Projects', 
-      href: '#cases',
-      hasDropdown: true,
-      dropdownItems: [
-        { label: 'E-commerce', href: '#cases/ecommerce' },
-        { label: 'Enterprise', href: '#cases/enterprise' },
-        { label: 'Startup', href: '#cases/startup' },
       ]
     },
     { label: 'About', href: '/about' },
@@ -133,15 +113,19 @@ export function MainNav() {
               >
                 <Link
                   href={item.href}
-                  className="flex items-center gap-1 text-foreground/80 hover:text-foreground font-medium text-[15px] transition-colors py-2"
+                  className="group relative flex items-center gap-1 text-foreground/70 hover:text-primary font-medium text-[15px] transition-all duration-300 py-2 px-1"
                 >
-                  {item.label}
+                  <span className="relative z-10">{item.label}</span>
                   {item.hasDropdown && (
                     <ChevronDown className={cn(
-                      "h-4 w-4 transition-transform duration-200",
+                      "h-4 w-4 transition-transform duration-300 relative z-10",
                       openDropdown === item.label && "rotate-180"
                     )} />
                   )}
+                  {/* Animated underline effect */}
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-primary-dark transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
+                  {/* Subtle glow on hover */}
+                  <span className="absolute inset-0 bg-primary/5 rounded-lg transform scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 -z-10" />
                 </Link>
 
                 {/* Dropdown Menu */}
@@ -154,14 +138,19 @@ export function MainNav() {
                         : "opacity-0 invisible -translate-y-2"
                     )}
                   >
-                    <div className="bg-background rounded-xl shadow-lg border border-border py-2 min-w-[200px]">
+                    <div className="bg-background rounded-xl shadow-xl shadow-primary/5 border border-border py-2 min-w-[220px] backdrop-blur-sm">
                       {item.dropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           href={dropdownItem.href}
-                          className="block px-4 py-2.5 text-sm text-foreground/80 hover:text-foreground hover:bg-secondary transition-colors"
+                          className="group/item relative flex items-center gap-3 px-4 py-3 text-sm text-foreground/70 hover:text-primary transition-all duration-200"
                         >
-                          {dropdownItem.label}
+                          {/* Hover indicator bar */}
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gradient-to-b from-primary to-primary-dark rounded-r-full group-hover/item:h-6 transition-all duration-200" />
+                          {/* Text with slide effect */}
+                          <span className="relative transform group-hover/item:translate-x-2 transition-transform duration-200">
+                            {dropdownItem.label}
+                          </span>
                         </Link>
                       ))}
                     </div>
@@ -203,9 +192,11 @@ export function MainNav() {
             
             <Link
               href="#contact"
-              className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-7 py-3 rounded-full transition-all duration-200 hover:shadow-lg hover:shadow-primary/25"
+              className="group relative bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-7 py-3 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 overflow-hidden"
             >
-              {ctaText[language]}
+              <span className="relative z-10">{ctaText[language]}</span>
+              {/* Shine effect on hover */}
+              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </Link>
           </div>
 
@@ -237,17 +228,17 @@ export function MainNav() {
                   <div>
                     <button
                       onClick={() => setOpenDropdown(openDropdown === item.label ? null : item.label)}
-                      className="flex items-center justify-between w-full px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-lg transition-colors"
+                      className="group flex items-center justify-between w-full px-4 py-3 text-foreground font-medium hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200"
                     >
-                      {item.label}
+                      <span className="transform group-hover:translate-x-1 transition-transform duration-200">{item.label}</span>
                       <ChevronDown className={cn(
-                        "h-4 w-4 transition-transform duration-200",
+                        "h-4 w-4 transition-transform duration-300",
                         openDropdown === item.label && "rotate-180"
                       )} />
                     </button>
                     <div
                       className={cn(
-                        "overflow-hidden transition-all duration-200",
+                        "overflow-hidden transition-all duration-300",
                         openDropdown === item.label ? "max-h-96" : "max-h-0"
                       )}
                     >
@@ -255,10 +246,11 @@ export function MainNav() {
                         <Link
                           key={dropdownItem.label}
                           href={dropdownItem.href}
-                          className="block pl-8 pr-4 py-2.5 text-sm text-foreground/70 hover:text-foreground hover:bg-secondary/50 transition-colors"
+                          className="group/sub relative block pl-8 pr-4 py-2.5 text-sm text-foreground/70 hover:text-primary transition-all duration-200"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >
-                          {dropdownItem.label}
+                          <span className="absolute left-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-primary/30 rounded-full group-hover/sub:bg-primary transition-colors duration-200" />
+                          <span className="transform group-hover/sub:translate-x-1 inline-block transition-transform duration-200">{dropdownItem.label}</span>
                         </Link>
                       ))}
                     </div>
@@ -266,10 +258,10 @@ export function MainNav() {
                 ) : (
                   <Link
                     href={item.href}
-                    className="block px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-lg transition-colors"
+                    className="group block px-4 py-3 text-foreground font-medium hover:text-primary hover:bg-primary/5 rounded-lg transition-all duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.label}
+                    <span className="transform group-hover:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
                   </Link>
                 )}
               </div>
