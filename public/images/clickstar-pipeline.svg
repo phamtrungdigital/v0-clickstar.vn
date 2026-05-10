@@ -1,0 +1,672 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1700 820" width="100%" height="auto" font-family="'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif" role="img" aria-labelledby="ttl desc">
+<title id="ttl">ClickStar Data Pipeline Architecture</title>
+<desc id="desc">So do luong du lieu: Ad Platforms - Data Sources - FLATDAT - Claude AI Analysis - Insights and Visualization, voi data feedback loop</desc>
+
+<defs>
+
+<pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+  <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#F1F5F9" stroke-width="1"/>
+</pattern>
+
+<filter id="cardShadow" x="-10%" y="-30%" width="120%" height="160%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+  <feOffset dx="0" dy="3" result="o"/>
+  <feFlood flood-color="#1B7BFF" flood-opacity="0.08"/>
+  <feComposite in2="o" operator="in"/>
+  <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+
+<filter id="flatdatShadow" x="-10%" y="-15%" width="120%" height="130%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+  <feOffset dx="0" dy="6" result="o"/>
+  <feFlood flood-color="#8B5CF6" flood-opacity="0.18"/>
+  <feComposite in2="o" operator="in"/>
+  <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+
+<filter id="aiShadow" x="-10%" y="-15%" width="120%" height="130%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
+  <feOffset dx="0" dy="6" result="o"/>
+  <feFlood flood-color="#A5B4FC" flood-opacity="0.2"/>
+  <feComposite in2="o" operator="in"/>
+  <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+
+<filter id="aiBadgeShadow" x="-50%" y="-50%" width="200%" height="200%">
+  <feGaussianBlur in="SourceAlpha" stdDeviation="6"/>
+  <feOffset dx="0" dy="4" result="o"/>
+  <feFlood flood-color="#8B5CF6" flood-opacity="0.25"/>
+  <feComposite in2="o" operator="in"/>
+  <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+
+<filter id="dotGlow" x="-100%" y="-100%" width="300%" height="300%">
+  <feGaussianBlur stdDeviation="2" result="b"/>
+  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+</filter>
+
+<linearGradient id="flatdatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="#F5F3FF"/>
+  <stop offset="100%" stop-color="#EDE9FE"/>
+</linearGradient>
+
+<linearGradient id="aiBoxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="#EEF2FF"/>
+  <stop offset="100%" stop-color="#E0E7FF"/>
+</linearGradient>
+
+<linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+  <stop offset="0%" stop-color="#1B7BFF"/>
+  <stop offset="100%" stop-color="#8B5CF6"/>
+</linearGradient>
+<path id="ad_meta_crm" d="M 230,172.0 C 260.0,172.0 260.0,188.0 290,188.0" fill="none"/><path id="ad_meta_cdp" d="M 230,172.0 C 260.0,172.0 260.0,306.0 290,306.0" fill="none"/><path id="ad_google_crm" d="M 230,258.0 C 260.0,258.0 260.0,188.0 290,188.0" fill="none"/><path id="ad_google_cdp" d="M 230,258.0 C 260.0,258.0 260.0,306.0 290,306.0" fill="none"/><path id="ad_tiktok_cdp" d="M 230,344.0 C 260.0,344.0 260.0,306.0 290,306.0" fill="none"/><path id="ad_tiktok_ga4" d="M 230,344.0 C 260.0,344.0 260.0,424.0 290,424.0" fill="none"/><path id="ad_youtube_ga4" d="M 230,430.0 C 260.0,430.0 260.0,424.0 290,424.0" fill="none"/><path id="ad_youtube_other" d="M 230,430.0 C 260.0,430.0 260.0,542.0 290,542.0" fill="none"/><path id="ad_ms_other" d="M 230,516.0 C 260.0,516.0 260.0,542.0 290,542.0" fill="none"/><path id="ds_to_flat_0" d="M 470,188.0 C 505.0,188.0 505.0,375.0 540,375.0" fill="none"/><path id="ds_to_flat_1" d="M 470,306.0 C 505.0,306.0 505.0,375.0 540,375.0" fill="none"/><path id="ds_to_flat_2" d="M 470,424.0 C 505.0,424.0 505.0,375.0 540,375.0" fill="none"/><path id="ds_to_flat_3" d="M 470,542.0 C 505.0,542.0 505.0,375.0 540,375.0" fill="none"/><path id="flat_to_ai" d="M 820,375.0 L 862,375.0" fill="none"/><path id="ai_to_ins" d="M 1160,375.0 L 1212,365.0" fill="none"/><path id="feedback_loop" d="M 1445.0,600 V 770 H 140.0 V 548" fill="none"/>
+</defs>
+
+<rect width="1700" height="820" fill="#FFFFFF"/>
+<rect width="1700" height="820" fill="url(#grid)" opacity="0.5"/>
+
+<g>
+
+    <rect x="50.0" y="62" width="180" height="32" rx="9" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+    <text x="140.0" y="84" font-size="12" font-weight="700" fill="#6D28D9" text-anchor="middle" letter-spacing="1.5">AD PLATFORMS</text>
+    
+
+    <rect x="290.0" y="62" width="180" height="32" rx="9" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+    <text x="380.0" y="84" font-size="12" font-weight="700" fill="#6D28D9" text-anchor="middle" letter-spacing="1.5">DATA SOURCES</text>
+    
+
+    <rect x="1305.0" y="62" width="280" height="32" rx="9" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1"/>
+    <text x="1445.0" y="84" font-size="12" font-weight="700" fill="#6D28D9" text-anchor="middle" letter-spacing="1.5">INSIGHTS &amp; VISUALIZATION</text>
+    
+</g>
+<g stroke="#C4B5FD" stroke-width="1.5" fill="none" stroke-dasharray="4 4" opacity="0.7">
+<use href="#ad_meta_crm"/>
+<use href="#ad_meta_cdp"/>
+<use href="#ad_google_crm"/>
+<use href="#ad_google_cdp"/>
+<use href="#ad_tiktok_cdp"/>
+<use href="#ad_tiktok_ga4"/>
+<use href="#ad_youtube_ga4"/>
+<use href="#ad_youtube_other"/>
+<use href="#ad_ms_other"/>
+</g>
+<g stroke="#A78BFA" stroke-width="1.5" fill="none" stroke-dasharray="5 4" opacity="0.8">
+<use href="#ds_to_flat_0"/>
+<use href="#ds_to_flat_1"/>
+<use href="#ds_to_flat_2"/>
+<use href="#ds_to_flat_3"/>
+</g>
+<g>
+<use href="#flat_to_ai" stroke="#8B5CF6" stroke-width="2" fill="none"/>
+<path d="M 855,369.0 L 862,375.0 L 855,381.0" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g>
+<use href="#ai_to_ins" stroke="#8B5CF6" stroke-width="2" fill="none"/>
+<path d="M 1205,359.0 L 1212,365.0 L 1205,371.0" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g stroke="#A78BFA" stroke-width="1.5" fill="none" stroke-dasharray="6 5" opacity="0.7">
+<use href="#feedback_loop"/>
+</g>
+<path d="M 134.0,556 L 140.0,549 L 146.0,556" stroke="#A78BFA" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <g filter="url(#cardShadow)">
+      <rect x="50" y="140" width="180" height="64" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <g transform="translate(80,172.0)">
+      <path d="M -11,0 C -11,-7 -7,-9 -3,-5 C 0,-2 0,2 3,5 C 7,9 11,7 11,0 C 11,-7 7,-9 3,-5 C 0,-2 0,2 -3,5 C -7,9 -11,7 -11,0 Z"
+            stroke="#1877F2" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+      <text x="110" y="168" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start">Meta</text>
+      <text x="110" y="187" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Ads</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="50" y="226" width="180" height="64" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <g transform="translate(80,258.0)">
+      <path d="M 0,-9 A 9,9 0 0,1 9,0 L 4,0 L 4,-1.5 L 0,-1.5 Z" fill="#FBBC04"/>
+      <path d="M 9,0 A 9,9 0 0,1 6,7 L 3,3.5 A 4.5,4.5 0 0,0 4,0 Z" fill="#34A853"/>
+      <path d="M 6,7 A 9,9 0 0,1 -7,5.5 L -3,2.5 A 4.5,4.5 0 0,0 3,3.5 Z" fill="#EA4335"/>
+      <path d="M -7,5.5 A 9,9 0 0,1 0,-9 L 0,-4.5 A 4.5,4.5 0 0,0 -3,2.5 Z" fill="#4285F4"/>
+    </g>
+      <text x="110" y="254" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start">Google</text>
+      <text x="110" y="273" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Ads</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="50" y="312" width="180" height="64" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <g transform="translate(80,344.0)">
+      <!-- Cyan shadow -->
+      <path d="M 3,-9 C 3,-5 5,-3 8,-2 L 8,1 C 5,1 3,0 2,-1 L 2,5 A 5,5 0 1,1 -3,0 L -3,3 A 2,2 0 1,0 -1,5 L -1,-9 Z"
+            fill="#25F4EE" transform="translate(-2,1)" opacity="0.85"/>
+      <!-- Red shadow -->
+      <path d="M 3,-9 C 3,-5 5,-3 8,-2 L 8,1 C 5,1 3,0 2,-1 L 2,5 A 5,5 0 1,1 -3,0 L -3,3 A 2,2 0 1,0 -1,5 L -1,-9 Z"
+            fill="#FE2C55" transform="translate(2,-1)" opacity="0.85"/>
+      <!-- Black main -->
+      <path d="M 3,-9 C 3,-5 5,-3 8,-2 L 8,1 C 5,1 3,0 2,-1 L 2,5 A 5,5 0 1,1 -3,0 L -3,3 A 2,2 0 1,0 -1,5 L -1,-9 Z"
+            fill="#000000"/>
+    </g>
+      <text x="110" y="340" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start">TikTok</text>
+      <text x="110" y="359" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Ads</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="50" y="398" width="180" height="64" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <g transform="translate(80,430.0)">
+      <rect x="-12" y="-8" width="24" height="16" rx="4" fill="#FF0000"/>
+      <path d="M -3,-4 L 5,0 L -3,4 Z" fill="#FFFFFF"/>
+    </g>
+      <text x="110" y="426" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start">YouTube</text>
+      <text x="110" y="445" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Ads</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="50" y="484" width="180" height="64" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <g transform="translate(80,516.0)">
+      <rect x="-9" y="-9" width="8" height="8" fill="#F25022"/>
+      <rect x="1" y="-9" width="8" height="8" fill="#7FBA00"/>
+      <rect x="-9" y="1" width="8" height="8" fill="#00A4EF"/>
+      <rect x="1" y="1" width="8" height="8" fill="#FFB900"/>
+    </g>
+      <text x="110" y="512" font-size="15" font-weight="700" fill="#0F172A" text-anchor="start">Microsoft</text>
+      <text x="110" y="531" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Ads</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="290" y="148" width="180" height="80" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <rect x="304" y="166" width="44" height="44" rx="11" fill="#F5F3FF"/>
+      <g transform="translate(326,188)" stroke="#3B82F6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="-4" cy="-3" r="3.5"/>
+      <circle cx="5" cy="-3" r="3.5"/>
+      <path d="M -10,7 C -10,3 -7,1 -4,1 C -1,1 2,3 2,7"/>
+      <path d="M -1,7 C -1,3 2,1 5,1 C 8,1 11,3 11,7" opacity="0.7"/>
+    </g>
+      <text x="360" y="184" font-size="18" font-weight="700" fill="#0F172A" text-anchor="start">CRM</text>
+      <text x="360" y="204" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Customer DB</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="290" y="266" width="180" height="80" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <rect x="304" y="284" width="44" height="44" rx="11" fill="#F5F3FF"/>
+      <g transform="translate(326,306)">
+      <circle cx="0" cy="0" r="11" fill="#8B5CF6" opacity="0.15"/>
+      <circle cx="0" cy="0" r="11" stroke="#8B5CF6" stroke-width="2" fill="none"/>
+      <circle cx="0" cy="-2" r="3" fill="#8B5CF6"/>
+      <path d="M -5,6 C -5,3 -3,2 0,2 C 3,2 5,3 5,6" fill="#8B5CF6"/>
+    </g>
+      <text x="360" y="302" font-size="18" font-weight="700" fill="#0F172A" text-anchor="start">CDP</text>
+      <text x="360" y="322" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Profile data</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="290" y="384" width="180" height="80" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <rect x="304" y="402" width="44" height="44" rx="11" fill="#F5F3FF"/>
+      <g transform="translate(326,424)">
+      <rect x="-10" y="-2" width="5" height="10" rx="1" fill="#FBBC04"/>
+      <rect x="-2.5" y="-6" width="5" height="14" rx="1" fill="#FF6D01"/>
+      <rect x="5" y="-9" width="5" height="17" rx="1.5" fill="#F9AB00"/>
+    </g>
+      <text x="360" y="420" font-size="18" font-weight="700" fill="#0F172A" text-anchor="start">GA4</text>
+      <text x="360" y="440" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Web analytics</text>
+    </g>
+
+    <g filter="url(#cardShadow)">
+      <rect x="290" y="502" width="180" height="80" rx="12" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+      <rect x="304" y="520" width="44" height="44" rx="11" fill="#F5F3FF"/>
+      <g transform="translate(326,542)" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="0" cy="-8" rx="10" ry="3"/>
+      <path d="M -10,-8 V 6 C -10,7.5 -5,9 0,9 C 5,9 10,7.5 10,6 V -8"/>
+      <path d="M -10,-1 C -10,0.5 -5,2 0,2 C 5,2 10,0.5 10,-1" opacity="0.7"/>
+    </g>
+      <text x="360" y="538" font-size="18" font-weight="700" fill="#0F172A" text-anchor="start">Other</text>
+      <text x="360" y="558" font-size="12" font-weight="500" fill="#64748B" text-anchor="start">Data Sources</text>
+    </g>
+<g filter="url(#flatdatShadow)">
+<rect x="532" y="167" width="296" height="416" rx="20" fill="url(#flatdatGrad)" opacity="0.5"/>
+<rect x="540" y="175" width="280" height="400" rx="16" fill="#FFFFFF" stroke="#C4B5FD" stroke-width="1.5"/>
+<g transform="translate(680.0,220)">
+      <ellipse cx="0" cy="-12" rx="22" ry="6" fill="#8B5CF6" opacity="0.2"/>
+      <path d="M -22,-12 V 12 C -22,15 -10,18 0,18 C 10,18 22,15 22,12 V -12"
+            stroke="#8B5CF6" stroke-width="2.5" fill="#FFFFFF" stroke-linejoin="round"/>
+      <ellipse cx="0" cy="-12" rx="22" ry="6" stroke="#8B5CF6" stroke-width="2.5" fill="#F5F3FF"/>
+      <path d="M -22,0 C -22,3 -10,6 0,6 C 10,6 22,3 22,0" stroke="#8B5CF6" stroke-width="2" fill="none" opacity="0.7"/>
+    </g>
+<text x="680.0" y="285" font-size="28" font-weight="800" fill="#6D28D9" text-anchor="middle">FLATDAT</text>
+<text x="680.0" y="307" font-size="13" font-weight="500" fill="#64748B" text-anchor="middle">Unified Data Platform</text>
+<line x1="564" y1="330" x2="796" y2="330" stroke="#E5E7EB" stroke-width="1"/>
+<rect x="558" y="355" width="244" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(578,376)"><path d="M 0,-7 V 5 M -5,0 L 0,5 L 5,0 M -7,8 H 7" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text x="600" y="382" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Data Collection</text>
+<rect x="558" y="407" width="244" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(578,428)"><circle cx="0" cy="0" r="3" stroke="#8B5CF6" stroke-width="2" fill="none"/><path d="M 0,-8 V -5 M 0,5 V 8 M -8,0 H -5 M 5,0 H 8 M -5.7,-5.7 L -3.5,-3.5 M 3.5,3.5 L 5.7,5.7 M -5.7,5.7 L -3.5,3.5 M 3.5,-3.5 L 5.7,-5.7" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"/></g>
+<text x="600" y="434" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Data Processing</text>
+<rect x="558" y="459" width="244" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(578,480)"><rect x="-7" y="-7" width="14" height="14" rx="1" stroke="#8B5CF6" stroke-width="2" fill="none"/><line x1="-7" y1="-2" x2="7" y2="-2" stroke="#8B5CF6" stroke-width="2"/><line x1="-7" y1="3" x2="7" y2="3" stroke="#8B5CF6" stroke-width="2"/><line x1="0" y1="-7" x2="0" y2="7" stroke="#8B5CF6" stroke-width="2"/></g>
+<text x="600" y="486" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Data Normalization</text>
+<rect x="558" y="511" width="244" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(578,532)"><path d="M 0,-8 L 7,-5 V 2 C 7,5 4,7 0,8 C -4,7 -7,5 -7,2 V -5 Z" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-linejoin="round"/><path d="M -3,0 L -1,2 L 4,-3" stroke="#8B5CF6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text x="600" y="538" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Data Governance</text>
+</g>
+<g filter="url(#aiShadow)">
+<rect x="862" y="167" width="306" height="416" rx="20" fill="url(#aiBoxGrad)" opacity="0.5"/>
+<rect x="870" y="175" width="290" height="400" rx="16" fill="#FFFFFF" stroke="#A5B4FC" stroke-width="1.5"/>
+<g transform="translate(1015.0,227)">
+      <!-- Outer rotating group: full 360° in 60s (very subtle) -->
+      <g>
+        <animateTransform attributeName="transform" type="rotate"
+                          from="0" to="360" dur="60s" repeatCount="indefinite"/>
+        <g fill="#D97757">
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(0)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(30)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(60)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(90)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(120)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(150)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(180)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(210)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(240)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(270)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(300)"/>
+            <path d="M -1.7,-23 C -1.8,-16 -2.2,-9 -0.9,-2.5 L 0,0 L 0.9,-2.5 C 2.2,-9 1.8,-16 1.7,-23 Z" transform="rotate(330)"/>
+        </g>
+      </g>
+      <!-- Pulsing center dot (live indicator) -->
+      <circle cx="0" cy="0" r="2" fill="#D97757">
+        <animate attributeName="r" values="1.5;3;1.5" dur="2.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0.4;1" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+<text x="1015.0" y="285" font-size="28" font-weight="700" fill="#0F172A" text-anchor="middle">Claude</text>
+<text x="1015.0" y="307" font-size="12" font-weight="500" fill="#6D28D9" text-anchor="middle">AI Analysis · Always latest</text>
+<g transform="translate(1146,199)">
+      <!-- Pill background (wider, more padding) -->
+      <rect x="-118" y="-12" width="118" height="24" rx="12" fill="#ECFDF5" stroke="#86EFAC" stroke-width="1"/>
+      <!-- Pulsing green dot -->
+      <circle cx="-100" cy="0" r="3" fill="#10B981">
+        <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-100" cy="0" r="6" fill="#10B981" opacity="0.25">
+        <animate attributeName="r" values="3;9;3" dur="1.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.4;0;0.4" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Label (more padding from dot, less letter-spacing) -->
+      <text x="-44" y="3.5" font-size="10" font-weight="700" fill="#047857" letter-spacing="0.5" text-anchor="middle">AUTO-UPDATED</text>
+    </g>
+<line x1="894" y1="330" x2="1136" y2="330" stroke="#E5E7EB" stroke-width="1"/>
+<rect x="888" y="355" width="254" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(908,376)"><path d="M -8,4 L -3,-1 L 1,3 L 8,-4 M 4,-4 H 8 V 0" stroke="#1B7BFF" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+<text x="930" y="382" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Data Understanding</text>
+<rect x="888" y="407" width="254" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(908,428)"><circle cx="-2" cy="-2" r="6" stroke="#8B5CF6" stroke-width="2" fill="none"/><line x1="3" y1="3" x2="8" y2="8" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round"/></g>
+<text x="930" y="434" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Pattern Detection</text>
+<rect x="888" y="459" width="254" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(908,480)"><path d="M 0,-9 C -5,-9 -7,-5 -5,-1 C -3,2 -3,4 -3,6 H 3 C 3,4 3,2 5,-1 C 7,-5 5,-9 0,-9 Z" stroke="#FBBF24" stroke-width="2" fill="#FEF3C7" stroke-linejoin="round"/><path d="M -2,7 H 2 M -1.5,9 H 1.5" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/></g>
+<text x="930" y="486" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Insights Generation</text>
+<rect x="888" y="511" width="254" height="42" rx="10" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<g transform="translate(908,532)"><circle cx="0" cy="0" r="8" stroke="#10B981" stroke-width="2" fill="none"/><circle cx="0" cy="0" r="4" stroke="#10B981" stroke-width="2" fill="none"/><circle cx="0" cy="0" r="1" fill="#10B981"/></g>
+<text x="930" y="538" font-size="14" font-weight="600" fill="#0F172A" text-anchor="start">Recommendations</text>
+</g>
+
+    <g filter="url(#aiBadgeShadow)">
+      <circle cx="1180" cy="95" r="34" fill="#FFFFFF" stroke="#A5B4FC" stroke-width="1.5"/>
+      <text x="1180" y="98" font-size="18" font-weight="800" fill="#6D28D9" text-anchor="middle">AI</text>
+      <g transform="translate(1195,80)" fill="#8B5CF6">
+        <path d="M 0,-6 L 1.2,-1 L 6,0 L 1.2,1 L 0,6 L -1.2,1 L -6,0 L -1.2,-1 Z"/>
+      </g>
+    </g>
+<g filter="url(#cardShadow)">
+<rect x="1220" y="130" width="450" height="470" rx="14" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1"/>
+</g>
+<rect x="1234.0" y="154" width="99.5" height="76" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1244.0" y="172" font-size="10" font-weight="500" fill="#64748B" text-anchor="start">Total Spend</text>
+<text x="1244.0" y="194" font-size="15" font-weight="800" fill="#0F172A" text-anchor="start">$123,456</text>
+<text x="1244.0" y="212" font-size="10" font-weight="700" fill="#10B981" text-anchor="start">+12.5%</text>
+<rect x="1341.5" y="154" width="99.5" height="76" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1351.5" y="172" font-size="10" font-weight="500" fill="#64748B" text-anchor="start">Total Revenue</text>
+<text x="1351.5" y="194" font-size="15" font-weight="800" fill="#0F172A" text-anchor="start">$456,789</text>
+<text x="1351.5" y="212" font-size="10" font-weight="700" fill="#10B981" text-anchor="start">+18.7%</text>
+<rect x="1449.0" y="154" width="99.5" height="76" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1459.0" y="172" font-size="10" font-weight="500" fill="#64748B" text-anchor="start">ROAS</text>
+<text x="1459.0" y="194" font-size="15" font-weight="800" fill="#0F172A" text-anchor="start">3.70</text>
+<text x="1459.0" y="212" font-size="10" font-weight="700" fill="#10B981" text-anchor="start">+15.3%</text>
+<rect x="1556.5" y="154" width="99.5" height="76" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1566.5" y="172" font-size="10" font-weight="500" fill="#64748B" text-anchor="start">Conversions</text>
+<text x="1566.5" y="194" font-size="15" font-weight="800" fill="#0F172A" text-anchor="start">12,345</text>
+<text x="1566.5" y="212" font-size="10" font-weight="700" fill="#10B981" text-anchor="start">+9.8%</text>
+<rect x="1234" y="246" width="207.0" height="164" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1246" y="264" font-size="11" font-weight="700" fill="#0F172A" text-anchor="start">Performance Over Time</text>
+<g transform="translate(1249,276)">
+<line x1="0" y1="115" x2="160" y2="115" stroke="#E5E7EB" stroke-width="0.5"/>
+<line x1="0" y1="0" x2="0" y2="115" stroke="#E5E7EB" stroke-width="0.5"/>
+<path d="M 0,40 L 30,30 L 60,35 L 90,20 L 120,15 L 150,10" stroke="#3B82F6" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 0,55 L 30,50 L 60,45 L 90,40 L 120,30 L 150,25" stroke="#10B981" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 0,75 L 30,70 L 60,75 L 90,72 L 120,70 L 150,68" stroke="#FBBF24" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 0,85 L 30,82 L 60,80 L 90,85 L 120,80 L 150,75" stroke="#EF4444" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 0,95 L 30,92 L 60,90 L 90,88 L 120,85 L 150,82" stroke="#8B5CF6" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<rect x="1449.0" y="246" width="207.0" height="164" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1461.0" y="264" font-size="11" font-weight="700" fill="#0F172A" text-anchor="start">Spend by Platform</text>
+<g transform="rotate(-90 1499.0 341)">
+<circle cx="1499.0" cy="341" r="35" fill="none" stroke="#3B82F6" stroke-width="14" stroke-dasharray="88.0 131.9" stroke-dashoffset="-0.0"/>
+<circle cx="1499.0" cy="341" r="35" fill="none" stroke="#10B981" stroke-width="14" stroke-dasharray="55.0 164.9" stroke-dashoffset="-88.0"/>
+<circle cx="1499.0" cy="341" r="35" fill="none" stroke="#8B5CF6" stroke-width="14" stroke-dasharray="44.0 175.9" stroke-dashoffset="-142.9"/>
+<circle cx="1499.0" cy="341" r="35" fill="none" stroke="#EF4444" stroke-width="14" stroke-dasharray="22.0 197.9" stroke-dashoffset="-186.9"/>
+<circle cx="1499.0" cy="341" r="35" fill="none" stroke="#FBBF24" stroke-width="14" stroke-dasharray="11.0 208.9" stroke-dashoffset="-208.9"/>
+</g>
+<circle cx="1554.0" cy="289" r="3" fill="#3B82F6"/>
+<text x="1562.0" y="292" font-size="9" font-weight="500" fill="#0F172A" text-anchor="start">Meta Ads</text>
+<text x="1634.0" y="292" font-size="9" font-weight="600" fill="#64748B" text-anchor="start">40%</text>
+<circle cx="1554.0" cy="307" r="3" fill="#10B981"/>
+<text x="1562.0" y="310" font-size="9" font-weight="500" fill="#0F172A" text-anchor="start">Google Ads</text>
+<text x="1634.0" y="310" font-size="9" font-weight="600" fill="#64748B" text-anchor="start">25%</text>
+<circle cx="1554.0" cy="325" r="3" fill="#8B5CF6"/>
+<text x="1562.0" y="328" font-size="9" font-weight="500" fill="#0F172A" text-anchor="start">TikTok Ads</text>
+<text x="1634.0" y="328" font-size="9" font-weight="600" fill="#64748B" text-anchor="start">20%</text>
+<circle cx="1554.0" cy="343" r="3" fill="#EF4444"/>
+<text x="1562.0" y="346" font-size="9" font-weight="500" fill="#0F172A" text-anchor="start">YouTube Ads</text>
+<text x="1634.0" y="346" font-size="9" font-weight="600" fill="#64748B" text-anchor="start">10%</text>
+<circle cx="1554.0" cy="361" r="3" fill="#FBBF24"/>
+<text x="1562.0" y="364" font-size="9" font-weight="500" fill="#0F172A" text-anchor="start">Microsoft Ads</text>
+<text x="1634.0" y="364" font-size="9" font-weight="600" fill="#64748B" text-anchor="start">5%</text>
+<rect x="1234" y="420" width="207.0" height="164" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1246" y="438" font-size="11" font-weight="700" fill="#0F172A" text-anchor="start">Top Campaigns</text>
+<g transform="translate(1249,450)">
+<text x="0" y="14" font-size="9" font-weight="500" fill="#64748B" text-anchor="start">Camp. A</text>
+<rect x="48" y="5" width="108.0" height="12" rx="3" fill="#8B5CF6" opacity="1.0"/>
+<text x="0" y="36" font-size="9" font-weight="500" fill="#64748B" text-anchor="start">Camp. B</text>
+<rect x="48" y="27" width="90.0" height="12" rx="3" fill="#8B5CF6" opacity="0.9"/>
+<text x="0" y="58" font-size="9" font-weight="500" fill="#64748B" text-anchor="start">Camp. C</text>
+<rect x="48" y="49" width="66.0" height="12" rx="3" fill="#8B5CF6" opacity="0.8"/>
+<text x="0" y="80" font-size="9" font-weight="500" fill="#64748B" text-anchor="start">Camp. D</text>
+<rect x="48" y="71" width="48.0" height="12" rx="3" fill="#8B5CF6" opacity="0.7"/>
+<text x="0" y="102" font-size="9" font-weight="500" fill="#64748B" text-anchor="start">Camp. E</text>
+<rect x="48" y="93" width="36.0" height="12" rx="3" fill="#8B5CF6" opacity="0.6"/>
+</g>
+<rect x="1449.0" y="420" width="207.0" height="164" rx="9" fill="#FAFAFA" stroke="#E5E7EB" stroke-width="0.5"/>
+<text x="1461.0" y="438" font-size="11" font-weight="700" fill="#0F172A" text-anchor="start">Performance Heatmap</text>
+<text x="1495.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">M</text>
+<text x="1511.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">T</text>
+<text x="1527.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">W</text>
+<text x="1543.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">T</text>
+<text x="1559.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">F</text>
+<text x="1575.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">S</text>
+<text x="1591.0" y="451" font-size="8" font-weight="500" fill="#64748B" text-anchor="middle">S</text>
+<text x="1457.0" y="466" font-size="8" font-weight="500" fill="#64748B" text-anchor="start">Meta</text>
+<rect x="1487.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.60"/>
+<rect x="1503.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.17"/>
+<rect x="1519.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.34"/>
+<rect x="1535.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.31"/>
+<rect x="1551.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.67"/>
+<rect x="1567.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.62"/>
+<rect x="1583.0" y="455" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.77"/>
+<text x="1457.0" y="482" font-size="8" font-weight="500" fill="#64748B" text-anchor="start">Google</text>
+<rect x="1487.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.21"/>
+<rect x="1503.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.45"/>
+<rect x="1519.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.17"/>
+<rect x="1535.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.30"/>
+<rect x="1551.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.50"/>
+<rect x="1567.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.17"/>
+<rect x="1583.0" y="471" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.29"/>
+<text x="1457.0" y="498" font-size="8" font-weight="500" fill="#64748B" text-anchor="start">TikTok</text>
+<rect x="1487.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.60"/>
+<rect x="1503.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.53"/>
+<rect x="1519.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.30"/>
+<rect x="1535.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.56"/>
+<rect x="1551.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.72"/>
+<rect x="1567.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.15"/>
+<rect x="1583.0" y="487" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.71"/>
+<text x="1457.0" y="514" font-size="8" font-weight="500" fill="#64748B" text-anchor="start">YouTube</text>
+<rect x="1487.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.64"/>
+<rect x="1503.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.39"/>
+<rect x="1519.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.26"/>
+<rect x="1535.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.82"/>
+<rect x="1551.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.39"/>
+<rect x="1567.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.21"/>
+<rect x="1583.0" y="503" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.22"/>
+<text x="1457.0" y="530" font-size="8" font-weight="500" fill="#64748B" text-anchor="start">MS</text>
+<rect x="1487.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.74"/>
+<rect x="1503.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.57"/>
+<rect x="1519.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.71"/>
+<rect x="1535.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.66"/>
+<rect x="1551.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.53"/>
+<rect x="1567.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.83"/>
+<rect x="1583.0" y="519" width="15" height="13" rx="2" fill="#8B5CF6" opacity="0.41"/>
+<g filter="url(#dotGlow)">
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.0s">
+                <mpath href="#ad_meta_crm"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.5s">
+                <mpath href="#ad_meta_crm"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.4s">
+                <mpath href="#ad_meta_cdp"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.9s">
+                <mpath href="#ad_meta_cdp"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="0.8s">
+                <mpath href="#ad_google_crm"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="2.3s">
+                <mpath href="#ad_google_crm"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.2000000000000002s">
+                <mpath href="#ad_google_cdp"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="2.7s">
+                <mpath href="#ad_google_cdp"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="1.6s">
+                <mpath href="#ad_tiktok_cdp"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="3.1s">
+                <mpath href="#ad_tiktok_cdp"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="2.0s">
+                <mpath href="#ad_tiktok_ga4"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="3.5s">
+                <mpath href="#ad_tiktok_ga4"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="2.4000000000000004s">
+                <mpath href="#ad_youtube_ga4"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="3.9000000000000004s">
+                <mpath href="#ad_youtube_ga4"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="2.8000000000000003s">
+                <mpath href="#ad_youtube_other"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="4.300000000000001s">
+                <mpath href="#ad_youtube_other"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#1B7BFF" opacity="1">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="3.2s">
+                <mpath href="#ad_ms_other"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="2.5" fill="#06B6D4" opacity="0.6">
+              <animateMotion dur="3.5s" repeatCount="indefinite" begin="4.7s">
+                <mpath href="#ad_ms_other"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="4" fill="#8B5CF6" opacity="1">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.0s">
+                <mpath href="#ds_to_flat_0"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.7">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="1.2s">
+                <mpath href="#ds_to_flat_0"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.5">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="2.4s">
+                <mpath href="#ds_to_flat_0"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="4" fill="#8B5CF6" opacity="1">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.3s">
+                <mpath href="#ds_to_flat_1"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.7">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="1.5s">
+                <mpath href="#ds_to_flat_1"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.5">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="2.6999999999999997s">
+                <mpath href="#ds_to_flat_1"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="4" fill="#8B5CF6" opacity="1">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.6s">
+                <mpath href="#ds_to_flat_2"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.7">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="1.7999999999999998s">
+                <mpath href="#ds_to_flat_2"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.5">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="3.0s">
+                <mpath href="#ds_to_flat_2"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="4" fill="#8B5CF6" opacity="1">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="0.8999999999999999s">
+                <mpath href="#ds_to_flat_3"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.7">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="2.0999999999999996s">
+                <mpath href="#ds_to_flat_3"/>
+              </animateMotion>
+            </circle>
+
+            <circle r="3" fill="#8B5CF6" opacity="0.5">
+              <animateMotion dur="2.8s" repeatCount="indefinite" begin="3.3s">
+                <mpath href="#ds_to_flat_3"/>
+              </animateMotion>
+            </circle>
+
+        <circle r="4" fill="#8B5CF6" opacity="1">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.0s">
+            <mpath href="#flat_to_ai"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="4" fill="#8B5CF6" opacity="0.7">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.7s">
+            <mpath href="#flat_to_ai"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="4" fill="#8B5CF6" opacity="0.5">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.4s">
+            <mpath href="#flat_to_ai"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="4" fill="#10B981" opacity="1">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.0s">
+            <mpath href="#ai_to_ins"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="4" fill="#10B981" opacity="0.7">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.7s">
+            <mpath href="#ai_to_ins"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="4" fill="#10B981" opacity="0.5">
+          <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.4s">
+            <mpath href="#ai_to_ins"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="3.5" fill="#FBBF24" opacity="0.9">
+          <animateMotion dur="5s" repeatCount="indefinite" begin="0.0s">
+            <mpath href="#feedback_loop"/>
+          </animateMotion>
+        </circle>
+
+        <circle r="3.5" fill="#FBBF24" opacity="0.6">
+          <animateMotion dur="5s" repeatCount="indefinite" begin="2.5s">
+            <mpath href="#feedback_loop"/>
+          </animateMotion>
+        </circle>
+</g>
+<g transform="translate(760.0,770)">
+<rect x="-110" y="-15" width="220" height="30" rx="15" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.5"/>
+
+    <g transform="translate(-90,0)" stroke="#8B5CF6" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M -7,-4 A 7,7 0 1,1 -7,4"/>
+      <polyline points="-7,-7 -7,-4 -4,-4"/>
+      <polyline points="7,7 7,4 4,4"/>
+    </g>
+<text x="0" y="4" font-size="11" font-weight="700" fill="#6D28D9" text-anchor="middle" letter-spacing="1.2">DATA FEEDBACK LOOP</text>
+</g>
+</svg>
