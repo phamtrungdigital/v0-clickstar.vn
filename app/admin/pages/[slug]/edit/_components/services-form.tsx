@@ -94,6 +94,18 @@ export function ServicesForm({
                 value={service.tag}
                 onChange={(v) => updateService(idx, { ...service, tag: v })}
               />
+              <TextInput
+                label="🔗 Click vào card sẽ trỏ tới URL này"
+                value={service.href ?? ''}
+                onChange={(v) =>
+                  updateService(idx, {
+                    ...service,
+                    href: v.trim() === '' ? undefined : v,
+                  })
+                }
+                placeholder="/services/digital-marketing  hoặc  https://example.com"
+                hint="Nội bộ: bắt đầu bằng / (vd /services/website). Bên ngoài: dán full URL https://… (mở tab mới). Để trống = không click được."
+              />
             </div>
           </details>
         ))}

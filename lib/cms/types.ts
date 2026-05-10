@@ -29,6 +29,7 @@ export type ServiceItem = {
   description: I18n
   tag: I18n
   color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan'
+  href?: string // Optional link the card points to (internal or external URL)
 }
 
 export type ServicesContent = {

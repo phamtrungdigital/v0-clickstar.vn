@@ -59,6 +59,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                 tag={t(service.tag.vi, service.tag.en)}
                 iconBgColor={colors.iconBg}
                 tagColor={colors.tag}
+                href={service.href}
               />
             )
           })}
