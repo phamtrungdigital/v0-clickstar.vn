@@ -212,32 +212,29 @@ export default function DashboardServicePage() {
       
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
-            {/* Grid pattern */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+          {/* Gradient orbs */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
           </div>
-
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Content */}
               <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
                   <BarChart3 className="w-4 h-4" />
                   {t('DASHBOARD DỮ LIỆU', 'DATA DASHBOARD')}
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
                   {t('Biến dữ liệu thành', 'Transform data into')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
                     {t('quyết định', 'decisions')}
                   </span>
                 </h1>
 
-                <p className="text-lg lg:text-xl text-slate-300 leading-relaxed mb-8 max-w-xl">
+                <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl">
                   {t(
                     'Dashboard thông minh tích hợp AI, giúp bạn nắm bắt toàn bộ hoạt động kinh doanh trong một màn hình.',
                     'AI-integrated smart dashboard helps you capture all business activities in one screen.'
@@ -247,25 +244,25 @@ export default function DashboardServicePage() {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-6 mb-8">
                   <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-white">50+</div>
-                    <div className="text-sm text-slate-400">{t('Nguồn tích hợp', 'Integrations')}</div>
+                    <div className="text-3xl lg:text-4xl font-bold text-foreground">50+</div>
+                    <div className="text-sm text-muted-foreground">{t('Nguồn tích hợp', 'Integrations')}</div>
                   </div>
                   <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-white">Real-time</div>
-                    <div className="text-sm text-slate-400">{t('Cập nhật', 'Updates')}</div>
+                    <div className="text-3xl lg:text-4xl font-bold text-foreground">Real-time</div>
+                    <div className="text-sm text-muted-foreground">{t('Cập nhật', 'Updates')}</div>
                   </div>
                   <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-white">AI</div>
-                    <div className="text-sm text-slate-400">Claude 4.7</div>
+                    <div className="text-3xl lg:text-4xl font-bold text-foreground">AI</div>
+                    <div className="text-sm text-muted-foreground">Claude 4.7</div>
                   </div>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 shadow-xl">
+                  <Button size="lg" className="bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25">
                     {t('Xem demo', 'View Demo')}
                     <Play className="w-4 h-4 ml-2" />
                   </Button>
-                  <Button size="lg" className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50">
+                  <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary">
                     {t('Đặt lịch tư vấn', 'Book Consultation')}
                     <ArrowRight className="w-4 h-4 ml-2" />
                   </Button>
@@ -274,7 +271,7 @@ export default function DashboardServicePage() {
 
               {/* Dashboard Preview */}
               <div className="relative">
-                <div className="relative bg-slate-800/50 backdrop-blur rounded-2xl border border-slate-700 p-4 shadow-2xl">
+                <div className="relative bg-foreground/95 backdrop-blur rounded-2xl border border-border p-4 shadow-2xl">
                   {/* Browser bar */}
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex gap-1.5">
@@ -282,8 +279,8 @@ export default function DashboardServicePage() {
                       <div className="w-3 h-3 rounded-full bg-yellow-500" />
                       <div className="w-3 h-3 rounded-full bg-green-500" />
                     </div>
-                    <div className="flex-1 bg-slate-700 rounded-full h-6 flex items-center px-3">
-                      <span className="text-xs text-slate-400">dashboard.clickstar.vn</span>
+                    <div className="flex-1 bg-white/10 rounded-full h-6 flex items-center px-3">
+                      <span className="text-xs text-gray-400">dashboard.clickstar.vn</span>
                     </div>
                   </div>
                   
@@ -313,7 +310,7 @@ export default function DashboardServicePage() {
                       </div>
                       <div className="flex items-end gap-1 h-20">
                         {[40, 65, 45, 80, 60, 90, 75].map((h, i) => (
-                          <div key={i} className="flex-1 bg-gradient-to-t from-blue-500 to-purple-500 rounded-t" style={{ height: `${h}%` }} />
+                          <div key={i} className="flex-1 bg-gradient-to-t from-primary to-primary-dark rounded-t" style={{ height: `${h}%` }} />
                         ))}
                       </div>
                     </div>

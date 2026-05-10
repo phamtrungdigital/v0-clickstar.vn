@@ -235,11 +235,16 @@ export default function CRMCDPPage() {
     <>
       <MainNav />
       <main>
-      {/* Hero Section */}
-      <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-emerald-50 via-white to-blue-50 overflow-hidden">
+{/* Hero Section */}
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+          {/* Gradient orbs */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+          </div>
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-200/30 rounded-full blur-3xl" />
+          
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
         </div>
 
@@ -247,14 +252,14 @@ export default function CRMCDPPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-emerald-500/25">
+              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-primary/25">
                 <Users className="w-4 h-4" />
                 CRM & CDP
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
                 {t('Quản trị & Thấu hiểu', 'Manage & Understand')}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-blue-600">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
                   {t('Khách hàng', 'Customers')}
                 </span>
               </h1>
@@ -285,7 +290,7 @@ export default function CRMCDPPage() {
               <div className="flex flex-wrap gap-4">
                 <Link 
                   href="#contact"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-blue-600 text-white font-semibold px-6 py-3 rounded-full hover:shadow-lg hover:shadow-emerald-500/25 transition-all"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-6 py-3 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
                 >
                   {t('Tư vấn triển khai', 'Get Consultation')}
                   <ArrowRight className="w-4 h-4" />
@@ -524,7 +529,7 @@ export default function CRMCDPPage() {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               {t(
-                'Tích hợp đa kênh để chăm sóc khách hàng 24/7 theo kịch bản đã thiết lập',
+                'Tích hợp đa kênh để chăm sóc khách h��ng 24/7 theo kịch bản đã thiết lập',
                 'Multi-channel integration for 24/7 customer care based on preset scenarios'
               )}
             </p>
@@ -786,7 +791,7 @@ export default function CRMCDPPage() {
       </section>
 
       {/* CTA Section */}
-      <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-emerald-600 to-blue-600">
+      <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-primary to-primary-dark">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
             {t('Sẵn sàng triển khai CRM & CDP?', 'Ready to deploy CRM & CDP?')}

@@ -7,9 +7,16 @@ export function HeroSection() {
   const { t } = useLanguage()
   
   return (
-    <section className="relative bg-background-soft overflow-hidden">
+    <section className="relative bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+      {/* Gradient orbs - matching AI integration page */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 right-10 w-32 h-32 bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-2xl" />
+      </div>
+
       {/* Bottom curved edge */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 lg:h-24">
+      <div className="absolute bottom-0 left-0 right-0 h-16 lg:h-24 z-10">
         <svg
           viewBox="0 0 1440 96"
           fill="none"
@@ -24,7 +31,7 @@ export function HeroSection() {
         </svg>
       </div>
 
-      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 xl:py-28">
+      <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 xl:py-28">
         <div className="grid lg:grid-cols-[1fr_0.8fr] gap-12 lg:gap-8 items-center">
           {/* Left Content */}
           <div className="max-w-2xl">
@@ -80,9 +87,7 @@ export function HeroSection() {
           {/* Right Illustration */}
           <div className="relative flex items-center justify-center lg:justify-end">
             <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
-              {/* Background decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-              <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-accent/10 rounded-full blur-2xl" />
+              
               
               {/* ClickStar Data Flow SVG */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
