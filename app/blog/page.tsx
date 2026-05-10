@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight, Calendar, Clock, User, Search, TrendingUp, Bookmark, Eye } from 'lucide-react'
+import { ArrowRight, Clock, Search, Eye, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 import { useLanguage, type Language } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
@@ -21,7 +21,6 @@ interface BlogPost {
   readTime: string
   views?: number
   featured?: boolean
-  trending?: boolean
 }
 
 const blogPostsData: Record<Language, BlogPost[]> = {
@@ -38,8 +37,7 @@ const blogPostsData: Record<Language, BlogPost[]> = {
       date: '15/01/2024',
       readTime: '8 phút',
       views: 2450,
-      featured: true,
-      trending: true
+      featured: true
     },
     {
       id: 2,
@@ -66,8 +64,7 @@ const blogPostsData: Record<Language, BlogPost[]> = {
       authorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       date: '08/01/2024',
       readTime: '12 phút',
-      views: 1340,
-      trending: true
+      views: 1340
     },
     {
       id: 4,
@@ -148,8 +145,7 @@ const blogPostsData: Record<Language, BlogPost[]> = {
       date: 'Jan 15, 2024',
       readTime: '8 min',
       views: 2450,
-      featured: true,
-      trending: true
+      featured: true
     },
     {
       id: 2,
@@ -176,8 +172,7 @@ const blogPostsData: Record<Language, BlogPost[]> = {
       authorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
       date: 'Jan 08, 2024',
       readTime: '12 min',
-      views: 1340,
-      trending: true
+      views: 1340
     },
     {
       id: 4,
@@ -247,352 +242,211 @@ const blogPostsData: Record<Language, BlogPost[]> = {
   ]
 }
 
-const categoriesData: Record<Language, { name: string; count: number }[]> = {
-  vi: [
-    { name: 'Tất cả', count: 8 },
-    { name: 'AI & Marketing', count: 1 },
-    { name: 'Data Analytics', count: 1 },
-    { name: 'CRM & CDP', count: 1 },
-    { name: 'Website', count: 1 },
-    { name: 'AI Automation', count: 2 },
-    { name: 'Digital Marketing', count: 2 }
-  ],
-  en: [
-    { name: 'All', count: 8 },
-    { name: 'AI & Marketing', count: 1 },
-    { name: 'Data Analytics', count: 1 },
-    { name: 'CRM & CDP', count: 1 },
-    { name: 'Website', count: 1 },
-    { name: 'AI Automation', count: 2 },
-    { name: 'Digital Marketing', count: 2 }
-  ]
+const categoriesData: Record<Language, string[]> = {
+  vi: ['Tất cả', 'AI & Marketing', 'Data Analytics', 'CRM & CDP', 'Website', 'AI Automation', 'Digital Marketing'],
+  en: ['All', 'AI & Marketing', 'Data Analytics', 'CRM & CDP', 'Website', 'AI Automation', 'Digital Marketing']
 }
 
 export default function BlogPage() {
   const { language, t } = useLanguage()
   const blogPosts = blogPostsData[language]
   const categories = categoriesData[language]
-  const [selectedCategory, setSelectedCategory] = useState(categories[0].name)
+  const [selectedCategory, setSelectedCategory] = useState(categories[0])
   const [searchQuery, setSearchQuery] = useState('')
 
-  const featuredPost = blogPosts.find(post => post.featured)
-  const trendingPosts = blogPosts.filter(post => post.trending).slice(0, 3)
-  const latestPosts = blogPosts.filter(post => !post.featured).slice(0, 4)
+  const featuredPosts = blogPosts.filter(post => post.featured).slice(0, 2)
   
   const filteredPosts = blogPosts.filter(post => {
-    const matchesCategory = selectedCategory === categories[0].name || post.category === selectedCategory
+    const matchesCategory = selectedCategory === categories[0] || post.category === selectedCategory
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           post.excerpt.toLowerCase().includes(searchQuery.toLowerCase())
     return matchesCategory && matchesSearch
   })
 
+  const regularPosts = filteredPosts.filter(post => !post.featured)
+
   return (
     <>
       <MainNav />
       <main className="min-h-screen bg-background">
-        {/* Hero Section - Featured Post */}
-        <section className="pt-8 pb-12 lg:pt-12 lg:pb-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Breadcrumb & Search Row */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-              <div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-foreground mb-2">
-                  {t('Tin tức & Bài viết', 'News & Articles')}
-                </h1>
-                <p className="text-muted-foreground">
-                  {t('Cập nhật xu hướng và kiến thức chuyển đổi số', 'Stay updated with digital transformation trends')}
-                </p>
+        {/* Hero Section */}
+        <section className="relative pt-8 pb-12 lg:pt-12 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+          {/* Gradient orbs */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[300px] h-[300px] bg-gradient-to-br from-primary-dark/10 to-primary/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Header */}
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-medium text-sm px-4 py-2 rounded-full mb-4">
+                <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+                Blog
               </div>
-              <div className="relative w-full sm:w-80">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+                {t('Tin tức & Bài viết', 'News & Articles')}
+              </h1>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                {t('Cập nhật xu hướng công nghệ, AI và chuyển đổi số mới nhất', 'Stay updated with the latest technology, AI and digital transformation trends')}
+              </p>
+            </div>
+
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto mb-10">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                 <input
                   type="text"
-                  placeholder={t('Tìm kiếm...', 'Search...')}
+                  placeholder={t('Tìm kiếm bài viết...', 'Search articles...')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-full border border-border bg-white text-foreground shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
                 />
               </div>
             </div>
 
-            {/* Main Featured + Sidebar Layout */}
-            {!searchQuery && selectedCategory === categories[0].name && featuredPost && (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                {/* Main Featured Post */}
-                <div className="lg:col-span-2">
-                  <Link href={`/blog/${featuredPost.slug}`} className="group block">
-                    <div className="relative aspect-[16/9] rounded-2xl overflow-hidden">
+            {/* Featured Posts - 2 column */}
+            {!searchQuery && selectedCategory === categories[0] && featuredPosts.length > 0 && (
+              <div className="grid md:grid-cols-2 gap-6">
+                {featuredPosts.map((post) => (
+                  <Link 
+                    key={post.id} 
+                    href={`/blog/${post.slug}`} 
+                    className="group relative rounded-2xl overflow-hidden bg-foreground"
+                  >
+                    <div className="aspect-[16/10] relative">
                       <Image
-                        src={featuredPost.image}
-                        alt={featuredPost.title}
+                        src={post.image}
+                        alt={post.title}
                         fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                         priority
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                      
-                      {/* Content Overlay */}
-                      <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                        <div className="flex items-center gap-3 mb-4">
-                          <span className="bg-primary text-primary-foreground text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
-                            {t('Nổi bật', 'Featured')}
-                          </span>
-                          <span className="bg-white/20 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full">
-                            {featuredPost.category}
-                          </span>
-                        </div>
-                        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight group-hover:text-primary-foreground/90 transition-colors">
-                          {featuredPost.title}
-                        </h2>
-                        <p className="text-white/80 text-sm sm:text-base mb-6 line-clamp-2 max-w-2xl">
-                          {featuredPost.excerpt}
-                        </p>
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-3">
-                            <Image
-                              src={featuredPost.authorImage}
-                              alt={featuredPost.author}
-                              width={40}
-                              height={40}
-                              className="rounded-full border-2 border-white/30"
-                            />
-                            <div>
-                              <p className="text-white font-medium text-sm">{featuredPost.author}</p>
-                              <p className="text-white/60 text-xs">{featuredPost.date}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-4 text-white/60 text-xs">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3.5 h-3.5" />
-                              {featuredPost.readTime}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3.5 h-3.5" />
-                              {featuredPost.views?.toLocaleString()}
-                            </span>
-                          </div>
-                        </div>
+                    </div>
+                    <div className="absolute bottom-0 left-0 right-0 p-5 lg:p-6">
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="bg-primary text-white text-xs font-semibold px-2.5 py-1 rounded-full">
+                          {post.category}
+                        </span>
+                        <span className="text-white/70 text-xs flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          {post.readTime}
+                        </span>
+                      </div>
+                      <h2 className="text-lg lg:text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                        {post.title}
+                      </h2>
+                      <div className="flex items-center gap-3">
+                        <Image
+                          src={post.authorImage}
+                          alt={post.author}
+                          width={28}
+                          height={28}
+                          className="rounded-full border border-white/30"
+                        />
+                        <span className="text-white/80 text-sm">{post.author}</span>
+                        <span className="text-white/50 text-xs">{post.date}</span>
                       </div>
                     </div>
                   </Link>
-                </div>
-
-                {/* Sidebar - Trending */}
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <TrendingUp className="w-5 h-5 text-primary" />
-                    <h3 className="font-bold text-foreground">{t('Xu hướng', 'Trending')}</h3>
-                  </div>
-                  {trendingPosts.map((post, index) => (
-                    <Link
-                      key={post.id}
-                      href={`/blog/${post.slug}`}
-                      className="group flex gap-4 p-3 rounded-xl hover:bg-secondary/50 transition-colors"
-                    >
-                      <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm flex items-center justify-center">
-                        {String(index + 1).padStart(2, '0')}
-                      </span>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-foreground text-sm line-clamp-2 group-hover:text-primary transition-colors mb-1">
-                          {post.title}
-                        </h4>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <span>{post.category}</span>
-                          <span>•</span>
-                          <span className="flex items-center gap-1">
-                            <Eye className="w-3 h-3" />
-                            {post.views?.toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-
-                  {/* Quick Links */}
-                  <div className="mt-6 pt-6 border-t border-border">
-                    <h3 className="font-bold text-foreground mb-4">{t('Danh mục', 'Categories')}</h3>
-                    <div className="space-y-2">
-                      {categories.slice(1).map((cat) => (
-                        <button
-                          key={cat.name}
-                          onClick={() => setSelectedCategory(cat.name)}
-                          className="flex items-center justify-between w-full px-3 py-2 rounded-lg text-sm text-left hover:bg-secondary/50 transition-colors group"
-                        >
-                          <span className="text-foreground group-hover:text-primary transition-colors">{cat.name}</span>
-                          <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">{cat.count}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             )}
           </div>
         </section>
 
-        {/* Latest Posts Section */}
-        {!searchQuery && selectedCategory === categories[0].name && (
-          <section className="py-12 bg-secondary/30">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-foreground">{t('Bài viết mới nhất', 'Latest Articles')}</h2>
-                <Link href="#all-posts" className="text-primary font-medium text-sm hover:underline flex items-center gap-1">
-                  {t('Xem tất cả', 'View all')}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {latestPosts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="group bg-background rounded-xl border border-border overflow-hidden hover:border-primary/30 hover:shadow-lg transition-all duration-300"
-                  >
-                    <div className="aspect-[16/10] relative overflow-hidden">
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute top-3 left-3">
-                        <span className="bg-white/90 backdrop-blur-sm text-foreground text-xs font-medium px-2.5 py-1 rounded-full">
-                          {post.category}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-foreground line-clamp-2 mb-2 group-hover:text-primary transition-colors">
-                        {post.title}
-                      </h3>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          {post.readTime}
-                        </span>
-                        <span>{post.date}</span>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* All Posts Section */}
-        <section id="all-posts" className="py-12 lg:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Category Filter - Horizontal Scroll */}
-            <div className="mb-8 -mx-4 px-4 overflow-x-auto scrollbar-hide">
-              <div className="flex gap-2 min-w-max pb-2">
-                {categories.map((cat) => (
-                  <button
-                    key={cat.name}
-                    onClick={() => setSelectedCategory(cat.name)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-                      selectedCategory === cat.name
-                        ? 'bg-foreground text-background'
-                        : 'bg-secondary text-foreground hover:bg-secondary/80'
-                    }`}
-                  >
-                    {cat.name}
-                    <span className="ml-1.5 text-xs opacity-60">({cat.count})</span>
-                  </button>
-                ))}
-              </div>
+        {/* Category Filter & Posts */}
+        <section className="py-10 lg:py-14">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Category Pills */}
+            <div className="flex flex-wrap gap-2 mb-8">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    selectedCategory === cat
+                      ? 'bg-foreground text-background'
+                      : 'bg-secondary text-foreground hover:bg-secondary/80'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
 
             {/* Search Results Info */}
             {searchQuery && (
-              <p className="text-muted-foreground mb-6">
+              <p className="text-muted-foreground mb-6 text-sm">
                 {t(`Tìm thấy ${filteredPosts.length} kết quả cho "${searchQuery}"`, `Found ${filteredPosts.length} results for "${searchQuery}"`)}
               </p>
             )}
 
-            {/* Posts Grid - 3 columns */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {filteredPosts.map((post) => (
-                <article
+            {/* Posts Grid - Compact cards */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {(searchQuery || selectedCategory !== categories[0] ? filteredPosts : regularPosts).map((post) => (
+                <Link
                   key={post.id}
-                  className="group bg-background rounded-2xl border border-border overflow-hidden hover:border-primary/30 hover:shadow-xl transition-all duration-300"
+                  href={`/blog/${post.slug}`}
+                  className="group bg-white rounded-xl border border-border overflow-hidden hover:shadow-lg hover:border-primary/20 transition-all"
                 >
-                  <Link href={`/blog/${post.slug}`} className="block">
-                    <div className="aspect-[16/10] relative overflow-hidden">
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      
-                      {/* Bookmark Button */}
-                      <button 
-                        className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-white"
-                        onClick={(e) => { e.preventDefault(); }}
-                      >
-                        <Bookmark className="w-4 h-4 text-foreground" />
-                      </button>
+                  <div className="aspect-[16/9] relative overflow-hidden">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute top-3 left-3">
+                      <span className="bg-white/95 backdrop-blur-sm text-foreground text-xs font-medium px-2.5 py-1 rounded-full shadow-sm">
+                        {post.category}
+                      </span>
                     </div>
-                    
-                    <div className="p-5">
-                      {/* Meta */}
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className="text-xs font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
-                          {post.category}
-                        </span>
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-foreground line-clamp-2 mb-2 group-hover:text-primary transition-colors leading-snug">
+                      {post.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                      {post.excerpt}
+                    </p>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <Image
+                          src={post.authorImage}
+                          alt={post.author}
+                          width={20}
+                          height={20}
+                          className="rounded-full"
+                        />
+                        <span>{post.author}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" />
                           {post.readTime}
                         </span>
-                      </div>
-                      
-                      {/* Title */}
-                      <h3 className="text-lg font-bold text-foreground mb-2 line-clamp-2 group-hover:text-primary transition-colors leading-snug">
-                        {post.title}
-                      </h3>
-                      
-                      {/* Excerpt */}
-                      <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                        {post.excerpt}
-                      </p>
-                      
-                      {/* Author & Stats */}
-                      <div className="flex items-center justify-between pt-4 border-t border-border">
-                        <div className="flex items-center gap-2.5">
-                          <Image
-                            src={post.authorImage}
-                            alt={post.author}
-                            width={28}
-                            height={28}
-                            className="rounded-full"
-                          />
-                          <span className="text-sm text-foreground font-medium">{post.author}</span>
-                        </div>
-                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <span>{post.date}</span>
-                          {post.views && (
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              {post.views >= 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
-                            </span>
-                          )}
-                        </div>
+                        {post.views && (
+                          <span className="flex items-center gap-1">
+                            <Eye className="w-3 h-3" />
+                            {post.views >= 1000 ? `${(post.views / 1000).toFixed(1)}k` : post.views}
+                          </span>
+                        )}
                       </div>
                     </div>
-                  </Link>
-                </article>
+                  </div>
+                </Link>
               ))}
             </div>
 
             {filteredPosts.length === 0 && (
               <div className="text-center py-16">
-                <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-8 h-8 text-muted-foreground" />
+                <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-6 h-6 text-muted-foreground" />
                 </div>
-                <p className="text-foreground font-medium mb-2">
+                <p className="text-foreground font-medium mb-1">
                   {t('Không tìm thấy bài viết', 'No articles found')}
                 </p>
                 <p className="text-muted-foreground text-sm">
@@ -603,48 +457,38 @@ export default function BlogPage() {
 
             {/* Load More */}
             {filteredPosts.length >= 6 && (
-              <div className="text-center mt-12">
-                <button className="inline-flex items-center gap-2 border-2 border-foreground text-foreground font-semibold px-8 py-3 rounded-full hover:bg-foreground hover:text-background transition-all duration-200 group">
-                  {t('Tải thêm bài viết', 'Load more articles')}
-                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
+              <div className="text-center mt-10">
+                <button className="inline-flex items-center gap-2 bg-foreground text-background font-medium px-6 py-3 rounded-full hover:bg-foreground/90 transition-all group">
+                  {t('Xem thêm bài viết', 'Load more articles')}
+                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </button>
               </div>
             )}
           </div>
         </section>
 
-        {/* Newsletter CTA */}
-        <section className="py-16 lg:py-20 bg-foreground text-background">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 font-medium text-sm px-4 py-2 rounded-full mb-6">
-              <span className="w-2 h-2 bg-primary rounded-full" />
-              {t('Cập nhật mỗi tuần', 'Weekly updates')}
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              {t('Đăng ký nhận bài viết mới', 'Subscribe to new articles')}
+        {/* Newsletter - Compact */}
+        <section className="py-12 lg:py-16 bg-foreground">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+              {t('Đăng ký nhận tin', 'Subscribe to newsletter')}
             </h2>
-            <p className="text-white/70 mb-8 max-w-xl mx-auto">
-              {t(
-                'Nhận thông báo về các bài viết mới nhất về chuyển đổi số, AI và công nghệ mỗi tuần.',
-                'Get weekly notifications about the latest articles on digital transformation, AI and technology.'
-              )}
+            <p className="text-gray-400 mb-6 text-sm">
+              {t('Nhận bài viết mới về AI và chuyển đổi số mỗi tuần', 'Get weekly updates on AI and digital transformation')}
             </p>
-            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <form className="flex gap-3 max-w-md mx-auto">
               <input
                 type="email"
-                placeholder={t('Nhập email của bạn', 'Enter your email')}
-                className="flex-1 px-5 py-3.5 rounded-full bg-white text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                placeholder={t('Email của bạn', 'Your email')}
+                className="flex-1 px-4 py-3 rounded-full bg-white text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button
                 type="submit"
-                className="bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-6 py-3.5 rounded-full transition-all duration-200 whitespace-nowrap"
+                className="bg-gradient-to-r from-primary to-primary-dark text-white font-medium px-6 py-3 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all whitespace-nowrap text-sm"
               >
-                {t('Đăng ký ngay', 'Subscribe now')}
+                {t('Đăng ký', 'Subscribe')}
               </button>
             </form>
-            <p className="text-white/50 text-xs mt-4">
-              {t('Không spam. Hủy đăng ký bất cứ lúc nào.', 'No spam. Unsubscribe anytime.')}
-            </p>
           </div>
         </section>
       </main>
