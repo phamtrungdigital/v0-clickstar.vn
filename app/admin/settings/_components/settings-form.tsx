@@ -6,8 +6,17 @@ import type { SiteSettings } from '@/lib/cms/settings'
 import { saveSettings, type SettingsUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin/pages/[slug]/edit/_components/i18n-input'
 import { ImagePicker } from '@/app/admin/pages/[slug]/edit/_components/image-picker'
+import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
 
 export function SettingsForm({ initial }: { initial: SiteSettings }) {
+  return (
+    <EditLangProvider initial="vi">
+      <SettingsFormInner initial={initial} />
+    </EditLangProvider>
+  )
+}
+
+function SettingsFormInner({ initial }: { initial: SiteSettings }) {
   const [draft, setDraft] = useState<SettingsUpdate>(stripMeta(initial))
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
@@ -39,6 +48,8 @@ export function SettingsForm({ initial }: { initial: SiteSettings }) {
           <p className="text-[11px] text-slate-500">Thông tin chung của website</p>
         </div>
         <div className="flex items-center gap-2">
+          <LangSwitcher />
+
           {status === 'saved' && (
             <span className="flex items-center gap-1 text-xs text-emerald-600">
               <CheckCircle2 className="w-3.5 h-3.5" />

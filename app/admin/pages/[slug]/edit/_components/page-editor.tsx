@@ -33,6 +33,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import type { Page, Section } from '@/lib/cms/types'
+import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
 import { savePage } from '../actions'
 import { HeroForm } from './hero-form'
 import { ServicesForm } from './services-form'
@@ -166,6 +167,14 @@ function SortableSection({
 }
 
 export function PageEditor({ page }: { page: Page }) {
+  return (
+    <EditLangProvider initial="vi">
+      <PageEditorInner page={page} />
+    </EditLangProvider>
+  )
+}
+
+function PageEditorInner({ page }: { page: Page }) {
   const [sections, setSections] = useState<Section[]>(page.sections)
   const [seo, setSeo] = useState<SeoFields>({
     seo_title: parseI18nOrEmpty(page.seo_title),
@@ -284,6 +293,8 @@ export function PageEditor({ page }: { page: Page }) {
         </div>
 
         <div className="flex items-center gap-2">
+          <LangSwitcher />
+
           {status === 'saved' && (
             <span className="flex items-center gap-1 text-xs text-emerald-600">
               <CheckCircle2 className="w-3.5 h-3.5" />

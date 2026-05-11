@@ -1,6 +1,7 @@
 'use client'
 
 import type { I18n } from '@/lib/cms/types'
+import { useEditLang } from '@/lib/cms/edit-lang-context'
 
 type Props = {
   label: string
@@ -11,52 +12,36 @@ type Props = {
 }
 
 export function I18nInput({ label, value, onChange, multiline, rows = 3 }: Props) {
+  const { lang } = useEditLang()
+  const current = value?.[lang] ?? ''
+  const flag = lang === 'vi' ? '🇻🇳' : '🇬🇧'
+
   const inputClass =
     'w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary'
 
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-        {label}
+      <label className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+        <span>{label}</span>
+        <span className="text-[10px] text-slate-400 font-normal">
+          {flag} {lang.toUpperCase()}
+        </span>
       </label>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-        <div>
-          <span className="text-[10px] uppercase font-semibold text-slate-400 mb-1 block">VI 🇻🇳</span>
-          {multiline ? (
-            <textarea
-              value={value.vi}
-              onChange={(e) => onChange({ ...value, vi: e.target.value })}
-              rows={rows}
-              className={inputClass}
-            />
-          ) : (
-            <input
-              type="text"
-              value={value.vi}
-              onChange={(e) => onChange({ ...value, vi: e.target.value })}
-              className={inputClass}
-            />
-          )}
-        </div>
-        <div>
-          <span className="text-[10px] uppercase font-semibold text-slate-400 mb-1 block">EN 🇬🇧</span>
-          {multiline ? (
-            <textarea
-              value={value.en}
-              onChange={(e) => onChange({ ...value, en: e.target.value })}
-              rows={rows}
-              className={inputClass}
-            />
-          ) : (
-            <input
-              type="text"
-              value={value.en}
-              onChange={(e) => onChange({ ...value, en: e.target.value })}
-              className={inputClass}
-            />
-          )}
-        </div>
-      </div>
+      {multiline ? (
+        <textarea
+          value={current}
+          onChange={(e) => onChange({ ...value, [lang]: e.target.value })}
+          rows={rows}
+          className={inputClass}
+        />
+      ) : (
+        <input
+          type="text"
+          value={current}
+          onChange={(e) => onChange({ ...value, [lang]: e.target.value })}
+          className={inputClass}
+        />
+      )}
     </div>
   )
 }

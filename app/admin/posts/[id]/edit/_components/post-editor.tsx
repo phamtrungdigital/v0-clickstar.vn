@@ -7,10 +7,19 @@ import type { Post } from '@/lib/cms/posts'
 import { savePost, deletePost, type PostUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin/pages/[slug]/edit/_components/i18n-input'
 import { ImagePicker } from '@/app/admin/pages/[slug]/edit/_components/image-picker'
+import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
 export function PostEditor({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
+  return (
+    <EditLangProvider initial="vi">
+      <PostEditorInner post={post} mode={mode} />
+    </EditLangProvider>
+  )
+}
+
+function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
   const isNew = mode === 'new'
 
   const [draft, setDraft] = useState<PostUpdate>({
@@ -69,6 +78,8 @@ export function PostEditor({ post, mode }: { post: Post | null; mode: 'new' | 'e
         </div>
 
         <div className="flex items-center gap-2">
+          <LangSwitcher />
+
           {status === 'saved' && (
             <span className="flex items-center gap-1 text-xs text-emerald-600">
               <CheckCircle2 className="w-3.5 h-3.5" />
