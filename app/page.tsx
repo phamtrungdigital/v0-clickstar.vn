@@ -25,6 +25,12 @@ export default async function Home() {
   const hero = getSection(page, 'hero')
   const services = getSection(page, 'services')
   const about = getSection(page, 'about')
+  const stats = getSection(page, 'stats')
+  const caseStudies = getSection(page, 'case_studies')
+  const team = getSection(page, 'team')
+  const testimonials = getSection(page, 'testimonials')
+  const faq = getSection(page, 'faq')
+  const blog = getSection(page, 'blog')
   const cta = getSection(page, 'cta')
 
   return (
@@ -35,15 +41,12 @@ export default async function Home() {
       {hero && <HeroSection content={hero.content} />}
       {services && <ServicesSection content={services.content} />}
       {about && <AboutSection content={about.content} />}
-
-      {/* Sections still hardcoded — will migrate in Phase 2A.2 */}
-      <StatsSection />
-      <CaseStudiesSection />
-      <TeamSection />
-      <TestimonialsSection />
-      <FAQSection />
-      <BlogSection />
-
+      {stats && <StatsSection content={stats.content} />}
+      {caseStudies && <CaseStudiesSection content={caseStudies.content} />}
+      {team && <TeamSection content={team.content} />}
+      {testimonials && <TestimonialsSection content={testimonials.content} />}
+      {faq && <FAQSection content={faq.content} />}
+      {blog && <BlogSection content={blog.content} />}
       {cta && <CTASection content={cta.content} />}
 
       <Footer />

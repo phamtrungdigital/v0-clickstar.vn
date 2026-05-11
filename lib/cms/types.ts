@@ -1,14 +1,21 @@
 // Bilingual string
 export type I18n = { vi: string; en: string }
 
-// Section types we currently support in CMS.
-// Other section types still render hardcoded — will migrate later.
-export type SectionType = 'hero' | 'services' | 'about' | 'cta'
+export type SectionType =
+  | 'hero'
+  | 'services'
+  | 'about'
+  | 'stats'
+  | 'case_studies'
+  | 'team'
+  | 'testimonials'
+  | 'faq'
+  | 'blog'
+  | 'cta'
 
+// ---------- Hero ----------
 export type HeroContent = {
   badge: I18n
-  // Heading is segmented for highlights:
-  // <lead> <span class="primary">{number}</span> <middle> <span class="primary">{highlight}</span> <tail>
   heading_lead: I18n
   heading_number: string
   heading_middle: I18n
@@ -23,18 +30,18 @@ export type HeroContent = {
   image_alt: I18n
 }
 
+// ---------- Services ----------
 export type ServiceItem = {
-  icon: string // lucide-react icon name (e.g. 'Megaphone', 'Globe')
+  icon: string
   title: I18n
   description: I18n
   tag: I18n
   color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan'
-  href?: string // Optional link the card points to (internal or external URL)
+  href?: string
 }
 
 export type ServicesContent = {
   eyebrow: I18n
-  // <lead> <span class="primary">{highlight}</span>
   heading_lead: I18n
   heading_highlight: I18n
   description: I18n
@@ -49,9 +56,9 @@ export type ServicesContent = {
   pipeline_image_alt: I18n
 }
 
+// ---------- About ----------
 export type AboutContent = {
   eyebrow: I18n
-  // <lead> <span class="primary">{highlight}</span>
   heading_lead: I18n
   heading_highlight: I18n
   description: I18n
@@ -68,9 +75,115 @@ export type AboutContent = {
   video_duration: string
 }
 
+// ---------- Stats ----------
+export type StatItem = {
+  value: number
+  suffix: string
+  label: I18n
+}
+
+export type StatsContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  items: StatItem[]
+}
+
+// ---------- Case Studies ----------
+export type CaseStudyItem = {
+  title: I18n
+  image: string
+  tags: string[]
+  category: I18n
+  href?: string
+}
+
+export type CaseStudiesContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  view_all_label: I18n
+  view_all_href: string
+  items: CaseStudyItem[]
+}
+
+// ---------- Team ----------
+export type TeamMemberItem = {
+  name: string
+  role: I18n
+  image: string
+  facebook?: string
+  twitter?: string
+  linkedin?: string
+  instagram?: string
+}
+
+export type TeamContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  cta_label: I18n
+  cta_href: string
+  members: TeamMemberItem[]
+}
+
+// ---------- Testimonials ----------
+export type TestimonialItem = {
+  rating: number // 1-5
+  quote: I18n
+  name: string
+  avatar: string
+  source: I18n
+}
+
+export type TestimonialsContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  subtitle: I18n
+  items: TestimonialItem[]
+}
+
+// ---------- FAQ ----------
+export type FaqItem = {
+  question: I18n
+  answer: I18n
+}
+
+export type FaqContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  view_more_label: I18n
+  view_more_href: string
+  items: FaqItem[]
+}
+
+// ---------- Blog ----------
+export type BlogPostItem = {
+  title: I18n
+  image: string
+  tags: string[]
+  date: I18n
+  slug: string
+}
+
+export type BlogContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  subtitle: I18n
+  read_more_label: I18n
+  view_all_label: I18n
+  view_all_href: string
+  posts: BlogPostItem[]
+}
+
+// ---------- CTA ----------
 export type CtaContent = {
   eyebrow: I18n
-  // <lead> <span class="primary">{highlight}</span>
   heading_lead: I18n
   heading_highlight: I18n
   cta_label: I18n
@@ -81,11 +194,17 @@ export type CtaContent = {
   partner_names: string[]
 }
 
-// Discriminated union of section data
+// ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
   | { id: string; type: 'services'; enabled: boolean; content: ServicesContent }
   | { id: string; type: 'about'; enabled: boolean; content: AboutContent }
+  | { id: string; type: 'stats'; enabled: boolean; content: StatsContent }
+  | { id: string; type: 'case_studies'; enabled: boolean; content: CaseStudiesContent }
+  | { id: string; type: 'team'; enabled: boolean; content: TeamContent }
+  | { id: string; type: 'testimonials'; enabled: boolean; content: TestimonialsContent }
+  | { id: string; type: 'faq'; enabled: boolean; content: FaqContent }
+  | { id: string; type: 'blog'; enabled: boolean; content: BlogContent }
   | { id: string; type: 'cta'; enabled: boolean; content: CtaContent }
 
 export type Page = {
@@ -102,7 +221,6 @@ export type Page = {
   updated_at: string
 }
 
-// Convenience: typed lookup for a specific section type within a Page
 export function getSection<T extends SectionType>(
   page: Page | null,
   type: T

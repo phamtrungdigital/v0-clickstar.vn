@@ -18,11 +18,23 @@ import { HeroForm } from './hero-form'
 import { ServicesForm } from './services-form'
 import { AboutForm } from './about-form'
 import { CtaForm } from './cta-form'
+import { StatsForm } from './stats-form'
+import { CaseStudiesForm } from './case-studies-form'
+import { TeamForm } from './team-form'
+import { TestimonialsForm } from './testimonials-form'
+import { FaqForm } from './faq-form'
+import { BlogForm } from './blog-form'
 
 const SECTION_LABELS: Record<string, string> = {
   hero: 'Hero (banner đầu)',
   services: 'Dịch vụ',
   about: 'Giới thiệu',
+  stats: 'Chỉ số (counter)',
+  case_studies: 'Dự án tiêu biểu',
+  team: 'Đội ngũ',
+  testimonials: 'Đánh giá khách hàng',
+  faq: 'FAQ',
+  blog: 'Tin tức / Blog',
   cta: 'Call-to-action (cuối)',
 }
 
@@ -236,6 +248,42 @@ export function PageEditor({ page }: { page: Page }) {
                 )}
                 {section.type === 'about' && (
                   <AboutForm
+                    content={section.content}
+                    onChange={(c) => updateSection(section.id, c)}
+                  />
+                )}
+                {section.type === 'stats' && (
+                  <StatsForm
+                    content={section.content}
+                    onChange={(c) => updateSection(section.id, c)}
+                  />
+                )}
+                {section.type === 'case_studies' && (
+                  <CaseStudiesForm
+                    content={section.content}
+                    onChange={(c) => updateSection(section.id, c)}
+                  />
+                )}
+                {section.type === 'team' && (
+                  <TeamForm
+                    content={section.content}
+                    onChange={(c) => updateSection(section.id, c)}
+                  />
+                )}
+                {section.type === 'testimonials' && (
+                  <TestimonialsForm
+                    content={section.content}
+                    onChange={(c) => updateSection(section.id, c)}
+                  />
+                )}
+                {section.type === 'faq' && (
+                  <FaqForm
+                    content={section.content}
+                    onChange={(c) => updateSection(section.id, c)}
+                  />
+                )}
+                {section.type === 'blog' && (
+                  <BlogForm
                     content={section.content}
                     onChange={(c) => updateSection(section.id, c)}
                   />
