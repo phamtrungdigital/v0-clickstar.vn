@@ -2,7 +2,15 @@
 
 import { useState, useTransition } from 'react'
 import { Sparkles, Loader2, X, Wand2 } from 'lucide-react'
-import { generateBlogPost, type GeneratedPost } from '../ai-actions'
+
+export type GeneratedPost = {
+  title_vi: string
+  title_en: string
+  excerpt_vi: string
+  excerpt_en: string
+  content_vi: string
+  content_en: string
+}
 
 export function AiWholePost({
   onApply,
@@ -20,9 +28,18 @@ export function AiWholePost({
     startTransition(async () => {
       setError(null)
       setPreview(null)
-      const result = await generateBlogPost(topic)
-      if (result.error) setError(result.error)
-      else if (result.post) setPreview(result.post)
+      try {
+        const res = await fetch('/api/admin/ai/blog', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ topic }),
+        })
+        const json = (await res.json()) as { post?: GeneratedPost; error?: string }
+        if (json.error) setError(json.error)
+        else if (json.post) setPreview(json.post)
+      } catch (err: any) {
+        setError(err?.message || 'Network error')
+      }
     })
   }
 

@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from 'react'
 import { ImagePlus, Loader2, X, Sparkles } from 'lucide-react'
-import { generatePostCoverImage } from '../ai-actions'
 
 export function AiCoverImage({
   onApply,
@@ -23,9 +22,18 @@ export function AiCoverImage({
     startTransition(async () => {
       setError(null)
       setPreviewUrl(null)
-      const result = await generatePostCoverImage(finalPrompt)
-      if (result.error) setError(result.error)
-      else if (result.url) setPreviewUrl(result.url)
+      try {
+        const res = await fetch('/api/admin/ai/image', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ prompt: finalPrompt }),
+        })
+        const json = (await res.json()) as { url?: string; error?: string }
+        if (json.error) setError(json.error)
+        else if (json.url) setPreviewUrl(json.url)
+      } catch (err: any) {
+        setError(err?.message || 'Network error')
+      }
     })
   }
 

@@ -1,5 +1,7 @@
 {
   "functions": {
+    "app/api/admin/ai/blog/route.ts": { "maxDuration": 60 },
+    "app/api/admin/ai/image/route.ts": { "maxDuration": 60 },
     "app/admin/posts/new/page.tsx": { "maxDuration": 60 },
     "app/admin/posts/[id]/edit/page.tsx": { "maxDuration": 60 },
     "app/admin/pages/[slug]/edit/page.tsx": { "maxDuration": 60 },
