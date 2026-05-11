@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import Link from 'next/link'
 import {
   ExternalLink,
@@ -11,7 +11,27 @@ import {
   RefreshCw,
   PanelRightClose,
   PanelRightOpen,
+  GripVertical,
+  Eye,
+  EyeOff,
 } from 'lucide-react'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import type { Page, Section } from '@/lib/cms/types'
 import { savePage } from '../actions'
 import { HeroForm } from './hero-form'
@@ -38,44 +58,134 @@ const SECTION_LABELS: Record<string, string> = {
   cta: 'Call-to-action (cuối)',
 }
 
+function renderForm(section: Section, onChange: (c: any) => void) {
+  switch (section.type) {
+    case 'hero':
+      return <HeroForm content={section.content} onChange={onChange} />
+    case 'services':
+      return <ServicesForm content={section.content} onChange={onChange} />
+    case 'about':
+      return <AboutForm content={section.content} onChange={onChange} />
+    case 'stats':
+      return <StatsForm content={section.content} onChange={onChange} />
+    case 'case_studies':
+      return <CaseStudiesForm content={section.content} onChange={onChange} />
+    case 'team':
+      return <TeamForm content={section.content} onChange={onChange} />
+    case 'testimonials':
+      return <TestimonialsForm content={section.content} onChange={onChange} />
+    case 'faq':
+      return <FaqForm content={section.content} onChange={onChange} />
+    case 'blog':
+      return <BlogForm content={section.content} onChange={onChange} />
+    case 'cta':
+      return <CtaForm content={section.content} onChange={onChange} />
+  }
+}
+
+function SortableSection({
+  section,
+  onContentChange,
+  onToggleEnabled,
+}: {
+  section: Section
+  onContentChange: (next: any) => void
+  onToggleEnabled: () => void
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: section.id,
+  })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.4 : 1,
+    zIndex: isDragging ? 10 : 'auto',
+  }
+
+  return (
+    <details
+      ref={setNodeRef}
+      style={style}
+      open={section.enabled}
+      data-section-type={section.type}
+      className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 scroll-mt-32"
+    >
+      <summary className="flex items-center justify-between px-3 py-2.5 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          {/* Drag handle */}
+          <button
+            {...attributes}
+            {...listeners}
+            onClick={(e) => e.preventDefault()}
+            className="p-1 -ml-1 cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            title="Kéo để sắp xếp"
+            aria-label="Drag to reorder"
+          >
+            <GripVertical className="w-4 h-4" />
+          </button>
+
+          <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+          <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">
+            {SECTION_LABELS[section.type] || section.type}
+          </span>
+          <span className="text-[10px] uppercase font-mono text-slate-400 flex-shrink-0">
+            {section.type}
+          </span>
+        </div>
+
+        {/* Toggle enabled */}
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            onToggleEnabled()
+          }}
+          className={`flex items-center gap-1 text-[10px] font-medium px-2 py-1 rounded-full transition-colors ${
+            section.enabled
+              ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200'
+              : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+          }`}
+          title={section.enabled ? 'Click để ẩn section' : 'Click để hiện section'}
+        >
+          {section.enabled ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+          {section.enabled ? 'Hiển thị' : 'Ẩn'}
+        </button>
+      </summary>
+
+      <div className="p-4">{renderForm(section, onContentChange)}</div>
+    </details>
+  )
+}
+
 export function PageEditor({ page }: { page: Page }) {
   const [sections, setSections] = useState<Section[]>(page.sections)
   const [isPending, startTransition] = useTransition()
-  const [status, setStatus] = useState<'idle' | 'saved' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
   const [showPreview, setShowPreview] = useState(true)
   const [iframeKey, setIframeKey] = useState(0)
-  const formAreaRef = useRef<HTMLDivElement>(null)
 
-  // Listen for postMessage from iframe (click → jump to field)
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  )
+
   useEffect(() => {
     const handler = (e: MessageEvent) => {
       if (e.origin !== window.location.origin) return
       const data = e.data
       if (!data || data.type !== 'CMS_CLICK') return
-
       const target: string = data.target
-      // target = 'hero.heading' or 'services.item.0'
       const sectionType = target.split('.')[0]
-
-      // Open the matching <details>
       const detailsEl = document.querySelector<HTMLDetailsElement>(
         `details[data-section-type="${sectionType}"]`
       )
-      if (detailsEl && !detailsEl.open) {
-        detailsEl.open = true
-      }
-
-      // Wait next tick for DOM to render after open
+      if (detailsEl && !detailsEl.open) detailsEl.open = true
       requestAnimationFrame(() => {
         const formEl = document.getElementById(`form-${target}`)
         if (formEl) {
           formEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          // If it's a <details> (e.g. service item), open it
-          if (formEl.tagName === 'DETAILS') {
-            ;(formEl as HTMLDetailsElement).open = true
-          }
-          // Visual flash highlight
+          if (formEl.tagName === 'DETAILS') (formEl as HTMLDetailsElement).open = true
           formEl.animate(
             [
               { backgroundColor: 'rgba(59, 130, 246, 0.15)' },
@@ -83,7 +193,6 @@ export function PageEditor({ page }: { page: Page }) {
             ],
             { duration: 1200 }
           )
-          // Focus first input
           setTimeout(() => {
             formEl
               .querySelector<HTMLInputElement | HTMLTextAreaElement>('input, textarea')
@@ -96,11 +205,30 @@ export function PageEditor({ page }: { page: Page }) {
     return () => window.removeEventListener('message', handler)
   }, [])
 
-  const updateSection = (id: string, nextContent: any) => {
+  const updateSectionContent = (id: string, nextContent: any) => {
     setSections((prev) =>
       prev.map((s) => (s.id === id ? ({ ...s, content: nextContent } as Section) : s))
     )
-    setStatus('idle')
+    setStatus('dirty')
+  }
+
+  const toggleSectionEnabled = (id: string) => {
+    setSections((prev) =>
+      prev.map((s) => (s.id === id ? ({ ...s, enabled: !s.enabled } as Section) : s))
+    )
+    setStatus('dirty')
+  }
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (over && active.id !== over.id) {
+      setSections((items) => {
+        const oldIndex = items.findIndex((i) => i.id === active.id)
+        const newIndex = items.findIndex((i) => i.id === over.id)
+        return arrayMove(items, oldIndex, newIndex)
+      })
+      setStatus('dirty')
+    }
   }
 
   const handleSave = () => {
@@ -111,7 +239,6 @@ export function PageEditor({ page }: { page: Page }) {
         setErrorMsg(result.error)
       } else {
         setStatus('saved')
-        // Reload iframe to show fresh content
         setIframeKey((k) => k + 1)
         setTimeout(() => setStatus('idle'), 2500)
       }
@@ -138,7 +265,7 @@ export function PageEditor({ page }: { page: Page }) {
               {page.title}
             </h1>
             <p className="text-[11px] text-slate-500">
-              /{page.slug === 'home' ? '' : page.slug} — Click vào element trên preview để jump tới field
+              /{page.slug === 'home' ? '' : page.slug} — Kéo thả để sắp xếp · click element trên preview để jump
             </p>
           </div>
         </div>
@@ -149,6 +276,9 @@ export function PageEditor({ page }: { page: Page }) {
               <CheckCircle2 className="w-3.5 h-3.5" />
               Đã lưu
             </span>
+          )}
+          {status === 'dirty' && (
+            <span className="text-xs text-amber-600">● Chưa lưu</span>
           )}
           {status === 'error' && (
             <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
@@ -203,100 +333,27 @@ export function PageEditor({ page }: { page: Page }) {
           showPreview ? 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]' : 'grid-cols-1'
         }`}
       >
-        {/* Left: Forms */}
-        <div ref={formAreaRef} className="overflow-y-auto p-3 lg:p-4 space-y-3">
-          {sections.map((section) => (
-            <details
-              key={section.id}
-              open
-              data-section-type={section.type}
-              className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 scroll-mt-32"
+        {/* Left: Forms with drag-drop */}
+        <div className="overflow-y-auto p-3 lg:p-4 space-y-3">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={sections.map((s) => s.id)}
+              strategy={verticalListSortingStrategy}
             >
-              <summary className="flex items-center justify-between px-4 py-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700">
-                <div className="flex items-center gap-2">
-                  <ChevronDown className="w-4 h-4 text-slate-400" />
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                    {SECTION_LABELS[section.type] || section.type}
-                  </span>
-                  <span className="text-[10px] uppercase font-mono text-slate-400">
-                    {section.type}
-                  </span>
-                </div>
-                <span
-                  className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                    section.enabled
-                      ? 'bg-emerald-100 text-emerald-700'
-                      : 'bg-slate-100 text-slate-500'
-                  }`}
-                >
-                  {section.enabled ? 'Hiển thị' : 'Ẩn'}
-                </span>
-              </summary>
-
-              <div className="p-4">
-                {section.type === 'hero' && (
-                  <HeroForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'services' && (
-                  <ServicesForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'about' && (
-                  <AboutForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'stats' && (
-                  <StatsForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'case_studies' && (
-                  <CaseStudiesForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'team' && (
-                  <TeamForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'testimonials' && (
-                  <TestimonialsForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'faq' && (
-                  <FaqForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'blog' && (
-                  <BlogForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-                {section.type === 'cta' && (
-                  <CtaForm
-                    content={section.content}
-                    onChange={(c) => updateSection(section.id, c)}
-                  />
-                )}
-              </div>
-            </details>
-          ))}
+              {sections.map((section) => (
+                <SortableSection
+                  key={section.id}
+                  section={section}
+                  onContentChange={(c) => updateSectionContent(section.id, c)}
+                  onToggleEnabled={() => toggleSectionEnabled(section.id)}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
 
           {status === 'error' && (
             <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
@@ -312,7 +369,7 @@ export function PageEditor({ page }: { page: Page }) {
               <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
                 Live Preview
               </span>
-              <span className="text-[10px] text-slate-400">— click vào element để edit</span>
+              <span className="text-[10px] text-slate-400">— click để jump · lưu để cập nhật</span>
             </div>
             <div className="flex-1 overflow-hidden">
               <iframe

@@ -13,41 +13,47 @@ import { CTASection } from '@/components/sections/cta-section'
 import { Footer } from '@/components/layout/footer'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { getPublishedPage } from '@/lib/cms/queries'
-import { getSection } from '@/lib/cms/types'
+import type { Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
+function renderSection(section: Section) {
+  if (!section.enabled) return null
+  switch (section.type) {
+    case 'hero':
+      return <HeroSection key={section.id} content={section.content} />
+    case 'services':
+      return <ServicesSection key={section.id} content={section.content} />
+    case 'about':
+      return <AboutSection key={section.id} content={section.content} />
+    case 'stats':
+      return <StatsSection key={section.id} content={section.content} />
+    case 'case_studies':
+      return <CaseStudiesSection key={section.id} content={section.content} />
+    case 'team':
+      return <TeamSection key={section.id} content={section.content} />
+    case 'testimonials':
+      return <TestimonialsSection key={section.id} content={section.content} />
+    case 'faq':
+      return <FAQSection key={section.id} content={section.content} />
+    case 'blog':
+      return <BlogSection key={section.id} content={section.content} />
+    case 'cta':
+      return <CTASection key={section.id} content={section.content} />
+  }
+}
+
 export default async function Home() {
   const page = await getPublishedPage('home')
   if (!page) notFound()
-
-  const hero = getSection(page, 'hero')
-  const services = getSection(page, 'services')
-  const about = getSection(page, 'about')
-  const stats = getSection(page, 'stats')
-  const caseStudies = getSection(page, 'case_studies')
-  const team = getSection(page, 'team')
-  const testimonials = getSection(page, 'testimonials')
-  const faq = getSection(page, 'faq')
-  const blog = getSection(page, 'blog')
-  const cta = getSection(page, 'cta')
 
   return (
     <div className="min-h-screen">
       <TopBanner />
       <MainNav />
 
-      {hero && <HeroSection content={hero.content} />}
-      {services && <ServicesSection content={services.content} />}
-      {about && <AboutSection content={about.content} />}
-      {stats && <StatsSection content={stats.content} />}
-      {caseStudies && <CaseStudiesSection content={caseStudies.content} />}
-      {team && <TeamSection content={team.content} />}
-      {testimonials && <TestimonialsSection content={testimonials.content} />}
-      {faq && <FAQSection content={faq.content} />}
-      {blog && <BlogSection content={blog.content} />}
-      {cta && <CTASection content={cta.content} />}
+      {page.sections.map((section) => renderSection(section))}
 
       <Footer />
       <EditModeOverlay />
