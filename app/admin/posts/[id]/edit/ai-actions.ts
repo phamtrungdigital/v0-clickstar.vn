@@ -80,7 +80,7 @@ IMPORTANT:
             model: settings.blog_model,
             system: systemPrompt,
             prompt: userPrompt,
-            maxTokens: 4096,
+            maxTokens: 16384,
             temperature: 0.7,
           })
         : await generateWithOpenAI({
@@ -88,12 +88,21 @@ IMPORTANT:
             model: settings.blog_model,
             system: systemPrompt,
             prompt: userPrompt,
-            maxTokens: 4096,
+            maxTokens: 16384,
             temperature: 0.7,
           })
 
     const jsonText = extractJson(raw)
-    const parsed = JSON.parse(jsonText) as GeneratedPost
+    let parsed: GeneratedPost
+    try {
+      parsed = JSON.parse(jsonText) as GeneratedPost
+    } catch (parseErr: any) {
+      const truncated = !jsonText.trimEnd().endsWith('}')
+      const hint = truncated
+        ? `AI đã trả về output dài hơn giới hạn → JSON bị cắt cuối. Thử giảm "Số từ mục tiêu" trong /admin/ai → Viết bài blog (đang là ${settings.blog_target_words}, thử 800-1000), hoặc đổi sang Claude Sonnet 4.6 / Haiku 4.5.`
+        : `AI trả JSON không hợp lệ. Thử lại — nếu lặp lại, đổi model trong /admin/ai → Viết bài blog.`
+      return { error: `${parseErr.message}. ${hint}` }
+    }
 
     const required = [
       'title_vi',
