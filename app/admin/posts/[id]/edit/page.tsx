@@ -3,6 +3,7 @@ import { getPostForAdmin } from '@/lib/cms/posts'
 import { PostEditor } from './_components/post-editor'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 60
 
 export default async function PostEditPage({
   params,

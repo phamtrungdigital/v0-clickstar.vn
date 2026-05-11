@@ -3,6 +3,7 @@ import { getPageForAdmin } from '@/lib/cms/queries'
 import { PageEditor } from './_components/page-editor'
 
 export const dynamic = 'force-dynamic'
+export const maxDuration = 60
 
 // URL slug uses '__' as separator instead of '/' to fit within a single
 // dynamic segment ('services__digital-marketing' → 'services/digital-marketing').
