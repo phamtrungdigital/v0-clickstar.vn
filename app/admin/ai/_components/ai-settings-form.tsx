@@ -218,7 +218,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
             value={draft.system_prompt}
             onChange={(e) => update('system_prompt', e.target.value)}
             rows={4}
-            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-xs font-mono"
+            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
           />
           <p className="text-[10px] text-slate-500 mt-1">
             Mô tả về thương hiệu, tông giọng — AI sẽ luôn tham khảo khi viết.
