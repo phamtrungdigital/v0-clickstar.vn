@@ -73,6 +73,58 @@ export async function generateWithOpenAI(opts: GenerateOpts): Promise<string> {
   return out.trim()
 }
 
+// ---------- Image generation (OpenAI only) ----------
+export type GenerateImageOpts = {
+  apiKey: string
+  prompt: string
+  model?: string // 'gpt-image-1' (default) or 'dall-e-3'
+  size?: '1024x1024' | '1536x1024' | '1024x1536' | '1792x1024' | '1024x1792'
+  quality?: 'low' | 'medium' | 'high' | 'standard' | 'hd' | 'auto'
+}
+
+/**
+ * Generate an image with OpenAI Images API.
+ * Returns base64 PNG data (without the data: prefix).
+ */
+export async function generateImageWithOpenAI(
+  opts: GenerateImageOpts
+): Promise<string> {
+  const model = opts.model || 'gpt-image-1'
+  const isDalle = model.startsWith('dall-e')
+
+  const body: Record<string, unknown> = {
+    model,
+    prompt: opts.prompt,
+    n: 1,
+    size: opts.size || (isDalle ? '1792x1024' : '1536x1024'),
+  }
+  // DALL-E quality: 'standard' | 'hd'. gpt-image-1: 'low' | 'medium' | 'high' | 'auto'.
+  if (opts.quality) body.quality = opts.quality
+  // DALL-E returns URLs by default; gpt-image-1 always returns base64.
+  if (isDalle) body.response_format = 'b64_json'
+
+  const res = await fetch('https://api.openai.com/v1/images/generations', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${opts.apiKey}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+  if (!res.ok) {
+    const text = await res.text()
+    let msg = text
+    try {
+      msg = JSON.parse(text)?.error?.message || text
+    } catch {}
+    throw new Error(`OpenAI Images ${res.status}: ${msg.slice(0, 300)}`)
+  }
+  const data = await res.json()
+  const b64 = data?.data?.[0]?.b64_json
+  if (typeof b64 !== 'string') throw new Error('OpenAI Images: missing b64_json')
+  return b64
+}
+
 export const MODEL_OPTIONS = {
   anthropic: [
     { value: 'claude-haiku-4-5-20251001', label: 'Claude Haiku 4.5 (rẻ + nhanh)' },

@@ -8,6 +8,8 @@ import { savePost, deletePost, type PostUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin/pages/[slug]/edit/_components/i18n-input'
 import { ImagePicker } from '@/app/admin/pages/[slug]/edit/_components/image-picker'
 import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
+import { AiWholePost } from './ai-whole-post'
+import { AiCoverImage } from './ai-cover-image'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
@@ -78,6 +80,29 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
         </div>
 
         <div className="flex items-center gap-2">
+          <AiWholePost
+            onApply={(p) => {
+              setDraft((prev) => ({
+                ...prev,
+                title: { vi: p.title_vi, en: p.title_en },
+                excerpt: { vi: p.excerpt_vi, en: p.excerpt_en },
+                content: { vi: p.content_vi, en: p.content_en },
+                // Auto-slugify from VI title if no slug yet
+                slug:
+                  prev.slug ||
+                  p.title_vi
+                    .toLowerCase()
+                    .normalize('NFD')
+                    .replace(/[̀-ͯ]/g, '')
+                    .replace(/[đ]/g, 'd')
+                    .replace(/[^a-z0-9-]/g, '-')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '')
+                    .slice(0, 60),
+              }))
+              setStatus('dirty')
+            }}
+          />
           <LangSwitcher />
 
           {status === 'saved' && (
@@ -201,7 +226,15 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
           </div>
 
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Cover image</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+                Cover image
+              </h2>
+              <AiCoverImage
+                postTitle={draft.title.vi || draft.title.en}
+                onApply={(url) => update('cover_image', url)}
+              />
+            </div>
             <ImagePicker
               label=""
               value={draft.cover_image ?? ''}
