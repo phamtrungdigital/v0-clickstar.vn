@@ -1,5 +1,13 @@
+import { Inter } from 'next/font/google'
 import { createClient } from '@/lib/supabase/server'
 import AdminShell from './_components/admin-shell'
+
+const inter = Inter({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+})
 
 export default async function AdminLayout({
   children,
@@ -11,9 +19,13 @@ export default async function AdminLayout({
     data: { user },
   } = await supabase.auth.getUser()
 
+  const wrap = (node: React.ReactNode) => (
+    <div className={`${inter.variable} admin-scope`}>{node}</div>
+  )
+
   // No user → /admin/login (proxy.ts redirects, but this also covers it)
   if (!user) {
-    return <>{children}</>
+    return wrap(children)
   }
 
   const { data: profile } = await supabase
@@ -24,8 +36,8 @@ export default async function AdminLayout({
 
   // Should never happen — middleware guards this. But fall back to bare layout.
   if (!profile) {
-    return <>{children}</>
+    return wrap(children)
   }
 
-  return <AdminShell user={profile}>{children}</AdminShell>
+  return wrap(<AdminShell user={profile}>{children}</AdminShell>)
 }

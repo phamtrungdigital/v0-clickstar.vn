@@ -146,3 +146,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Admin scope: dùng Inter thay Plus Jakarta cho toàn bộ /admin */
+.admin-scope {
+  --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
+}
