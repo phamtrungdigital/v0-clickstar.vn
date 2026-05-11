@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { Sparkles, Loader2, X, Wand2, ChevronLeft, AlertTriangle, ExternalLink } from 'lucide-react'
-import { BLOG_STYLE_OPTIONS, type BlogStyle } from '@/lib/ai/settings'
+import { BLOG_STYLE_OPTIONS, type BlogStyle } from '@/lib/ai/settings-shared'
 
 export type GeneratedPost = {
   title_vi: string

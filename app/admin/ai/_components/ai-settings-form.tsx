@@ -29,7 +29,7 @@ import type {
   ImageModel,
   ImageQuality,
   ImageSize,
-} from '@/lib/ai/settings'
+} from '@/lib/ai/settings-shared'
 
 const IMAGE_SIZES: { value: ImageSize; label: string }[] = [
   { value: '1024x1024', label: '1024×1024 (square)' },
