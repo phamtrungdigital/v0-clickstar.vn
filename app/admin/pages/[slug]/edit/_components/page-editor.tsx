@@ -115,9 +115,8 @@ function SortableSection({
     <details
       ref={setNodeRef}
       style={style}
-      open={section.enabled}
       data-section-type={section.type}
-      className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 scroll-mt-32"
+      className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 scroll-mt-32 group"
     >
       <summary className="flex items-center justify-between px-3 py-2.5 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center gap-2 flex-1 min-w-0">
