@@ -2,6 +2,7 @@
 
 import type { ServicesContent, ServiceItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 const COLORS: ServiceItem['color'][] = ['blue', 'purple', 'pink', 'amber', 'emerald', 'cyan']
 
@@ -174,8 +175,8 @@ export function ServicesForm({
           value={content.pipeline_subtitle}
           onChange={(v) => update('pipeline_subtitle', v)}
         />
-        <TextInput
-          label="Image src"
+        <ImagePicker
+          label="Pipeline diagram"
           value={content.pipeline_image_src}
           onChange={(v) => update('pipeline_image_src', v)}
         />

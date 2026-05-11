@@ -2,6 +2,7 @@
 
 import type { AboutContent } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 export function AboutForm({
   content,
@@ -101,11 +102,10 @@ export function AboutForm({
       </div>
 
       <div id="form-about.video" className="space-y-3 scroll-mt-32">
-        <TextInput
-          label="Thumbnail image (URL)"
+        <ImagePicker
+          label="Thumbnail image (video preview)"
           value={content.thumbnail_src}
           onChange={(v) => update('thumbnail_src', v)}
-          hint="Phase 2B sẽ thêm upload"
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <TextInput

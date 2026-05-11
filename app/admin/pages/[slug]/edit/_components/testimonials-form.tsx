@@ -2,6 +2,7 @@
 
 import type { TestimonialsContent, TestimonialItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 export function TestimonialsForm({
   content,
@@ -87,8 +88,8 @@ export function TestimonialsForm({
                   </select>
                 </div>
               </div>
-              <TextInput
-                label="Avatar (URL)"
+              <ImagePicker
+                label="Avatar khách hàng"
                 value={item.avatar}
                 onChange={(v) => updateItem(idx, { ...item, avatar: v })}
               />

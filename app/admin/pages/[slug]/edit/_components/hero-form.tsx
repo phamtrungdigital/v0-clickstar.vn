@@ -2,6 +2,7 @@
 
 import type { HeroContent } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 export function HeroForm({
   content,
@@ -89,12 +90,12 @@ export function HeroForm({
         />
       </div>
 
-      <div id="form-hero.image" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
-        <TextInput
-          label="Hero image (URL)"
+      <div id="form-hero.image" className="space-y-3 scroll-mt-32">
+        <ImagePicker
+          label="Hero image"
           value={content.image_src}
           onChange={(v) => update('image_src', v)}
-          hint="Phase 2B sẽ thêm upload"
+          hint="Upload hoặc dán URL. PNG/JPG/SVG/WebP, max 10MB."
         />
         <I18nInput
           label="Hero image — alt text"

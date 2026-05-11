@@ -2,6 +2,7 @@
 
 import type { TeamContent, TeamMemberItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 export function TeamForm({
   content,
@@ -74,18 +75,16 @@ export function TeamForm({
               {idx + 1}. {m.name || `(thành viên ${idx + 1})`} — {m.role.vi}
             </summary>
             <div className="p-3 space-y-3 border-t border-slate-200 dark:border-slate-700">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                <TextInput
-                  label="Tên"
-                  value={m.name}
-                  onChange={(v) => updateMember(idx, { ...m, name: v })}
-                />
-                <TextInput
-                  label="Avatar (URL)"
-                  value={m.image}
-                  onChange={(v) => updateMember(idx, { ...m, image: v })}
-                />
-              </div>
+              <TextInput
+                label="Tên"
+                value={m.name}
+                onChange={(v) => updateMember(idx, { ...m, name: v })}
+              />
+              <ImagePicker
+                label="Ảnh avatar"
+                value={m.image}
+                onChange={(v) => updateMember(idx, { ...m, image: v })}
+              />
               <I18nInput
                 label="Vai trò"
                 value={m.role}

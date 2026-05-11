@@ -2,6 +2,7 @@
 
 import type { BlogContent, BlogPostItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 export function BlogForm({
   content,
@@ -87,8 +88,8 @@ export function BlogForm({
                 value={post.title}
                 onChange={(v) => updatePost(idx, { ...post, title: v })}
               />
-              <TextInput
-                label="Hình ảnh (URL)"
+              <ImagePicker
+                label="Hình ảnh bài viết"
                 value={post.image}
                 onChange={(v) => updatePost(idx, { ...post, image: v })}
               />

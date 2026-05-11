@@ -2,6 +2,7 @@
 
 import type { CaseStudiesContent, CaseStudyItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { ImagePicker } from './image-picker'
 
 export function CaseStudiesForm({
   content,
@@ -75,8 +76,8 @@ export function CaseStudiesForm({
                 value={item.category}
                 onChange={(v) => updateItem(idx, { ...item, category: v })}
               />
-              <TextInput
-                label="Hình ảnh (URL)"
+              <ImagePicker
+                label="Hình ảnh dự án"
                 value={item.image}
                 onChange={(v) => updateItem(idx, { ...item, image: v })}
               />
