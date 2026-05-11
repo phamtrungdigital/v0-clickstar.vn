@@ -39,7 +39,7 @@ export function AiWholePost({
   const [topic, setTopic] = useState('')
   const [keyword, setKeyword] = useState('')
   const [style, setStyle] = useState<BlogStyle>('professional')
-  const [targetWords, setTargetWords] = useState(1200)
+  const [targetWords, setTargetWords] = useState(1000)
   const [includeImages, setIncludeImages] = useState(true)
   const [useOutline, setUseOutline] = useState(true)
 
@@ -298,33 +298,60 @@ export function AiWholePost({
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                    SEO keyword chính
-                  </label>
-                  <input
-                    type="text"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                    placeholder="VD: AI marketing"
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
-                  />
-                  <p className="text-[10px] text-slate-500 mt-1">Dùng cho slug + cảnh báo trùng</p>
+              <div>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                  SEO keyword chính
+                </label>
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  placeholder="VD: AI marketing"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                />
+                <p className="text-[10px] text-slate-500 mt-1">Dùng cho slug + cảnh báo trùng</p>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                  Độ dài bài viết
+                </label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-1.5 mb-2">
+                  {[
+                    { value: 500, label: '📝 Ngắn', sub: '~500 từ · đọc 2 phút' },
+                    { value: 1000, label: '📄 Trung bình', sub: '~1000 từ · đọc 4 phút' },
+                    { value: 1800, label: '📚 Dài', sub: '~1800 từ · đọc 7 phút' },
+                    { value: 2500, label: '📖 Rất dài', sub: '~2500 từ · đọc 10 phút' },
+                  ].map((preset) => (
+                    <button
+                      key={preset.value}
+                      type="button"
+                      onClick={() => setTargetWords(preset.value)}
+                      className={`text-left px-2.5 py-2 rounded border transition-colors ${
+                        targetWords === preset.value
+                          ? 'bg-violet-500 text-white border-violet-500 shadow-sm'
+                          : 'bg-white text-slate-700 border-slate-200 hover:bg-violet-50 hover:border-violet-300'
+                      }`}
+                    >
+                      <div className="text-xs font-semibold">{preset.label}</div>
+                      <div className={`text-[10px] mt-0.5 ${targetWords === preset.value ? 'text-violet-100' : 'text-slate-500'}`}>
+                        {preset.sub}
+                      </div>
+                    </button>
+                  ))}
                 </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                    Độ dài (từ)
-                  </label>
+                <div className="flex items-center gap-2">
+                  <label className="text-[11px] text-slate-500 shrink-0">Hoặc custom:</label>
                   <input
                     type="number"
                     value={targetWords}
-                    onChange={(e) => setTargetWords(Number(e.target.value) || 1200)}
-                    min={400}
-                    max={3000}
+                    onChange={(e) => setTargetWords(Number(e.target.value) || 1000)}
+                    min={300}
+                    max={4000}
                     step={100}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                    className="w-24 px-2 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs"
                   />
+                  <span className="text-[10px] text-slate-400">từ (300-4000)</span>
                 </div>
               </div>
 

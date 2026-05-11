@@ -105,8 +105,31 @@ export async function POST(req: Request) {
         }
 
         const effectiveWords = body.targetWords || settings.blog_target_words
-        const minWords = Math.max(400, effectiveWords - 200)
-        const maxWords = effectiveWords + 300
+        const minWords = Math.max(400, Math.round(effectiveWords * 0.9))
+        const maxWords = Math.round(effectiveWords * 1.2)
+
+        // Compute realistic per-section structure based on length.
+        // AI tends to under-write — be EXPLICIT about section count + words/section.
+        let sectionCount: number
+        let wordsPerSection: number
+        let paragraphsPerSection: string
+        if (effectiveWords <= 600) {
+          sectionCount = 3
+          wordsPerSection = 150
+          paragraphsPerSection = '1-2 đoạn'
+        } else if (effectiveWords <= 1200) {
+          sectionCount = 4
+          wordsPerSection = 250
+          paragraphsPerSection = '2-3 đoạn'
+        } else if (effectiveWords <= 2000) {
+          sectionCount = 5
+          wordsPerSection = 350
+          paragraphsPerSection = '3-4 đoạn (mỗi đoạn 60-90 từ)'
+        } else {
+          sectionCount = 6
+          wordsPerSection = Math.round(effectiveWords / 6)
+          paragraphsPerSection = '4-5 đoạn (mỗi đoạn 70-100 từ), có thể thêm H3 con để chia nhỏ'
+        }
 
         const baseSystem =
           settings.blog_system_prompt ||
@@ -129,15 +152,30 @@ Do NOT use Markdown image syntax (![]()). Use ONLY [[IMAGE: ...]].`
           ? `\n\nFOLLOW THIS APPROVED OUTLINE STRICTLY:
 Title (VI): ${outline.title_vi}
 Title (EN): ${outline.title_en}
-Sections:
+Sections (${outline.sections.length} total):
 ${outline.sections.map((s, i) => `${i + 1}. ${s.heading_vi} (${s.heading_en}) — ${s.summary_vi}`).join('\n')}
 
-Use these exact titles + section headings (translate naturally for EN). Each section ~${Math.round(effectiveWords / outline.sections.length)} words.`
-          : ''
+Use these exact titles + section headings (translate naturally for EN). Each section MUST be ~${Math.round(effectiveWords / outline.sections.length)} words.`
+          : `\n\nSTRUCTURE (when no outline provided):
+- Intro: ~${Math.round(effectiveWords * 0.1)} words (hook + thesis)
+- ${sectionCount} H2 sections (## heading), each ~${wordsPerSection} words, ${paragraphsPerSection}
+- Conclusion: ~${Math.round(effectiveWords * 0.1)} words
+- Total: AT LEAST ${minWords} words, target ${effectiveWords}, max ${maxWords}.`
 
         const systemPrompt = `${baseSystem}${styleHint}${keywordHint}
 
-You are writing a long-form blog post. You MUST return ONLY valid JSON — no preamble, no markdown fences, no explanation outside JSON.
+You are writing a long-form blog post in ${effectiveWords <= 600 ? 'concise' : effectiveWords <= 1500 ? 'standard' : 'IN-DEPTH'} format. You MUST return ONLY valid JSON — no preamble, no markdown fences, no explanation outside JSON.
+
+═══ LENGTH REQUIREMENT (CRITICAL) ═══
+content_vi MUST be ${minWords}-${maxWords} words (target: ${effectiveWords}). content_en MUST mirror same length.
+${
+  effectiveWords >= 1500
+    ? `This is a LONG-FORM article. Do NOT be concise. Expand each H2 with examples, sub-points, statistics, analogies, real-world scenarios. Add bullet lists, numbered steps, callout quotes where natural. Mỗi đoạn 60-100 từ — viết sâu, viết kỹ, không tóm tắt.`
+    : effectiveWords >= 1000
+    ? `Be thorough. Each section deserves 2-3 paragraphs with examples and supporting points.`
+    : 'Concise but complete.'
+}
+══════════════════════════════════════
 
 JSON schema (return exactly these 6 keys):
 {
@@ -145,13 +183,14 @@ JSON schema (return exactly these 6 keys):
   "title_en": "English title — engaging, SEO-friendly",
   "excerpt_vi": "Tóm tắt VN 1-2 câu (~150 ký tự)",
   "excerpt_en": "English excerpt 1-2 sentences (~150 chars)",
-  "content_vi": "Toàn bộ bài viết tiếng Việt dạng Markdown. intro + 3-5 mục H2 (## ...) + bullet list khi cần + conclusion. Mục tiêu ${effectiveWords} từ (tối thiểu ${minWords}, tối đa ${maxWords}).",
-  "content_en": "Full English blog post in Markdown — mirror VI structure. Target ${effectiveWords} words."
+  "content_vi": "FULL Markdown blog post in Vietnamese. AT LEAST ${minWords} words, target ${effectiveWords} words. Intro + ${sectionCount} H2 sections + conclusion. Each H2: ${paragraphsPerSection}.",
+  "content_en": "FULL English Markdown blog post — same structure, same length (${minWords}-${maxWords} words). Mirror VI section-by-section."
 }
 
 IMPORTANT:
-- Content MUST be in Markdown.
-- Both VI and EN versions cover the same topics in parallel.${imageHint}${outlineHint}
+- Content MUST be in Markdown (## for H2, ### for H3, **bold**, lists -, etc).
+- Both VI and EN versions cover the same topics in parallel.
+- DO NOT shorten the content. If you finish before hitting ${minWords} words, add more depth, examples, or sub-points before closing the JSON.${imageHint}${outlineHint}
 - Output ONLY the JSON object — no text before or after.`
 
         const userPrompt = `Chủ đề bài viết: ${topic}`
