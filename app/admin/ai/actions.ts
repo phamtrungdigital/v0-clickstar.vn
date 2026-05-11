@@ -122,6 +122,64 @@ export async function testInlineConnection(): Promise<GenerateResult> {
   })
 }
 
+/** Test a specific provider API key without saving — uses CURRENT input value */
+export async function testProviderApiKey(
+  provider: AiProvider,
+  apiKey: string
+): Promise<{ ok?: boolean; message?: string; error?: string }> {
+  if (!apiKey?.trim()) return { error: 'Chưa nhập API key' }
+
+  try {
+    if (provider === 'anthropic') {
+      const { generateWithAnthropic } = await import('@/lib/ai/providers')
+      const text = await generateWithAnthropic({
+        apiKey,
+        model: 'claude-haiku-4-5-20251001',
+        system: 'You are a helpful assistant.',
+        prompt: 'Trả lời 1 từ "OK" để xác nhận API hoạt động.',
+        maxTokens: 16,
+      })
+      return { ok: true, message: `✓ Anthropic OK — Claude trả lời: "${text.trim().slice(0, 50)}"` }
+    } else {
+      const { generateWithOpenAI } = await import('@/lib/ai/providers')
+      const text = await generateWithOpenAI({
+        apiKey,
+        model: 'gpt-4o-mini',
+        system: 'You are a helpful assistant.',
+        prompt: 'Trả lời 1 từ "OK" để xác nhận API hoạt động.',
+        maxTokens: 16,
+      })
+      return { ok: true, message: `✓ OpenAI OK — GPT trả lời: "${text.trim().slice(0, 50)}"` }
+    }
+  } catch (err: any) {
+    return { error: err?.message || 'Test failed' }
+  }
+}
+
+/** Test OpenAI Images API separately (cần credit riêng) */
+export async function testOpenAiImagesApi(
+  apiKey: string
+): Promise<{ ok?: boolean; message?: string; error?: string }> {
+  if (!apiKey?.trim()) return { error: 'Chưa nhập OpenAI API key' }
+
+  try {
+    const { generateImageWithOpenAI } = await import('@/lib/ai/providers')
+    const b64 = await generateImageWithOpenAI({
+      apiKey,
+      prompt: 'A small blue checkmark on white background — test',
+      model: 'gpt-image-1',
+      size: '1024x1024',
+      quality: 'low',
+    })
+    return {
+      ok: true,
+      message: `✓ OpenAI Images OK — gen ${Math.round(b64.length / 1024)} KB ảnh test`,
+    }
+  } catch (err: any) {
+    return { error: err?.message || 'Image test failed' }
+  }
+}
+
 export async function testImageConnection(): Promise<{ url?: string; error?: string }> {
   // Quick test: generate a tiny test image
   const supabase = await createClient()

@@ -18,6 +18,8 @@ import {
 import {
   saveAiSettings,
   testInlineConnection,
+  testProviderApiKey,
+  testOpenAiImagesApi,
   type SaveAiSettingsInput,
 } from '../actions'
 import { MODEL_OPTIONS } from '@/lib/ai/providers'
@@ -65,6 +67,26 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
   const [showOpenai, setShowOpenai] = useState(false)
   const [testResult, setTestResult] = useState<{ text?: string; error?: string } | null>(null)
   const [testing, setTesting] = useState(false)
+  const [keyTests, setKeyTests] = useState<{
+    anthropic?: { ok?: boolean; message?: string; error?: string; loading?: boolean }
+    openai?: { ok?: boolean; message?: string; error?: string; loading?: boolean }
+    openai_images?: { ok?: boolean; message?: string; error?: string; loading?: boolean }
+  }>({})
+
+  const handleTestKey = async (
+    which: 'anthropic' | 'openai' | 'openai_images'
+  ) => {
+    setKeyTests((p) => ({ ...p, [which]: { loading: true } }))
+    let result
+    if (which === 'anthropic') {
+      result = await testProviderApiKey('anthropic', draft.anthropic_api_key ?? '')
+    } else if (which === 'openai') {
+      result = await testProviderApiKey('openai', draft.openai_api_key ?? '')
+    } else {
+      result = await testOpenAiImagesApi(draft.openai_api_key ?? '')
+    }
+    setKeyTests((p) => ({ ...p, [which]: { ...result, loading: false } }))
+  }
 
   const update = <K extends keyof SaveAiSettingsInput>(
     key: K,
@@ -181,24 +203,75 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                 Dán API keys của 2 nhà cung cấp. Em recommend <strong>Anthropic</strong> cho viết bài tiếng Việt,{' '}
                 <strong>OpenAI</strong> cho tạo ảnh.
               </p>
-              <ApiKeyInput
-                label="Anthropic API Key"
-                placeholder="sk-ant-..."
-                value={draft.anthropic_api_key ?? ''}
-                onChange={(v) => update('anthropic_api_key', v.trim() === '' ? null : v)}
-                visible={showAnthropic}
-                onToggleVisible={() => setShowAnthropic((v) => !v)}
-                hint="Lấy ở https://console.anthropic.com/settings/keys"
-              />
-              <ApiKeyInput
-                label="OpenAI API Key"
-                placeholder="sk-..."
-                value={draft.openai_api_key ?? ''}
-                onChange={(v) => update('openai_api_key', v.trim() === '' ? null : v)}
-                visible={showOpenai}
-                onToggleVisible={() => setShowOpenai((v) => !v)}
-                hint="Lấy ở https://platform.openai.com/api-keys (cần credit cho Images API)"
-              />
+              <div className="space-y-2">
+                <ApiKeyInput
+                  label="Anthropic API Key"
+                  placeholder="sk-ant-..."
+                  value={draft.anthropic_api_key ?? ''}
+                  onChange={(v) => update('anthropic_api_key', v.trim() === '' ? null : v)}
+                  visible={showAnthropic}
+                  onToggleVisible={() => setShowAnthropic((v) => !v)}
+                  hint="Lấy ở https://console.anthropic.com/settings/keys"
+                />
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleTestKey('anthropic')}
+                    disabled={keyTests.anthropic?.loading || !draft.anthropic_api_key}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
+                  >
+                    {keyTests.anthropic?.loading ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Zap className="w-3 h-3" />
+                    )}
+                    Test Anthropic
+                  </button>
+                  <TestResult result={keyTests.anthropic} />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <ApiKeyInput
+                  label="OpenAI API Key"
+                  placeholder="sk-..."
+                  value={draft.openai_api_key ?? ''}
+                  onChange={(v) => update('openai_api_key', v.trim() === '' ? null : v)}
+                  visible={showOpenai}
+                  onToggleVisible={() => setShowOpenai((v) => !v)}
+                  hint="Lấy ở https://platform.openai.com/api-keys (cần credit cho Images API)"
+                />
+                <div className="flex flex-wrap items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleTestKey('openai')}
+                    disabled={keyTests.openai?.loading || !draft.openai_api_key}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
+                  >
+                    {keyTests.openai?.loading ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Zap className="w-3 h-3" />
+                    )}
+                    Test text (GPT)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleTestKey('openai_images')}
+                    disabled={keyTests.openai_images?.loading || !draft.openai_api_key}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
+                  >
+                    {keyTests.openai_images?.loading ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-3 h-3" />
+                    )}
+                    Test Images API (~$0.01)
+                  </button>
+                </div>
+                {keyTests.openai && <TestResult result={keyTests.openai} />}
+                {keyTests.openai_images && <TestResult result={keyTests.openai_images} />}
+              </div>
             </div>
           )}
 
@@ -381,6 +454,32 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
       </div>
     </div>
   )
+}
+
+function TestResult({
+  result,
+}: {
+  result?: { ok?: boolean; message?: string; error?: string; loading?: boolean }
+}) {
+  if (!result || result.loading) return null
+  if (result.message) {
+    return (
+      <span className="inline-flex items-center text-[11px] px-2 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded">
+        {result.message}
+      </span>
+    )
+  }
+  if (result.error) {
+    return (
+      <span
+        className="inline-flex items-center text-[11px] px-2 py-1 bg-red-50 border border-red-200 text-red-700 rounded max-w-md truncate"
+        title={result.error}
+      >
+        ✗ {result.error.slice(0, 80)}
+      </span>
+    )
+  }
+  return null
 }
 
 function TabButton({
