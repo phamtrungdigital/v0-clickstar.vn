@@ -3,7 +3,6 @@
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
-import { PageHero } from '@/components/sections/page-hero'
 import Link from 'next/link'
 import Image from 'next/image'
 import { 
@@ -263,7 +262,133 @@ export default function AIIntegrationPage() {
     <>
       <MainNav />
       <main>
-      <PageHero />
+        {/* Hero Section - Blue theme matching homepage */}
+        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+          {/* Blue gradient orbs - matching banner */}
+          <div className="absolute inset-0">
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 right-10 w-32 h-32 bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-2xl" />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left content */}
+              <div>
+                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-primary px-4 py-2 rounded-full mb-6 shadow-sm">
+                  <Sparkles className="w-4 h-4" />
+                  <span className="text-sm font-medium">Công nghệ AI tiên tiến nhất 2026</span>
+                </div>
+
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
+                  Tích hợp{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
+                    AI
+                  </span>{' '}
+                  vào Hoạt động Kinh doanh
+                </h1>
+
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                  AI đang thay đổi cách doanh nghiệp vận hành. ClickStar giúp bạn tích hợp AI vào 
+                  marketing, content, phân tích dữ liệu - tăng hiệu suất gấp nhiều lần với chi phí tối ưu.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                  <Link
+                    href="#consultation"
+                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
+                  >
+                    Nhận tư vấn 1-1 miễn phí
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                  <Link
+                    href="#use-cases"
+                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-primary font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
+                  >
+                    <Play className="w-5 h-5" />
+                    Xem use cases
+                  </Link>
+                </div>
+
+                {/* Quick stats */}
+                <div className="flex flex-wrap gap-6">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <TrendingUp className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-foreground">40%</p>
+                      <p className="text-xs text-muted-foreground">Tăng năng suất</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Users className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-foreground">500+</p>
+                      <p className="text-xs text-muted-foreground">Doanh nghiệp</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Star className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-foreground">4.9/5</p>
+                      <p className="text-xs text-muted-foreground">Đánh giá</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right - AI Applications Grid */}
+              <div className="relative">
+                <div className="bg-white/70 backdrop-blur-sm border border-primary/10 rounded-3xl p-6 shadow-xl">
+                  <p className="text-sm font-semibold text-primary mb-4 uppercase tracking-wider">AI Applications</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    {[
+                      { name: 'Content', icon: FileText, color: 'from-primary to-primary-dark' },
+                      { name: 'Hình ảnh', icon: ImageIcon, color: 'from-accent to-pink-400' },
+                      { name: 'Video', icon: Video, color: 'from-red-500 to-orange-400' },
+                      { name: 'Dữ liệu', icon: BarChart3, color: 'from-emerald-500 to-teal-400' },
+                      { name: 'Chatbot', icon: MessageSquare, color: 'from-violet-500 to-purple-400' },
+                      { name: 'Quảng cáo', icon: Target, color: 'from-amber-500 to-yellow-400' },
+                      { name: 'Email', icon: Mail, color: 'from-primary-dark to-primary' },
+                      { name: 'CRM', icon: Users, color: 'from-indigo-500 to-blue-400' }
+                    ].map((item, i) => (
+                      <div 
+                        key={i} 
+                        className="flex items-center gap-3 bg-white rounded-xl p-4 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer"
+                      >
+                        <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-lg flex items-center justify-center`}>
+                          <item.icon className="w-5 h-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="text-foreground font-medium text-sm">{item.name}</p>
+                          <p className="text-xs text-muted-foreground">AI Powered</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Floating badge */}
+                <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
+                      <Zap className="w-4 h-4 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-foreground">AI Ready</p>
+                      <p className="text-[10px] text-muted-foreground">Triển khai nhanh</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* Stats Section */}
         <section className="py-12 bg-white border-y border-border">
