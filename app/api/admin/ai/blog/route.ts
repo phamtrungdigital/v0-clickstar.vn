@@ -16,11 +16,18 @@ type GeneratedPost = {
 }
 
 function extractJson(text: string): string {
-  const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
-  if (fenceMatch) return fenceMatch[1]
+  // 1. Prefer explicit ```json fence (only that, not ```python or other).
+  const jsonFence = text.match(/```json\s*([\s\S]*?)\s*```/)
+  if (jsonFence) return jsonFence[1]
+  // 2. Raw outermost { ... } block — most reliable when AI returns clean JSON
+  //    or wraps it in conversational text. Works even if content_vi/content_en
+  //    contains other fenced code blocks (```python, ```js etc).
   const start = text.indexOf('{')
   const end = text.lastIndexOf('}')
   if (start !== -1 && end !== -1 && end > start) return text.slice(start, end + 1)
+  // 3. Last resort: any fence (could be wrong if content has ```python etc).
+  const anyFence = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+  if (anyFence) return anyFence[1]
   return text
 }
 
@@ -266,10 +273,17 @@ IMPORTANT:
         try {
           parsed = JSON.parse(jsonText) as GeneratedPost
         } catch (parseErr: any) {
-          const truncated = !jsonText.trimEnd().endsWith('}')
-          const hint = truncated
-            ? `AI trả output dài hơn giới hạn → JSON bị cắt cuối. Thử giảm "Số từ mục tiêu" trong /admin/ai (đang ${settings.blog_target_words}, thử 800-1000), hoặc đổi sang model nhỏ hơn.`
-            : `AI trả JSON không hợp lệ. Thử lại.`
+          const trimmed = jsonText.trimEnd()
+          const startsWithBrace = jsonText.trimStart().startsWith('{')
+          const endsWithBrace = trimmed.endsWith('}')
+          let hint = ''
+          if (!startsWithBrace) {
+            hint = `AI trả output có code block trong content (vd \`\`\`python) làm parser nhầm. Em đã thêm regex prefer "json" fence — thử lại 1-2 lần nữa, hoặc đổi sang model thông minh hơn (Opus/GPT-4o).`
+          } else if (!endsWithBrace) {
+            hint = `AI trả output dài hơn giới hạn → JSON bị cắt cuối. Thử giảm "Số từ mục tiêu" trong /admin/ai (đang ${settings.blog_target_words}, thử 800-1000), hoặc đổi sang model nhỏ hơn.`
+          } else {
+            hint = `AI trả JSON không hợp lệ (syntax error). Thử lại — nếu lặp lại, đổi model.`
+          }
           send(controller, 'error', { error: `${parseErr.message}. ${hint}` })
           controller.close()
           return

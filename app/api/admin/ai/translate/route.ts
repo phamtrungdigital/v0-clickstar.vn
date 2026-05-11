@@ -198,12 +198,18 @@ ${keys.map((k) => `### ${k} (${fromName})\n${fields[k]}`).join('\n\n')}`
           }
         }
 
-        // Extract JSON
-        const fence = fullText.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
-        const jsonText = fence ? fence[1] : (() => {
+        // Extract JSON: prefer explicit ```json fence, then raw { ... },
+        // then any fence. Avoids grabbing ```python etc when content has
+        // code blocks.
+        const jsonText = (() => {
+          const jsonFence = fullText.match(/```json\s*([\s\S]*?)\s*```/)
+          if (jsonFence) return jsonFence[1]
           const a = fullText.indexOf('{')
           const b = fullText.lastIndexOf('}')
-          return a !== -1 && b !== -1 ? fullText.slice(a, b + 1) : fullText
+          if (a !== -1 && b !== -1 && b > a) return fullText.slice(a, b + 1)
+          const anyFence = fullText.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+          if (anyFence) return anyFence[1]
+          return fullText
         })()
 
         let parsed: Record<string, string>

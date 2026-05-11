@@ -15,11 +15,16 @@ export type BlogOutline = {
 }
 
 function extractJson(text: string): string {
-  const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
-  if (fenceMatch) return fenceMatch[1]
+  // 1. Prefer explicit ```json fence (only that, not ```python or other).
+  const jsonFence = text.match(/```json\s*([\s\S]*?)\s*```/)
+  if (jsonFence) return jsonFence[1]
+  // 2. Raw outermost { ... } block — most reliable.
   const start = text.indexOf('{')
   const end = text.lastIndexOf('}')
   if (start !== -1 && end !== -1 && end > start) return text.slice(start, end + 1)
+  // 3. Last resort: any fence.
+  const anyFence = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
+  if (anyFence) return anyFence[1]
   return text
 }
 
