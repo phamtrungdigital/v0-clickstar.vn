@@ -23,6 +23,7 @@ import {
   Megaphone,
   Mail,
   Shield,
+  Sparkles,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { logout } from '../login/actions'
@@ -60,6 +61,7 @@ const sidebarItems = [
     items: [
       { label: 'Người dùng', href: '/admin/users', icon: Users },
       { label: 'Phân quyền', href: '/admin/roles', icon: Shield },
+      { label: 'AI Assistant', href: '/admin/ai', icon: Sparkles },
       { label: 'Cài đặt', href: '/admin/settings', icon: Settings },
     ],
   },
