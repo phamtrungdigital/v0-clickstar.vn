@@ -10,11 +10,14 @@ import type { AiSettings } from '@/lib/ai/settings'
 
 async function getSettings() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
   if (!user) return { error: 'Chưa đăng nhập' as const, settings: null }
   const { data } = await supabase.from('ai_settings').select('*').eq('id', 1).maybeSingle()
   const settings = data as AiSettings | null
-  if (!settings?.enabled) return { error: 'AI chưa được kích hoạt. Vào /admin/ai để bật.', settings: null }
+  if (!settings?.enabled)
+    return { error: 'AI chưa được kích hoạt. Vào /admin/ai để bật.', settings: null }
   return { error: null, settings }
 }
 
@@ -27,10 +30,7 @@ export type GeneratedPost = {
   content_en: string
 }
 
-/**
- * Generate full blog post (title + excerpt + content, bilingual) from a topic prompt.
- * Uses Claude (recommended) or OpenAI based on saved settings.
- */
+/** Uses blog_* config (recommend Claude Opus 4.7 in /admin/ai → tab Viết bài blog) */
 export async function generateBlogPost(
   topic: string
 ): Promise<{ post?: GeneratedPost; error?: string }> {
@@ -38,15 +38,22 @@ export async function generateBlogPost(
   if (error || !settings) return { error: error || 'no_settings' }
 
   const apiKey =
-    settings.provider === 'anthropic'
+    settings.blog_provider === 'anthropic'
       ? settings.anthropic_api_key
       : settings.openai_api_key
-  if (!apiKey) return { error: `Chưa có ${settings.provider} API key` }
+  if (!apiKey) return { error: `Chưa có ${settings.blog_provider} API key` }
+  if (!settings.blog_model) return { error: 'Chưa chọn blog model. Vào /admin/ai → Viết bài blog' }
 
-  const systemPrompt = `${settings.system_prompt || 'You are a blog content writer.'}
+  const minWords = Math.max(400, settings.blog_target_words - 200)
+  const maxWords = settings.blog_target_words + 300
 
-You are writing a long-form blog post for ClickStar (Vietnamese digital marketing & technology agency).
-You MUST return ONLY valid JSON — no preamble, no markdown fences, no explanation outside JSON.
+  const baseSystem =
+    settings.blog_system_prompt ||
+    'You are an expert blog writer for ClickStar — a Vietnamese digital marketing & technology agency.'
+
+  const systemPrompt = `${baseSystem}
+
+You are writing a long-form blog post. You MUST return ONLY valid JSON — no preamble, no markdown fences, no explanation outside JSON.
 
 JSON schema (return exactly these 6 keys):
 {
@@ -54,23 +61,23 @@ JSON schema (return exactly these 6 keys):
   "title_en": "English title — engaging, SEO-friendly",
   "excerpt_vi": "Tóm tắt VN 1-2 câu (~150 ký tự)",
   "excerpt_en": "English excerpt 1-2 sentences (~150 chars)",
-  "content_vi": "Toàn bộ bài viết tiếng Việt dạng Markdown. Bao gồm: intro (1 đoạn), 3-5 mục H2 (## ...), mỗi mục có 2-3 đoạn + bullet list khi cần, conclusion. Tối thiểu 800 từ.",
-  "content_en": "Full English blog post in Markdown — mirror VI structure. Min 800 words."
+  "content_vi": "Toàn bộ bài viết tiếng Việt dạng Markdown. intro + 3-5 mục H2 (## ...) + bullet list khi cần + conclusion. Mục tiêu ${settings.blog_target_words} từ (tối thiểu ${minWords}, tối đa ${maxWords}).",
+  "content_en": "Full English blog post in Markdown — mirror VI structure. Target ${settings.blog_target_words} words."
 }
 
 IMPORTANT:
-- Content MUST be in Markdown (use ##, ###, **bold**, lists, etc.)
-- Both VI and EN versions must cover the same topics in parallel.
+- Content MUST be in Markdown.
+- Both VI and EN versions cover the same topics in parallel.
 - Output ONLY the JSON object — no text before or after.`
 
   const userPrompt = `Chủ đề bài viết: ${topic}`
 
   try {
     const raw =
-      settings.provider === 'anthropic'
+      settings.blog_provider === 'anthropic'
         ? await generateWithAnthropic({
             apiKey,
-            model: settings.default_model,
+            model: settings.blog_model,
             system: systemPrompt,
             prompt: userPrompt,
             maxTokens: 4096,
@@ -78,18 +85,16 @@ IMPORTANT:
           })
         : await generateWithOpenAI({
             apiKey,
-            model: settings.default_model,
+            model: settings.blog_model,
             system: systemPrompt,
             prompt: userPrompt,
             maxTokens: 4096,
             temperature: 0.7,
           })
 
-    // Extract JSON: model may sometimes wrap in ```json ... ``` fences
     const jsonText = extractJson(raw)
     const parsed = JSON.parse(jsonText) as GeneratedPost
 
-    // Validate
     const required = [
       'title_vi',
       'title_en',
@@ -111,22 +116,15 @@ IMPORTANT:
 }
 
 function extractJson(text: string): string {
-  // Strip markdown code fences if present
   const fenceMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/)
   if (fenceMatch) return fenceMatch[1]
-  // Otherwise find first { ... last } pair
   const start = text.indexOf('{')
   const end = text.lastIndexOf('}')
-  if (start !== -1 && end !== -1 && end > start) {
-    return text.slice(start, end + 1)
-  }
+  if (start !== -1 && end !== -1 && end > start) return text.slice(start, end + 1)
   return text
 }
 
-/**
- * Generate cover image with OpenAI gpt-image-1, upload to Supabase Storage,
- * and return the public URL.
- */
+/** Uses image_* config (OpenAI gpt-image-1 by default) */
 export async function generatePostCoverImage(
   prompt: string
 ): Promise<{ url?: string; error?: string }> {
@@ -136,19 +134,20 @@ export async function generatePostCoverImage(
     return { error: 'Image generation cần OpenAI API key. Vào /admin/ai dán key.' }
   }
 
+  const finalPrompt = settings.image_style_prefix
+    ? `${prompt}\n\nStyle hints: ${settings.image_style_prefix}`
+    : prompt
+
   try {
     const b64 = await generateImageWithOpenAI({
       apiKey: settings.openai_api_key,
-      prompt,
-      model: 'gpt-image-1',
-      size: '1536x1024',
-      quality: 'high',
+      prompt: finalPrompt,
+      model: settings.image_model,
+      size: settings.image_size,
+      quality: settings.image_quality,
     })
 
-    // Decode base64 → buffer
     const buffer = Buffer.from(b64, 'base64')
-
-    // Upload to Supabase Storage
     const supabase = await createClient()
     const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.png`
     const path = `cms/ai-generated/${safeName}`
