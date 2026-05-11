@@ -7,15 +7,32 @@ import {
   generateWithOpenAI,
   type GenerateOpts,
 } from '@/lib/ai/providers'
-import type { AiProvider, AiSettings } from '@/lib/ai/settings'
+import type {
+  AiProvider,
+  AiSettings,
+  ImageModel,
+  ImageQuality,
+  ImageSize,
+} from '@/lib/ai/settings'
 
 export type SaveAiSettingsInput = {
-  provider: AiProvider
+  enabled: boolean
   anthropic_api_key: string | null
   openai_api_key: string | null
-  default_model: string
-  enabled: boolean
-  system_prompt: string
+
+  inline_provider: AiProvider
+  inline_model: string
+  inline_system_prompt: string
+
+  blog_provider: AiProvider
+  blog_model: string
+  blog_system_prompt: string
+  blog_target_words: number
+
+  image_model: ImageModel
+  image_size: ImageSize
+  image_quality: ImageQuality
+  image_style_prefix: string
 }
 
 export async function saveAiSettings(input: SaveAiSettingsInput) {
@@ -38,14 +55,15 @@ export async function saveAiSettings(input: SaveAiSettingsInput) {
 export type GenerateInput = {
   prompt: string
   language?: 'vi' | 'en'
-  fieldLabel?: string // e.g. "Hero heading"
-  currentValue?: string // existing value (refine vs create)
-  pageContext?: string // e.g. "Trang chủ" or "Dịch vụ Dashboard"
+  fieldLabel?: string
+  currentValue?: string
+  pageContext?: string
   maxTokens?: number
 }
 
 export type GenerateResult = { text?: string; error?: string }
 
+/** Inline ✨ AI on field — uses inline_* config */
 export async function generateText(input: GenerateInput): Promise<GenerateResult> {
   const supabase = await createClient()
   const {
@@ -56,19 +74,16 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
   const { data: settings } = await supabase.from('ai_settings').select('*').eq('id', 1).maybeSingle()
   const s = settings as AiSettings | null
   if (!s) return { error: 'Chưa init ai_settings' }
-  if (!s.enabled) {
-    return { error: 'AI chưa bật. Vào /admin/ai để cấu hình + bật.' }
-  }
+  if (!s.enabled) return { error: 'AI chưa bật. Vào /admin/ai để cấu hình + bật.' }
 
   const lang = input.language || 'vi'
   const langLabel = lang === 'vi' ? 'tiếng Việt' : 'English'
 
   const systemBase =
-    s.system_prompt ||
-    'You are a content writer for ClickStar — a Vietnamese digital marketing & technology agency.'
+    s.inline_system_prompt ||
+    'You are a content writer for ClickStar.'
   const system = `${systemBase}\n\nIMPORTANT: Trả về CHỈ nội dung được yêu cầu (${langLabel}). KHÔNG markdown, KHÔNG nháy kép, KHÔNG giải thích thêm.`
 
-  // Build user prompt
   const parts: string[] = []
   if (input.pageContext) parts.push(`Ngữ cảnh trang: ${input.pageContext}`)
   if (input.fieldLabel) parts.push(`Field cần viết: ${input.fieldLabel}`)
@@ -77,22 +92,21 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
   parts.push(`Ngôn ngữ output: ${langLabel}`)
   const userPrompt = parts.join('\n\n')
 
+  const apiKey =
+    s.inline_provider === 'anthropic' ? s.anthropic_api_key : s.openai_api_key
+  if (!apiKey) return { error: `Chưa có API key cho ${s.inline_provider}` }
+
   const opts: GenerateOpts = {
-    apiKey:
-      s.provider === 'anthropic' ? (s.anthropic_api_key ?? '') : (s.openai_api_key ?? ''),
-    model: s.default_model,
+    apiKey,
+    model: s.inline_model,
     system,
     prompt: userPrompt,
     maxTokens: input.maxTokens ?? 512,
   }
 
-  if (!opts.apiKey) {
-    return { error: `Chưa có API key cho ${s.provider}. Vào /admin/ai để dán key.` }
-  }
-
   try {
     const text =
-      s.provider === 'anthropic'
+      s.inline_provider === 'anthropic'
         ? await generateWithAnthropic(opts)
         : await generateWithOpenAI(opts)
     return { text }
@@ -101,9 +115,37 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
   }
 }
 
-export async function testAiConnection(): Promise<GenerateResult> {
+export async function testInlineConnection(): Promise<GenerateResult> {
   return generateText({
     prompt: 'Viết 1 câu chào ngắn (5-8 từ) chứng minh API call thành công.',
     maxTokens: 64,
   })
+}
+
+export async function testImageConnection(): Promise<{ url?: string; error?: string }> {
+  // Quick test: generate a tiny test image
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'Chưa đăng nhập' }
+
+  const { data: settings } = await supabase.from('ai_settings').select('*').eq('id', 1).maybeSingle()
+  const s = settings as AiSettings | null
+  if (!s?.enabled) return { error: 'AI chưa bật' }
+  if (!s.openai_api_key) return { error: 'Chưa có OpenAI API key' }
+
+  try {
+    const { generateImageWithOpenAI } = await import('@/lib/ai/providers')
+    const b64 = await generateImageWithOpenAI({
+      apiKey: s.openai_api_key,
+      prompt: 'Simple blue gradient with a checkmark — test image',
+      model: s.image_model,
+      size: '1024x1024',
+      quality: 'low',
+    })
+    return { url: `data:image/png;base64,${b64.slice(0, 100)}...(truncated, full image works)` }
+  } catch (err: any) {
+    return { error: err?.message || 'Image test failed' }
+  }
 }

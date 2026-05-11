@@ -10,42 +10,67 @@ import {
   EyeOff,
   Zap,
   Loader2,
+  Key,
+  PenTool,
+  Wand2,
+  Image as ImageIcon,
 } from 'lucide-react'
-import { saveAiSettings, testAiConnection, type SaveAiSettingsInput } from '../actions'
+import {
+  saveAiSettings,
+  testInlineConnection,
+  type SaveAiSettingsInput,
+} from '../actions'
 import { MODEL_OPTIONS } from '@/lib/ai/providers'
-import type { AiSettings, AiProvider } from '@/lib/ai/settings'
+import type {
+  AiSettings,
+  AiProvider,
+  ImageModel,
+  ImageQuality,
+  ImageSize,
+} from '@/lib/ai/settings'
+
+const IMAGE_SIZES: { value: ImageSize; label: string }[] = [
+  { value: '1024x1024', label: '1024×1024 (square)' },
+  { value: '1536x1024', label: '1536×1024 (landscape — cover image)' },
+  { value: '1024x1536', label: '1024×1536 (portrait)' },
+  { value: '1792x1024', label: '1792×1024 (DALL-E wide)' },
+  { value: '1024x1792', label: '1024×1792 (DALL-E tall)' },
+]
+
+type Tab = 'keys' | 'inline' | 'blog' | 'image'
 
 export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
   const [draft, setDraft] = useState<SaveAiSettingsInput>({
-    provider: initial?.provider ?? 'anthropic',
+    enabled: initial?.enabled ?? false,
     anthropic_api_key: initial?.anthropic_api_key ?? null,
     openai_api_key: initial?.openai_api_key ?? null,
-    default_model: initial?.default_model ?? 'claude-haiku-4-5-20251001',
-    enabled: initial?.enabled ?? false,
-    system_prompt:
-      initial?.system_prompt ??
-      'You are a content writer for ClickStar — a Vietnamese digital marketing & technology agency.',
+    inline_provider: initial?.inline_provider ?? 'anthropic',
+    inline_model: initial?.inline_model ?? 'claude-haiku-4-5-20251001',
+    inline_system_prompt: initial?.inline_system_prompt ?? '',
+    blog_provider: initial?.blog_provider ?? 'anthropic',
+    blog_model: initial?.blog_model ?? 'claude-opus-4-7',
+    blog_system_prompt: initial?.blog_system_prompt ?? '',
+    blog_target_words: initial?.blog_target_words ?? 1200,
+    image_model: initial?.image_model ?? 'gpt-image-1',
+    image_size: initial?.image_size ?? '1536x1024',
+    image_quality: initial?.image_quality ?? 'high',
+    image_style_prefix: initial?.image_style_prefix ?? '',
   })
 
+  const [tab, setTab] = useState<Tab>('keys')
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
-  const [showAnthropicKey, setShowAnthropicKey] = useState(false)
-  const [showOpenaiKey, setShowOpenaiKey] = useState(false)
+  const [showAnthropic, setShowAnthropic] = useState(false)
+  const [showOpenai, setShowOpenai] = useState(false)
   const [testResult, setTestResult] = useState<{ text?: string; error?: string } | null>(null)
   const [testing, setTesting] = useState(false)
 
-  const update = <K extends keyof SaveAiSettingsInput>(key: K, value: SaveAiSettingsInput[K]) => {
+  const update = <K extends keyof SaveAiSettingsInput>(
+    key: K,
+    value: SaveAiSettingsInput[K]
+  ) => {
     setDraft((prev) => ({ ...prev, [key]: value }))
-    setStatus('dirty')
-  }
-
-  const handleProviderChange = (p: AiProvider) => {
-    setDraft((prev) => ({
-      ...prev,
-      provider: p,
-      default_model: MODEL_OPTIONS[p][0].value,
-    }))
     setStatus('dirty')
   }
 
@@ -62,22 +87,21 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
     })
   }
 
-  const handleTest = async () => {
+  const handleTestInline = async () => {
     if (status === 'dirty') {
       setTestResult({ error: 'Lưu setting trước rồi test' })
       return
     }
     setTesting(true)
     setTestResult(null)
-    const result = await testAiConnection()
+    const result = await testInlineConnection()
     setTesting(false)
     setTestResult(result)
   }
 
-  const modelOptions = MODEL_OPTIONS[draft.provider]
-
   return (
-    <div className="space-y-3 max-w-3xl">
+    <div className="space-y-3 max-w-4xl">
+      {/* Header */}
       <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
         <div>
           <h1 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
@@ -85,7 +109,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
             AI Assistant
           </h1>
           <p className="text-[11px] text-slate-500">
-            Cấu hình AI để viết nội dung tự động trong CMS
+            Quản lý cấu hình AI cho từng tác vụ riêng biệt
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -113,8 +137,8 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-4">
-        {/* Enable toggle */}
+      {/* Enable toggle */}
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
         <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
@@ -127,132 +151,362 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
               Kích hoạt AI Assistant
             </div>
             <div className="text-[11px] text-slate-500">
-              Sau khi bật + lưu, các field text trong CMS sẽ có nút ✨ AI để gen content.
+              Sau khi bật + lưu, mọi nút ✨ AI trong CMS sẽ hoạt động.
             </div>
           </div>
         </label>
-
-        {/* Provider */}
-        <div>
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-2">
-            Provider
-          </label>
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => handleProviderChange('anthropic')}
-              className={`text-left p-3 rounded-md border-2 transition-colors ${
-                draft.provider === 'anthropic'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
-              }`}
-            >
-              <div className="text-sm font-semibold">Anthropic Claude</div>
-              <div className="text-[10px] text-slate-500 mt-1">
-                Khuyến nghị: tốt cho tiếng Việt, an toàn
-              </div>
-            </button>
-            <button
-              type="button"
-              onClick={() => handleProviderChange('openai')}
-              className={`text-left p-3 rounded-md border-2 transition-colors ${
-                draft.provider === 'openai'
-                  ? 'border-primary bg-primary/5'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
-              }`}
-            >
-              <div className="text-sm font-semibold">OpenAI GPT</div>
-              <div className="text-[10px] text-slate-500 mt-1">
-                Phổ biến, nhanh, có nhiều model
-              </div>
-            </button>
-          </div>
-        </div>
-
-        {/* Model */}
-        <div>
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-            Model mặc định
-          </label>
-          <select
-            value={draft.default_model}
-            onChange={(e) => update('default_model', e.target.value)}
-            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
-          >
-            {modelOptions.map((m) => (
-              <option key={m.value} value={m.value}>
-                {m.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* API keys */}
-        <div className="space-y-3">
-          <ApiKeyInput
-            label="Anthropic API Key"
-            placeholder="sk-ant-..."
-            value={draft.anthropic_api_key ?? ''}
-            onChange={(v) => update('anthropic_api_key', v.trim() === '' ? null : v)}
-            visible={showAnthropicKey}
-            onToggleVisible={() => setShowAnthropicKey((v) => !v)}
-            hint="Lấy ở https://console.anthropic.com/settings/keys"
-          />
-          <ApiKeyInput
-            label="OpenAI API Key"
-            placeholder="sk-..."
-            value={draft.openai_api_key ?? ''}
-            onChange={(v) => update('openai_api_key', v.trim() === '' ? null : v)}
-            visible={showOpenaiKey}
-            onToggleVisible={() => setShowOpenaiKey((v) => !v)}
-            hint="Lấy ở https://platform.openai.com/api-keys"
-          />
-        </div>
-
-        {/* System prompt */}
-        <div>
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-            System prompt (chỉ dẫn chung cho AI)
-          </label>
-          <textarea
-            value={draft.system_prompt}
-            onChange={(e) => update('system_prompt', e.target.value)}
-            rows={4}
-            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
-          />
-          <p className="text-[10px] text-slate-500 mt-1">
-            Mô tả về thương hiệu, tông giọng — AI sẽ luôn tham khảo khi viết.
-          </p>
-        </div>
       </div>
 
-      {/* Test connection */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-            <Zap className="w-4 h-4 text-amber-500" />
-            Test kết nối
-          </h2>
-          <button
-            onClick={handleTest}
-            disabled={testing || !draft.enabled}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-white text-xs font-medium rounded hover:bg-amber-600 disabled:opacity-50"
-          >
-            {testing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Zap className="w-3.5 h-3.5" />}
-            {testing ? 'Đang test…' : 'Test API'}
-          </button>
+      {/* Tabs */}
+      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div className="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
+          <TabButton active={tab === 'keys'} onClick={() => setTab('keys')} icon={<Key className="w-3.5 h-3.5" />}>
+            API Keys
+          </TabButton>
+          <TabButton active={tab === 'inline'} onClick={() => setTab('inline')} icon={<PenTool className="w-3.5 h-3.5" />}>
+            Inline ✨ AI
+          </TabButton>
+          <TabButton active={tab === 'blog'} onClick={() => setTab('blog')} icon={<Wand2 className="w-3.5 h-3.5" />}>
+            Viết bài blog
+          </TabButton>
+          <TabButton active={tab === 'image'} onClick={() => setTab('image')} icon={<ImageIcon className="w-3.5 h-3.5" />}>
+            Tạo ảnh
+          </TabButton>
         </div>
-        {testResult?.text && (
-          <div className="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded text-xs text-emerald-700">
-            ✓ Kết nối OK. AI trả lời: <span className="italic">"{testResult.text}"</span>
-          </div>
-        )}
-        {testResult?.error && (
-          <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
-            ✗ {testResult.error}
-          </div>
-        )}
+
+        <div className="p-5">
+          {tab === 'keys' && (
+            <div className="space-y-4">
+              <p className="text-xs text-slate-500">
+                Dán API keys của 2 nhà cung cấp. Em recommend <strong>Anthropic</strong> cho viết bài tiếng Việt,{' '}
+                <strong>OpenAI</strong> cho tạo ảnh.
+              </p>
+              <ApiKeyInput
+                label="Anthropic API Key"
+                placeholder="sk-ant-..."
+                value={draft.anthropic_api_key ?? ''}
+                onChange={(v) => update('anthropic_api_key', v.trim() === '' ? null : v)}
+                visible={showAnthropic}
+                onToggleVisible={() => setShowAnthropic((v) => !v)}
+                hint="Lấy ở https://console.anthropic.com/settings/keys"
+              />
+              <ApiKeyInput
+                label="OpenAI API Key"
+                placeholder="sk-..."
+                value={draft.openai_api_key ?? ''}
+                onChange={(v) => update('openai_api_key', v.trim() === '' ? null : v)}
+                visible={showOpenai}
+                onToggleVisible={() => setShowOpenai((v) => !v)}
+                hint="Lấy ở https://platform.openai.com/api-keys (cần credit cho Images API)"
+              />
+            </div>
+          )}
+
+          {tab === 'inline' && (
+            <div className="space-y-4">
+              <p className="text-xs text-slate-500">
+                Cấu hình cho nút <strong>✨ AI</strong> bên cạnh mỗi field text trong CMS (refine ngắn,
+                viết câu/đoạn ngắn). Khuyến nghị model <strong>rẻ + nhanh</strong> như Haiku/4o-mini.
+              </p>
+              <ProviderPicker
+                value={draft.inline_provider}
+                onChange={(p) => {
+                  update('inline_provider', p)
+                  update('inline_model', MODEL_OPTIONS[p][0].value)
+                }}
+              />
+              <ModelSelect
+                value={draft.inline_model}
+                provider={draft.inline_provider}
+                onChange={(v) => update('inline_model', v)}
+              />
+              <SystemPromptArea
+                label="System prompt"
+                value={draft.inline_system_prompt}
+                onChange={(v) => update('inline_system_prompt', v)}
+                hint="Tông giọng & brand voice — AI tham khảo khi refine từng field"
+              />
+
+              <div className="border-t border-slate-200 dark:border-slate-700 pt-3">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    Test connection
+                  </h3>
+                  <button
+                    onClick={handleTestInline}
+                    disabled={testing || !draft.enabled}
+                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500 text-white text-xs font-medium rounded hover:bg-amber-600 disabled:opacity-50"
+                  >
+                    {testing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Zap className="w-3 h-3" />}
+                    Test
+                  </button>
+                </div>
+                {testResult?.text && (
+                  <div className="px-3 py-2 bg-emerald-50 border border-emerald-200 rounded text-xs text-emerald-700">
+                    ✓ "{testResult.text}"
+                  </div>
+                )}
+                {testResult?.error && (
+                  <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
+                    ✗ {testResult.error}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {tab === 'blog' && (
+            <div className="space-y-4">
+              <p className="text-xs text-slate-500">
+                Cấu hình cho nút <strong>✨ AI viết bài hoàn chỉnh</strong> trong PostEditor. AI viết toàn
+                bộ blog (title + excerpt + content markdown × VI/EN). Khuyến nghị <strong>Claude Opus 4.7</strong>{' '}
+                cho chất lượng cao nhất.
+              </p>
+              <ProviderPicker
+                value={draft.blog_provider}
+                onChange={(p) => {
+                  update('blog_provider', p)
+                  update(
+                    'blog_model',
+                    p === 'anthropic' ? 'claude-opus-4-7' : 'gpt-4o'
+                  )
+                }}
+              />
+              <ModelSelect
+                value={draft.blog_model}
+                provider={draft.blog_provider}
+                onChange={(v) => update('blog_model', v)}
+              />
+              <div>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                  Số từ mục tiêu (target words)
+                </label>
+                <input
+                  type="number"
+                  min={400}
+                  max={3000}
+                  step={100}
+                  value={draft.blog_target_words}
+                  onChange={(e) => update('blog_target_words', Number(e.target.value))}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                />
+                <p className="text-[10px] text-slate-500 mt-1">
+                  Khoảng từ AI nhắm tới (±200 từ). Bài 1200 từ ≈ 5 phút đọc.
+                </p>
+              </div>
+              <SystemPromptArea
+                label="System prompt riêng cho blog"
+                value={draft.blog_system_prompt}
+                onChange={(v) => update('blog_system_prompt', v)}
+                hint="Khác với inline — hướng AI viết long-form: structure intro/H2/conclusion, tông giọng, target audience..."
+              />
+            </div>
+          )}
+
+          {tab === 'image' && (
+            <div className="space-y-4">
+              <p className="text-xs text-slate-500">
+                Cấu hình cho nút <strong>🎨 Tạo ảnh AI</strong> ở Cover image của post. OpenAI có 2 model:{' '}
+                <strong>gpt-image-1</strong> (chất lượng cao mới, ~$0.04/ảnh) và <strong>dall-e-3</strong> (cũ
+                hơn, ổn định).
+              </p>
+
+              <div>
+                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                  Image model
+                </label>
+                <select
+                  value={draft.image_model}
+                  onChange={(e) => update('image_model', e.target.value as ImageModel)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                >
+                  <option value="gpt-image-1">gpt-image-1 (recommend, ~$0.04)</option>
+                  <option value="dall-e-3">DALL-E 3 (~$0.04 standard, ~$0.08 HD)</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                    Default size
+                  </label>
+                  <select
+                    value={draft.image_size}
+                    onChange={(e) => update('image_size', e.target.value as ImageSize)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                  >
+                    {IMAGE_SIZES.map((s) => (
+                      <option key={s.value} value={s.value}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                    Quality
+                  </label>
+                  <select
+                    value={draft.image_quality}
+                    onChange={(e) => update('image_quality', e.target.value as ImageQuality)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                  >
+                    {draft.image_model === 'gpt-image-1' ? (
+                      <>
+                        <option value="low">low (~$0.01)</option>
+                        <option value="medium">medium (~$0.02)</option>
+                        <option value="high">high (~$0.04)</option>
+                        <option value="auto">auto</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="standard">standard (~$0.04)</option>
+                        <option value="hd">HD (~$0.08)</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+              </div>
+
+              <SystemPromptArea
+                label="Style prefix (append vào mỗi prompt)"
+                value={draft.image_style_prefix}
+                onChange={(v) => update('image_style_prefix', v)}
+                rows={3}
+                hint="VD: 'modern, professional, clean, suitable for Vietnamese tech brand'. AI thêm vào cuối mỗi prompt để giữ visual consistency"
+              />
+            </div>
+          )}
+        </div>
       </div>
+    </div>
+  )
+}
+
+function TabButton({
+  active,
+  onClick,
+  icon,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  icon: React.ReactNode
+  children: React.ReactNode
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 whitespace-nowrap transition-colors ${
+        active
+          ? 'border-primary text-primary bg-primary/5'
+          : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/30'
+      }`}
+    >
+      {icon}
+      {children}
+    </button>
+  )
+}
+
+function ProviderPicker({
+  value,
+  onChange,
+}: {
+  value: AiProvider
+  onChange: (p: AiProvider) => void
+}) {
+  return (
+    <div>
+      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-2">
+        Provider
+      </label>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={() => onChange('anthropic')}
+          className={`text-left p-3 rounded-md border-2 transition-colors ${
+            value === 'anthropic'
+              ? 'border-primary bg-primary/5'
+              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
+          }`}
+        >
+          <div className="text-sm font-semibold">Anthropic Claude</div>
+          <div className="text-[10px] text-slate-500 mt-1">
+            Tốt cho tiếng Việt, viết tự nhiên
+          </div>
+        </button>
+        <button
+          type="button"
+          onClick={() => onChange('openai')}
+          className={`text-left p-3 rounded-md border-2 transition-colors ${
+            value === 'openai'
+              ? 'border-primary bg-primary/5'
+              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
+          }`}
+        >
+          <div className="text-sm font-semibold">OpenAI GPT</div>
+          <div className="text-[10px] text-slate-500 mt-1">Phổ biến, nhanh</div>
+        </button>
+      </div>
+    </div>
+  )
+}
+
+function ModelSelect({
+  value,
+  provider,
+  onChange,
+}: {
+  value: string
+  provider: AiProvider
+  onChange: (v: string) => void
+}) {
+  return (
+    <div>
+      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+        Model
+      </label>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+      >
+        {MODEL_OPTIONS[provider].map((m) => (
+          <option key={m.value} value={m.value}>
+            {m.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+}
+
+function SystemPromptArea({
+  label,
+  value,
+  onChange,
+  hint,
+  rows = 5,
+}: {
+  label: string
+  value: string
+  onChange: (v: string) => void
+  hint?: string
+  rows?: number
+}) {
+  return (
+    <div>
+      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+        {label}
+      </label>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        rows={rows}
+        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+      />
+      {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}
     </div>
   )
 }
