@@ -15,8 +15,31 @@ import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { getPublishedPage } from '@/lib/cms/queries'
 import type { Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const page = await getPublishedPage('home')
+  if (!page) return { title: 'ClickStar' }
+  const title = page.seo_title?.vi || page.title
+  const description = page.seo_description?.vi || ''
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: page.og_image ? [page.og_image] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: page.og_image ? [page.og_image] : [],
+    },
+  }
+}
 
 function renderSection(section: Section) {
   if (!section.enabled) return null

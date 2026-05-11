@@ -212,8 +212,8 @@ export type Page = {
   slug: string
   title: string
   sections: Section[]
-  seo_title: string | null
-  seo_description: string | null
+  seo_title: I18n | null
+  seo_description: I18n | null
   og_image: string | null
   is_published: boolean
   published_at: string | null

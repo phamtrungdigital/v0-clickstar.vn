@@ -44,6 +44,7 @@ import { TeamForm } from './team-form'
 import { TestimonialsForm } from './testimonials-form'
 import { FaqForm } from './faq-form'
 import { BlogForm } from './blog-form'
+import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
   hero: 'Hero (banner đầu)',
@@ -81,6 +82,14 @@ function renderForm(section: Section, onChange: (c: any) => void) {
     case 'cta':
       return <CtaForm content={section.content} onChange={onChange} />
   }
+}
+
+function parseI18nOrEmpty(value: unknown): { vi: string; en: string } {
+  if (value && typeof value === 'object' && 'vi' in value && 'en' in value) {
+    return { vi: (value as any).vi ?? '', en: (value as any).en ?? '' }
+  }
+  if (typeof value === 'string') return { vi: value, en: '' }
+  return { vi: '', en: '' }
 }
 
 function SortableSection({
@@ -159,6 +168,11 @@ function SortableSection({
 
 export function PageEditor({ page }: { page: Page }) {
   const [sections, setSections] = useState<Section[]>(page.sections)
+  const [seo, setSeo] = useState<SeoFields>({
+    seo_title: parseI18nOrEmpty(page.seo_title),
+    seo_description: parseI18nOrEmpty(page.seo_description),
+    og_image: page.og_image,
+  })
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
@@ -233,7 +247,7 @@ export function PageEditor({ page }: { page: Page }) {
 
   const handleSave = () => {
     startTransition(async () => {
-      const result = await savePage(page.slug, sections)
+      const result = await savePage(page.slug, sections, seo)
       if (result.error) {
         setStatus('error')
         setErrorMsg(result.error)
@@ -354,6 +368,14 @@ export function PageEditor({ page }: { page: Page }) {
               ))}
             </SortableContext>
           </DndContext>
+
+          <SeoForm
+            value={seo}
+            onChange={(v) => {
+              setSeo(v)
+              setStatus('dirty')
+            }}
+          />
 
           {status === 'error' && (
             <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">

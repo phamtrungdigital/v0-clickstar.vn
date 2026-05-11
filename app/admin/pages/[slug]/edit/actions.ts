@@ -3,8 +3,9 @@
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { Section } from '@/lib/cms/types'
+import type { SeoFields } from './_components/seo-form'
 
-export async function savePage(slug: string, sections: Section[]) {
+export async function savePage(slug: string, sections: Section[], seo?: SeoFields) {
   const supabase = await createClient()
 
   const {
@@ -12,17 +13,19 @@ export async function savePage(slug: string, sections: Section[]) {
   } = await supabase.auth.getUser()
   if (!user) return { error: 'not_authenticated' }
 
-  const { error } = await supabase
-    .from('pages')
-    .update({
-      sections: sections as unknown as object,
-      updated_by: user.id,
-    })
-    .eq('slug', slug)
+  const update: Record<string, unknown> = {
+    sections: sections as unknown as object,
+    updated_by: user.id,
+  }
+  if (seo) {
+    update.seo_title = seo.seo_title
+    update.seo_description = seo.seo_description
+    update.og_image = seo.og_image
+  }
 
+  const { error } = await supabase.from('pages').update(update).eq('slug', slug)
   if (error) return { error: error.message }
 
-  // Revalidate the public page (slug=='home' → '/')
   revalidatePath(slug === 'home' ? '/' : `/${slug}`)
   revalidatePath(`/admin/pages/${slug}/edit`)
 
