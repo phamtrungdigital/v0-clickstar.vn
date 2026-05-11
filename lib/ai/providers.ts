@@ -21,7 +21,11 @@ export async function generateWithAnthropic(opts: GenerateOpts): Promise<string>
     body: JSON.stringify({
       model: opts.model,
       max_tokens: opts.maxTokens ?? 512,
-      temperature: opts.temperature ?? 0.7,
+      // Note: temperature is deprecated on newer Claude models (Opus 4.7,
+      // Sonnet 4.6, Haiku 4.5) — only send it on legacy models.
+      ...(opts.temperature !== undefined && /claude-[123]/.test(opts.model)
+        ? { temperature: opts.temperature }
+        : {}),
       system: opts.system,
       messages: [{ role: 'user', content: opts.prompt }],
     }),
