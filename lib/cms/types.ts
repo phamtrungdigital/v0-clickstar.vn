@@ -13,6 +13,10 @@ export type SectionType =
   | 'faq'
   | 'blog'
   | 'cta'
+  | 'pricing_tiers'
+  | 'problems_grid'
+  | 'feature_grid'
+  | 'process_steps'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -192,6 +196,78 @@ export type BlogContent = {
   posts: BlogPostItem[]
 }
 
+// ---------- Pricing Tiers ----------
+export type PricingTierItem = {
+  name: I18n
+  description: I18n
+  price: I18n
+  price_period?: I18n // e.g. "/tháng" or "Liên hệ"
+  popular: boolean
+  features: I18n[] // array of feature strings (bilingual)
+  cta_label: I18n
+  cta_href: string
+}
+
+export type PricingTiersContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  tiers: PricingTierItem[]
+  disclaimer?: I18n // "Tất cả gói có thể tùy chỉnh..."
+}
+
+// ---------- Problems & Solutions Grid ----------
+export type ProblemItem = {
+  icon: string // lucide-react icon
+  problem: I18n
+  solution: I18n
+  color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan' | 'rose'
+}
+
+export type ProblemsGridContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  items: ProblemItem[]
+}
+
+// ---------- Generic Feature Grid (4-6 cards) ----------
+export type FeatureItem = {
+  icon: string
+  title: I18n
+  description: I18n
+  color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan' | 'rose'
+}
+
+export type FeatureGridContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  items: FeatureItem[]
+  // 'cards-3': 3 columns, 'cards-2': 2 columns
+  columns?: 2 | 3 | 4
+}
+
+// ---------- Process Steps Timeline ----------
+export type ProcessStepItem = {
+  step_number: string // "01", "02", ...
+  title: I18n
+  description: I18n
+  duration?: I18n // e.g. "1-2 tuần"
+}
+
+export type ProcessStepsContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  steps: ProcessStepItem[]
+  dark_theme?: boolean // some pages have dark bg for this section
+}
+
 // ---------- CTA ----------
 export type CtaContent = {
   eyebrow: I18n
@@ -218,6 +294,10 @@ export type Section =
   | { id: string; type: 'faq'; enabled: boolean; content: FaqContent }
   | { id: string; type: 'blog'; enabled: boolean; content: BlogContent }
   | { id: string; type: 'cta'; enabled: boolean; content: CtaContent }
+  | { id: string; type: 'pricing_tiers'; enabled: boolean; content: PricingTiersContent }
+  | { id: string; type: 'problems_grid'; enabled: boolean; content: ProblemsGridContent }
+  | { id: string; type: 'feature_grid'; enabled: boolean; content: FeatureGridContent }
+  | { id: string; type: 'process_steps'; enabled: boolean; content: ProcessStepsContent }
 
 export type Page = {
   id: string

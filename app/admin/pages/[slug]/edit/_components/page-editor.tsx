@@ -46,6 +46,10 @@ import { TeamForm } from './team-form'
 import { TestimonialsForm } from './testimonials-form'
 import { FaqForm } from './faq-form'
 import { BlogForm } from './blog-form'
+import { PricingTiersForm } from './pricing-tiers-form'
+import { ProblemsGridForm } from './problems-grid-form'
+import { FeatureGridForm } from './feature-grid-form'
+import { ProcessStepsForm } from './process-steps-form'
 import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -60,6 +64,10 @@ const SECTION_LABELS: Record<string, string> = {
   faq: 'FAQ',
   blog: 'Tin tức / Blog',
   cta: 'Call-to-action (cuối)',
+  pricing_tiers: 'Bảng giá (3 gói)',
+  problems_grid: 'Vấn đề & Giải pháp',
+  feature_grid: 'Tính năng / Dịch vụ (cards)',
+  process_steps: 'Quy trình (các bước)',
 }
 
 function renderForm(section: Section, onChange: (c: any) => void) {
@@ -86,6 +94,14 @@ function renderForm(section: Section, onChange: (c: any) => void) {
       return <BlogForm content={section.content} onChange={onChange} />
     case 'cta':
       return <CtaForm content={section.content} onChange={onChange} />
+    case 'pricing_tiers':
+      return <PricingTiersForm content={section.content} onChange={onChange} />
+    case 'problems_grid':
+      return <ProblemsGridForm content={section.content} onChange={onChange} />
+    case 'feature_grid':
+      return <FeatureGridForm content={section.content} onChange={onChange} />
+    case 'process_steps':
+      return <ProcessStepsForm content={section.content} onChange={onChange} />
   }
 }
 
