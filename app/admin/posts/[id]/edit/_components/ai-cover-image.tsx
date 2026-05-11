@@ -1,18 +1,40 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useMemo, useState, useTransition } from 'react'
 import { ImagePlus, Loader2, X, Sparkles, Wand2 } from 'lucide-react'
 import { COVER_PROMPT_TEMPLATES, CATEGORIES } from '@/lib/ai/image-prompt-templates'
+
+function buildFinalPrompt(subject: string, style: string): string {
+  const trimmedSubject = subject.trim()
+  const trimmedStyle = style.trim()
+  if (!trimmedSubject && !trimmedStyle) return ''
+  if (!trimmedSubject) return trimmedStyle
+  const stylePart = trimmedStyle || 'Modern professional editorial cover, clean composition, 16:9 aspect ratio'
+  return `Editorial cover image for a blog post about: "${trimmedSubject}". The visual must clearly convey this topic to the viewer. Style guidance: ${stylePart}. No text, no letters, no logos overlaid on the image. 16:9 aspect ratio.`
+}
 
 export function AiCoverImage({
   onApply,
   postTitle,
+  tags,
+  seoKeyword,
 }: {
   onApply: (url: string) => void
   postTitle?: string
+  tags?: string[]
+  seoKeyword?: string
 }) {
+  const defaultSubject = useMemo(() => {
+    const fromKeyword = seoKeyword?.trim()
+    if (fromKeyword) return fromKeyword
+    const fromTag = tags?.[0]?.trim()
+    if (fromTag && postTitle?.trim()) return `${postTitle.trim()} — ${fromTag}`
+    return (postTitle?.trim() || fromTag || '').trim()
+  }, [seoKeyword, tags, postTitle])
+
   const [open, setOpen] = useState(false)
-  const [prompt, setPrompt] = useState('')
+  const [subject, setSubject] = useState('')
+  const [style, setStyle] = useState('')
   const [activeCategory, setActiveCategory] = useState<string | 'all'>('all')
   const [isPending, startTransition] = useTransition()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -20,13 +42,18 @@ export function AiCoverImage({
 
   const [progress, setProgress] = useState<string | null>(null)
 
+  useEffect(() => {
+    if (open && !subject) setSubject(defaultSubject)
+  }, [open, defaultSubject, subject])
+
   const visibleTemplates =
     activeCategory === 'all'
       ? COVER_PROMPT_TEMPLATES
       : COVER_PROMPT_TEMPLATES.filter((t) => t.category === activeCategory)
 
+  const finalPrompt = buildFinalPrompt(subject, style)
+
   const handleGenerate = () => {
-    const finalPrompt = prompt.trim() || (postTitle ? `Cover image for blog post: ${postTitle}` : '')
     if (!finalPrompt) return
     startTransition(async () => {
       setError(null)
@@ -93,7 +120,7 @@ export function AiCoverImage({
       onApply(previewUrl)
       setOpen(false)
       setPreviewUrl(null)
-      setPrompt('')
+      setStyle('')
     }
   }
 
@@ -101,10 +128,7 @@ export function AiCoverImage({
     return (
       <button
         type="button"
-        onClick={() => {
-          setOpen(true)
-          if (!prompt && postTitle) setPrompt(`Modern professional cover image for blog: ${postTitle}`)
-        }}
+        onClick={() => setOpen(true)}
         className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white text-xs font-semibold rounded shadow-sm"
       >
         <ImagePlus className="w-3.5 h-3.5" />
@@ -133,14 +157,31 @@ export function AiCoverImage({
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
-          {/* Prompt templates (Phase 9.1) */}
+          {/* 1) Subject — what the image is ABOUT (keyword/title-driven) */}
+          <div>
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
+              🎯 Chủ đề bài (ảnh sẽ vẽ về cái này)
+            </label>
+            <input
+              type="text"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder={defaultSubject || 'VD: AI tự động hoá marketing cho SME Việt Nam'}
+              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+            />
+            <p className="text-[10px] text-slate-500 mt-1">
+              Tự lấy từ keyword SEO → tag đầu → tiêu đề. Có thể sửa cho khớp ảnh muốn.
+            </p>
+          </div>
+
+          {/* 2) Style template picker */}
           <div>
             <div className="flex items-center gap-1.5 mb-2">
               <Wand2 className="w-3.5 h-3.5 text-amber-600" />
               <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                Mẫu prompt nhanh
+                🎨 Style ảnh
               </span>
-              <span className="text-[10px] text-slate-400">— click để fill prompt</span>
+              <span className="text-[10px] text-slate-400">— click để chọn cách thiết kế</span>
             </div>
 
             {/* Category filter */}
@@ -178,10 +219,10 @@ export function AiCoverImage({
                 <button
                   key={t.id}
                   type="button"
-                  onClick={() => setPrompt(t.prompt)}
+                  onClick={() => setStyle(t.prompt)}
                   title={t.prompt}
                   className={`text-left px-2 py-1.5 text-[11px] rounded border transition-colors ${
-                    prompt === t.prompt
+                    style === t.prompt
                       ? 'bg-amber-100 border-amber-400 text-amber-900 font-semibold'
                       : 'bg-white border-slate-200 hover:bg-amber-50 hover:border-amber-300 text-slate-700'
                   }`}
@@ -193,21 +234,33 @@ export function AiCoverImage({
             </div>
           </div>
 
+          {/* 3) Optional style override */}
           <div>
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-              Mô tả ảnh (tiếng Anh chính xác hơn — có thể chỉnh template ở trên)
+              Mô tả style (tiếng Anh) — tinh chỉnh thêm nếu muốn
             </label>
             <textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              rows={4}
-              placeholder={`Hoặc gõ prompt riêng. Vd: "Modern AI marketing dashboard, blue and purple gradient, professional"`}
+              value={style}
+              onChange={(e) => setStyle(e.target.value)}
+              rows={3}
+              placeholder="VD: Modern flat illustration, blue and purple gradient, clean professional"
               className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
             />
-            <p className="text-[10px] text-slate-500 mt-1">
-              gpt-image-1 · 1536×1024 (~$0.04/ảnh) · Mất 15-30s · Tự upload Supabase Storage
-            </p>
           </div>
+
+          {/* 4) Final prompt preview (what actually gets sent) */}
+          {finalPrompt && (
+            <div className="px-3 py-2 bg-violet-50 border border-violet-200 rounded">
+              <p className="text-[10px] uppercase font-bold text-violet-700 mb-1">
+                Prompt cuối gửi AI (chủ đề + style)
+              </p>
+              <p className="text-[11px] text-violet-900 leading-relaxed">{finalPrompt}</p>
+            </div>
+          )}
+
+          <p className="text-[10px] text-slate-500">
+            gpt-image-1 · 1536×1024 (~$0.04/ảnh) · Mất 15-30s · Tự upload Supabase Storage
+          </p>
 
           {error && (
             <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
@@ -245,7 +298,7 @@ export function AiCoverImage({
           </button>
           <button
             onClick={handleGenerate}
-            disabled={isPending || !prompt.trim()}
+            disabled={isPending || !finalPrompt}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold rounded disabled:opacity-50"
           >
             {isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
