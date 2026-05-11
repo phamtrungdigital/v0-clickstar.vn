@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { ImagePlus, Loader2, X, Sparkles } from 'lucide-react'
+import { ImagePlus, Loader2, X, Sparkles, Wand2 } from 'lucide-react'
+import { COVER_PROMPT_TEMPLATES, CATEGORIES } from '@/lib/ai/image-prompt-templates'
 
 export function AiCoverImage({
   onApply,
@@ -12,11 +13,17 @@ export function AiCoverImage({
 }) {
   const [open, setOpen] = useState(false)
   const [prompt, setPrompt] = useState('')
+  const [activeCategory, setActiveCategory] = useState<string | 'all'>('all')
   const [isPending, startTransition] = useTransition()
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const [progress, setProgress] = useState<string | null>(null)
+
+  const visibleTemplates =
+    activeCategory === 'all'
+      ? COVER_PROMPT_TEMPLATES
+      : COVER_PROMPT_TEMPLATES.filter((t) => t.category === activeCategory)
 
   const handleGenerate = () => {
     const finalPrompt = prompt.trim() || (postTitle ? `Cover image for blog post: ${postTitle}` : '')
@@ -126,18 +133,75 @@ export function AiCoverImage({
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
+          {/* Prompt templates (Phase 9.1) */}
+          <div>
+            <div className="flex items-center gap-1.5 mb-2">
+              <Wand2 className="w-3.5 h-3.5 text-amber-600" />
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                Mẫu prompt nhanh
+              </span>
+              <span className="text-[10px] text-slate-400">— click để fill prompt</span>
+            </div>
+
+            {/* Category filter */}
+            <div className="flex flex-wrap gap-1 mb-2">
+              <button
+                type="button"
+                onClick={() => setActiveCategory('all')}
+                className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${
+                  activeCategory === 'all'
+                    ? 'bg-amber-500 text-white border-amber-500'
+                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                }`}
+              >
+                Tất cả ({COVER_PROMPT_TEMPLATES.length})
+              </button>
+              {CATEGORIES.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => setActiveCategory(c.id)}
+                  className={`text-[10px] px-2 py-0.5 rounded-full border transition-colors ${
+                    activeCategory === c.id
+                      ? 'bg-amber-500 text-white border-amber-500'
+                      : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Templates grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-1.5 max-h-40 overflow-y-auto">
+              {visibleTemplates.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => setPrompt(t.prompt)}
+                  title={t.prompt}
+                  className={`text-left px-2 py-1.5 text-[11px] rounded border transition-colors ${
+                    prompt === t.prompt
+                      ? 'bg-amber-100 border-amber-400 text-amber-900 font-semibold'
+                      : 'bg-white border-slate-200 hover:bg-amber-50 hover:border-amber-300 text-slate-700'
+                  }`}
+                >
+                  <span className="mr-1">{t.emoji}</span>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div>
             <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-              Mô tả ảnh anh muốn (tiếng Anh chính xác hơn)
+              Mô tả ảnh (tiếng Anh chính xác hơn — có thể chỉnh template ở trên)
             </label>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={4}
-              placeholder={`Ví dụ:
-- "Modern AI marketing dashboard, blue and purple gradient, professional, 16:9"
-- "Vietnamese SME owner using laptop with charts on screen, warm lighting, photorealistic"
-- "Abstract illustration of CRM workflow with connected nodes, minimal flat design"`}
+              placeholder={`Hoặc gõ prompt riêng. Vd: "Modern AI marketing dashboard, blue and purple gradient, professional"`}
               className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
             />
             <p className="text-[10px] text-slate-500 mt-1">
