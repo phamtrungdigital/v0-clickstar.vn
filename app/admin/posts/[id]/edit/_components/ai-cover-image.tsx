@@ -16,23 +16,55 @@ export function AiCoverImage({
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  const [progress, setProgress] = useState<string | null>(null)
+
   const handleGenerate = () => {
     const finalPrompt = prompt.trim() || (postTitle ? `Cover image for blog post: ${postTitle}` : '')
     if (!finalPrompt) return
     startTransition(async () => {
       setError(null)
       setPreviewUrl(null)
+      setProgress(null)
       try {
         const res = await fetch('/api/admin/ai/image', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ prompt: finalPrompt }),
         })
-        const json = (await res.json()) as { url?: string; error?: string }
-        if (json.error) setError(json.error)
-        else if (json.url) setPreviewUrl(json.url)
+        if (!res.body) {
+          setError('No response body')
+          return
+        }
+        const reader = res.body.getReader()
+        const decoder = new TextDecoder()
+        let buf = ''
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buf += decoder.decode(value, { stream: true })
+          const events = buf.split('\n\n')
+          buf = events.pop() || ''
+          for (const evt of events) {
+            if (!evt.startsWith('data: ')) continue
+            try {
+              const data = JSON.parse(evt.slice(6))
+              if (data.type === 'done' && data.url) {
+                setPreviewUrl(data.url)
+                setProgress(null)
+              } else if (data.type === 'error') {
+                setError(data.error)
+                setProgress(null)
+              } else if (data.type === 'pulse') {
+                setProgress(`Đang vẽ... (${data.elapsedSec}s)`)
+              } else if (data.type === 'status') {
+                setProgress(data.message)
+              }
+            } catch {}
+          }
+        }
       } catch (err: any) {
         setError(err?.message || 'Network error')
+        setProgress(null)
       }
     })
   }
@@ -104,6 +136,13 @@ export function AiCoverImage({
           {error && (
             <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
               ⚠ {error}
+            </div>
+          )}
+
+          {progress && !previewUrl && (
+            <div className="px-3 py-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-700 flex items-center gap-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              {progress}
             </div>
           )}
 

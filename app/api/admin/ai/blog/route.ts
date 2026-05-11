@@ -1,6 +1,4 @@
-import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { generateWithAnthropic, generateWithOpenAI } from '@/lib/ai/providers'
 import type { AiSettings } from '@/lib/ai/settings'
 
 export const runtime = 'nodejs'
@@ -25,57 +23,71 @@ function extractJson(text: string): string {
   return text
 }
 
+// Streaming SSE response so we don't hit Vercel Hobby's 10s function timeout.
+// While bytes keep flowing, Vercel keeps the function alive (up to 5 min).
 export async function POST(req: Request) {
-  try {
-    const { topic } = (await req.json()) as { topic?: string }
-    if (!topic || typeof topic !== 'string' || !topic.trim()) {
-      return NextResponse.json({ error: 'Thiếu chủ đề bài viết' }, { status: 400 })
-    }
+  const encoder = new TextEncoder()
+  const send = (controller: ReadableStreamDefaultController, type: string, payload: any) => {
+    controller.enqueue(
+      encoder.encode(`data: ${JSON.stringify({ type, ...payload })}\n\n`)
+    )
+  }
 
-    const supabase = await createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Chưa đăng nhập' }, { status: 401 })
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        const { topic } = (await req.json()) as { topic?: string }
+        if (!topic || typeof topic !== 'string' || !topic.trim()) {
+          send(controller, 'error', { error: 'Thiếu chủ đề bài viết' })
+          controller.close()
+          return
+        }
 
-    const { data } = await supabase
-      .from('ai_settings')
-      .select('*')
-      .eq('id', 1)
-      .maybeSingle()
-    const settings = data as AiSettings | null
-    if (!settings?.enabled) {
-      return NextResponse.json(
-        { error: 'AI chưa được kích hoạt. Vào /admin/ai để bật.' },
-        { status: 400 }
-      )
-    }
+        const supabase = await createClient()
+        const {
+          data: { user },
+        } = await supabase.auth.getUser()
+        if (!user) {
+          send(controller, 'error', { error: 'Chưa đăng nhập' })
+          controller.close()
+          return
+        }
 
-    const apiKey =
-      settings.blog_provider === 'anthropic'
-        ? settings.anthropic_api_key
-        : settings.openai_api_key
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: `Chưa có ${settings.blog_provider} API key` },
-        { status: 400 }
-      )
-    }
-    if (!settings.blog_model) {
-      return NextResponse.json(
-        { error: 'Chưa chọn blog model. Vào /admin/ai → Viết bài blog' },
-        { status: 400 }
-      )
-    }
+        const { data } = await supabase
+          .from('ai_settings')
+          .select('*')
+          .eq('id', 1)
+          .maybeSingle()
+        const settings = data as AiSettings | null
+        if (!settings?.enabled) {
+          send(controller, 'error', { error: 'AI chưa được kích hoạt. Vào /admin/ai để bật.' })
+          controller.close()
+          return
+        }
 
-    const minWords = Math.max(400, settings.blog_target_words - 200)
-    const maxWords = settings.blog_target_words + 300
+        const apiKey =
+          settings.blog_provider === 'anthropic'
+            ? settings.anthropic_api_key
+            : settings.openai_api_key
+        if (!apiKey) {
+          send(controller, 'error', { error: `Chưa có ${settings.blog_provider} API key` })
+          controller.close()
+          return
+        }
+        if (!settings.blog_model) {
+          send(controller, 'error', { error: 'Chưa chọn blog model. Vào /admin/ai → Viết bài blog' })
+          controller.close()
+          return
+        }
 
-    const baseSystem =
-      settings.blog_system_prompt ||
-      'You are an expert blog writer for ClickStar — a Vietnamese digital marketing & technology agency.'
+        const minWords = Math.max(400, settings.blog_target_words - 200)
+        const maxWords = settings.blog_target_words + 300
 
-    const systemPrompt = `${baseSystem}
+        const baseSystem =
+          settings.blog_system_prompt ||
+          'You are an expert blog writer for ClickStar — a Vietnamese digital marketing & technology agency.'
+
+        const systemPrompt = `${baseSystem}
 
 You are writing a long-form blog post. You MUST return ONLY valid JSON — no preamble, no markdown fences, no explanation outside JSON.
 
@@ -94,64 +106,165 @@ IMPORTANT:
 - Both VI and EN versions cover the same topics in parallel.
 - Output ONLY the JSON object — no text before or after.`
 
-    const userPrompt = `Chủ đề bài viết: ${topic}`
+        const userPrompt = `Chủ đề bài viết: ${topic}`
 
-    const raw =
-      settings.blog_provider === 'anthropic'
-        ? await generateWithAnthropic({
-            apiKey,
-            model: settings.blog_model,
-            system: systemPrompt,
-            prompt: userPrompt,
-            maxTokens: 16384,
-            temperature: 0.7,
+        send(controller, 'status', { message: 'Đang gọi AI...' })
+
+        // Provider-specific streaming
+        let fullText = ''
+        if (settings.blog_provider === 'anthropic') {
+          const res = await fetch('https://api.anthropic.com/v1/messages', {
+            method: 'POST',
+            headers: {
+              'x-api-key': apiKey,
+              'anthropic-version': '2023-06-01',
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: settings.blog_model,
+              max_tokens: 16384,
+              system: systemPrompt,
+              messages: [{ role: 'user', content: userPrompt }],
+              stream: true,
+            }),
           })
-        : await generateWithOpenAI({
-            apiKey,
-            model: settings.blog_model,
-            system: systemPrompt,
-            prompt: userPrompt,
-            maxTokens: 16384,
-            temperature: 0.7,
+          if (!res.ok) {
+            const text = await res.text()
+            send(controller, 'error', { error: `Anthropic ${res.status}: ${text.slice(0, 300)}` })
+            controller.close()
+            return
+          }
+
+          const reader = res.body!.getReader()
+          const decoder = new TextDecoder()
+          let buf = ''
+          let charsSinceLastPing = 0
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            buf += decoder.decode(value, { stream: true })
+            const lines = buf.split('\n')
+            buf = lines.pop() || ''
+            for (const line of lines) {
+              if (!line.startsWith('data: ')) continue
+              const payload = line.slice(6).trim()
+              if (!payload) continue
+              try {
+                const evt = JSON.parse(payload)
+                if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
+                  fullText += evt.delta.text
+                  charsSinceLastPing += evt.delta.text.length
+                  // Throttle progress events to avoid spam: every ~500 chars
+                  if (charsSinceLastPing >= 500) {
+                    send(controller, 'progress', { chars: fullText.length })
+                    charsSinceLastPing = 0
+                  }
+                }
+              } catch {}
+            }
+          }
+        } else {
+          // OpenAI streaming
+          const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: settings.blog_model,
+              max_tokens: 16384,
+              temperature: 0.7,
+              stream: true,
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: userPrompt },
+              ],
+            }),
           })
+          if (!res.ok) {
+            const text = await res.text()
+            send(controller, 'error', { error: `OpenAI ${res.status}: ${text.slice(0, 300)}` })
+            controller.close()
+            return
+          }
 
-    const jsonText = extractJson(raw)
-    let parsed: GeneratedPost
-    try {
-      parsed = JSON.parse(jsonText) as GeneratedPost
-    } catch (parseErr: any) {
-      const truncated = !jsonText.trimEnd().endsWith('}')
-      const hint = truncated
-        ? `AI đã trả về output dài hơn giới hạn → JSON bị cắt cuối. Thử giảm "Số từ mục tiêu" trong /admin/ai → Viết bài blog (đang là ${settings.blog_target_words}, thử 800-1000), hoặc đổi sang Claude Sonnet 4.6 / Haiku 4.5.`
-        : `AI trả JSON không hợp lệ. Thử lại — nếu lặp lại, đổi model trong /admin/ai → Viết bài blog.`
-      return NextResponse.json(
-        { error: `${parseErr.message}. ${hint}` },
-        { status: 422 }
-      )
-    }
+          const reader = res.body!.getReader()
+          const decoder = new TextDecoder()
+          let buf = ''
+          let charsSinceLastPing = 0
+          while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            buf += decoder.decode(value, { stream: true })
+            const lines = buf.split('\n')
+            buf = lines.pop() || ''
+            for (const line of lines) {
+              if (!line.startsWith('data: ')) continue
+              const payload = line.slice(6).trim()
+              if (!payload || payload === '[DONE]') continue
+              try {
+                const evt = JSON.parse(payload)
+                const delta = evt.choices?.[0]?.delta?.content
+                if (typeof delta === 'string') {
+                  fullText += delta
+                  charsSinceLastPing += delta.length
+                  if (charsSinceLastPing >= 500) {
+                    send(controller, 'progress', { chars: fullText.length })
+                    charsSinceLastPing = 0
+                  }
+                }
+              } catch {}
+            }
+          }
+        }
 
-    const required = [
-      'title_vi',
-      'title_en',
-      'excerpt_vi',
-      'excerpt_en',
-      'content_vi',
-      'content_en',
-    ] as const
-    for (const k of required) {
-      if (typeof parsed[k] !== 'string') {
-        return NextResponse.json(
-          { error: `JSON thiếu field "${k}". Thử lại?` },
-          { status: 422 }
-        )
+        // Parse final JSON
+        const jsonText = extractJson(fullText)
+        let parsed: GeneratedPost
+        try {
+          parsed = JSON.parse(jsonText) as GeneratedPost
+        } catch (parseErr: any) {
+          const truncated = !jsonText.trimEnd().endsWith('}')
+          const hint = truncated
+            ? `AI trả output dài hơn giới hạn → JSON bị cắt cuối. Thử giảm "Số từ mục tiêu" trong /admin/ai (đang ${settings.blog_target_words}, thử 800-1000), hoặc đổi sang model nhỏ hơn.`
+            : `AI trả JSON không hợp lệ. Thử lại.`
+          send(controller, 'error', { error: `${parseErr.message}. ${hint}` })
+          controller.close()
+          return
+        }
+
+        const required = [
+          'title_vi',
+          'title_en',
+          'excerpt_vi',
+          'excerpt_en',
+          'content_vi',
+          'content_en',
+        ] as const
+        for (const k of required) {
+          if (typeof parsed[k] !== 'string') {
+            send(controller, 'error', { error: `JSON thiếu field "${k}". Thử lại?` })
+            controller.close()
+            return
+          }
+        }
+
+        send(controller, 'done', { post: parsed })
+      } catch (err: any) {
+        send(controller, 'error', { error: err?.message || 'Generation failed' })
+      } finally {
+        controller.close()
       }
-    }
+    },
+  })
 
-    return NextResponse.json({ post: parsed })
-  } catch (err: any) {
-    return NextResponse.json(
-      { error: err?.message || 'Generation failed' },
-      { status: 500 }
-    )
-  }
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      'Cache-Control': 'no-cache, no-transform',
+      Connection: 'keep-alive',
+      'X-Accel-Buffering': 'no',
+    },
+  })
 }

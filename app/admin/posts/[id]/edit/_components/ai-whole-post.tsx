@@ -23,22 +23,54 @@ export function AiWholePost({
   const [preview, setPreview] = useState<GeneratedPost | null>(null)
   const [error, setError] = useState<string | null>(null)
 
+  const [progress, setProgress] = useState<string | null>(null)
+
   const handleGenerate = () => {
     if (!topic.trim()) return
     startTransition(async () => {
       setError(null)
       setPreview(null)
+      setProgress(null)
       try {
         const res = await fetch('/api/admin/ai/blog', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ topic }),
         })
-        const json = (await res.json()) as { post?: GeneratedPost; error?: string }
-        if (json.error) setError(json.error)
-        else if (json.post) setPreview(json.post)
+        if (!res.body) {
+          setError('No response body')
+          return
+        }
+        const reader = res.body.getReader()
+        const decoder = new TextDecoder()
+        let buf = ''
+        while (true) {
+          const { done, value } = await reader.read()
+          if (done) break
+          buf += decoder.decode(value, { stream: true })
+          const events = buf.split('\n\n')
+          buf = events.pop() || ''
+          for (const evt of events) {
+            if (!evt.startsWith('data: ')) continue
+            try {
+              const data = JSON.parse(evt.slice(6))
+              if (data.type === 'done' && data.post) {
+                setPreview(data.post)
+                setProgress(null)
+              } else if (data.type === 'error') {
+                setError(data.error)
+                setProgress(null)
+              } else if (data.type === 'progress') {
+                setProgress(`Đang viết... (${data.chars} ký tự)`)
+              } else if (data.type === 'status') {
+                setProgress(data.message)
+              }
+            } catch {}
+          }
+        }
       } catch (err: any) {
         setError(err?.message || 'Network error')
+        setProgress(null)
       }
     })
   }
@@ -111,6 +143,13 @@ export function AiWholePost({
           {error && (
             <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
               ⚠ {error}
+            </div>
+          )}
+
+          {progress && !preview && (
+            <div className="px-3 py-2 bg-violet-50 border border-violet-200 rounded text-xs text-violet-700 flex items-center gap-2">
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              {progress}
             </div>
           )}
 
