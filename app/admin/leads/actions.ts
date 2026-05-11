@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
-import type { LeadStatus } from '@/lib/cms/leads'
+import type { LeadStatus } from '@/lib/cms/leads-shared'
 
 export async function updateLeadStatus(id: string, status: LeadStatus) {
   const supabase = await createClient()

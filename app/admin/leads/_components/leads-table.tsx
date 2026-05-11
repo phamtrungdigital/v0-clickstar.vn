@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from 'react'
 import { Mail, Phone, Trash2, ChevronDown } from 'lucide-react'
-import type { Lead, LeadStatus } from '@/lib/cms/leads'
-import { LEAD_STATUS_LABEL, LEAD_STATUS_COLOR } from '@/lib/cms/leads'
+import type { Lead, LeadStatus } from '@/lib/cms/leads-shared'
+import { LEAD_STATUS_LABEL, LEAD_STATUS_COLOR } from '@/lib/cms/leads-shared'
 import { updateLeadStatus, deleteLead, updateLeadNotes } from '../actions'
 
 const ALL_STATUS: LeadStatus[] = ['new', 'contacted', 'qualified', 'quoted', 'won', 'lost']
