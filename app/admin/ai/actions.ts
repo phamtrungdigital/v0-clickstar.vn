@@ -33,6 +33,11 @@ export type SaveAiSettingsInput = {
   image_size: ImageSize
   image_quality: ImageQuality
   image_style_prefix: string
+
+  body_image_model: ImageModel
+  body_image_size: ImageSize
+  body_image_quality: ImageQuality
+  body_image_style_prefix: string
 }
 
 export async function saveAiSettings(input: SaveAiSettingsInput) {

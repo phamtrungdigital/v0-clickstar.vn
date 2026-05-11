@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
-import type { AiSettings } from '@/lib/ai/settings'
+import type { AiSettings, BlogStyle } from '@/lib/ai/settings'
+import { STYLE_PROMPT_HINTS } from '@/lib/ai/settings'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300
@@ -36,12 +37,28 @@ export async function POST(req: Request) {
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const { topic } = (await req.json()) as { topic?: string }
-        if (!topic || typeof topic !== 'string' || !topic.trim()) {
+        const body = (await req.json()) as {
+          topic?: string
+          keyword?: string
+          style?: BlogStyle
+          targetWords?: number
+          outline?: {
+            title_vi: string
+            title_en: string
+            sections: Array<{ heading_vi: string; heading_en: string; summary_vi: string }>
+          }
+          includeImages?: boolean
+        }
+        const topic = body.topic?.trim()
+        if (!topic) {
           send(controller, 'error', { error: 'Thiếu chủ đề bài viết' })
           controller.close()
           return
         }
+        const keyword = body.keyword?.trim() || ''
+        const style = body.style
+        const outline = body.outline
+        const includeImages = body.includeImages !== false // default true
 
         const supabase = await createClient()
         const {
@@ -80,14 +97,38 @@ export async function POST(req: Request) {
           return
         }
 
-        const minWords = Math.max(400, settings.blog_target_words - 200)
-        const maxWords = settings.blog_target_words + 300
+        const effectiveWords = body.targetWords || settings.blog_target_words
+        const minWords = Math.max(400, effectiveWords - 200)
+        const maxWords = effectiveWords + 300
 
         const baseSystem =
           settings.blog_system_prompt ||
           'You are an expert blog writer for ClickStar — a Vietnamese digital marketing & technology agency.'
 
-        const systemPrompt = `${baseSystem}
+        const styleHint = style ? `\n\nSTYLE: ${STYLE_PROMPT_HINTS[style]}` : ''
+        const keywordHint = keyword
+          ? `\n\nPRIMARY SEO KEYWORD: "${keyword}" — appear in title, intro, conclusion, and at least 2 H2 headings. Density ~1-2% (natural, not stuffed).`
+          : ''
+        const imageHint = includeImages
+          ? `\n\nINLINE IMAGES: Insert 2-4 image markers in content_vi and content_en at sensible spots (after intro, between H2 sections) using EXACT format:
+[[IMAGE: short English description for AI image gen, max 12 words]]
+Each marker on its own line, blank line above and below. Examples:
+[[IMAGE: modern marketing dashboard showing analytics charts]]
+[[IMAGE: team collaboration workspace with diverse professionals]]
+Do NOT use Markdown image syntax (![]()). Use ONLY [[IMAGE: ...]].`
+          : ''
+
+        const outlineHint = outline
+          ? `\n\nFOLLOW THIS APPROVED OUTLINE STRICTLY:
+Title (VI): ${outline.title_vi}
+Title (EN): ${outline.title_en}
+Sections:
+${outline.sections.map((s, i) => `${i + 1}. ${s.heading_vi} (${s.heading_en}) — ${s.summary_vi}`).join('\n')}
+
+Use these exact titles + section headings (translate naturally for EN). Each section ~${Math.round(effectiveWords / outline.sections.length)} words.`
+          : ''
+
+        const systemPrompt = `${baseSystem}${styleHint}${keywordHint}
 
 You are writing a long-form blog post. You MUST return ONLY valid JSON — no preamble, no markdown fences, no explanation outside JSON.
 
@@ -97,13 +138,13 @@ JSON schema (return exactly these 6 keys):
   "title_en": "English title — engaging, SEO-friendly",
   "excerpt_vi": "Tóm tắt VN 1-2 câu (~150 ký tự)",
   "excerpt_en": "English excerpt 1-2 sentences (~150 chars)",
-  "content_vi": "Toàn bộ bài viết tiếng Việt dạng Markdown. intro + 3-5 mục H2 (## ...) + bullet list khi cần + conclusion. Mục tiêu ${settings.blog_target_words} từ (tối thiểu ${minWords}, tối đa ${maxWords}).",
-  "content_en": "Full English blog post in Markdown — mirror VI structure. Target ${settings.blog_target_words} words."
+  "content_vi": "Toàn bộ bài viết tiếng Việt dạng Markdown. intro + 3-5 mục H2 (## ...) + bullet list khi cần + conclusion. Mục tiêu ${effectiveWords} từ (tối thiểu ${minWords}, tối đa ${maxWords}).",
+  "content_en": "Full English blog post in Markdown — mirror VI structure. Target ${effectiveWords} words."
 }
 
 IMPORTANT:
 - Content MUST be in Markdown.
-- Both VI and EN versions cover the same topics in parallel.
+- Both VI and EN versions cover the same topics in parallel.${imageHint}${outlineHint}
 - Output ONLY the JSON object — no text before or after.`
 
         const userPrompt = `Chủ đề bài viết: ${topic}`

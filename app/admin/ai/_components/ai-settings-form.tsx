@@ -57,6 +57,10 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
     image_size: initial?.image_size ?? '1536x1024',
     image_quality: initial?.image_quality ?? 'high',
     image_style_prefix: initial?.image_style_prefix ?? '',
+    body_image_model: initial?.body_image_model ?? 'gpt-image-1',
+    body_image_size: initial?.body_image_size ?? '1024x1024',
+    body_image_quality: initial?.body_image_quality ?? 'medium',
+    body_image_style_prefix: initial?.body_image_style_prefix ?? '',
   })
 
   const [tab, setTab] = useState<Tab>('keys')
@@ -377,77 +381,168 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
           )}
 
           {tab === 'image' && (
-            <div className="space-y-4">
-              <p className="text-xs text-slate-500">
-                Cấu hình cho nút <strong>🎨 Tạo ảnh AI</strong> ở Cover image của post. OpenAI có 2 model:{' '}
-                <strong>gpt-image-1</strong> (chất lượng cao mới, ~$0.04/ảnh) và <strong>dall-e-3</strong> (cũ
-                hơn, ổn định).
-              </p>
+            <div className="space-y-6">
+              {/* COVER IMAGE — 1 ảnh đại diện per bài, chất lượng cao */}
+              <section className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 space-y-3">
+                <header className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                    📸 Ảnh đại diện (Cover)
+                  </h3>
+                  <span className="text-[10px] text-slate-500">1 ảnh/bài, chất lượng cao</span>
+                </header>
+                <p className="text-xs text-slate-500">
+                  Dùng cho nút <strong>🎨 Tạo ảnh AI</strong> ở sidebar Cover image. Đề xuất:
+                  gpt-image-1 1536×1024 high (~$0.04).
+                </p>
 
-              <div>
-                <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                  Image model
-                </label>
-                <select
-                  value={draft.image_model}
-                  onChange={(e) => update('image_model', e.target.value as ImageModel)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
-                >
-                  <option value="gpt-image-1">gpt-image-1 (recommend, ~$0.04)</option>
-                  <option value="dall-e-3">DALL-E 3 (~$0.04 standard, ~$0.08 HD)</option>
-                </select>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                    Default size
+                    Model
                   </label>
                   <select
-                    value={draft.image_size}
-                    onChange={(e) => update('image_size', e.target.value as ImageSize)}
+                    value={draft.image_model}
+                    onChange={(e) => update('image_model', e.target.value as ImageModel)}
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
                   >
-                    {IMAGE_SIZES.map((s) => (
-                      <option key={s.value} value={s.value}>
-                        {s.label}
-                      </option>
-                    ))}
+                    <option value="gpt-image-1">gpt-image-1 (recommend, ~$0.04)</option>
+                    <option value="dall-e-3">DALL-E 3 (~$0.04 standard, ~$0.08 HD)</option>
                   </select>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                      Size
+                    </label>
+                    <select
+                      value={draft.image_size}
+                      onChange={(e) => update('image_size', e.target.value as ImageSize)}
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                    >
+                      {IMAGE_SIZES.map((s) => (
+                        <option key={s.value} value={s.value}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                      Quality
+                    </label>
+                    <select
+                      value={draft.image_quality}
+                      onChange={(e) => update('image_quality', e.target.value as ImageQuality)}
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                    >
+                      {draft.image_model === 'gpt-image-1' ? (
+                        <>
+                          <option value="low">low (~$0.01)</option>
+                          <option value="medium">medium (~$0.02)</option>
+                          <option value="high">high (~$0.04)</option>
+                          <option value="auto">auto</option>
+                        </>
+                      ) : (
+                        <>
+                          <option value="standard">standard (~$0.04)</option>
+                          <option value="hd">HD (~$0.08)</option>
+                        </>
+                      )}
+                    </select>
+                  </div>
+                </div>
+
+                <SystemPromptArea
+                  label="Style prefix (append vào prompt cover)"
+                  value={draft.image_style_prefix}
+                  onChange={(v) => update('image_style_prefix', v)}
+                  rows={2}
+                  hint="VD: 'modern, professional, clean, suitable for Vietnamese tech brand'"
+                />
+              </section>
+
+              {/* BODY IMAGE — N ảnh inline trong content, rẻ hơn, vuông */}
+              <section className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 space-y-3">
+                <header className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                    🖼️ Ảnh trong bài (Body inline)
+                  </h3>
+                  <span className="text-[10px] text-slate-500">Nhiều ảnh/bài, nên rẻ + vuông</span>
+                </header>
+                <p className="text-xs text-slate-500">
+                  Khi AI viết bài, sẽ chèn marker{' '}
+                  <code className="px-1 bg-slate-100 dark:bg-slate-800 rounded">[[IMAGE: mô tả]]</code> trong
+                  content. Editor cho phép click từng marker để gen ảnh. Đề xuất: gpt-image-1 1024×1024
+                  medium (~$0.02/ảnh).
+                </p>
+
                 <div>
                   <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                    Quality
+                    Model
                   </label>
                   <select
-                    value={draft.image_quality}
-                    onChange={(e) => update('image_quality', e.target.value as ImageQuality)}
+                    value={draft.body_image_model}
+                    onChange={(e) => update('body_image_model', e.target.value as ImageModel)}
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
                   >
-                    {draft.image_model === 'gpt-image-1' ? (
-                      <>
-                        <option value="low">low (~$0.01)</option>
-                        <option value="medium">medium (~$0.02)</option>
-                        <option value="high">high (~$0.04)</option>
-                        <option value="auto">auto</option>
-                      </>
-                    ) : (
-                      <>
-                        <option value="standard">standard (~$0.04)</option>
-                        <option value="hd">HD (~$0.08)</option>
-                      </>
-                    )}
+                    <option value="gpt-image-1">gpt-image-1 (recommend)</option>
+                    <option value="dall-e-3">DALL-E 3</option>
                   </select>
                 </div>
-              </div>
 
-              <SystemPromptArea
-                label="Style prefix (append vào mỗi prompt)"
-                value={draft.image_style_prefix}
-                onChange={(v) => update('image_style_prefix', v)}
-                rows={3}
-                hint="VD: 'modern, professional, clean, suitable for Vietnamese tech brand'. AI thêm vào cuối mỗi prompt để giữ visual consistency"
-              />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                      Size
+                    </label>
+                    <select
+                      value={draft.body_image_size}
+                      onChange={(e) => update('body_image_size', e.target.value as ImageSize)}
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                    >
+                      {IMAGE_SIZES.map((s) => (
+                        <option key={s.value} value={s.value}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                      Quality
+                    </label>
+                    <select
+                      value={draft.body_image_quality}
+                      onChange={(e) =>
+                        update('body_image_quality', e.target.value as ImageQuality)
+                      }
+                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                    >
+                      {draft.body_image_model === 'gpt-image-1' ? (
+                        <>
+                          <option value="low">low (~$0.01)</option>
+                          <option value="medium">medium (~$0.02)</option>
+                          <option value="high">high (~$0.04)</option>
+                          <option value="auto">auto</option>
+                        </>
+                      ) : (
+                        <>
+                          <option value="standard">standard (~$0.04)</option>
+                          <option value="hd">HD (~$0.08)</option>
+                        </>
+                      )}
+                    </select>
+                  </div>
+                </div>
+
+                <SystemPromptArea
+                  label="Style prefix (append vào prompt body image)"
+                  value={draft.body_image_style_prefix}
+                  onChange={(v) => update('body_image_style_prefix', v)}
+                  rows={2}
+                  hint="Có thể khác cover. VD: 'flat illustration, minimal, vector-style' để body images đồng nhất với nhau"
+                />
+              </section>
             </div>
           )}
         </div>

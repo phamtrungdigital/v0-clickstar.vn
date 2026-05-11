@@ -21,7 +21,9 @@ export async function POST(req: Request) {
     async start(controller) {
       let heartbeat: NodeJS.Timeout | null = null
       try {
-        const { prompt } = (await req.json()) as { prompt?: string }
+        const body = (await req.json()) as { prompt?: string; mode?: 'cover' | 'body' }
+        const prompt = body.prompt
+        const mode = body.mode || 'cover'
         if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
           send(controller, 'error', { error: 'Thiếu prompt mô tả ảnh' })
           controller.close()
@@ -55,8 +57,23 @@ export async function POST(req: Request) {
           return
         }
 
-        const finalPrompt = settings.image_style_prefix
-          ? `${prompt}\n\nStyle hints: ${settings.image_style_prefix}`
+        // Pick config based on mode (cover = high quality 16:9 / body = cheaper square)
+        const cfg = mode === 'body'
+          ? {
+              model: settings.body_image_model,
+              size: settings.body_image_size,
+              quality: settings.body_image_quality,
+              stylePrefix: settings.body_image_style_prefix,
+            }
+          : {
+              model: settings.image_model,
+              size: settings.image_size,
+              quality: settings.image_quality,
+              stylePrefix: settings.image_style_prefix,
+            }
+
+        const finalPrompt = cfg.stylePrefix
+          ? `${prompt}\n\nStyle hints: ${cfg.stylePrefix}`
           : prompt
 
         send(controller, 'status', { message: 'Đang vẽ ảnh...' })
@@ -71,9 +88,9 @@ export async function POST(req: Request) {
         const b64 = await generateImageWithOpenAI({
           apiKey: settings.openai_api_key,
           prompt: finalPrompt,
-          model: settings.image_model,
-          size: settings.image_size,
-          quality: settings.image_quality,
+          model: cfg.model,
+          size: cfg.size,
+          quality: cfg.quality,
         })
 
         if (heartbeat) {
@@ -85,7 +102,9 @@ export async function POST(req: Request) {
 
         const buffer = Buffer.from(b64, 'base64')
         const safeName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.png`
-        const path = `cms/ai-generated/${safeName}`
+        const path = mode === 'body'
+          ? `cms/ai-body/${safeName}`
+          : `cms/ai-generated/${safeName}`
 
         const { error: uploadError } = await supabase.storage
           .from('media')

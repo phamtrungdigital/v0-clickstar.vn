@@ -10,8 +10,21 @@ import { ImagePicker } from '@/app/admin/pages/[slug]/edit/_components/image-pic
 import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
 import { AiWholePost } from './ai-whole-post'
 import { AiCoverImage } from './ai-cover-image'
+import { BodyImageReplacer } from './body-image-replacer'
 
 const EMPTY_I18N = { vi: '', en: '' }
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[đ]/g, 'd')
+    .replace(/[^a-z0-9-]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 60)
+}
 
 export function PostEditor({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
   return (
@@ -87,18 +100,10 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
                 title: { vi: p.title_vi, en: p.title_en },
                 excerpt: { vi: p.excerpt_vi, en: p.excerpt_en },
                 content: { vi: p.content_vi, en: p.content_en },
-                // Auto-slugify from VI title if no slug yet
-                slug:
-                  prev.slug ||
-                  p.title_vi
-                    .toLowerCase()
-                    .normalize('NFD')
-                    .replace(/[̀-ͯ]/g, '')
-                    .replace(/[đ]/g, 'd')
-                    .replace(/[^a-z0-9-]/g, '-')
-                    .replace(/-+/g, '-')
-                    .replace(/^-|-$/g, '')
-                    .slice(0, 60),
+                // Slug: prefer SEO keyword, fall back to VI title
+                slug: prev.slug || slugify(p.keyword || p.title_vi),
+                // Auto-fill tags from keyword if empty
+                tags: prev.tags.length === 0 && p.keyword ? [p.keyword.trim()] : prev.tags,
               }))
               setStatus('dirty')
             }}
@@ -186,6 +191,10 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               rows={20}
               value={draft.content}
               onChange={(v) => update('content', v)}
+            />
+            <BodyImageReplacer
+              content={draft.content}
+              onContentChange={(next) => update('content', next)}
             />
           </div>
         </div>
