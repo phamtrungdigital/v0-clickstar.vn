@@ -32,6 +32,7 @@ import {
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
+import { PageHero } from '@/components/sections/page-hero'
 
 export default function DigitalMarketingPage() {
   const { t } = useLanguage()
@@ -282,119 +283,7 @@ export default function DigitalMarketingPage() {
     <>
       <MainNav />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
-          </div>
-          {/* Background decoration */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-blue-500/25">
-                  <Zap className="w-4 h-4" />
-                  {t('DIGITAL MARKETING', 'DIGITAL MARKETING')}
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-                  {t('Tăng trưởng doanh thu với', 'Grow revenue with')}{' '}
-                  <span className="text-primary">{t('Digital Marketing', 'Digital Marketing')}</span>
-                </h1>
-
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                  {t(
-                    'Chiến lược marketing đa kênh được thiết kế riêng cho doanh nghiệp của bạn. Từ quảng cáo Google, Facebook đến SEO - chúng tôi giúp bạn tiếp cận đúng khách hàng với chi phí tối ưu.',
-                    'Multi-channel marketing strategy designed specifically for your business. From Google, Facebook ads to SEO - we help you reach the right customers at optimal cost.'
-                  )}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Link
-                    href="#contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
-                  >
-                    {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <button className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-foreground font-semibold px-8 py-4 rounded-full border border-border transition-all duration-300">
-                    <Play className="w-5 h-5 text-primary" />
-                    {t('Xem case study', 'Watch case study')}
-                  </button>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                  {stats.map((stat, index) => (
-                    <div key={index}>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-foreground">{stat.value}</div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Platforms Grid */}
-              <div className="relative">
-                <div className="bg-white rounded-3xl shadow-2xl p-8 lg:p-10">
-                  <h3 className="text-lg font-bold text-foreground mb-6 text-center">
-                    {t('Nền tảng quảng cáo chúng tôi hỗ trợ', 'Advertising platforms we support')}
-                  </h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    {platforms.map((platform, index) => (
-                      <div
-                        key={index}
-                        className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 ${platform.color} hover:scale-105 transition-transform cursor-pointer`}
-                      >
-                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm">
-                          <span className="text-2xl font-bold text-gray-700">
-                            {platform.name.charAt(0)}
-                          </span>
-                        </div>
-                        <span className="text-xs font-medium text-gray-600 text-center">{platform.name}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Trust badges */}
-                  <div className="mt-8 pt-6 border-t border-border">
-                    <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-emerald-500" />
-                        <span>{t('Google Partner', 'Google Partner')}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-blue-500" />
-                        <span>{t('Meta Partner', 'Meta Partner')}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute -top-6 -right-6 bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                  +250% ROI
-                </div>
-                <div className="absolute -bottom-4 -left-4 bg-white px-4 py-3 rounded-2xl shadow-lg flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-foreground">{t('Tăng trưởng', 'Growth')}</div>
-                    <div className="text-xs text-muted-foreground">{t('Liên tục mỗi tháng', 'Every month')}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <PageHero />
 
 {/* Problems & Solutions */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">

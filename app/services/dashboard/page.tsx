@@ -3,6 +3,7 @@
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
+import { PageHero } from '@/components/sections/page-hero'
 import Link from 'next/link'
 import { 
   BarChart3, 
@@ -211,148 +212,7 @@ export default function DashboardServicePage() {
       <MainNav />
       
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
-          </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
-                  <BarChart3 className="w-4 h-4" />
-                  {t('DASHBOARD DỮ LIỆU', 'DATA DASHBOARD')}
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
-                  {t('Biến dữ liệu thành', 'Transform data into')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
-                    {t('quyết định', 'decisions')}
-                  </span>
-                </h1>
-
-                <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                  {t(
-                    'Dashboard thông minh tích hợp AI, giúp bạn nắm bắt toàn bộ hoạt động kinh doanh trong một màn hình.',
-                    'AI-integrated smart dashboard helps you capture all business activities in one screen.'
-                  )}
-                </p>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-6 mb-8">
-                  <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-foreground">50+</div>
-                    <div className="text-sm text-muted-foreground">{t('Nguồn tích hợp', 'Integrations')}</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-foreground">Real-time</div>
-                    <div className="text-sm text-muted-foreground">{t('Cập nhật', 'Updates')}</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl lg:text-4xl font-bold text-foreground">AI</div>
-                    <div className="text-sm text-muted-foreground">Claude 4.7</div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25">
-                    {t('Xem demo', 'View Demo')}
-                    <Play className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary">
-                    {t('Đặt lịch tư vấn', 'Book Consultation')}
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              </div>
-
-              {/* Dashboard Preview */}
-              <div className="relative">
-                <div className="relative bg-foreground/95 backdrop-blur rounded-2xl border border-border p-4 shadow-2xl">
-                  {/* Browser bar */}
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
-                    </div>
-                    <div className="flex-1 bg-white/10 rounded-full h-6 flex items-center px-3">
-                      <span className="text-xs text-gray-400">dashboard.clickstar.vn</span>
-                    </div>
-                  </div>
-                  
-                  {/* Dashboard content */}
-                  <div className="space-y-3">
-                    {/* Top metrics */}
-                    <div className="grid grid-cols-4 gap-2">
-                      {[
-                        { label: t('Doanh thu', 'Revenue'), value: '₫2.4B', change: '+18%', color: 'text-emerald-400' },
-                        { label: t('Chi phí ADS', 'Ad Spend'), value: '₫180M', change: '-12%', color: 'text-blue-400' },
-                        { label: 'ROAS', value: '4.2x', change: '+25%', color: 'text-purple-400' },
-                        { label: t('Leads', 'Leads'), value: '1,247', change: '+32%', color: 'text-amber-400' }
-                      ].map((metric, i) => (
-                        <div key={i} className="bg-slate-700/50 rounded-lg p-2">
-                          <div className="text-[10px] text-slate-400">{metric.label}</div>
-                          <div className={`text-sm font-bold ${metric.color}`}>{metric.value}</div>
-                          <div className="text-[10px] text-emerald-400">{metric.change}</div>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    {/* Chart placeholder */}
-                    <div className="bg-slate-700/30 rounded-lg p-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-slate-300">{t('Hiệu quả theo kênh', 'Channel Performance')}</span>
-                        <span className="text-[10px] text-slate-400">{t('7 ngày qua', 'Last 7 days')}</span>
-                      </div>
-                      <div className="flex items-end gap-1 h-20">
-                        {[40, 65, 45, 80, 60, 90, 75].map((h, i) => (
-                          <div key={i} className="flex-1 bg-gradient-to-t from-primary to-primary-dark rounded-t" style={{ height: `${h}%` }} />
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Bottom cards */}
-                    <div className="grid grid-cols-2 gap-2">
-                      <div className="bg-slate-700/30 rounded-lg p-2">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Bot className="w-4 h-4 text-purple-400" />
-                          <span className="text-xs text-slate-300">AI Insights</span>
-                        </div>
-                        <p className="text-[10px] text-slate-400 leading-relaxed">
-                          {t('"Tăng ngân sách Google Ads 20% để tối ưu ROAS"', '"Increase Google Ads budget 20% to optimize ROAS"')}
-                        </p>
-                      </div>
-                      <div className="bg-slate-700/30 rounded-lg p-2">
-                        <div className="flex items-center gap-2 mb-1">
-                          <Activity className="w-4 h-4 text-emerald-400" />
-                          <span className="text-xs text-slate-300">{t('Live', 'Live')}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                          <span className="text-[10px] text-slate-400">{t('23 người online', '23 users online')}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-                  <Zap className="w-3 h-3" />
-                  Real-time
-                </div>
-                <div className="absolute -bottom-4 -left-4 bg-purple-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
-                  <Brain className="w-3 h-3" />
-                  AI Powered
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <PageHero />
 
         {/* Why Dashboard Section */}
         <section className="py-12 lg:py-16 bg-background">

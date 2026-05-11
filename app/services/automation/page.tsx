@@ -3,6 +3,7 @@
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
+import { PageHero } from '@/components/sections/page-hero'
 import Link from 'next/link'
 import { 
   Sparkles, 
@@ -373,122 +374,7 @@ export default function AIAutomationPage() {
     <>
       <MainNav />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-primary px-4 py-2 rounded-full mb-6 shadow-sm">
-                  <Bot className="w-4 h-4" />
-                  <span className="text-sm font-medium">AI Automation 2026</span>
-                </div>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-                  Tự động hóa với{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
-                    AI Automation
-                  </span>
-                </h1>
-
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  Kết hợp sức mạnh của Claude, GPT, N8N và các công nghệ AI hàng đầu để 
-                  tự động hóa mọi quy trình kinh doanh. Tiết kiệm thời gian, tối ưu chi phí, 
-                  tận dụng xu hướng công nghệ lớn.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
-                  >
-                    Tư vấn miễn phí
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="#workflow"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-primary font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
-                  >
-                    <Play className="w-5 h-5" />
-                    Xem workflow
-                  </Link>
-                </div>
-
-                {/* Quick stats */}
-                <div className="flex flex-wrap gap-6">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">80%</p>
-                      <p className="text-xs text-muted-foreground">Tiết kiệm thời gian</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">24/7</p>
-                      <p className="text-xs text-muted-foreground">Hoạt động liên tục</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Star className="w-5 h-5 text-primary" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">100+</p>
-                      <p className="text-xs text-muted-foreground">Workflows đã triển khai</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right - Robot Illustration */}
-              <div className="relative flex items-center justify-center">
-                <div className="relative w-72 h-72 md:w-80 md:h-80">
-                  <RobotSVG />
-                  
-                  {/* Floating elements around robot */}
-                  <div className="absolute -top-4 -right-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#D97757] to-[#C4653F] rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">C</span>
-                      </div>
-                      <span className="text-xs font-medium text-foreground">Claude</span>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#10A37F] to-[#0D8F6F] rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">GPT</span>
-                      </div>
-                      <span className="text-xs font-medium text-foreground">GPT-4o</span>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute top-1/2 -right-8 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#EA4B71] to-[#FF6B6B] rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-[10px]">N8N</span>
-                      </div>
-                      <span className="text-xs font-medium text-foreground">N8N</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <PageHero />
 
         {/* Why Automation - Dark */}
         <section className="py-16 lg:py-20 bg-foreground">

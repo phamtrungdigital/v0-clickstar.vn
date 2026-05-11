@@ -2,6 +2,7 @@
 
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
+import { PageHero } from '@/components/sections/page-hero'
 import { useLanguage } from '@/contexts/language-context'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -368,133 +369,7 @@ export default function WebsiteDesignPage() {
     <>
       <MainNav />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
-          </div>
-          {/* Background decoration */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-purple-500/25">
-                  <Globe className="w-4 h-4" />
-                  {t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-                  {t('Website ', 'Website ')}<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
-                    {t('chuyển đổi cao', 'that converts')}
-                  </span>
-                </h1>
-
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                  {t(
-                    'Thiết kế website chuyên nghiệp, tối ưu trải nghiệm người dùng và tỷ lệ chuyển đổi. Từ concept đến launch, chúng tôi đồng hành cùng bạn.',
-                    'Professional website design, optimized user experience and conversion rate. From concept to launch, we accompany you.'
-                  )}
-                </p>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-6 mb-10">
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">200+</div>
-                    <div className="text-sm text-muted-foreground">{t('Dự án hoàn thành', 'Projects completed')}</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">95+</div>
-                    <div className="text-sm text-muted-foreground">{t('Điểm PageSpeed', 'PageSpeed Score')}</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">3x</div>
-                    <div className="text-sm text-muted-foreground">{t('Tăng Conversion', 'Conversion increase')}</div>
-                  </div>
-                </div>
-
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href="#contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
-                  >
-                    {t('Nhận báo giá miễn phí', 'Get free quote')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="#portfolio"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-foreground font-semibold px-8 py-4 rounded-full border border-border transition-all duration-300"
-                  >
-                    <Eye className="w-5 h-5" />
-                    {t('Xem Portfolio', 'View Portfolio')}
-                  </Link>
-                </div>
-              </div>
-
-              {/* Hero Visual */}
-              <div className="relative">
-                <div className="relative bg-white rounded-2xl shadow-2xl p-2 border border-border">
-                  {/* Browser mockup */}
-                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-t-xl">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                      <div className="w-3 h-3 rounded-full bg-green-400" />
-                    </div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-muted-foreground flex items-center gap-2 border">
-                        <Shield className="w-3 h-3 text-green-500" />
-                        yourwebsite.com
-                      </div>
-                    </div>
-                  </div>
-                  <div className="aspect-[4/3] bg-gradient-to-br from-purple-100 to-blue-100 rounded-b-xl overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop"
-                      alt="Website Design Preview"
-                      width={800}
-                      height={600}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute -left-4 top-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Gauge className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground">PageSpeed</div>
-                      <div className="text-lg font-bold text-green-600">98/100</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute -right-4 bottom-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Smartphone className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground">Mobile</div>
-                      <div className="text-lg font-bold text-purple-600">100%</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+      <PageHero />
 
         {/* Problems & Solutions */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">

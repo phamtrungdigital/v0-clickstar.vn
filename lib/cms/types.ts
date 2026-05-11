@@ -3,6 +3,7 @@ export type I18n = { vi: string; en: string }
 
 export type SectionType =
   | 'hero'
+  | 'page_hero'
   | 'services'
   | 'about'
   | 'stats'
@@ -28,6 +29,16 @@ export type HeroContent = {
   support_phone: string
   image_src: string
   image_alt: I18n
+}
+
+// ---------- Page Hero (for sub-pages: about, pricing, services/*) ----------
+// Simpler hero than home — text-only, no image, single heading line.
+export type PageHeroContent = {
+  badge: I18n
+  heading: I18n  // full heading (may include highlighted span via {} convention later)
+  description: I18n
+  cta_label: I18n
+  cta_href: string
 }
 
 // ---------- Services ----------
@@ -197,6 +208,7 @@ export type CtaContent = {
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
+  | { id: string; type: 'page_hero'; enabled: boolean; content: PageHeroContent }
   | { id: string; type: 'services'; enabled: boolean; content: ServicesContent }
   | { id: string; type: 'about'; enabled: boolean; content: AboutContent }
   | { id: string; type: 'stats'; enabled: boolean; content: StatsContent }

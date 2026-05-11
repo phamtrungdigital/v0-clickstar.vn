@@ -1,29 +1,14 @@
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { PricingSection } from '@/components/sections/pricing-section'
+import { PageHero } from '@/components/sections/page-hero'
 
 export default function PricingPage() {
   return (
     <div className="min-h-screen">
       <MainNav />
-      
-      {/* Hero Section */}
-      <section className="bg-background-soft pt-16 pb-12 lg:pt-24 lg:pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
-            <span className="w-2 h-2 bg-primary rounded-full" />
-            BẢNG GIÁ DỊCH VỤ
-          </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">
-            Giải pháp phù hợp cho{' '}
-            <span className="text-primary">mọi doanh nghiệp</span>
-          </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Chọn gói dịch vụ phù hợp với nhu cầu và quy mô của doanh nghiệp bạn. 
-            Liên hệ để được tư vấn chi tiết và báo giá tốt nhất.
-          </p>
-        </div>
-      </section>
+
+      <PageHero />
 
       {/* Pricing Cards */}
       <PricingSection />

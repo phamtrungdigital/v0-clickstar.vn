@@ -4,6 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
+import { PageHero } from '@/components/sections/page-hero'
 import { useLanguage } from '@/contexts/language-context'
 import { 
   Target, 
@@ -153,48 +154,22 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <MainNav />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-        <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-3xl opacity-50" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-5 py-2.5 rounded-full mb-8">
-              <Sparkles className="w-4 h-4" />
-              {t('Về Click Star', 'About Click Star')}
-            </div>
+      <PageHero />
 
-            {/* Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] tracking-tight mb-8 text-balance">
-              {t('Đối tác chiến lược trong', 'Your Strategic Partner in')}{' '}
-              <span className="text-primary">{t('chuyển đổi số', 'Digital Transformation')}</span>
-            </h1>
-
-            {/* Description */}
-            <p className="text-lg sm:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mb-12">
-              {t(
-                'Click Star ra đời với sứ mệnh đồng hành cùng doanh nghiệp vừa và nhỏ tại Việt Nam trên hành trình chuyển đổi số, mang đến giải pháp toàn diện từ Marketing đến AI.',
-                'Click Star was born with the mission to accompany SMEs in Vietnam on their digital transformation journey, providing comprehensive solutions from Marketing to AI.'
-              )}
-            </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary mb-2">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm sm:text-base text-muted-foreground">
-                    {stat.label}
-                  </div>
+      {/* Stats row */}
+      <section className="bg-background py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10 max-w-4xl mx-auto">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary mb-2">
+                  {stat.value}
                 </div>
-              ))}
-            </div>
+                <div className="text-sm sm:text-base text-muted-foreground">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

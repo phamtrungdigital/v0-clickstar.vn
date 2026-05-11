@@ -36,6 +36,7 @@ import type { Page, Section } from '@/lib/cms/types'
 import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
 import { savePage } from '../actions'
 import { HeroForm } from './hero-form'
+import { PageHeroForm } from './page-hero-form'
 import { ServicesForm } from './services-form'
 import { AboutForm } from './about-form'
 import { CtaForm } from './cta-form'
@@ -49,6 +50,7 @@ import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
   hero: 'Hero (banner đầu)',
+  page_hero: 'Hero của page',
   services: 'Dịch vụ',
   about: 'Giới thiệu',
   stats: 'Chỉ số (counter)',
@@ -64,6 +66,8 @@ function renderForm(section: Section, onChange: (c: any) => void) {
   switch (section.type) {
     case 'hero':
       return <HeroForm content={section.content} onChange={onChange} />
+    case 'page_hero':
+      return <PageHeroForm content={section.content} onChange={onChange} />
     case 'services':
       return <ServicesForm content={section.content} onChange={onChange} />
     case 'about':
