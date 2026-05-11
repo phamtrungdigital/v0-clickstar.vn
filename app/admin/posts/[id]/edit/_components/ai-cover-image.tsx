@@ -38,6 +38,8 @@ export function AiCoverImage({
         const reader = res.body.getReader()
         const decoder = new TextDecoder()
         let buf = ''
+        let receivedFinalEvent = false
+        let lastElapsed = 0
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
@@ -51,16 +53,26 @@ export function AiCoverImage({
               if (data.type === 'done' && data.url) {
                 setPreviewUrl(data.url)
                 setProgress(null)
+                receivedFinalEvent = true
               } else if (data.type === 'error') {
                 setError(data.error)
                 setProgress(null)
+                receivedFinalEvent = true
               } else if (data.type === 'pulse') {
+                lastElapsed = data.elapsedSec
                 setProgress(`Đang vẽ... (${data.elapsedSec}s)`)
               } else if (data.type === 'status') {
                 setProgress(data.message)
               }
             } catch {}
           }
+        }
+        if (!receivedFinalEvent) {
+          setError(
+            `Function bị Vercel timeout (Hobby plan max 60s) sau ${lastElapsed}s. ` +
+            `Thử vào /admin/ai → Tạo ảnh → giảm size xuống 1024×1024 + quality "low" cho nhanh hơn.`
+          )
+          setProgress(null)
         }
       } catch (err: any) {
         setError(err?.message || 'Network error')

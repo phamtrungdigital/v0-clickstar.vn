@@ -44,6 +44,8 @@ export function AiWholePost({
         const reader = res.body.getReader()
         const decoder = new TextDecoder()
         let buf = ''
+        let receivedFinalEvent = false
+        let lastChars = 0
         while (true) {
           const { done, value } = await reader.read()
           if (done) break
@@ -57,16 +59,29 @@ export function AiWholePost({
               if (data.type === 'done' && data.post) {
                 setPreview(data.post)
                 setProgress(null)
+                receivedFinalEvent = true
               } else if (data.type === 'error') {
                 setError(data.error)
                 setProgress(null)
+                receivedFinalEvent = true
               } else if (data.type === 'progress') {
+                lastChars = data.chars
                 setProgress(`Đang viết... (${data.chars} ký tự)`)
               } else if (data.type === 'status') {
                 setProgress(data.message)
               }
             } catch {}
           }
+        }
+        // Stream closed without a done/error event — likely Vercel killed
+        // the function at maxDuration. Surface a helpful error.
+        if (!receivedFinalEvent) {
+          setError(
+            `Function bị Vercel timeout (Hobby plan max 60s) sau khi đã viết ${lastChars} ký tự. ` +
+            `Thử: 1) Vào /admin/ai → Viết bài blog → giảm "Số từ mục tiêu" xuống còn 400-500, ` +
+            `hoặc 2) Đổi model sang Claude Haiku 4.5 hoặc Sonnet 4.6 (nhanh hơn Opus 4.7).`
+          )
+          setProgress(null)
         }
       } catch (err: any) {
         setError(err?.message || 'Network error')
