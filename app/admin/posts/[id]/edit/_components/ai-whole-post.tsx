@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition, useEffect } from 'react'
-import { Sparkles, Loader2, X, Wand2, ChevronLeft, AlertTriangle, ExternalLink } from 'lucide-react'
+import { Sparkles, Loader2, X, Wand2, ChevronLeft, ChevronDown, ChevronRight, AlertTriangle, ExternalLink, Pencil } from 'lucide-react'
 import { BLOG_STYLE_OPTIONS, type BlogStyle } from '@/lib/ai/settings-shared'
 
 export type GeneratedPost = {
@@ -45,6 +45,8 @@ export function AiWholePost({
 
   // Workflow state
   const [outline, setOutline] = useState<Outline | null>(null)
+  const [selectedSections, setSelectedSections] = useState<Set<number>>(new Set())
+  const [expandedSection, setExpandedSection] = useState<number | null>(null)
   const [preview, setPreview] = useState<GeneratedPost | null>(null)
   const [duplicateMatches, setDuplicateMatches] = useState<DuplicateMatch[]>([])
 
@@ -77,9 +79,29 @@ export function AiWholePost({
   const reset = () => {
     setStep('form')
     setOutline(null)
+    setSelectedSections(new Set())
+    setExpandedSection(null)
     setPreview(null)
     setError(null)
     setProgress(null)
+  }
+
+  const toggleSection = (i: number) => {
+    setSelectedSections((prev) => {
+      const next = new Set(prev)
+      if (next.has(i)) next.delete(i)
+      else next.add(i)
+      return next
+    })
+  }
+
+  const toggleAllSections = () => {
+    if (!outline) return
+    if (selectedSections.size === outline.sections.length) {
+      setSelectedSections(new Set())
+    } else {
+      setSelectedSections(new Set(outline.sections.map((_, i) => i)))
+    }
   }
 
   const closeModal = () => {
@@ -106,6 +128,8 @@ export function AiWholePost({
           setProgress(null)
         } else if (json.outline) {
           setOutline(json.outline)
+          setSelectedSections(new Set()) // default: nothing ticked = use all
+          setExpandedSection(null)
           setStep('outline')
           setProgress(null)
         }
@@ -117,6 +141,18 @@ export function AiWholePost({
   }
 
   // STEP 2 (or single-step if !useOutline): Generate full content via SSE
+  /**
+   * Build the outline payload that goes to /api/admin/ai/blog.
+   * - If user ticked specific sections → only send those (in original order).
+   * - If nothing ticked → send all sections (auto fallback per user request).
+   */
+  const buildOutlineForGen = (): Outline | null => {
+    if (!outline) return null
+    if (selectedSections.size === 0) return outline
+    const filtered = outline.sections.filter((_, i) => selectedSections.has(i))
+    return { ...outline, sections: filtered }
+  }
+
   const handleGenerateFull = (approvedOutline?: Outline | null) => {
     if (!topic.trim()) return
     startTransition(async () => {
@@ -381,8 +417,8 @@ export function AiWholePost({
           {step === 'outline' && outline && (
             <div className="space-y-3">
               <p className="text-xs text-slate-500">
-                Em đã gen xong dàn bài. Anh có thể chỉnh từng heading rồi click "Viết bài đầy đủ" để gen
-                content theo outline đã chốt.
+                Em đã gen {outline.sections.length} mục H2. Anh <strong>tích</strong> các mục muốn đưa vào
+                bài (click chữ để mở rộng sửa). <strong>Không tích cái nào</strong> = lấy hết.
               </p>
 
               <div className="space-y-2">
@@ -410,52 +446,103 @@ export function AiWholePost({
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <label className="block text-[10px] font-bold uppercase text-slate-500">
-                  SECTIONS ({outline.sections.length})
-                </label>
-                {outline.sections.map((sec, i) => (
-                  <div key={i} className="border border-slate-200 rounded-md p-3 space-y-1.5 bg-white">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold text-violet-600 bg-violet-100 px-1.5 py-0.5 rounded">
-                        H2 #{i + 1}
-                      </span>
-                      <input
-                        type="text"
-                        value={sec.heading_vi}
-                        onChange={(e) => {
-                          const next = [...outline.sections]
-                          next[i] = { ...sec, heading_vi: e.target.value }
-                          setOutline({ ...outline, sections: next })
-                        }}
-                        placeholder="Heading VI"
-                        className="flex-1 px-2 py-1 text-sm font-medium bg-slate-50 border border-slate-200 rounded"
-                      />
-                    </div>
-                    <input
-                      type="text"
-                      value={sec.heading_en}
-                      onChange={(e) => {
-                        const next = [...outline.sections]
-                        next[i] = { ...sec, heading_en: e.target.value }
-                        setOutline({ ...outline, sections: next })
-                      }}
-                      placeholder="Heading EN"
-                      className="w-full px-2 py-1 text-xs italic bg-slate-50 border border-slate-200 rounded text-slate-600"
-                    />
-                    <textarea
-                      value={sec.summary_vi}
-                      onChange={(e) => {
-                        const next = [...outline.sections]
-                        next[i] = { ...sec, summary_vi: e.target.value }
-                        setOutline({ ...outline, sections: next })
-                      }}
-                      rows={2}
-                      placeholder="Tóm tắt sẽ viết gì..."
-                      className="w-full px-2 py-1 text-[11px] bg-slate-50 border border-slate-200 rounded text-slate-700"
-                    />
-                  </div>
-                ))}
+              <div className="space-y-1">
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-[10px] font-bold uppercase text-slate-500">
+                    SECTIONS{' '}
+                    {selectedSections.size > 0
+                      ? `(${selectedSections.size}/${outline.sections.length} đã chọn)`
+                      : `(${outline.sections.length} · không chọn = lấy hết)`}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={toggleAllSections}
+                    className="text-[11px] text-violet-600 hover:underline"
+                  >
+                    {selectedSections.size === outline.sections.length ? 'Bỏ chọn hết' : 'Chọn hết'}
+                  </button>
+                </div>
+
+                <ul className="border border-slate-200 rounded-md bg-white divide-y divide-slate-100">
+                  {outline.sections.map((sec, i) => {
+                    const checked = selectedSections.has(i)
+                    const expanded = expandedSection === i
+                    return (
+                      <li
+                        key={i}
+                        className={`${
+                          checked ? 'bg-violet-50/50' : ''
+                        } transition-colors`}
+                      >
+                        <div className="flex items-center gap-2 px-2 py-2">
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() => toggleSection(i)}
+                            className="rounded cursor-pointer"
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          <span className="text-[10px] font-bold text-violet-600 bg-violet-100 px-1.5 py-0.5 rounded shrink-0">
+                            H2 #{i + 1}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setExpandedSection(expanded ? null : i)}
+                            className="flex-1 text-left flex items-center gap-2 group"
+                          >
+                            <span className="text-sm font-medium text-slate-900 line-clamp-1 group-hover:text-violet-700">
+                              {sec.heading_vi || '(chưa có heading)'}
+                            </span>
+                            <Pencil className="w-3 h-3 text-slate-400 group-hover:text-violet-600 shrink-0" />
+                            {expanded ? (
+                              <ChevronDown className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                            ) : (
+                              <ChevronRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                            )}
+                          </button>
+                        </div>
+
+                        {expanded && (
+                          <div className="px-3 pb-3 space-y-1.5 bg-slate-50/50 border-t border-slate-100">
+                            <input
+                              type="text"
+                              value={sec.heading_vi}
+                              onChange={(e) => {
+                                const next = [...outline.sections]
+                                next[i] = { ...sec, heading_vi: e.target.value }
+                                setOutline({ ...outline, sections: next })
+                              }}
+                              placeholder="Heading VI"
+                              className="w-full px-2 py-1 text-sm font-medium bg-white border border-slate-200 rounded mt-1.5"
+                            />
+                            <input
+                              type="text"
+                              value={sec.heading_en}
+                              onChange={(e) => {
+                                const next = [...outline.sections]
+                                next[i] = { ...sec, heading_en: e.target.value }
+                                setOutline({ ...outline, sections: next })
+                              }}
+                              placeholder="Heading EN"
+                              className="w-full px-2 py-1 text-xs italic bg-white border border-slate-200 rounded text-slate-600"
+                            />
+                            <textarea
+                              value={sec.summary_vi}
+                              onChange={(e) => {
+                                const next = [...outline.sections]
+                                next[i] = { ...sec, summary_vi: e.target.value }
+                                setOutline({ ...outline, sections: next })
+                              }}
+                              rows={2}
+                              placeholder="Tóm tắt sẽ viết gì..."
+                              className="w-full px-2 py-1 text-[11px] bg-white border border-slate-200 rounded text-slate-700"
+                            />
+                          </div>
+                        )}
+                      </li>
+                    )
+                  })}
+                </ul>
               </div>
             </div>
           )}
@@ -524,7 +611,7 @@ export function AiWholePost({
         <div className="flex items-center justify-between gap-2 px-5 py-3 border-t border-slate-200 dark:border-slate-700 bg-slate-50">
           <p className="text-[10px] text-slate-500">
             {step === 'form' && '💡 Provider/model config tại /admin/ai → Viết bài blog'}
-            {step === 'outline' && '✏️ Sửa heading nếu cần → Viết bài đầy đủ'}
+            {step === 'outline' && '☑️ Tích các mục muốn dùng (không tích = lấy hết)'}
             {step === 'preview' && '✅ Áp dụng = fill 6 field + auto-slug từ keyword'}
           </p>
           <div className="flex items-center gap-2">
@@ -552,19 +639,21 @@ export function AiWholePost({
 
             {step === 'outline' && outline && (
               <button
-                onClick={() => handleGenerateFull(outline)}
+                onClick={() => handleGenerateFull(buildOutlineForGen())}
                 disabled={isPending}
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded disabled:opacity-50"
               >
                 <Wand2 className="w-3.5 h-3.5" />
-                Viết bài đầy đủ
+                {selectedSections.size > 0
+                  ? `Viết với ${selectedSections.size} mục đã chọn`
+                  : `Viết với cả ${outline.sections.length} mục`}
               </button>
             )}
 
             {step === 'preview' && (
               <>
                 <button
-                  onClick={() => handleGenerateFull(outline)}
+                  onClick={() => handleGenerateFull(buildOutlineForGen())}
                   disabled={isPending}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs rounded disabled:opacity-50"
                 >
