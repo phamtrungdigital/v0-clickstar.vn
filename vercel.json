@@ -3,6 +3,7 @@
     "app/api/admin/ai/blog/route.ts": { "maxDuration": 300 },
     "app/api/admin/ai/blog/outline/route.ts": { "maxDuration": 60 },
     "app/api/admin/ai/image/route.ts": { "maxDuration": 300 },
+    "app/api/admin/ai/inline/route.ts": { "maxDuration": 60 },
     "app/api/admin/ai/keyword-check/route.ts": { "maxDuration": 30 },
     "app/admin/posts/new/page.tsx": { "maxDuration": 60 },
     "app/admin/posts/[id]/edit/page.tsx": { "maxDuration": 60 },

@@ -11,6 +11,7 @@ import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
 import { AiWholePost } from './ai-whole-post'
 import { AiCoverImage } from './ai-cover-image'
 import { BodyImageReplacer } from './body-image-replacer'
+import { MarkdownEditor } from './markdown-editor'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
@@ -185,9 +186,8 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               value={draft.excerpt}
               onChange={(v) => update('excerpt', v)}
             />
-            <I18nInput
+            <MarkdownEditor
               label="Nội dung (Markdown)"
-              multiline
               rows={20}
               value={draft.content}
               onChange={(v) => update('content', v)}
