@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useRouter } from 'next/navigation'
 
 export type Language = 'vi' | 'en'
 
@@ -28,6 +29,7 @@ export function LanguageProvider({
   initialLang?: Language
 }) {
   const [language, setLanguageState] = useState<Language>(initialLang)
+  const router = useRouter()
 
   // Update <html lang="…"> on language change so screen readers + Chrome translate know.
   useEffect(() => {
@@ -39,6 +41,10 @@ export function LanguageProvider({
   const setLanguage = (lang: Language) => {
     setLanguageState(lang)
     writeCookie(lang)
+    // Invalidate Next.js RSC cache so server components re-fetch with new cookie.
+    // Without this, /blog & other server-rendered pages keep showing the OLD lang
+    // after navigation because the prefetched RSC payload is in the client cache.
+    router.refresh()
   }
 
   const t = (vi: string, en: string) => (language === 'vi' ? vi : en)
