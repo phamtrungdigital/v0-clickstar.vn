@@ -3,7 +3,7 @@ import { generateImageWithOpenAI } from '@/lib/ai/providers'
 import type { AiSettings } from '@/lib/ai/settings'
 
 export const runtime = 'nodejs'
-export const maxDuration = 60
+export const maxDuration = 300
 export const dynamic = 'force-dynamic'
 
 // Streaming response: gpt-image-1 doesn't natively stream, but we emit

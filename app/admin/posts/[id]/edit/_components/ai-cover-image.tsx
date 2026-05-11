@@ -69,8 +69,8 @@ export function AiCoverImage({
         }
         if (!receivedFinalEvent) {
           setError(
-            `Function bị Vercel timeout (Hobby plan max 60s) sau ${lastElapsed}s. ` +
-            `Thử vào /admin/ai → Tạo ảnh → giảm size xuống 1024×1024 + quality "low" cho nhanh hơn.`
+            `Stream bị ngắt sau ${lastElapsed}s (Vercel Pro maxDuration 300s). ` +
+            `Thử vào /admin/ai → Tạo ảnh → giảm size xuống 1024×1024 + quality "low".`
           )
           setProgress(null)
         }

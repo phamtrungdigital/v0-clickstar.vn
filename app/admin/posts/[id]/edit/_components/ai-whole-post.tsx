@@ -77,9 +77,9 @@ export function AiWholePost({
         // the function at maxDuration. Surface a helpful error.
         if (!receivedFinalEvent) {
           setError(
-            `Function bị Vercel timeout (Hobby plan max 60s) sau khi đã viết ${lastChars} ký tự. ` +
-            `Thử: 1) Vào /admin/ai → Viết bài blog → giảm "Số từ mục tiêu" xuống còn 400-500, ` +
-            `hoặc 2) Đổi model sang Claude Haiku 4.5 hoặc Sonnet 4.6 (nhanh hơn Opus 4.7).`
+            `Stream bị ngắt sau ${lastChars} ký tự (Vercel Pro maxDuration 300s). ` +
+            `Thử: 1) Vào /admin/ai → Viết bài blog → giảm "Số từ mục tiêu", ` +
+            `hoặc 2) Đổi sang model nhanh hơn (Haiku 4.5 / GPT-4o-mini).`
           )
           setProgress(null)
         }

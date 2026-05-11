@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import type { AiSettings } from '@/lib/ai/settings'
 
 export const runtime = 'nodejs'
-export const maxDuration = 60
+export const maxDuration = 300
 export const dynamic = 'force-dynamic'
 
 type GeneratedPost = {
