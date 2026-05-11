@@ -1,5 +1,8 @@
 {
   "functions": {
-    "app/admin/**/page.tsx": { "maxDuration": 60 }
+    "app/admin/posts/new/page.tsx": { "maxDuration": 60 },
+    "app/admin/posts/[id]/edit/page.tsx": { "maxDuration": 60 },
+    "app/admin/pages/[slug]/edit/page.tsx": { "maxDuration": 60 },
+    "app/admin/ai/page.tsx": { "maxDuration": 60 }
   }
 }
