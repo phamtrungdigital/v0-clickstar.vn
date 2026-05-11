@@ -1,0 +1,5 @@
+{
+  "functions": {
+    "app/admin/**/page.tsx": { "maxDuration": 60 }
+  }
+}
