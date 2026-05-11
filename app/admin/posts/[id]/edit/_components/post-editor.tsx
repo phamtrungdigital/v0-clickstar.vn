@@ -12,6 +12,7 @@ import { AiWholePost } from './ai-whole-post'
 import { AiCoverImage } from './ai-cover-image'
 import { BodyImageReplacer } from './body-image-replacer'
 import { MarkdownEditor } from './markdown-editor'
+import { AutoTranslate } from './auto-translate'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
@@ -105,6 +106,26 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
                 slug: prev.slug || slugify(p.keyword || p.title_vi),
                 // Auto-fill tags from keyword if empty
                 tags: prev.tags.length === 0 && p.keyword ? [p.keyword.trim()] : prev.tags,
+              }))
+              setStatus('dirty')
+            }}
+          />
+          <AutoTranslate
+            title={draft.title}
+            excerpt={draft.excerpt}
+            content={draft.content}
+            onApply={(fields) => {
+              setDraft((prev) => ({
+                ...prev,
+                title: fields.title !== undefined ? { ...prev.title, en: fields.title } : prev.title,
+                excerpt:
+                  fields.excerpt !== undefined
+                    ? { ...prev.excerpt, en: fields.excerpt }
+                    : prev.excerpt,
+                content:
+                  fields.content !== undefined
+                    ? { ...prev.content, en: fields.content }
+                    : prev.content,
               }))
               setStatus('dirty')
             }}
