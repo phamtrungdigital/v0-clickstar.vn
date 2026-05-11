@@ -4,14 +4,20 @@ import { PageEditor } from './_components/page-editor'
 
 export const dynamic = 'force-dynamic'
 
+// URL slug uses '__' as separator instead of '/' to fit within a single
+// dynamic segment ('services__digital-marketing' → 'services/digital-marketing').
+function decodeSlug(s: string) {
+  return s.replace(/__/g, '/')
+}
+
 export default async function PageEditPage({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
   const { slug } = await params
-  const page = await getPageForAdmin(slug)
+  const dbSlug = decodeSlug(decodeURIComponent(slug))
+  const page = await getPageForAdmin(dbSlug)
   if (!page) notFound()
-
   return <PageEditor page={page} />
 }

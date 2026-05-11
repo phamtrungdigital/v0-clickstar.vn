@@ -1,12 +1,6 @@
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { PricingSection } from '@/components/sections/pricing-section'
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Bảng giá - ClickStar',
-  description: 'Các gói dịch vụ chuyển đổi số phù hợp với mọi quy mô doanh nghiệp',
-}
 
 export default function PricingPage() {
   return (

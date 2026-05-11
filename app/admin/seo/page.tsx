@@ -59,7 +59,7 @@ export default async function AdminSEOPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
-                      href={`/admin/pages/${p.slug}/edit`}
+                      href={`/admin/pages/${p.slug.replace(/\//g, '__')}/edit`}
                       className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90"
                     >
                       <Edit className="w-3 h-3" />

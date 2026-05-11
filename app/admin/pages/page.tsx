@@ -83,7 +83,7 @@ export default async function AdminPagesList() {
                           <ExternalLink className="w-3.5 h-3.5 text-slate-500" />
                         </Link>
                         <Link
-                          href={`/admin/pages/${page.slug}/edit`}
+                          href={`/admin/pages/${page.slug.replace(/\//g, '__')}/edit`}
                           className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90"
                         >
                           <Edit className="w-3 h-3" />
