@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 /**
- * Admin auth middleware — runs on every /admin/* request.
+ * Admin auth middleware — runs on every /admin-cls/* request.
  *
  * Optimization: caches the admin_users check result via signed cookie
  * (cs-admin-cache) valid for 5 minutes, so we skip the second DB query
@@ -73,19 +73,19 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
-  const isAdminRoute = pathname.startsWith('/admin')
-  const isLoginRoute = pathname === '/admin/login'
+  const isAdminRoute = pathname.startsWith('/admin-cls')
+  const isLoginRoute = pathname === '/admin-cls/login'
 
   if (isAdminRoute && !isLoginRoute && !user) {
     const loginUrl = request.nextUrl.clone()
-    loginUrl.pathname = '/admin/login'
+    loginUrl.pathname = '/admin-cls/login'
     loginUrl.searchParams.set('redirect', pathname)
     return NextResponse.redirect(loginUrl)
   }
 
   if (isLoginRoute && user) {
     const dashUrl = request.nextUrl.clone()
-    dashUrl.pathname = '/admin'
+    dashUrl.pathname = '/admin-cls'
     dashUrl.searchParams.delete('redirect')
     return NextResponse.redirect(dashUrl)
   }
@@ -106,7 +106,7 @@ export async function updateSession(request: NextRequest) {
       if (!profile) {
         await supabase.auth.signOut()
         const loginUrl = request.nextUrl.clone()
-        loginUrl.pathname = '/admin/login'
+        loginUrl.pathname = '/admin-cls/login'
         loginUrl.searchParams.set('error', 'not_admin')
         return NextResponse.redirect(loginUrl)
       }
@@ -124,7 +124,7 @@ export async function updateSession(request: NextRequest) {
         sameSite: 'lax',
         secure: true,
         maxAge: 60 * 60,
-        path: '/admin',
+        path: '/admin-cls',
       })
     }
 
