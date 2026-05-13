@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { ChevronDown, Menu, X, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/contexts/language-context'
+import { useSiteBranding } from '@/contexts/site-branding-context'
 
 const navItemsData = {
   vi: [
@@ -55,6 +56,7 @@ const ctaText = {
 
 export function MainNav() {
   const { language, setLanguage } = useLanguage()
+  const branding = useSiteBranding()
   const navItems = navItemsData[language]
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -93,12 +95,13 @@ export function MainNav() {
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
-              src="/images/logo-clickstar.png"
-              alt="ClickStar"
+              src={branding.logoUrl || '/images/logo-clickstar.png'}
+              alt={branding.siteName}
               width={120}
               height={30}
               className="h-7 w-auto"
               priority
+              unoptimized
             />
           </Link>
 

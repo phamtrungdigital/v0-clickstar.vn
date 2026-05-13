@@ -19,6 +19,8 @@ export type SiteSettings = {
   default_seo_title: I18n | null
   default_seo_description: I18n | null
   default_og_image: string | null
+  logo_url: string | null
+  favicon_url: string | null
   updated_at: string
 }
 
