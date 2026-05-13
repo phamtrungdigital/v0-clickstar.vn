@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -15,15 +15,17 @@ import {
   X,
   Bell,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   LogOut,
-  User,
-  Moon,
-  Sun,
   Globe,
   Megaphone,
   Mail,
   Shield,
   Sparkles,
+  Plus,
+  HelpCircle,
+  ExternalLink,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { logout } from '../login/actions'
@@ -80,17 +82,128 @@ export default function AdminShell({
   user: AdminUser
   children: React.ReactNode
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  // Sidebar collapse state — persist in localStorage so user preference sticks
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
-  const [darkMode, setDarkMode] = useState(false)
   const pathname = usePathname()
+
+  useEffect(() => {
+    const saved = localStorage.getItem('admin-sidebar-collapsed')
+    if (saved === '1') setSidebarCollapsed(true)
+  }, [])
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed((c) => {
+      const next = !c
+      localStorage.setItem('admin-sidebar-collapsed', next ? '1' : '0')
+      return next
+    })
+  }
 
   const initial = (user.full_name || user.email).charAt(0).toUpperCase()
   const displayName = user.full_name || user.email.split('@')[0]
+  const sidebarWidth = sidebarCollapsed ? 'w-16' : 'w-60'
+  const contentOffset = sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-60'
 
   return (
-    <div className={cn('min-h-screen bg-slate-100', darkMode && 'dark bg-slate-900')}>
+    <div className="min-h-screen bg-slate-50">
+      {/* ───── TOP HEADER: black bar full width ───── */}
+      <header className="fixed top-0 left-0 right-0 z-40 h-14 bg-zinc-950 text-white flex items-center justify-between px-3 lg:px-4 border-b border-zinc-800">
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden p-1.5 hover:bg-zinc-800 rounded text-white"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <Link href="/admin" className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-xs">CS</span>
+            </div>
+            <span className="font-bold text-sm hidden sm:block">ClickStar Admin</span>
+          </Link>
+        </div>
+
+        {/* Global search — centered, HubSpot style */}
+        <div className="flex-1 max-w-2xl mx-4 hidden md:block">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <input
+              type="text"
+              placeholder="Tìm hoặc hỏi…"
+              className="w-full pl-10 pr-3 py-1.5 bg-zinc-900 border border-zinc-700 rounded-md text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1 flex-shrink-0">
+          <Link
+            href="/admin/posts/new"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold rounded-md transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            Thêm
+          </Link>
+          <Link
+            href="/"
+            target="_blank"
+            className="hidden sm:flex items-center gap-1.5 p-1.5 hover:bg-zinc-800 rounded text-zinc-300"
+            title="Xem website"
+          >
+            <Globe className="w-4 h-4" />
+          </Link>
+          <button className="p-1.5 hover:bg-zinc-800 rounded text-zinc-300" title="Trợ giúp">
+            <HelpCircle className="w-4 h-4" />
+          </button>
+          <button className="relative p-1.5 hover:bg-zinc-800 rounded text-zinc-300">
+            <Bell className="w-4 h-4" />
+            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-orange-500 rounded-full" />
+          </button>
+
+          <div className="relative">
+            <button
+              onClick={() => setUserMenuOpen(!userMenuOpen)}
+              className="flex items-center gap-1.5 p-1 hover:bg-zinc-800 rounded ml-1"
+            >
+              <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-semibold">{initial}</span>
+              </div>
+            </button>
+
+            {userMenuOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-slate-200 py-1 z-50">
+                <div className="px-4 py-2 border-b border-slate-100">
+                  <p className="text-xs font-semibold text-slate-900 truncate">{user.email}</p>
+                  <p className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-wide">
+                    {user.role}
+                  </p>
+                </div>
+                <Link
+                  href="/admin/settings"
+                  onClick={() => setUserMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  <Settings className="w-4 h-4" />
+                  Cài đặt
+                </Link>
+                <hr className="my-1 border-slate-100" />
+                <form action={logout}>
+                  <button
+                    type="submit"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-slate-50 w-full"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Đăng xuất
+                  </button>
+                </form>
+              </div>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* ───── MOBILE OVERLAY ───── */}
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
@@ -98,33 +211,27 @@ export default function AdminShell({
         />
       )}
 
+      {/* ───── SIDEBAR: white, collapsible ───── */}
       <aside
         className={cn(
-          'fixed top-0 left-0 z-50 h-full bg-slate-900 text-white transition-all duration-300',
-          sidebarOpen ? 'w-64' : 'w-20',
+          'fixed top-14 left-0 z-30 h-[calc(100vh-3.5rem)] bg-white border-r border-slate-200 transition-all duration-200',
+          sidebarWidth,
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        <div className="h-12 flex items-center justify-between px-3 border-b border-slate-700">
-          <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-xs">CS</span>
-            </div>
-            {sidebarOpen && <span className="font-bold text-sm">ClickStar</span>}
-          </Link>
-          <button
-            onClick={() => setMobileMenuOpen(false)}
-            className="lg:hidden p-1 hover:bg-slate-800 rounded"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
+        {/* Mobile close button */}
+        <button
+          onClick={() => setMobileMenuOpen(false)}
+          className="lg:hidden absolute top-2 right-2 p-1 hover:bg-slate-100 rounded"
+        >
+          <X className="w-4 h-4 text-slate-600" />
+        </button>
 
-        <nav className="p-2 space-y-4 overflow-y-auto h-[calc(100vh-3rem)]">
+        <nav className="py-3 px-2 space-y-4 overflow-y-auto h-[calc(100%-3rem)]">
           {sidebarItems.map((section, idx) => (
             <div key={idx}>
-              {sidebarOpen && (
-                <h3 className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 px-2">
+              {!sidebarCollapsed && (
+                <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 px-2">
                   {section.title}
                 </h3>
               )}
@@ -134,18 +241,28 @@ export default function AdminShell({
                     pathname === item.href ||
                     (item.href !== '/admin' && pathname.startsWith(item.href))
                   return (
-                    <li key={item.href}>
+                    <li key={item.href} className="relative">
                       <Link
                         href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        title={sidebarCollapsed ? item.label : undefined}
                         className={cn(
-                          'flex items-center gap-2 px-2 py-1.5 rounded-md transition-colors text-[13px]',
+                          'flex items-center gap-2.5 px-2.5 py-2 rounded-md transition-colors text-[13px] font-medium relative',
                           isActive
-                            ? 'bg-primary text-white'
-                            : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                            ? 'bg-orange-50 text-orange-700'
+                            : 'text-slate-700 hover:bg-slate-100'
                         )}
                       >
-                        <item.icon className="w-4 h-4 flex-shrink-0" />
-                        {sidebarOpen && <span>{item.label}</span>}
+                        {isActive && (
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 bg-orange-500 rounded-r" />
+                        )}
+                        <item.icon
+                          className={cn(
+                            'w-4 h-4 flex-shrink-0',
+                            isActive ? 'text-orange-600' : 'text-slate-500'
+                          )}
+                        />
+                        {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
                       </Link>
                     </li>
                   )
@@ -155,117 +272,23 @@ export default function AdminShell({
           ))}
         </nav>
 
+        {/* Collapse toggle — bottom of sidebar */}
         <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="hidden lg:flex absolute -right-3 top-20 w-6 h-6 bg-slate-900 border border-slate-700 rounded-full items-center justify-center text-slate-400 hover:text-white"
+          onClick={toggleSidebar}
+          className="hidden lg:flex absolute bottom-3 right-3 w-7 h-7 bg-white border border-slate-200 hover:bg-slate-100 rounded-full items-center justify-center text-slate-500 hover:text-slate-700 shadow-sm"
+          title={sidebarCollapsed ? 'Mở rộng sidebar' : 'Thu gọn sidebar'}
         >
-          <ChevronDown
-            className={cn(
-              'w-4 h-4 transition-transform',
-              sidebarOpen ? '-rotate-90' : 'rotate-90'
-            )}
-          />
+          {sidebarCollapsed ? (
+            <ChevronRight className="w-3.5 h-3.5" />
+          ) : (
+            <ChevronLeft className="w-3.5 h-3.5" />
+          )}
         </button>
       </aside>
 
-      <div className={cn('transition-all duration-300', sidebarOpen ? 'lg:ml-64' : 'lg:ml-20')}>
-        <header className="sticky top-0 z-30 h-11 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-3 lg:px-4">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
-            >
-              <Menu className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-            </button>
-
-            <div className="hidden sm:flex items-center gap-1.5 text-xs">
-              <Link href="/admin" className="text-slate-500 hover:text-slate-700 dark:text-slate-400">
-                Admin
-              </Link>
-              <span className="text-slate-300 dark:text-slate-600">/</span>
-              <span className="text-slate-900 dark:text-white font-medium">
-                {pathname === '/admin'
-                  ? 'Dashboard'
-                  : sidebarItems.flatMap((s) => s.items).find((i) => i.href === pathname)?.label ||
-                    'Trang'}
-              </span>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-1">
-            <Link
-              href="/"
-              target="_blank"
-              className="hidden sm:flex items-center gap-1.5 px-2 py-1 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              <span>Xem website</span>
-            </Link>
-
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
-            >
-              {darkMode ? (
-                <Sun className="w-4 h-4 text-slate-300" />
-              ) : (
-                <Moon className="w-4 h-4 text-slate-600" />
-              )}
-            </button>
-
-            <button className="relative p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
-              <Bell className="w-4 h-4 text-slate-600 dark:text-slate-300" />
-              <span className="absolute top-0.5 right-0.5 w-1.5 h-1.5 bg-red-500 rounded-full" />
-            </button>
-
-            <div className="relative">
-              <button
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-1.5 p-1 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
-              >
-                <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-medium">{initial}</span>
-                </div>
-                <div className="hidden md:block text-left">
-                  <p className="text-xs font-medium text-slate-900 dark:text-white">
-                    {displayName}
-                  </p>
-                </div>
-                <ChevronDown className="w-3 h-3 text-slate-400 hidden md:block" />
-              </button>
-
-              {userMenuOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 py-1 z-50">
-                  <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
-                    <p className="text-xs font-medium text-slate-900 dark:text-white truncate">
-                      {user.email}
-                    </p>
-                    <p className="text-[10px] text-slate-500 mt-0.5 capitalize">{user.role}</p>
-                  </div>
-                  <Link
-                    href="/admin/settings"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
-                  >
-                    <Settings className="w-4 h-4" />
-                    Cài đặt
-                  </Link>
-                  <hr className="my-1 border-slate-200 dark:border-slate-700" />
-                  <form action={logout}>
-                    <button
-                      type="submit"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-slate-100 dark:hover:bg-slate-700 w-full"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      Đăng xuất
-                    </button>
-                  </form>
-                </div>
-              )}
-            </div>
-          </div>
-        </header>
-
-        <main className="p-3 lg:p-4">{children}</main>
+      {/* ───── MAIN CONTENT ───── */}
+      <div className={cn('pt-14 transition-all duration-200', contentOffset)}>
+        <main className="p-4 lg:p-6">{children}</main>
       </div>
     </div>
   )
