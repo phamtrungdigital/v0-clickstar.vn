@@ -262,6 +262,7 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               </h2>
               <AiCoverImage
                 postTitle={draft.title.vi || draft.title.en}
+                tags={draft.tags}
                 onApply={(url) => update('cover_image', url)}
               />
             </div>
