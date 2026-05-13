@@ -1,5 +1,5 @@
 import { Inter } from 'next/font/google'
-import { createClient } from '@/lib/supabase/server'
+import { getAdminProfile } from '@/lib/admin/auth'
 import AdminShell from './_components/admin-shell'
 
 const inter = Inter({
@@ -14,30 +14,23 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // Read admin profile from headers set by proxy.ts (no DB query for warm cache)
+  const profile = await getAdminProfile()
 
   const wrap = (node: React.ReactNode) => (
     <div className={`${inter.variable} admin-scope`}>{node}</div>
   )
 
-  // No user → /admin/login (proxy.ts redirects, but this also covers it)
-  if (!user) {
-    return wrap(children)
-  }
-
-  const { data: profile } = await supabase
-    .from('admin_users')
-    .select('email, full_name, role')
-    .eq('user_id', user.id)
-    .maybeSingle()
-
-  // Should never happen — middleware guards this. But fall back to bare layout.
   if (!profile) {
+    // Login page or not logged in — bare layout
     return wrap(children)
   }
 
-  return wrap(<AdminShell user={profile}>{children}</AdminShell>)
+  return wrap(
+    <AdminShell
+      user={{ email: profile.email, full_name: profile.full_name, role: profile.role }}
+    >
+      {children}
+    </AdminShell>
+  )
 }

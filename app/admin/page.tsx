@@ -12,33 +12,18 @@ import {
   Activity,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
+import { getAdminProfile } from '@/lib/admin/auth'
 
 export const dynamic = 'force-dynamic'
 
-async function getStats() {
-  const supabase = await createClient()
-  const since24h = new Date(Date.now() - 24 * 3600 * 1000).toISOString()
-  const since7d = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString()
-
-  const [leadsAll, leadsNew, leadsWon, leads7d, posts, pages, users] = await Promise.all([
-    supabase.from('leads').select('*', { count: 'exact', head: true }),
-    supabase.from('leads').select('*', { count: 'exact', head: true }).gte('created_at', since24h),
-    supabase.from('leads').select('*', { count: 'exact', head: true }).eq('status', 'won'),
-    supabase.from('leads').select('*', { count: 'exact', head: true }).gte('created_at', since7d),
-    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('status', 'published'),
-    supabase.from('pages').select('*', { count: 'exact', head: true }),
-    supabase.from('admin_users').select('*', { count: 'exact', head: true }).eq('is_active', true),
-  ])
-
-  return {
-    leadsTotal: leadsAll.count ?? 0,
-    leadsNew24h: leadsNew.count ?? 0,
-    leadsWon: leadsWon.count ?? 0,
-    leads7d: leads7d.count ?? 0,
-    posts: posts.count ?? 0,
-    pages: pages.count ?? 0,
-    users: users.count ?? 0,
-  }
+type Stats = {
+  leadsTotal: number
+  leadsNew24h: number
+  leadsWon: number
+  leads7d: number
+  posts: number
+  pages: number
+  users: number
 }
 
 type ActivityItem = {
@@ -50,75 +35,6 @@ type ActivityItem = {
   ts: string
 }
 
-async function getRecentActivity(): Promise<ActivityItem[]> {
-  const supabase = await createClient()
-
-  const [leads, posts, pages] = await Promise.all([
-    supabase
-      .from('leads')
-      .select('id, name, email, phone, status, created_at')
-      .order('created_at', { ascending: false })
-      .limit(8),
-    supabase
-      .from('posts')
-      .select('id, slug, title, status, updated_at, published_at')
-      .order('updated_at', { ascending: false })
-      .limit(8),
-    supabase
-      .from('pages')
-      .select('slug, updated_at')
-      .order('updated_at', { ascending: false })
-      .limit(8),
-  ])
-
-  const items: ActivityItem[] = []
-
-  for (const l of leads.data || []) {
-    items.push({
-      id: `lead-${l.id}`,
-      type: 'lead',
-      title: l.name || l.email || l.phone || 'Lead mới',
-      subtitle: `${STATUS_LABEL[l.status] || l.status} • ${l.email || l.phone || ''}`,
-      href: '/admin/leads',
-      ts: l.created_at,
-    })
-  }
-  for (const p of posts.data || []) {
-    const title =
-      typeof p.title === 'object' && p.title
-        ? (p.title as any).vi || (p.title as any).en
-        : 'Bài viết'
-    items.push({
-      id: `post-${p.id}`,
-      type: 'post',
-      title: title || '(chưa có tiêu đề)',
-      subtitle: p.status === 'published' ? 'Đã xuất bản' : 'Bản nháp',
-      href: `/admin/posts/${p.id}/edit`,
-      ts: p.updated_at,
-    })
-  }
-  for (const p of pages.data || []) {
-    items.push({
-      id: `page-${p.slug}`,
-      type: 'page',
-      title: `Trang ${p.slug}`,
-      subtitle: 'Đã chỉnh sửa',
-      href: `/admin/pages/${p.slug.replace(/\//g, '__')}/edit`,
-      ts: p.updated_at,
-    })
-  }
-
-  return items.sort((a, b) => b.ts.localeCompare(a.ts)).slice(0, 12)
-}
-
-function getGreeting(): string {
-  // Vietnam time (UTC+7)
-  const hour = (new Date().getUTCHours() + 7) % 24
-  if (hour < 12) return 'Chào buổi sáng'
-  if (hour < 18) return 'Chào buổi chiều'
-  return 'Chào buổi tối'
-}
-
 const STATUS_LABEL: Record<string, string> = {
   new: 'Mới',
   contacted: 'Đã liên hệ',
@@ -128,22 +44,54 @@ const STATUS_LABEL: Record<string, string> = {
   lost: 'Thất bại',
 }
 
+function getGreeting(): string {
+  const hour = (new Date().getUTCHours() + 7) % 24
+  if (hour < 12) return 'Chào buổi sáng'
+  if (hour < 18) return 'Chào buổi chiều'
+  return 'Chào buổi tối'
+}
+
+function relativeTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime()
+  const min = Math.floor(diff / 60000)
+  if (min < 1) return 'vừa xong'
+  if (min < 60) return `${min} phút trước`
+  const hr = Math.floor(min / 60)
+  if (hr < 24) return `${hr} giờ trước`
+  const day = Math.floor(hr / 24)
+  if (day < 30) return `${day} ngày trước`
+  return new Date(iso).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
+}
+
 export default async function AdminDashboard() {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  let userName = 'bạn'
-  if (user) {
-    const { data: profile } = await supabase
-      .from('admin_users')
-      .select('full_name, email')
-      .eq('user_id', user.id)
-      .maybeSingle()
-    if (profile) userName = profile.full_name || profile.email.split('@')[0]
+
+  // Parallel: 1 RPC stats + 1 RPC activity + admin profile (cached from headers, 0ms)
+  const [statsRes, activityRes, profile] = await Promise.all([
+    supabase.rpc('get_admin_dashboard_stats'),
+    supabase.rpc('get_admin_recent_activity'),
+    getAdminProfile(),
+  ])
+
+  const stats = (statsRes.data as Stats | null) || {
+    leadsTotal: 0,
+    leadsNew24h: 0,
+    leadsWon: 0,
+    leads7d: 0,
+    posts: 0,
+    pages: 0,
+    users: 0,
   }
 
-  const [stats, activity] = await Promise.all([getStats(), getRecentActivity()])
+  const rawActivity = (activityRes.data as ActivityItem[] | null) || []
+  // Localize subtitle for leads (RPC returns raw status string)
+  const activity = rawActivity.slice(0, 12).map((a) => ({
+    ...a,
+    subtitle:
+      a.type === 'lead' && STATUS_LABEL[a.subtitle] ? STATUS_LABEL[a.subtitle] : a.subtitle,
+  }))
+
+  const userName = profile?.full_name || profile?.email?.split('@')[0] || 'bạn'
   const conversionRate =
     stats.leadsTotal > 0 ? ((stats.leadsWon / stats.leadsTotal) * 100).toFixed(1) : '0.0'
 
@@ -156,7 +104,6 @@ export default async function AdminDashboard() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
-      {/* ───── Greeting header (HubSpot style) ───── */}
       <div>
         <p className="text-sm text-slate-500 capitalize">{today}</p>
         <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-1">
@@ -164,54 +111,21 @@ export default async function AdminDashboard() {
         </h1>
       </div>
 
-      {/* ───── Stats grid ───── */}
       <div>
         <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
           Tổng quan
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          <StatCard
-            label="Tổng leads"
-            value={stats.leadsTotal}
-            icon={<Users className="w-4 h-4" />}
-            href="/admin/leads"
-          />
-          <StatCard
-            label="Leads 24h"
-            value={stats.leadsNew24h}
-            icon={<TrendingUp className="w-4 h-4" />}
-            href="/admin/leads"
-            highlight={stats.leadsNew24h > 0}
-          />
-          <StatCard
-            label="Leads 7 ngày"
-            value={stats.leads7d}
-            icon={<Activity className="w-4 h-4" />}
-            href="/admin/leads"
-          />
-          <StatCard
-            label="Tỷ lệ chuyển đổi"
-            value={`${conversionRate}%`}
-            icon={<TrendingUp className="w-4 h-4" />}
-          />
-          <StatCard
-            label="Bài viết đã đăng"
-            value={stats.posts}
-            icon={<FileText className="w-4 h-4" />}
-            href="/admin/posts"
-          />
-          <StatCard
-            label="Trang CMS"
-            value={stats.pages}
-            icon={<Globe className="w-4 h-4" />}
-            href="/admin/pages"
-          />
+          <StatCard label="Tổng leads" value={stats.leadsTotal} icon={<Users className="w-4 h-4" />} href="/admin/leads" />
+          <StatCard label="Leads 24h" value={stats.leadsNew24h} icon={<TrendingUp className="w-4 h-4" />} href="/admin/leads" highlight={stats.leadsNew24h > 0} />
+          <StatCard label="Leads 7 ngày" value={stats.leads7d} icon={<Activity className="w-4 h-4" />} href="/admin/leads" />
+          <StatCard label="Tỷ lệ chuyển đổi" value={`${conversionRate}%`} icon={<TrendingUp className="w-4 h-4" />} />
+          <StatCard label="Bài viết đã đăng" value={stats.posts} icon={<FileText className="w-4 h-4" />} href="/admin/posts" />
+          <StatCard label="Trang CMS" value={stats.pages} icon={<Globe className="w-4 h-4" />} href="/admin/pages" />
         </div>
       </div>
 
-      {/* ───── Activity feed + Quick actions ───── */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
-        {/* Activity feed */}
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
           <div className="px-5 py-3 border-b border-slate-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -245,54 +159,19 @@ export default async function AdminDashboard() {
           )}
         </div>
 
-        {/* Quick actions */}
         <div className="bg-white rounded-xl border border-slate-200 p-4">
           <h2 className="text-sm font-semibold text-slate-900 mb-3">Lối tắt</h2>
           <div className="space-y-1">
-            <QuickAction
-              href="/admin/posts/new"
-              icon={<Plus className="w-4 h-4" />}
-              label="Viết bài mới"
-              orange
-            />
-            <QuickAction
-              href="/admin/pages/home/edit"
-              icon={<Edit3 className="w-4 h-4" />}
-              label="Sửa trang chủ"
-            />
-            <QuickAction
-              href="/admin/users/new"
-              icon={<UserPlus className="w-4 h-4" />}
-              label="Thêm admin user"
-            />
-            <QuickAction
-              href="/admin/ai"
-              icon={<Activity className="w-4 h-4" />}
-              label="AI Assistant"
-            />
-            <QuickAction
-              href="/"
-              icon={<ExternalLink className="w-4 h-4" />}
-              label="Xem website public"
-              external
-            />
+            <QuickAction href="/admin/posts/new" icon={<Plus className="w-4 h-4" />} label="Viết bài mới" orange />
+            <QuickAction href="/admin/pages/home/edit" icon={<Edit3 className="w-4 h-4" />} label="Sửa trang chủ" />
+            <QuickAction href="/admin/users/new" icon={<UserPlus className="w-4 h-4" />} label="Thêm admin user" />
+            <QuickAction href="/admin/ai" icon={<Activity className="w-4 h-4" />} label="AI Assistant" />
+            <QuickAction href="/" icon={<ExternalLink className="w-4 h-4" />} label="Xem website public" external />
           </div>
         </div>
       </div>
     </div>
   )
-}
-
-function relativeTime(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime()
-  const min = Math.floor(diff / 60000)
-  if (min < 1) return 'vừa xong'
-  if (min < 60) return `${min} phút trước`
-  const hr = Math.floor(min / 60)
-  if (hr < 24) return `${hr} giờ trước`
-  const day = Math.floor(hr / 24)
-  if (day < 30) return `${day} ngày trước`
-  return new Date(iso).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' })
 }
 
 function StatCard({
