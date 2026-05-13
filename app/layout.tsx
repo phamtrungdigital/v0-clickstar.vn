@@ -3,6 +3,8 @@ import { Plus_Jakarta_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { cookies } from 'next/headers'
 import { LanguageProvider, type Language } from '@/contexts/language-context'
+import { SiteBrandingProvider, type SiteBranding } from '@/contexts/site-branding-context'
+import { getSiteSettings } from '@/lib/cms/settings'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -11,19 +13,32 @@ const plusJakarta = Plus_Jakarta_Sans({
   weight: ['400', '500', '600', '700', '800'],
 })
 
-export const metadata: Metadata = {
-  title: 'ClickStar - Giải pháp chuyển đổi số toàn diện',
-  description:
-    'Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, Automation và CRM/CDP cho doanh nghiệp Việt Nam',
-  generator: 'v0.app',
-  icons: {
-    icon: [
-      { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
-    ],
-    apple: '/apple-icon.png',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings()
+  const favicon = settings?.favicon_url
+  const ogImage = settings?.default_og_image
+  const siteName = settings?.site_name?.vi || 'ClickStar'
+
+  const icons = favicon
+    ? { icon: favicon, apple: favicon }
+    : {
+        icon: [
+          { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
+          { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
+          { url: '/icon.svg', type: 'image/svg+xml' },
+        ],
+        apple: '/apple-icon.png',
+      }
+
+  return {
+    title: `${siteName} - Giải pháp chuyển đổi số toàn diện`,
+    description:
+      settings?.default_seo_description?.vi ||
+      'Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, Automation và CRM/CDP cho doanh nghiệp Việt Nam',
+    generator: 'v0.app',
+    icons,
+    openGraph: ogImage ? { images: [ogImage] } : undefined,
+  }
 }
 
 export default async function RootLayout({
@@ -35,10 +50,19 @@ export default async function RootLayout({
   const langCookie = cookieStore.get('cs-lang')?.value
   const initialLang: Language = langCookie === 'en' ? 'en' : 'vi'
 
+  const settings = await getSiteSettings()
+  const branding: SiteBranding = {
+    logoUrl: settings?.logo_url || '/images/logo-clickstar.png',
+    faviconUrl: settings?.favicon_url || null,
+    siteName: settings?.site_name?.vi || 'ClickStar',
+  }
+
   return (
     <html lang={initialLang} className="bg-background">
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
-        <LanguageProvider initialLang={initialLang}>{children}</LanguageProvider>
+        <SiteBrandingProvider branding={branding}>
+          <LanguageProvider initialLang={initialLang}>{children}</LanguageProvider>
+        </SiteBrandingProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

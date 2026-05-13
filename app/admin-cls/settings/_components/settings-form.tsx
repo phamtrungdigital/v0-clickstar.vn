@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2 } from 'lucide-react'
+import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2, Image as ImageIcon } from 'lucide-react'
 import type { SiteSettings } from '@/lib/cms/settings'
 import { saveSettings, type SettingsUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
@@ -74,6 +74,36 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
         </div>
       </div>
 
+      {/* Branding */}
+      <Section icon={<ImageIcon className="w-4 h-4 text-slate-400" />} title="Branding (Logo / Favicon / OG)">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div>
+            <ImagePicker
+              label="Logo chính (header + footer)"
+              value={draft.logo_url ?? ''}
+              onChange={(v) => update('logo_url', v.trim() === '' ? null : v)}
+            />
+            <p className="text-[10px] text-slate-500 mt-1">PNG/SVG ngang, ~180×40px</p>
+          </div>
+          <div>
+            <ImagePicker
+              label="Favicon (tab browser)"
+              value={draft.favicon_url ?? ''}
+              onChange={(v) => update('favicon_url', v.trim() === '' ? null : v)}
+            />
+            <p className="text-[10px] text-slate-500 mt-1">PNG vuông 32×32 hoặc SVG</p>
+          </div>
+          <div>
+            <ImagePicker
+              label="Default OG image (social share)"
+              value={draft.default_og_image ?? ''}
+              onChange={(v) => update('default_og_image', v.trim() === '' ? null : v)}
+            />
+            <p className="text-[10px] text-slate-500 mt-1">JPG/PNG 1200×630</p>
+          </div>
+        </div>
+      </Section>
+
       {/* General info */}
       <Section icon={<Globe className="w-4 h-4 text-slate-400" />} title="Thông tin website">
         <I18nInput label="Tên website" value={draft.site_name} onChange={(v) => update('site_name', v)} />
@@ -124,11 +154,9 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
           value={draft.default_seo_description ?? { vi: '', en: '' }}
           onChange={(v) => update('default_seo_description', v)}
         />
-        <ImagePicker
-          label="Default OG image"
-          value={draft.default_og_image ?? ''}
-          onChange={(v) => update('default_og_image', v.trim() === '' ? null : v)}
-        />
+        <p className="text-[10px] text-slate-500">
+          OG image mặc định: cấu hình ở section "Branding" phía trên.
+        </p>
       </Section>
     </div>
   )

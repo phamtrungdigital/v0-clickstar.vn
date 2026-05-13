@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, Send } from 'lucide-react'
 import { useState } from 'react'
 import { useLanguage, type Language } from '@/contexts/language-context'
+import { useSiteBranding } from '@/contexts/site-branding-context'
 
 const servicesData: Record<Language, { name: string; href: string }[]> = {
   vi: [
@@ -55,6 +56,7 @@ const socialLinks = [
 export function Footer() {
   const [email, setEmail] = useState('')
   const { language, t } = useLanguage()
+  const branding = useSiteBranding()
   const services = servicesData[language]
   const usefulLinks = usefulLinksData[language]
 
@@ -74,11 +76,12 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block mb-6">
               <Image
-                src="/images/logo-clickstar.png"
-                alt="ClickStar"
+                src={branding.logoUrl || '/images/logo-clickstar.png'}
+                alt={branding.siteName}
                 width={140}
                 height={35}
                 className="h-9 w-auto brightness-0 invert"
+                unoptimized
               />
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed mb-6">

@@ -28,6 +28,7 @@ import {
   ExternalLink,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useSiteBranding } from '@/contexts/site-branding-context'
 import { logout } from '../login/actions'
 
 const sidebarItems = [
@@ -87,6 +88,7 @@ export default function AdminShell({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const pathname = usePathname()
+  const branding = useSiteBranding()
 
   useEffect(() => {
     const saved = localStorage.getItem('admin-sidebar-collapsed')
@@ -118,10 +120,21 @@ export default function AdminShell({
             <Menu className="w-5 h-5" />
           </button>
           <Link href="/admin-cls" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-xs">CS</span>
-            </div>
-            <span className="font-bold text-sm hidden sm:block">ClickStar Admin</span>
+            {branding.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={branding.logoUrl}
+                alt={branding.siteName}
+                className="h-7 w-auto object-contain"
+              />
+            ) : (
+              <div className="w-7 h-7 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
+                <span className="text-white font-bold text-xs">
+                  {branding.siteName.slice(0, 2).toUpperCase()}
+                </span>
+              </div>
+            )}
+            <span className="font-bold text-sm hidden sm:block">{branding.siteName} Admin</span>
           </Link>
         </div>
 
