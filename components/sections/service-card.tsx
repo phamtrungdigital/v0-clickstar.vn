@@ -32,16 +32,18 @@ export function ServiceCard({
         {title}
       </h3>
 
-      <p className="text-muted-foreground text-sm leading-relaxed mb-5">{description}</p>
+      <p className="text-muted-foreground text-sm leading-relaxed mb-5 flex-1">{description}</p>
 
-      <span className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full ${tagColor}`}>
+      <span
+        className={`inline-block self-start text-xs font-semibold px-3 py-1.5 rounded-full ${tagColor}`}
+      >
         {tag}
       </span>
     </>
   )
 
   const className =
-    'group bg-card p-8 rounded-xl border border-border hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer block'
+    'group bg-card p-8 rounded-xl border border-border hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full'
 
   if (!href) {
     return <div className={className}>{inner}</div>

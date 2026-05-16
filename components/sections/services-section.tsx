@@ -52,12 +52,12 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
           </p>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Services Grid — auto-rows-fr ensures all rows have equal height */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 auto-rows-fr">
           {content.services.map((service, index) => {
             const colors = colorMap[service.color] ?? colorMap.blue
             return (
-              <div key={index} data-cms-field="item" data-cms-item-index={index}>
+              <div key={index} data-cms-field="item" data-cms-item-index={index} className="h-full">
                 <ServiceCard
                   icon={renderIcon(service.icon, `w-6 h-6 ${colors.iconText}`)}
                   title={t(service.title.vi, service.title.en)}
