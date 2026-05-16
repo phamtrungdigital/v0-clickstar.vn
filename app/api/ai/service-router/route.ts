@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -70,14 +69,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Câu hỏi tối đa 500 ký tự' }, { status: 400 })
     }
 
-    const supabase = await createClient()
-    const { data: settings } = await supabase
-      .from('ai_settings')
-      .select('openai_api_key, enabled')
-      .eq('id', 1)
-      .maybeSingle()
-
-    if (!settings?.enabled || !settings?.openai_api_key) {
+    // Read OpenAI key from Vercel env (server-only, encrypted at rest).
+    // We don't read from DB because RLS only allows admins, and this is a public endpoint.
+    const openaiKey = process.env.OPENAI_API_KEY
+    if (!openaiKey) {
       return NextResponse.json(
         { error: 'AI tạm thời chưa khả dụng. Vui lòng liên hệ hotline 0977 713 428.' },
         { status: 503 }
@@ -87,7 +82,7 @@ export async function POST(req: Request) {
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${settings.openai_api_key}`,
+        'Authorization': `Bearer ${openaiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
