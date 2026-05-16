@@ -10,6 +10,7 @@ import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
+import { AiServiceRouter } from '@/components/sections/ai-service-router'
 import { Footer } from '@/components/layout/footer'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { getPublishedPage } from '@/lib/cms/queries'
@@ -76,7 +77,12 @@ export default async function Home() {
       <TopBanner />
       <MainNav />
 
-      {page.sections.map((section) => renderSection(section))}
+      {page.sections.map((section, idx) => (
+        <div key={section.id}>
+          {renderSection(section)}
+          {idx === 0 && <AiServiceRouter />}
+        </div>
+      ))}
 
       <Footer />
       <EditModeOverlay />
