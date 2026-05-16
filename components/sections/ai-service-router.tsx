@@ -1,30 +1,30 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import Link from 'next/link'
-import { Sparkles, ArrowRight, Loader2, Phone, Mail, AlertCircle } from 'lucide-react'
+import {
+  Sparkles,
+  ArrowRight,
+  Loader2,
+  Phone,
+  Mail,
+  AlertCircle,
+  Send,
+  Bot,
+  RotateCcw,
+} from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 
-type ServiceMatch = {
-  slug: string
+type ResultLink = {
   title: string
-  reason: string
+  href: string
+  type: 'service' | 'page' | 'contact' | 'blog'
 }
 
 type ApiResponse = {
-  matched: boolean
-  services: ServiceMatch[]
-  fallback_message: string | null
+  answer: string
+  links: ResultLink[]
   error?: string
-}
-
-const SERVICE_ICONS: Record<string, string> = {
-  'digital-marketing': '📢',
-  'website': '🌐',
-  'dashboard': '📊',
-  'crm-cdp': '👥',
-  'ai-integration': '🤖',
-  'automation': '⚙️',
 }
 
 const QUICK_PROMPTS_VI = [
@@ -33,7 +33,7 @@ const QUICK_PROMPTS_VI = [
   'Thiết kế dashboard để theo dõi tình hình doanh nghiệp',
   'Tích hợp chatbot AI cho website',
   'Tự động hoá email marketing nuôi lead',
-  'Quản lý khách hàng + chăm sóc trên 1 nền tảng',
+  'Bảng giá dịch vụ thế nào?',
 ]
 
 const QUICK_PROMPTS_EN = [
@@ -42,38 +42,68 @@ const QUICK_PROMPTS_EN = [
   'Design a dashboard to monitor business performance',
   'Integrate AI chatbot for website',
   'Automate email marketing & lead nurturing',
-  'Manage customers and care on one platform',
+  'What is the pricing?',
 ]
 
 const COPY = {
   vi: {
-    title: 'Bạn cần dịch vụ gì? Để Click Star hỗ trợ bạn?',
+    badge: 'AI Assistant',
+    title: 'Bạn cần dịch vụ gì?',
+    titleHighlight: 'Để Click Star hỗ trợ bạn',
     subtitle:
-      'Mô tả ngắn gọn nhu cầu — Click Star sẽ gợi ý dịch vụ phù hợp nhất trong vòng 2 giây.',
-    placeholder: 'Vui lòng nhập yêu cầu để được hỗ trợ',
+      'Mô tả ngắn gọn nhu cầu — AI Click Star sẽ trả lời mọi thắc mắc về dịch vụ, giá, dự án trong vòng 2 giây.',
+    placeholder: 'Vui lòng nhập yêu cầu để được hỗ trợ…',
     quickLabel: 'Hoặc thử nhanh:',
     submit: 'Hỏi AI',
-    submitting: 'AI đang suy nghĩ…',
-    resultTitle: 'AI gợi ý dịch vụ phù hợp với anh:',
-    viewDetail: 'Xem chi tiết',
-    contactTitle: 'Liên hệ tư vấn trực tiếp',
-    reset: 'Hỏi câu khác',
-    note: 'Trả lời bằng AI — anh có thể gọi hotline 0977 713 428 nếu cần tư vấn người thật.',
+    submitting: 'Đang xử lý…',
+    askAnother: 'Hỏi câu khác',
+    aiThinking: 'AI Click Star đang suy nghĩ…',
+    seeMore: 'Có thể anh quan tâm:',
+    note: 'AI có thể nhầm. Gọi hotline 0977 713 428 nếu cần tư vấn người thật.',
   },
   en: {
-    title: 'Which service do you need? Let Click Star help you',
+    badge: 'AI Assistant',
+    title: 'Which service do you need?',
+    titleHighlight: 'Let Click Star help you',
     subtitle:
-      'Briefly describe your need — Click Star will suggest the best fit in 2 seconds.',
-    placeholder: 'Please enter your request to get support',
+      'Briefly describe your need — Click Star AI answers everything about services, pricing, projects in 2 seconds.',
+    placeholder: 'Type your request to get support…',
     quickLabel: 'Or try one of these:',
     submit: 'Ask AI',
-    submitting: 'AI is thinking…',
-    resultTitle: 'AI suggests these services for you:',
-    viewDetail: 'View details',
-    contactTitle: 'Or contact us directly',
-    reset: 'Ask another question',
-    note: 'AI-generated answer — call hotline 0977 713 428 for a real consultant.',
+    submitting: 'Thinking…',
+    askAnother: 'Ask another',
+    aiThinking: 'Click Star AI is thinking…',
+    seeMore: 'You may also like:',
+    note: 'AI may be wrong. Call 0977 713 428 for a real consultant.',
   },
+}
+
+// Lightweight markdown-ish formatter: **bold**, *italic*, line breaks
+function formatAnswer(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
+    .replace(/\n/g, '<br/>')
+}
+
+// Animated typing effect
+function useTypingEffect(text: string, speed = 14): string {
+  const [displayed, setDisplayed] = useState('')
+  useEffect(() => {
+    if (!text) {
+      setDisplayed('')
+      return
+    }
+    setDisplayed('')
+    let i = 0
+    const id = setInterval(() => {
+      i++
+      setDisplayed(text.slice(0, i))
+      if (i >= text.length) clearInterval(id)
+    }, speed)
+    return () => clearInterval(id)
+  }, [text, speed])
+  return displayed
 }
 
 export function AiServiceRouter() {
@@ -85,6 +115,7 @@ export function AiServiceRouter() {
   const [isPending, startTransition] = useTransition()
   const [result, setResult] = useState<ApiResponse | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const typedAnswer = useTypingEffect(result?.answer || '', 12)
 
   const submit = (q: string) => {
     if (!q || q.length < 3) return
@@ -117,158 +148,217 @@ export function AiServiceRouter() {
   }
 
   return (
-    <section className="py-12 lg:py-16 bg-gradient-to-b from-blue-50/40 via-white to-white">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-3">
-            <Sparkles className="w-3.5 h-3.5" />
-            AI Service Router
+    <section className="relative py-16 lg:py-20 overflow-hidden bg-slate-950 text-white">
+      {/* Animated gradient mesh background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-indigo-950 to-purple-950" />
+      <div className="absolute inset-0 opacity-40">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/30 rounded-full blur-3xl animate-pulse" />
+        <div
+          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/30 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: '1s', animationDuration: '4s' }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-violet-500/20 rounded-full blur-3xl animate-pulse"
+          style={{ animationDelay: '2s', animationDuration: '5s' }}
+        />
+      </div>
+
+      {/* Grid pattern overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.5) 1px, transparent 1px)',
+          backgroundSize: '50px 50px',
+        }}
+      />
+
+      <div className="container relative mx-auto px-4 max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold mb-4 shadow-lg shadow-blue-500/10">
+            <Sparkles className="w-3.5 h-3.5 text-yellow-300 animate-pulse" />
+            <span className="bg-gradient-to-r from-blue-200 to-purple-200 bg-clip-text text-transparent">
+              {t.badge}
+            </span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">{t.title}</h2>
-          <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto">{t.subtitle}</p>
+          <h2 className="text-3xl md:text-5xl font-bold mb-3 leading-tight">
+            <span className="text-white">{t.title}</span>{' '}
+            <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              {t.titleHighlight}
+            </span>
+          </h2>
+          <p className="text-sm md:text-base text-slate-300 max-w-2xl mx-auto">{t.subtitle}</p>
         </div>
 
-        {/* Input row */}
+        {/* Input card — glassmorphism */}
         <form
           onSubmit={(e) => {
             e.preventDefault()
             submit(query.trim())
           }}
-          className="bg-white rounded-2xl shadow-lg border border-slate-200 p-3 md:p-4"
+          className="relative group"
         >
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t.placeholder}
-              maxLength={500}
-              disabled={isPending}
-              className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-60"
-            />
-            <button
-              type="submit"
-              disabled={isPending || query.trim().length < 3}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white font-semibold rounded-xl text-sm md:text-base disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-            >
-              {isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  {t.submitting}
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  {t.submit}
-                </>
-              )}
-            </button>
-          </div>
+          {/* Glow ring */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-60 transition-opacity duration-500" />
 
-          {/* Quick prompts */}
-          {!result && !error && !isPending && (
-            <div className="mt-3 pt-3 border-t border-slate-100">
-              <p className="text-xs text-slate-500 mb-2">{t.quickLabel}</p>
-              <div className="flex flex-wrap gap-1.5">
-                {quickPrompts.map((p) => (
-                  <button
-                    key={p}
-                    type="button"
-                    onClick={() => submit(p)}
-                    className="text-xs px-3 py-1.5 bg-slate-100 hover:bg-blue-100 hover:text-blue-700 text-slate-600 rounded-full transition-colors"
-                  >
-                    {p}
-                  </button>
-                ))}
+          <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-3 md:p-4 shadow-2xl">
+            <div className="flex flex-col sm:flex-row gap-2">
+              <div className="relative flex-1">
+                <Bot className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-blue-400" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder={t.placeholder}
+                  maxLength={500}
+                  disabled={isPending}
+                  className="w-full pl-11 pr-4 py-3.5 bg-slate-800/80 border border-white/10 rounded-xl text-sm md:text-base text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-60 transition-all"
+                />
               </div>
+              <button
+                type="submit"
+                disabled={isPending || query.trim().length < 3}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold rounded-xl text-sm md:text-base disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 hover:scale-[1.02]"
+              >
+                {isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    {t.submitting}
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    {t.submit}
+                  </>
+                )}
+              </button>
             </div>
-          )}
+
+            {/* Quick prompts */}
+            {!result && !error && !isPending && (
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs text-slate-400 mb-2.5">{t.quickLabel}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {quickPrompts.map((p) => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => submit(p)}
+                      className="text-xs px-3 py-1.5 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-blue-400/50 text-slate-300 hover:text-white rounded-full transition-all"
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* AI thinking indicator */}
+            {isPending && (
+              <div className="mt-4 pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="flex gap-1">
+                  <span
+                    className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '0ms' }}
+                  />
+                  <span
+                    className="w-2 h-2 bg-purple-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '150ms' }}
+                  />
+                  <span
+                    className="w-2 h-2 bg-pink-400 rounded-full animate-bounce"
+                    style={{ animationDelay: '300ms' }}
+                  />
+                </div>
+                <span className="text-sm text-slate-300">{t.aiThinking}</span>
+              </div>
+            )}
+          </div>
         </form>
 
         {/* Error */}
         {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+          <div className="mt-4 p-4 bg-red-500/10 backdrop-blur-md border border-red-500/30 rounded-xl flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-sm text-red-700">{error}</p>
+              <p className="text-sm text-red-200">{error}</p>
               <button
                 onClick={reset}
-                className="text-xs text-red-600 hover:text-red-800 underline mt-1"
+                className="text-xs text-red-300 hover:text-red-100 underline mt-1"
               >
-                {t.reset}
+                {t.askAnother}
               </button>
             </div>
           </div>
         )}
 
-        {/* Result: matched services */}
-        {result && result.matched && result.services.length > 0 && (
-          <div className="mt-4 space-y-3">
-            <p className="text-sm font-semibold text-slate-700 px-1">{t.resultTitle}</p>
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {result.services.map((s, idx) => (
-                <Link
-                  key={s.slug}
-                  href={`/services/${s.slug}`}
-                  className="group bg-white rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-lg p-4 transition-all relative"
-                >
-                  {idx === 0 && result.services.length > 1 && (
-                    <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-full">
-                      ⭐ Phù hợp nhất
-                    </span>
-                  )}
-                  <div className="text-3xl mb-2">{SERVICE_ICONS[s.slug] || '✨'}</div>
-                  <h3 className="font-bold text-slate-900 mb-1">{s.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed mb-3">{s.reason}</p>
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 group-hover:text-blue-700">
-                    {t.viewDetail}
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-                  </span>
-                </Link>
-              ))}
+        {/* AI Answer */}
+        {result && (
+          <div className="mt-5 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            {/* Answer bubble */}
+            <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl p-5 shadow-2xl">
+              <div className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg shadow-purple-500/40">
+                  <Bot className="w-4.5 h-4.5 text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-semibold text-blue-300 mb-1.5">Click Star AI</p>
+                  <div
+                    className="text-sm md:text-[15px] text-slate-100 leading-relaxed prose-strong:text-white prose-em:text-slate-200"
+                    dangerouslySetInnerHTML={{
+                      __html: formatAnswer(typedAnswer) + (typedAnswer.length < (result.answer?.length || 0) ? '<span class="inline-block w-1.5 h-4 ml-0.5 bg-blue-400 animate-pulse"></span>' : ''),
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-            <div className="flex items-center justify-between gap-3 px-1 pt-1">
-              <p className="text-[11px] text-slate-400">{t.note}</p>
-              <button
-                onClick={reset}
-                className="text-xs text-blue-600 hover:text-blue-700 underline whitespace-nowrap"
-              >
-                {t.reset}
-              </button>
-            </div>
-          </div>
-        )}
 
-        {/* Fallback: not matched */}
-        {result && !result.matched && (
-          <div className="mt-4 p-5 bg-amber-50 border border-amber-200 rounded-xl">
-            <div className="flex items-start gap-3 mb-3">
-              <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-900 leading-relaxed">
-                {result.fallback_message ||
-                  'Câu hỏi này không khớp với dịch vụ ClickStar. Anh vui lòng liên hệ trực tiếp:'}
-              </p>
-            </div>
-            <div className="flex flex-wrap items-center gap-2 ml-8">
-              <a
-                href="tel:0977713428"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg"
-              >
-                <Phone className="w-3.5 h-3.5" />
-                0977 713 428
-              </a>
-              <a
-                href="mailto:clickstar.vn@gmail.com"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-amber-300 hover:bg-amber-50 text-amber-800 text-xs font-semibold rounded-lg"
-              >
-                <Mail className="w-3.5 h-3.5" />
-                clickstar.vn@gmail.com
-              </a>
+            {/* Suggested links */}
+            {result.links && result.links.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-1">
+                  {t.seeMore}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {result.links.map((link, idx) => {
+                    const isContact = link.href.startsWith('tel:') || link.href.startsWith('mailto:')
+                    const Icon =
+                      link.href.startsWith('tel:') ? Phone : link.href.startsWith('mailto:') ? Mail : ArrowRight
+                    const className =
+                      'group inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-sm font-medium transition-all border ' +
+                      (idx === 0
+                        ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 hover:from-blue-500/30 hover:to-purple-500/30 border-blue-400/40 text-white shadow-lg shadow-blue-500/20'
+                        : 'bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/30 text-slate-200')
+
+                    if (isContact) {
+                      return (
+                        <a key={idx} href={link.href} className={className}>
+                          <Icon className="w-3.5 h-3.5" />
+                          {link.title}
+                        </a>
+                      )
+                    }
+                    return (
+                      <Link key={idx} href={link.href} className={className}>
+                        {link.title}
+                        <Icon className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                      </Link>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Footer note + reset */}
+            <div className="flex items-center justify-between gap-3 pt-1">
+              <p className="text-[11px] text-slate-500">{t.note}</p>
               <button
                 onClick={reset}
-                className="ml-auto text-xs text-amber-700 hover:text-amber-900 underline"
+                className="inline-flex items-center gap-1 text-xs text-blue-300 hover:text-white whitespace-nowrap transition-colors"
               >
-                {t.reset}
+                <RotateCcw className="w-3 h-3" />
+                {t.askAnother}
               </button>
             </div>
           </div>

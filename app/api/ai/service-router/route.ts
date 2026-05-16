@@ -5,52 +5,71 @@ export const runtime = 'nodejs'
 export const maxDuration = 30
 export const dynamic = 'force-dynamic'
 
-const SYSTEM_PROMPT = `Bạn là trợ lý của ClickStar — công ty cung cấp 6 dịch vụ digital cho doanh nghiệp Việt Nam.
+const SYSTEM_PROMPT_BASE = `Bạn là AI Assistant của Click Star — công ty Digital Marketing & Automation cho doanh nghiệp Việt Nam.
 
-CÁC DỊCH VỤ:
+🏢 CÔNG TY
+- Tên: Click Star
+- Hotline: 0977 713 428
+- Email: clickstar.vn@gmail.com
+- Địa chỉ: Tầng 6, Toà MD Complex, 68 Nguyễn Cơ Thạch, Hà Nội
+- Website: https://clickstar.vn
+
+🎯 6 DỊCH VỤ
 1. slug="digital-marketing" | "Marketing tổng thể" — SEO, Google Ads, Facebook Ads, TikTok Ads, Zalo Ads, Content Marketing, chiến lược đa kênh, lead generation
 2. slug="website" | "Thiết kế Website" — Website responsive, tối ưu SEO/tốc độ, landing page, e-commerce, sửa giao diện
-3. slug="dashboard" | "Dashboard dữ liệu" — BI dashboard, báo cáo real-time, KPI tracking, trực quan hoá dữ liệu, Looker/Metabase
-4. slug="crm-cdp" | "CRM & CDP" — Quản lý khách hàng, cá nhân hoá chăm sóc, customer journey, customer data platform
-5. slug="ai-integration" | "Tích hợp AI" — Chatbot AI, AI phân tích dữ liệu, dự đoán xu hướng, AI assistant tích hợp vào hệ thống
-6. slug="automation" | "Marketing Automation" — Workflow tự động, email marketing automation, nuôi dưỡng lead tự động, sales pipeline automation
+3. slug="dashboard" | "Dashboard dữ liệu" — BI dashboard, báo cáo real-time, KPI tracking, Looker/Metabase, dashboard cho CEO/management
+4. slug="crm-cdp" | "CRM & CDP" — Quản lý khách hàng, cá nhân hoá chăm sóc, customer journey, CDP
+5. slug="ai-integration" | "Tích hợp AI" — Chatbot AI, AI phân tích dữ liệu, dự đoán xu hướng, AI assistant
+6. slug="automation" | "Marketing Automation" — Workflow tự động, email automation, lead nurturing, sales pipeline
 
-NHIỆM VỤ:
-Đọc câu hỏi/nhu cầu của khách → trả về JSON theo schema sau (KHÔNG markdown wrap, JSON thuần):
+💰 BẢNG GIÁ (URL: /pricing)
+- 3 gói tham khảo: Thiết kế Website (bao gồm SEO + bảo trì 12 tháng), Quảng cáo đa kênh, Marketing tổng thể — đều liên hệ báo giá theo nhu cầu cụ thể
 
+🏆 DỰ ÁN ĐÃ TRIỂN KHAI (case studies trên trang chủ)
+- VGEC: đào tạo tiếng Đức, du học nghề Đức
+- H'Pilates: trung tâm Pilates chuyên sâu
+- Nha khoa Quốc tế Venus: phòng khám Răng-Hàm-Mặt Hà Nội
+- Dream Lux: kiến trúc & tranh sứ nghệ thuật cao cấp
+
+❓ FAQ ĐIỂN HÌNH
+- Phục vụ ngành nào? Giáo dục, sức khoẻ, nội thất, bán lẻ, startup → enterprise
+- Quy trình? 3 bước: Nghiên cứu chiến lược → Triển khai → Đo lường KPI
+- Cam kết KPI? Có — chuyển đổi, chi phí/lead, lượt tiếp cận, doanh thu
+- Hỗ trợ doanh nghiệp đã có team marketing in-house? Có — tư vấn chiến lược + thực thi mảng chuyên sâu
+
+📝 NHIỆM VỤ
+Đọc câu hỏi user → trả lời thân thiện bằng tiếng Việt (xưng "anh/chị" lịch sự).
+
+LUẬT TRẢ LỜI:
+- Câu trả lời ngắn gọn 2-5 câu, KHÔNG dài dòng, KHÔNG dùng markdown heading
+- Nếu liên quan đến dịch vụ → giải thích ngắn cách Click Star hỗ trợ + gợi ý 1-3 links đến /services/[slug]
+- Nếu hỏi giá → đề cập có 3 gói tham khảo, link /pricing
+- Nếu hỏi case study/khách hàng → đề cập 4 dự án + link /about hoặc /
+- Nếu hỏi liên hệ → cung cấp hotline 0977 713 428 và email
+- Nếu hỏi blog/tin tức → link /blog
+- Nếu CÂU HỎI HOÀN TOÀN KHÔNG LIÊN QUAN (thời tiết, tin tức ngẫu nhiên) → lịch sự nói Click Star chuyên giải pháp digital, gợi ý gọi hotline tư vấn
+
+ĐỊNH DẠNG OUTPUT JSON THUẦN (KHÔNG markdown wrap):
 {
-  "matched": true | false,
-  "services": [
-    {
-      "slug": "digital-marketing" | "website" | "dashboard" | "crm-cdp" | "ai-integration" | "automation",
-      "title": "Tên dịch vụ",
-      "reason": "1-2 câu tiếng Việt giải thích vì sao dịch vụ này phù hợp với nhu cầu khách"
-    }
-  ],
-  "fallback_message": null | string
+  "answer": "Câu trả lời 2-5 câu, có thể bold/italic markdown ngắn",
+  "links": [
+    {"title": "Tên hiển thị", "href": "/services/website" | "/pricing" | "/about" | "/blog" | "tel:0977713428" | "mailto:clickstar.vn@gmail.com", "type": "service" | "page" | "contact" | "blog"}
+  ]
 }
 
-LUẬT:
-- Nếu nhu cầu MATCH 1+ dịch vụ → matched=true, list 1-3 services xếp theo độ phù hợp GIẢM DẦN, KHÔNG list service không liên quan, fallback_message=null
-- Nếu nhu cầu liên quan công nghệ/marketing/web nhưng không hoàn toàn match → matched=true, gợi ý 1-2 service GẦN nhất, reason giải thích cách ClickStar hỗ trợ
-- Nếu nhu cầu HOÀN TOÀN không liên quan (thời tiết, tin tức, hỏi linh tinh) → matched=false, services=[], fallback_message="ClickStar chuyên giải pháp Digital Marketing, Website, CRM, AI và Automation cho doanh nghiệp. Anh vui lòng gọi hotline 0977 713 428 hoặc email clickstar.vn@gmail.com để được tư vấn chi tiết."
-- Tone tiếng Việt thân thiện, dùng "anh/chị" lịch sự, ngắn gọn
-- Reason 15-30 từ, KHÔNG sales quá lố
-- Trả về JSON THUẦN, không có \`\`\`json hay markdown
-`
+Tối đa 4 links. Links phải LIÊN QUAN câu trả lời, sắp theo độ phù hợp giảm dần.`
 
 export async function POST(req: Request) {
   try {
     const { query } = (await req.json()) as { query?: string }
     const q = query?.trim()
     if (!q || q.length < 3) {
-      return NextResponse.json({ error: 'Vui lòng mô tả nhu cầu chi tiết hơn' }, { status: 400 })
+      return NextResponse.json({ error: 'Vui lòng nhập câu hỏi chi tiết hơn (tối thiểu 3 ký tự)' }, { status: 400 })
     }
     if (q.length > 500) {
       return NextResponse.json({ error: 'Câu hỏi tối đa 500 ký tự' }, { status: 400 })
     }
 
-    // Read AI settings (OpenAI key)
     const supabase = await createClient()
     const { data: settings } = await supabase
       .from('ai_settings')
@@ -65,7 +84,6 @@ export async function POST(req: Request) {
       )
     }
 
-    // Call OpenAI gpt-4o-mini (fast + cheap for routing task)
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -75,11 +93,11 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'system', content: SYSTEM_PROMPT_BASE },
           { role: 'user', content: q },
         ],
-        temperature: 0.3,
-        max_tokens: 800,
+        temperature: 0.4,
+        max_tokens: 1000,
         response_format: { type: 'json_object' },
       }),
     })
@@ -107,29 +125,30 @@ export async function POST(req: Request) {
     }
 
     // Validate + sanitize
-    const VALID_SLUGS = new Set([
-      'digital-marketing',
-      'website',
-      'dashboard',
-      'crm-cdp',
-      'ai-integration',
-      'automation',
-    ])
+    const VALID_HREF = (h: string) =>
+      typeof h === 'string' &&
+      (h.startsWith('/services/') ||
+        h === '/pricing' ||
+        h === '/about' ||
+        h === '/blog' ||
+        h === '/' ||
+        h.startsWith('/blog/') ||
+        h.startsWith('tel:') ||
+        h.startsWith('mailto:'))
 
-    const services = Array.isArray(parsed.services)
-      ? parsed.services
-          .filter(
-            (s: any) =>
-              s && typeof s.slug === 'string' && VALID_SLUGS.has(s.slug) && s.title && s.reason
-          )
-          .slice(0, 3)
+    const links = Array.isArray(parsed.links)
+      ? parsed.links
+          .filter((l: any) => l && l.title && VALID_HREF(l.href))
+          .slice(0, 4)
+          .map((l: any) => ({ title: String(l.title), href: l.href, type: l.type || 'page' }))
       : []
 
-    return NextResponse.json({
-      matched: !!parsed.matched && services.length > 0,
-      services,
-      fallback_message: parsed.fallback_message || null,
-    })
+    const answer = typeof parsed.answer === 'string' ? parsed.answer.trim() : ''
+    if (!answer) {
+      return NextResponse.json({ error: 'AI không trả lời được nội dung' }, { status: 502 })
+    }
+
+    return NextResponse.json({ answer, links })
   } catch (err: any) {
     console.error('service-router error:', err)
     return NextResponse.json({ error: 'Lỗi hệ thống' }, { status: 500 })
