@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Plus, Minus, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
+import { Reveal } from '@/components/reveal'
 import { useLanguage } from '@/contexts/language-context'
 import type { FaqContent } from '@/lib/cms/types'
 
@@ -54,16 +55,16 @@ export function FAQSection({ content }: { content: FaqContent }) {
           {/* Right Column - Accordion */}
           <div className="space-y-4">
             {content.items.map((faq, index) => (
-              <div
-                key={index}
-                data-cms-field="item"
-                data-cms-item-index={index}
-                className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
-                  openIndex === index
-                    ? 'bg-background-soft border-primary/20'
-                    : 'bg-background border-border hover:border-primary/30'
-                }`}
-              >
+              <Reveal key={index} delay={index * 80}>
+                <div
+                  data-cms-field="item"
+                  data-cms-item-index={index}
+                  className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
+                    openIndex === index
+                      ? 'bg-background-soft border-primary/20'
+                      : 'bg-background border-border hover:border-primary/30'
+                  }`}
+                >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                   className="w-full flex items-center justify-between gap-4 p-6 text-left"
@@ -101,7 +102,8 @@ export function FAQSection({ content }: { content: FaqContent }) {
                     </p>
                   </div>
                 </div>
-              </div>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>

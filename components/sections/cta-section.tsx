@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { Phone } from 'lucide-react'
+import { Reveal } from '@/components/reveal'
 import { useLanguage } from '@/contexts/language-context'
 import type { CtaContent } from '@/lib/cms/types'
 
@@ -12,7 +13,7 @@ export function CTASection({ content }: { content: CtaContent }) {
     <section data-cms-section="cta" className="py-20 lg:py-28 bg-[#EEF3FF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* CTA Content */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <Reveal variant="scale-up" className="text-center max-w-3xl mx-auto mb-16">
           {/* Badge */}
           <span
             data-cms-field="eyebrow"
@@ -67,10 +68,10 @@ export function CTASection({ content }: { content: CtaContent }) {
               </span>
             </Link>
           </div>
-        </div>
+        </Reveal>
 
         {/* Partners */}
-        <div data-cms-field="partners" className="border-t border-primary/10 pt-12">
+        <Reveal delay={150} data-cms-field="partners" className="border-t border-primary/10 pt-12">
           <p className="text-center text-sm text-muted-foreground mb-8">
             {t(content.trust_label.vi, content.trust_label.en)}
           </p>
@@ -84,7 +85,7 @@ export function CTASection({ content }: { content: CtaContent }) {
               </div>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   )

@@ -1,6 +1,7 @@
 'use client'
 
 import { ServiceCard } from './service-card'
+import { Reveal } from '@/components/reveal'
 import * as Icons from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/language-context'
@@ -28,7 +29,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
     <section data-cms-section="services" className="py-20 lg:py-28 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <Reveal className="text-center max-w-3xl mx-auto mb-16">
           <span
             data-cms-field="eyebrow"
             className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
@@ -50,24 +51,31 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
           <p data-cms-field="description" className="text-muted-foreground text-lg leading-relaxed">
             {t(content.description.vi, content.description.en)}
           </p>
-        </div>
+        </Reveal>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        {/* Services Grid — auto-rows-fr ensures all rows have equal height */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 auto-rows-fr">
           {content.services.map((service, index) => {
             const colors = colorMap[service.color] ?? colorMap.blue
             return (
-              <div key={index} data-cms-field="item" data-cms-item-index={index}>
-                <ServiceCard
-                  icon={renderIcon(service.icon, `w-6 h-6 ${colors.iconText}`)}
-                  title={t(service.title.vi, service.title.en)}
-                  description={t(service.description.vi, service.description.en)}
-                  tag={t(service.tag.vi, service.tag.en)}
-                  iconBgColor={colors.iconBg}
-                  tagColor={colors.tag}
-                  href={service.href}
-                />
-              </div>
+              <Reveal
+                key={index}
+                delay={index * 90}
+                variant="fade-up"
+                className="h-full"
+              >
+                <div data-cms-field="item" data-cms-item-index={index} className="h-full">
+                  <ServiceCard
+                    icon={renderIcon(service.icon, `w-6 h-6 ${colors.iconText}`)}
+                    title={t(service.title.vi, service.title.en)}
+                    description={t(service.description.vi, service.description.en)}
+                    tag={t(service.tag.vi, service.tag.en)}
+                    iconBgColor={colors.iconBg}
+                    tagColor={colors.tag}
+                    href={service.href}
+                  />
+                </div>
+              </Reveal>
             )
           })}
         </div>
