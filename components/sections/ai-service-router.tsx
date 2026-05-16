@@ -50,7 +50,7 @@ const COPY = {
     title: 'Bạn cần dịch vụ gì? Để Click Star hỗ trợ bạn?',
     subtitle:
       'Mô tả ngắn gọn nhu cầu — Click Star sẽ gợi ý dịch vụ phù hợp nhất trong vòng 2 giây.',
-    placeholder: 'VD: tôi muốn tăng đơn hàng online cho shop quần áo…',
+    placeholder: 'Vui lòng nhập yêu cầu để được hỗ trợ',
     quickLabel: 'Hoặc thử nhanh:',
     submit: 'Hỏi AI',
     submitting: 'AI đang suy nghĩ…',
@@ -64,7 +64,7 @@ const COPY = {
     title: 'Which service do you need? Let Click Star help you',
     subtitle:
       'Briefly describe your need — Click Star will suggest the best fit in 2 seconds.',
-    placeholder: 'E.g., I want to boost online sales for my clothing store…',
+    placeholder: 'Please enter your request to get support',
     quickLabel: 'Or try one of these:',
     submit: 'Ask AI',
     submitting: 'AI is thinking…',
