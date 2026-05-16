@@ -30,7 +30,7 @@ const SERVICE_ICONS: Record<string, string> = {
 const QUICK_PROMPTS_VI = [
   'Tôi muốn chạy quảng cáo Facebook & Google',
   'Cần làm website mới chuẩn SEO',
-  'Muốn xây dashboard báo cáo bán hàng',
+  'Thiết kế dashboard để theo dõi tình hình doanh nghiệp',
   'Tích hợp chatbot AI cho website',
   'Tự động hoá email marketing nuôi lead',
   'Quản lý khách hàng + chăm sóc trên 1 nền tảng',
@@ -39,7 +39,7 @@ const QUICK_PROMPTS_VI = [
 const QUICK_PROMPTS_EN = [
   'I want to run Facebook & Google ads',
   'Build a new SEO-optimized website',
-  'Create a sales reporting dashboard',
+  'Design a dashboard to monitor business performance',
   'Integrate AI chatbot for website',
   'Automate email marketing & lead nurturing',
   'Manage customers and care on one platform',
@@ -47,9 +47,9 @@ const QUICK_PROMPTS_EN = [
 
 const COPY = {
   vi: {
-    title: 'Bạn cần dịch vụ gì? Để AI gợi ý ngay',
+    title: 'Bạn cần dịch vụ gì? Để Click Star hỗ trợ bạn?',
     subtitle:
-      'Mô tả ngắn gọn nhu cầu — AI ClickStar sẽ chỉ ra dịch vụ phù hợp nhất trong vòng 2 giây.',
+      'Mô tả ngắn gọn nhu cầu — Click Star sẽ gợi ý dịch vụ phù hợp nhất trong vòng 2 giây.',
     placeholder: 'VD: tôi muốn tăng đơn hàng online cho shop quần áo…',
     quickLabel: 'Hoặc thử nhanh:',
     submit: 'Hỏi AI',
@@ -61,8 +61,9 @@ const COPY = {
     note: 'Trả lời bằng AI — anh có thể gọi hotline 0977 713 428 nếu cần tư vấn người thật.',
   },
   en: {
-    title: 'Which service do you need? Ask our AI',
-    subtitle: 'Briefly describe your need — ClickStar AI will pick the best fit in 2 seconds.',
+    title: 'Which service do you need? Let Click Star help you',
+    subtitle:
+      'Briefly describe your need — Click Star will suggest the best fit in 2 seconds.',
     placeholder: 'E.g., I want to boost online sales for my clothing store…',
     quickLabel: 'Or try one of these:',
     submit: 'Ask AI',
