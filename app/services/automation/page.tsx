@@ -499,7 +499,7 @@ export default function AIAutomationPage() {
                 TẠI SAO CẦN AUTOMATION
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Tự động h��a là <span className="text-primary">xu hướng tất yếu</span>
+                Tự động hóa là <span className="text-primary">xu hướng tất yếu</span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
                 Doanh nghiệp không tự động hóa sẽ lãng phí thời gian vào các tác vụ lặp lại, 

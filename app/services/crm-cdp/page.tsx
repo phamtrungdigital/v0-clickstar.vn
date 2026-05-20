@@ -529,7 +529,7 @@ export default function CRMCDPPage() {
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               {t(
-                'Tích hợp đa kênh để chăm sóc khách h��ng 24/7 theo kịch bản đã thiết lập',
+                'Tích hợp đa kênh để chăm sóc khách hàng 24/7 theo kịch bản đã thiết lập',
                 'Multi-channel integration for 24/7 customer care based on preset scenarios'
               )}
             </p>

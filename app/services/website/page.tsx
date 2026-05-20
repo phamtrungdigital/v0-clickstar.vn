@@ -943,7 +943,7 @@ export default function WebsiteDesignPage() {
                 className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
               >
                 <Settings className="w-5 h-5" />
-                {t('Gọi ngay: +84 123 456 789', 'Call now: +84 123 456 789')}
+                {t('Gọi ngay: 0977 713 428', 'Call now: 0977 713 428')}
               </Link>
               <Link
                 href="#"
