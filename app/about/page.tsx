@@ -70,62 +70,62 @@ export default function AboutPage() {
 
   const team = [
     {
-      name: t('Nguyễn Minh Đức', 'Nguyen Minh Duc'),
-      role: t('CEO & Founder', 'CEO & Founder'),
-      image: '/images/team/ceo.jpg',
+      name: 'Quỳnh Hương',
+      role: t('Co-Founder', 'Co-Founder'),
+      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/quynh-huong-1779284373776.png',
       bio: t(
-        'Hơn 15 năm kinh nghiệm trong lĩnh vực Marketing và chuyển đổi số. Từng giữ vị trí cấp cao tại các tập đoàn lớn.',
-        'Over 15 years of experience in Marketing and digital transformation. Former senior positions at major corporations.'
+        'Người sáng lập Click Star với tầm nhìn xây dựng giải pháp Digital Marketing & Automation toàn diện cho doanh nghiệp Việt Nam.',
+        'Co-Founder of Click Star with the vision of building comprehensive Digital Marketing & Automation solutions for Vietnamese businesses.'
       ),
       linkedin: '#'
     },
     {
-      name: t('Trần Thu Hương', 'Tran Thu Huong'),
-      role: t('Giám đốc Marketing', 'Chief Marketing Officer'),
-      image: '/images/team/cmo.jpg',
+      name: 'Trần Hằng',
+      role: t('Advertising Specialist', 'Advertising Specialist'),
+      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/tran-hang-1779284392670.png',
       bio: t(
-        'Chuyên gia chiến lược Marketing với hơn 10 năm kinh nghiệm triển khai chiến dịch đa kênh thành công.',
-        'Marketing strategy expert with over 10 years of experience in successful multi-channel campaigns.'
+        'Chuyên gia quảng cáo đa nền tảng (Facebook, Google, TikTok, Zalo). Tối ưu chi phí/lead và mở rộng tệp khách hàng tiềm năng cho hàng chục dự án.',
+        'Multi-platform advertising specialist (Facebook, Google, TikTok, Zalo). Optimizes cost per lead and expands customer base for dozens of projects.'
       ),
       linkedin: '#'
     },
     {
-      name: t('Lê Hoàng Nam', 'Le Hoang Nam'),
-      role: t('Giám đốc Công nghệ', 'Chief Technology Officer'),
-      image: '/images/team/cto.jpg',
+      name: 'Ngọc Hưng',
+      role: t('Designing Expert', 'Designing Expert'),
+      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/ngoc-hung-1779284416736.png',
       bio: t(
-        'Kỹ sư phần mềm với chuyên môn sâu về kiến trúc hệ thống, Cloud và các giải pháp doanh nghiệp.',
-        'Software engineer with deep expertise in system architecture, Cloud and enterprise solutions.'
+        'Chuyên gia thiết kế UI/UX với phong cách hiện đại, tối ưu trải nghiệm người dùng và chuyển đổi cho website thương hiệu.',
+        'UI/UX design expert with a modern style, optimizing user experience and conversions for brand websites.'
       ),
       linkedin: '#'
     },
     {
-      name: t('Phạm Thị Lan', 'Pham Thi Lan'),
-      role: t('Trưởng bộ phận AI', 'Head of AI'),
-      image: '/images/team/ai-lead.jpg',
+      name: 'Như Quỳnh',
+      role: t('SEO Specialist', 'SEO Specialist'),
+      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/nhu-quynh-1779284437974.png',
       bio: t(
-        'Tiến sĩ về Machine Learning, chuyên gia triển khai các giải pháp AI cho doanh nghiệp.',
-        'PhD in Machine Learning, expert in implementing AI solutions for enterprises.'
+        'Chuyên gia SEO technical + content. Đưa nhiều website Click Star lên TOP Google ở các từ khóa cạnh tranh trong lĩnh vực giáo dục, y tế, bán lẻ.',
+        'Technical + content SEO specialist. Has ranked multiple Click Star sites on Google TOP for competitive keywords in education, healthcare and retail.'
       ),
       linkedin: '#'
     },
     {
-      name: t('Vũ Quang Huy', 'Vu Quang Huy'),
-      role: t('Trưởng bộ phận Data', 'Head of Data'),
-      image: '/images/team/data-lead.jpg',
+      name: 'Trung Đức',
+      role: t('Design Team Leader', 'Design Team Leader'),
+      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/trung-duc-1779284539211.png',
       bio: t(
-        'Chuyên gia phân tích dữ liệu với kinh nghiệm xây dựng hệ thống CDP và BI cho nhiều doanh nghiệp lớn.',
-        'Data analytics expert with experience building CDP and BI systems for large enterprises.'
+        'Trưởng nhóm thiết kế, dẫn dắt đội ngũ creative trong xây dựng nhận diện thương hiệu và sản phẩm số cho khách hàng doanh nghiệp.',
+        'Design team leader, guiding the creative team in building brand identity and digital products for enterprise clients.'
       ),
       linkedin: '#'
     },
     {
-      name: t('Đặng Thị Mai', 'Dang Thi Mai'),
-      role: t('Giám đốc Sáng tạo', 'Creative Director'),
-      image: '/images/team/creative-director.jpg',
+      name: 'Hồng Ánh',
+      role: t('Content Social', 'Content Social'),
+      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/hong-anh-1779284493246.png',
       bio: t(
-        'Hơn 8 năm kinh nghiệm trong thiết kế thương hiệu và trải nghiệm người dùng cho các thương hiệu hàng đầu.',
-        'Over 8 years of experience in brand design and user experience for leading brands.'
+        'Chuyên gia content social với khả năng xây dựng kế hoạch nội dung đa nền tảng, giúp thương hiệu tiếp cận đúng khách hàng mục tiêu.',
+        'Content social expert with the ability to build multi-platform content plans that help brands reach the right target audience.'
       ),
       linkedin: '#'
     },
