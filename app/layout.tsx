@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 import { LanguageProvider, type Language } from '@/contexts/language-context'
 import { SiteBrandingProvider, type SiteBranding } from '@/contexts/site-branding-context'
 import { getSiteSettings } from '@/lib/cms/settings'
+import { FloatingAiChat } from '@/components/floating-ai-chat'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -61,7 +62,10 @@ export default async function RootLayout({
     <html lang={initialLang} className="bg-background">
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
         <SiteBrandingProvider branding={branding}>
-          <LanguageProvider initialLang={initialLang}>{children}</LanguageProvider>
+          <LanguageProvider initialLang={initialLang}>
+            {children}
+            <FloatingAiChat />
+          </LanguageProvider>
         </SiteBrandingProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
