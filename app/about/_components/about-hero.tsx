@@ -175,9 +175,6 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
         </div>
       </div>
 
-      {/* Bottom fade to next section */}
-      <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-b from-transparent to-background pointer-events-none" />
-
       {/* Keyframes for floating particles */}
       <style jsx>{`
         @keyframes float-up {
