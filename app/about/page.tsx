@@ -311,26 +311,30 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-white/20 -translate-y-1/2" />
+          {/* Timeline grid: cards connected by thin line, dot at top of each card */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative">
+            {/* Connecting line — only desktop */}
+            <div
+              className="hidden lg:block absolute top-3 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-primary/20 via-primary/60 to-primary/20"
+              aria-hidden="true"
+            />
 
-            <div className="grid lg:grid-cols-5 gap-8">
-              {milestones.map((milestone, index) => (
-                <div key={index} className="relative text-center">
-                  {/* Dot */}
-                  <div className="hidden lg:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-primary rounded-full border-4 border-foreground z-10" />
-                  
-                  <div className={`lg:${index % 2 === 0 ? 'pb-20' : 'pt-20'}`}>
-                    <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                      <div className="text-primary font-bold text-2xl mb-2">{milestone.year}</div>
-                      <h3 className="font-bold text-lg mb-2">{milestone.title}</h3>
-                      <p className="text-white/70 text-sm">{milestone.description}</p>
-                    </div>
-                  </div>
+            {milestones.map((milestone, index) => (
+              <div key={index} className="relative flex flex-col items-center">
+                {/* Dot — sits on the timeline line above the card */}
+                <div className="hidden lg:flex items-center justify-center w-6 h-6 mb-4">
+                  <span className="absolute w-6 h-6 bg-primary/30 rounded-full animate-pulse" />
+                  <span className="relative w-3 h-3 bg-primary rounded-full ring-4 ring-foreground" />
                 </div>
-              ))}
-            </div>
+
+                {/* Card */}
+                <div className="w-full bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center hover:border-primary/40 hover:bg-white/10 transition-all">
+                  <div className="text-primary font-bold text-2xl mb-2">{milestone.year}</div>
+                  <h3 className="font-bold text-base lg:text-lg mb-2 text-white">{milestone.title}</h3>
+                  <p className="text-white/70 text-sm leading-relaxed">{milestone.description}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -519,7 +523,7 @@ export default function AboutPage() {
               href="tel:+84123456789"
               className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition-all duration-300"
             >
-              {t('Gọi ngay: +84 123 456 789', 'Call: +84 123 456 789')}
+              {t('Gọi ngay: 0977 713 428', 'Call: 0977 713 428')}
             </Link>
           </div>
         </div>

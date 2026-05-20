@@ -845,7 +845,7 @@ export default function DigitalMarketingPage() {
                 className="inline-flex items-center justify-center gap-2 bg-white/10 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all duration-300 border border-white/30"
               >
                 <Clock className="w-5 h-5" />
-                {t('Gọi ngay: +84 123 456 789', 'Call now: +84 123 456 789')}
+                {t('Gọi ngay: 0977 713 428', 'Call now: 0977 713 428')}
               </a>
             </div>
           </div>

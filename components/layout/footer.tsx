@@ -158,25 +158,27 @@ export function Footer() {
                 <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="w-4 h-4 text-primary" />
                 </span>
-                <span className="text-gray-400 text-sm">
-                  {t('123 Nguyễn Huệ, Quận 1,', '123 Nguyen Hue, District 1,')}<br />
-                  {t('TP. Hồ Chí Minh, Việt Nam', 'Ho Chi Minh City, Vietnam')}
+                <span className="text-gray-400 text-sm leading-relaxed">
+                  {t(
+                    'Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, Thành phố Hà Nội, Việt Nam',
+                    'Floor 6, MD Complex Tower (Office Building), 68 Nguyen Co Thach, Tu Liem Ward, Hanoi, Vietnam'
+                  )}
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <Phone className="w-4 h-4 text-primary" />
                 </span>
-                <Link href="tel:+84123456789" className="text-gray-400 hover:text-primary transition-colors text-sm">
-                  +84 123 456 789
+                <Link href="tel:0977713428" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                  0977 713 428
                 </Link>
               </li>
               <li className="flex items-center gap-3">
                 <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
                   <Mail className="w-4 h-4 text-primary" />
                 </span>
-                <Link href="mailto:info@clickstar.com" className="text-gray-400 hover:text-primary transition-colors text-sm">
-                  info@clickstar.com
+                <Link href="mailto:clickstar.vn@gmail.com" className="text-gray-400 hover:text-primary transition-colors text-sm">
+                  clickstar.vn@gmail.com
                 </Link>
               </li>
             </ul>
@@ -219,7 +221,7 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} ClickStar. {t('Bảo lưu mọi quyền.', 'All rights reserved.')}
+              © {new Date().getFullYear()} {t('CÔNG TY TNHH CLICK STAR DIGITAL', 'CLICK STAR DIGITAL CO., LTD')}. {t('Bảo lưu mọi quyền.', 'All rights reserved.')}
             </p>
             <div className="flex items-center gap-6">
               <Link href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">
