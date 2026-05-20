@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
-import { PageHero } from '@/components/sections/page-hero'
+import { AboutHero } from './_components/about-hero'
 import { useLanguage } from '@/contexts/language-context'
 import { 
   Target, 
@@ -154,7 +154,7 @@ export default function AboutPage() {
     <div className="min-h-screen bg-background">
       <MainNav />
 
-      <PageHero />
+      <AboutHero />
 
       {/* Stats row */}
       <section className="bg-background py-12">
@@ -175,7 +175,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story Section */}
-      <section className="py-20 lg:py-28 bg-secondary/30">
+      <section id="story" className="py-20 lg:py-28 bg-secondary/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Image */}
