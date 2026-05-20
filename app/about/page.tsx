@@ -312,7 +312,7 @@ export default function AboutPage() {
           </div>
 
           {/* Timeline grid: cards connected by thin line, dot at top of each card */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative auto-rows-fr">
             {/* Connecting line — only desktop */}
             <div
               className="hidden lg:block absolute top-3 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-primary/20 via-primary/60 to-primary/20"
@@ -320,18 +320,18 @@ export default function AboutPage() {
             />
 
             {milestones.map((milestone, index) => (
-              <div key={index} className="relative flex flex-col items-center">
+              <div key={index} className="relative flex flex-col items-center h-full">
                 {/* Dot — sits on the timeline line above the card */}
-                <div className="hidden lg:flex items-center justify-center w-6 h-6 mb-4">
+                <div className="hidden lg:flex items-center justify-center w-6 h-6 mb-4 flex-shrink-0">
                   <span className="absolute w-6 h-6 bg-primary/30 rounded-full animate-pulse" />
                   <span className="relative w-3 h-3 bg-primary rounded-full ring-4 ring-foreground" />
                 </div>
 
-                {/* Card */}
-                <div className="w-full bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center hover:border-primary/40 hover:bg-white/10 transition-all">
+                {/* Card — flex column with description flex-1 → all cards same height */}
+                <div className="w-full flex-1 flex flex-col bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center hover:border-primary/40 hover:bg-white/10 transition-all">
                   <div className="text-primary font-bold text-2xl mb-2">{milestone.year}</div>
                   <h3 className="font-bold text-base lg:text-lg mb-2 text-white">{milestone.title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{milestone.description}</p>
+                  <p className="text-white/70 text-sm leading-relaxed flex-1">{milestone.description}</p>
                 </div>
               </div>
             ))}
