@@ -1,12 +1,11 @@
+import nextDynamic from 'next/dynamic'
 import { TopBanner } from '@/components/layout/top-banner'
 import { MainNav } from '@/components/layout/main-nav'
 import { HeroSection } from '@/components/sections/hero-section'
 import { ServicesSection } from '@/components/sections/services-section'
 import { AboutSection } from '@/components/sections/about-section'
 import { StatsSection } from '@/components/sections/stats-section'
-import { CaseStudiesSection } from '@/components/sections/case-studies-section'
 import { TeamSection } from '@/components/sections/team-section'
-import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
@@ -17,6 +16,13 @@ import { getPublishedPage } from '@/lib/cms/queries'
 import type { Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+
+const CaseStudiesSection = nextDynamic(() =>
+  import('@/components/sections/case-studies-section').then((m) => m.CaseStudiesSection),
+)
+const TestimonialsSection = nextDynamic(() =>
+  import('@/components/sections/testimonials-section').then((m) => m.TestimonialsSection),
+)
 
 export const dynamic = 'force-dynamic'
 
