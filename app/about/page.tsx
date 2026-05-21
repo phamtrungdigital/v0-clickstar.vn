@@ -186,6 +186,7 @@ export default function AboutPage() {
                   alt="Click Star Team"
                   fill
                   className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
               </div>
               {/* Floating Card */}
@@ -372,6 +373,7 @@ export default function AboutPage() {
                     alt={member.name}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   
@@ -460,6 +462,7 @@ export default function AboutPage() {
                       width={400}
                       height={500}
                       className="object-cover w-full h-full"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
                   <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
@@ -469,6 +472,7 @@ export default function AboutPage() {
                       width={400}
                       height={300}
                       className="object-cover w-full h-full"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
                 </div>
@@ -480,6 +484,7 @@ export default function AboutPage() {
                       width={400}
                       height={300}
                       className="object-cover w-full h-full"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
                   <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-lg">
@@ -489,6 +494,7 @@ export default function AboutPage() {
                       width={400}
                       height={500}
                       className="object-cover w-full h-full"
+                      sizes="(max-width: 1024px) 50vw, 25vw"
                     />
                   </div>
                 </div>
