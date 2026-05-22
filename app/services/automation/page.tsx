@@ -4,8 +4,9 @@ import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import Link from 'next/link'
-import { 
-  Sparkles, 
+import Image from 'next/image'
+import {
+  Sparkles,
   Brain, 
   Zap,
   TrendingUp,
@@ -29,7 +30,8 @@ import {
   Globe,
   Star,
   Rocket,
-  FileText
+  FileText,
+  Webhook
 } from 'lucide-react'
 
 // Robot SVG Component
@@ -298,43 +300,37 @@ const automationTools = [
     name: 'N8N',
     category: 'Workflow Engine',
     description: 'Nền tảng automation no-code/low-code mạnh mẽ',
-    logoColor: 'from-[#EA4B71] to-[#FF6B6B]',
-    letter: 'N8N'
+    logo: '/images/automation/n8n.svg',
   },
   {
     name: 'Claude',
     category: 'AI Agent',
     description: 'Xử lý ngôn ngữ tự nhiên, phân tích sâu',
-    logoColor: 'from-[#D97757] to-[#C4653F]',
-    letter: 'C'
+    logo: '/images/ai-tools/claude.svg',
   },
   {
     name: 'GPT-4o',
     category: 'AI Agent',
     description: 'Sáng tạo content, đa năng',
-    logoColor: 'from-[#10A37F] to-[#0D8F6F]',
-    letter: 'GPT'
+    logo: '/images/ai-tools/openai.svg',
   },
   {
     name: 'Zapier',
     category: 'Integration',
     description: 'Kết nối 5000+ ứng dụng',
-    logoColor: 'from-[#FF4A00] to-[#FF6B35]',
-    letter: 'Z'
+    logo: '/images/automation/zapier.svg',
   },
   {
     name: 'Make',
     category: 'Integration',
     description: 'Visual automation builder',
-    logoColor: 'from-[#6D28D9] to-[#8B5CF6]',
-    letter: 'M'
+    logo: '/images/automation/make.svg',
   },
   {
     name: 'Webhook',
     category: 'Trigger',
     description: 'Real-time event triggers',
-    logoColor: 'from-[#1B7BFF] to-[#3B5FFF]',
-    letter: 'WH'
+    logo: null, // dùng lucide Webhook icon vì không có brand logo
   }
 ]
 
@@ -642,8 +638,18 @@ export default function AIAutomationPage() {
               {automationTools.map((tool, index) => (
                 <div key={index} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-primary/30 transition-all group">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className={`w-10 h-10 bg-gradient-to-br ${tool.logoColor} rounded-lg flex items-center justify-center`}>
-                      <span className="text-white font-bold text-xs">{tool.letter}</span>
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-sm shrink-0">
+                      {tool.logo ? (
+                        <Image
+                          src={tool.logo}
+                          alt={tool.name}
+                          width={28}
+                          height={28}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <Webhook className="w-6 h-6 text-primary" />
+                      )}
                     </div>
                     <div>
                       <h3 className="font-bold text-white">{tool.name}</h3>
@@ -678,9 +684,9 @@ export default function AIAutomationPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
               {automationProcess.map((step, index) => (
-                <div key={index} className="relative">
+                <div key={index} className="relative h-full">
                   <div className="bg-white border border-border rounded-2xl p-6 h-full hover:shadow-lg transition-all">
                     <div className="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                       {step.step}
@@ -695,8 +701,8 @@ export default function AIAutomationPage() {
                     </div>
                   </div>
                   {index < automationProcess.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                      <ChevronRight className="w-6 h-6 text-primary/30" />
+                    <div className="hidden lg:flex items-center justify-center absolute top-0 -right-5 h-full w-10 z-10 pointer-events-none">
+                      <ChevronRight className="w-6 h-6 text-primary/40" />
                     </div>
                   )}
                 </div>

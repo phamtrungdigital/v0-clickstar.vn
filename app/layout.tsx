@@ -56,6 +56,9 @@ export default async function RootLayout({
     logoUrl: settings?.logo_url || '/images/logo-clickstar.png',
     faviconUrl: settings?.favicon_url || null,
     siteName: settings?.site_name?.vi || 'ClickStar',
+    zaloUrl: settings?.zalo_url || null,
+    contactPhone: settings?.contact_phone || null,
+    contactEmail: settings?.contact_email || null,
   }
 
   return (

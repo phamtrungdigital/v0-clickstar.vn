@@ -194,7 +194,7 @@ export function MainNav() {
             </div>
             
             <Link
-              href="#contact"
+              href="/contact"
               className="group relative bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-7 py-3 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 overflow-hidden"
             >
               <span className="relative z-10">{ctaText[language]}</span>
@@ -304,7 +304,7 @@ export function MainNav() {
               </div>
               
               <Link
-                href="#contact"
+                href="/contact"
                 className="block text-center bg-primary hover:bg-primary-dark text-primary-foreground font-semibold py-3 rounded-full transition-all duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

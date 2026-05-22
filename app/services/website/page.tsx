@@ -423,7 +423,7 @@ export default function WebsiteDesignPage() {
                 {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
-                    href="#contact"
+                    href="/contact"
                     className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   >
                     {t('Nhận báo giá miễn phí', 'Get free quote')}
@@ -948,7 +948,7 @@ export default function WebsiteDesignPage() {
                 {t('Gọi ngay: 0977 713 428', 'Call now: 0977 713 428')}
               </Link>
               <Link
-                href="#"
+                href="/contact"
                 className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all border border-white/30"
               >
                 {t('Nhận báo giá qua email', 'Get quote via email')}

@@ -289,7 +289,7 @@ export default function CRMCDPPage() {
 
               <div className="flex flex-wrap gap-4">
                 <Link 
-                  href="#contact"
+                  href="/contact"
                   className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-6 py-3 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
                 >
                   {t('Tư vấn triển khai', 'Get Consultation')}

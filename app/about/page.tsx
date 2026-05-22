@@ -444,7 +444,7 @@ export default function AboutPage() {
               </ul>
 
               <Link
-                href="#contact"
+                href="/contact"
                 className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg group"
               >
                 {t('Liên hệ tư vấn ngay', 'Contact Us Now')}
@@ -519,7 +519,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-white/90 transition-all duration-300 hover:shadow-lg group"
             >
               {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
