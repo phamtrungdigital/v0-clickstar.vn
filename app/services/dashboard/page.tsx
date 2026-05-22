@@ -258,13 +258,17 @@ export default function DashboardServicePage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button size="lg" className="bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25">
-                    {t('Xem demo', 'View Demo')}
-                    <Play className="w-4 h-4 ml-2" />
+                  <Button asChild size="lg" className="bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25">
+                    <Link href="/projects">
+                      {t('Xem demo', 'View Demo')}
+                      <Play className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
-                  <Button size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary">
-                    {t('Đặt lịch tư vấn', 'Book Consultation')}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                  <Button asChild size="lg" variant="outline" className="border-border text-foreground hover:bg-secondary">
+                    <Link href="/contact?service=Dashboard%20d%E1%BB%AF%20li%E1%BB%87u">
+                      {t('Đặt lịch tư vấn', 'Book Consultation')}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
                 </div>
               </div>
@@ -506,9 +510,11 @@ export default function DashboardServicePage() {
                     </ul>
                     
                     {/* CTA */}
-                    <Button className="w-full mt-6 bg-transparent border border-border text-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors">
-                      {t('Xem chi tiết', 'View Details')}
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                    <Button asChild className="w-full mt-6 bg-transparent border border-border text-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors">
+                      <Link href="/projects">
+                        {t('Xem chi tiết', 'View Details')}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
                     </Button>
                   </div>
                 </div>
@@ -562,9 +568,11 @@ export default function DashboardServicePage() {
                   </div>
                 </div>
 
-                <Button size="lg" className="bg-purple-500 hover:bg-purple-600 text-white">
-                  {t('Trải nghiệm AI ngay', 'Experience AI Now')}
-                  <Sparkles className="w-4 h-4 ml-2" />
+                <Button asChild size="lg" className="bg-purple-500 hover:bg-purple-600 text-white">
+                  <Link href="/contact?service=Dashboard%20d%E1%BB%AF%20li%E1%BB%87u">
+                    {t('Trải nghiệm AI ngay', 'Experience AI Now')}
+                    <Sparkles className="w-4 h-4 ml-2" />
+                  </Link>
                 </Button>
               </div>
 
@@ -736,13 +744,17 @@ export default function DashboardServicePage() {
               )}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-primary hover:bg-slate-100 shadow-xl">
-                {t('Đặt lịch demo miễn phí', 'Book Free Demo')}
-                <Play className="w-4 h-4 ml-2" />
+              <Button asChild size="lg" className="bg-white text-primary hover:bg-slate-100 shadow-xl">
+                <Link href="/contact?service=Dashboard%20d%E1%BB%AF%20li%E1%BB%87u">
+                  {t('Đặt lịch demo miễn phí', 'Book Free Demo')}
+                  <Play className="w-4 h-4 ml-2" />
+                </Link>
               </Button>
-              <Button size="lg" className="bg-transparent border-2 border-white/50 text-white hover:bg-white/10 hover:border-white">
-                {t('Tải brochure', 'Download Brochure')}
-                <ArrowRight className="w-4 h-4 ml-2" />
+              <Button asChild size="lg" className="bg-transparent border-2 border-white/50 text-white hover:bg-white/10 hover:border-white">
+                <Link href="/projects">
+                  {t('Tải brochure', 'Download Brochure')}
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
               </Button>
             </div>
           </div>
