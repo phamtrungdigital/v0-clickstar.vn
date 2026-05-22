@@ -40,7 +40,7 @@ const aiEcosystem = [
     provider: 'Anthropic',
     category: 'LLM',
     description: 'Phân tích dữ liệu, viết content chuyên sâu, reasoning mạnh mẽ',
-    logoColor: 'from-[#D97757] to-[#C4653F]',
+    logo: '/images/ai-tools/claude.svg',
     features: ['Phân tích báo cáo', 'Viết content dài', 'Tóm tắt tài liệu']
   },
   {
@@ -48,7 +48,7 @@ const aiEcosystem = [
     provider: 'OpenAI',
     category: 'LLM',
     description: 'Đa năng, sáng tạo nội dung marketing, multimodal',
-    logoColor: 'from-[#10A37F] to-[#0D8F6F]',
+    logo: '/images/ai-tools/openai.svg',
     features: ['Viết quảng cáo', 'Chatbot', 'Brainstorm ý tưởng']
   },
   {
@@ -56,7 +56,7 @@ const aiEcosystem = [
     provider: 'Google',
     category: 'LLM',
     description: 'Tích hợp Google Workspace, phân tích đa phương tiện',
-    logoColor: 'from-[#4285F4] via-[#EA4335] to-[#FBBC04]',
+    logo: '/images/ai-tools/gemini.svg',
     features: ['Phân tích video', 'Google Sheets AI', 'Research']
   },
   {
@@ -64,7 +64,7 @@ const aiEcosystem = [
     provider: 'Midjourney',
     category: 'Hình ảnh',
     description: 'Tạo hình ảnh nghệ thuật, banner quảng cáo chất lượng cao',
-    logoColor: 'from-[#1A1A2E] to-[#16162A]',
+    logo: '/images/ai-tools/midjourney.svg',
     features: ['Banner ads', 'Social media', 'Brand visuals']
   },
   {
@@ -72,7 +72,7 @@ const aiEcosystem = [
     provider: 'OpenAI',
     category: 'Hình ảnh',
     description: 'Tạo hình ảnh từ mô tả chi tiết, product mockup',
-    logoColor: 'from-[#10A37F] to-[#0D8F6F]',
+    logo: '/images/ai-tools/openai.svg',
     features: ['Product mockup', 'Illustrations', 'Thumbnails']
   },
   {
@@ -80,7 +80,7 @@ const aiEcosystem = [
     provider: 'Runway ML',
     category: 'Video',
     description: 'Tạo và chỉnh sửa video bằng AI, Gen-3 Alpha',
-    logoColor: 'from-[#FF3366] to-[#FF6B6B]',
+    logo: '/images/ai-tools/runway.svg',
     features: ['Video ads', 'Motion graphics', 'Video editing']
   },
   {
@@ -88,7 +88,7 @@ const aiEcosystem = [
     provider: 'ElevenLabs',
     category: 'Audio',
     description: 'Tạo giọng nói AI tự nhiên, voice cloning',
-    logoColor: 'from-[#000000] to-[#333333]',
+    logo: '/images/ai-tools/elevenlabs.svg',
     features: ['Voiceover', 'Podcast', 'Ads audio']
   },
   {
@@ -96,7 +96,7 @@ const aiEcosystem = [
     provider: 'OpenAI',
     category: 'Video',
     description: 'Tạo video chất lượng điện ảnh từ text',
-    logoColor: 'from-[#10A37F] to-[#0D8F6F]',
+    logo: '/images/ai-tools/openai.svg',
     features: ['Short videos', 'Reels/TikTok', 'Cinematic']
   }
 ]
@@ -168,28 +168,32 @@ const aiArticles = [
     excerpt: 'Anthropic vừa ra mắt Claude 4.7 với khả năng phân tích dữ liệu nâng cao, hỗ trợ doanh nghiệp đưa ra quyết định chính xác hơn.',
     date: '05/05/2026',
     category: 'LLM',
-    readTime: '5 phút'
+    readTime: '5 phút',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&q=80'
   },
   {
     title: 'Sora OpenAI: Cách mạng hóa sản xuất video marketing',
     excerpt: 'Sora cho phép tạo video chất lượng cao từ text, mở ra kỷ nguyên mới cho video marketing với chi phí thấp.',
     date: '28/04/2026',
     category: 'Video AI',
-    readTime: '7 phút'
+    readTime: '7 phút',
+    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&h=400&fit=crop&q=80'
   },
   {
     title: 'Tích hợp AI vào CRM: Tăng 50% tỷ lệ chuyển đổi',
     excerpt: 'Nghiên cứu cho thấy doanh nghiệp tích hợp AI vào CRM có tỷ lệ chuyển đổi cao hơn đáng kể.',
     date: '20/04/2026',
     category: 'AI Business',
-    readTime: '6 phút'
+    readTime: '6 phút',
+    image: 'https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=600&h=400&fit=crop&q=80'
   },
   {
     title: 'Midjourney V7: Tạo hình ảnh quảng cáo chuyên nghiệp',
     excerpt: 'Phiên bản mới của Midjourney với khả năng render text và tạo hình ảnh realistic cho marketing.',
     date: '15/04/2026',
     category: 'Image AI',
-    readTime: '4 phút'
+    readTime: '4 phút',
+    image: 'https://images.unsplash.com/photo-1547954575-855750c57bd3?w=600&h=400&fit=crop&q=80'
   }
 ]
 
@@ -505,15 +509,14 @@ export default function AIIntegrationPage() {
                 <div key={index} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-primary/30 transition-all group">
                   <div className="flex items-center gap-3 mb-4">
                     {/* Real AI Logos */}
-                    <div className={`w-10 h-10 bg-gradient-to-br ${tool.logoColor} rounded-lg flex items-center justify-center`}>
-                      {tool.name === 'Claude' && <span className="text-white font-bold text-sm">C</span>}
-                      {tool.name === 'GPT-4o' && <span className="text-white font-bold text-xs">GPT</span>}
-                      {tool.name === 'Gemini' && <span className="text-white font-bold text-sm">G</span>}
-                      {tool.name === 'Midjourney' && <span className="text-white font-bold text-sm">MJ</span>}
-                      {tool.name === 'DALL-E 3' && <span className="text-white font-bold text-xs">D-E</span>}
-                      {tool.name === 'Runway' && <span className="text-white font-bold text-sm">R</span>}
-                      {tool.name === 'ElevenLabs' && <span className="text-white font-bold text-xs">11</span>}
-                      {tool.name === 'Sora' && <span className="text-white font-bold text-sm">S</span>}
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-sm shrink-0">
+                      <Image
+                        src={tool.logo}
+                        alt={tool.name}
+                        width={28}
+                        height={28}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
                     <div>
                       <h3 className="font-bold text-white">{tool.name}</h3>
@@ -611,10 +614,15 @@ export default function AIIntegrationPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {aiArticles.map((article, index) => (
                 <article key={index} className="bg-white/5 backdrop-blur rounded-xl overflow-hidden hover:bg-white/10 transition-all group border border-white/10">
-                  <div className="aspect-video bg-gradient-to-br from-primary to-primary-dark relative">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <Sparkles className="w-12 h-12 text-white/30" />
-                    </div>
+                  <div className="relative aspect-video overflow-hidden">
+                    <Image
+                      src={article.image}
+                      alt={article.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <span className="absolute top-3 left-3 text-xs bg-white text-primary font-medium px-2 py-1 rounded shadow-sm">
                       {article.category}
                     </span>

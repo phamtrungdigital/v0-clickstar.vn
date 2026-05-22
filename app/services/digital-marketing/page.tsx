@@ -250,7 +250,7 @@ export default function DigitalMarketingPage() {
 
   const caseStudies = [
     {
-      logo: '/images/case-studies/ecommerce.jpg',
+      logo: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=500&fit=crop&q=80',
       industry: t('E-commerce', 'E-commerce'),
       title: t('Tăng 250% doanh thu từ quảng cáo', '250% increase in ad revenue'),
       metrics: [
@@ -259,7 +259,7 @@ export default function DigitalMarketingPage() {
       ],
     },
     {
-      logo: '/images/case-studies/education.jpg',
+      logo: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&h=500&fit=crop&q=80',
       industry: t('Giáo dục', 'Education'),
       title: t('300+ leads chất lượng mỗi tháng', '300+ quality leads per month'),
       metrics: [
@@ -268,7 +268,7 @@ export default function DigitalMarketingPage() {
       ],
     },
     {
-      logo: '/images/case-studies/healthcare.jpg',
+      logo: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=500&fit=crop&q=80',
       industry: t('Y tế', 'Healthcare'),
       title: t('Top 3 Google cho từ khóa chính', 'Top 3 Google for main keywords'),
       metrics: [
@@ -353,10 +353,14 @@ export default function DigitalMarketingPage() {
                         key={index}
                         className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 ${platform.color} hover:scale-105 transition-transform cursor-pointer`}
                       >
-                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm">
-                          <span className="text-2xl font-bold text-gray-700">
-                            {platform.name.charAt(0)}
-                          </span>
+                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm p-2">
+                          <Image
+                            src={platform.icon}
+                            alt={platform.name}
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-contain"
+                          />
                         </div>
                         <span className="text-xs font-medium text-gray-600 text-center">{platform.name}</span>
                       </div>
