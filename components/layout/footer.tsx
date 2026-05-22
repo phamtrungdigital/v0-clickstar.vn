@@ -30,7 +30,7 @@ const usefulLinksData: Record<Language, { name: string; href: string }[]> = {
   vi: [
     { name: 'Về chúng tôi', href: '/about' },
     { name: 'Đội ngũ', href: '/about#team' },
-    { name: 'Dự án', href: '/#cases' },
+    { name: 'Dự án', href: '/projects' },
     { name: 'Bảng giá', href: '/pricing' },
     { name: 'Tin tức', href: '/blog' },
     { name: 'Liên hệ', href: '/contact' },
@@ -38,7 +38,7 @@ const usefulLinksData: Record<Language, { name: string; href: string }[]> = {
   en: [
     { name: 'About Us', href: '/about' },
     { name: 'Our Team', href: '/about#team' },
-    { name: 'Projects', href: '/#cases' },
+    { name: 'Projects', href: '/projects' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Blog', href: '/blog' },
     { name: 'Contact', href: '/contact' },

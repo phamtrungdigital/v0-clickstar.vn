@@ -25,6 +25,7 @@ const navItemsData = {
       ]
     },
     { label: 'Giới thiệu', href: '/about' },
+    { label: 'Dự án', href: '/projects' },
     { label: 'Bảng giá', href: '/pricing' },
     { label: 'Tin tức', href: '/blog' },
   ],
@@ -44,6 +45,7 @@ const navItemsData = {
       ]
     },
     { label: 'About', href: '/about' },
+    { label: 'Projects', href: '/projects' },
     { label: 'Pricing', href: '/pricing' },
     { label: 'Blog', href: '/blog' },
   ]

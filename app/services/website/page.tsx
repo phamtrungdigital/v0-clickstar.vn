@@ -916,7 +916,7 @@ export default function WebsiteDesignPage() {
 
             <div className="text-center mt-12">
               <Link
-                href="/portfolio"
+                href="/projects"
                 className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
               >
                 {t('Xem tất cả dự án', 'View all projects')}

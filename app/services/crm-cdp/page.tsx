@@ -803,13 +803,17 @@ export default function CRMCDPPage() {
             )}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="bg-white text-emerald-600 hover:bg-white/90 font-semibold">
-              {t('Đặt lịch tư vấn miễn phí', 'Book Free Consultation')}
-              <ArrowRight className="w-4 h-4 ml-2" />
+            <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-white/90 font-semibold">
+              <Link href="/contact">
+                {t('Đặt lịch tư vấn miễn phí', 'Book Free Consultation')}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
-            <Button size="lg" className="bg-transparent border-2 border-white/50 text-white hover:bg-white/10 hover:border-white">
-              {t('Xem case studies', 'View Case Studies')}
-              <ArrowRight className="w-4 h-4 ml-2" />
+            <Button asChild size="lg" className="bg-transparent border-2 border-white/50 text-white hover:bg-white/10 hover:border-white">
+              <Link href="/projects">
+                {t('Xem case studies', 'View Case Studies')}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </div>
         </div>
