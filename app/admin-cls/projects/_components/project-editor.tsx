@@ -12,8 +12,8 @@ import {
   Trash2,
   ExternalLink,
 } from 'lucide-react'
-import type { CaseStudy, CaseStudyMetric, CaseStudyStatus } from '@/lib/cms/case-studies'
-import { slugify } from '@/lib/cms/case-studies'
+import type { CaseStudy, CaseStudyMetric, CaseStudyStatus } from '@/lib/cms/case-studies-types'
+import { slugify } from '@/lib/cms/case-studies-types'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
 import { createProject, updateProject, type ProjectFormData } from '../actions'
 

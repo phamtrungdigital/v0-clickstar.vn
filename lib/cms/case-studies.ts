@@ -1,36 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
+import type { CaseStudy } from './case-studies-types'
 
-export type CaseStudyMetric = {
-  label_vi: string
-  label_en?: string
-  value: string
-}
-
-export type CaseStudyStatus = 'draft' | 'published' | 'archived'
-
-export type CaseStudy = {
-  id: string
-  slug: string
-  title_vi: string
-  title_en: string | null
-  client_name: string | null
-  industry_vi: string | null
-  industry_en: string | null
-  summary_vi: string | null
-  summary_en: string | null
-  cover_image: string | null
-  body_vi: string | null
-  body_en: string | null
-  metrics: CaseStudyMetric[]
-  tags: string[]
-  project_url: string | null
-  status: CaseStudyStatus
-  sort_order: number
-  created_at: string
-  updated_at: string
-  created_by: string | null
-  updated_by: string | null
-}
+// Re-export types + slugify từ file client-safe để các consumer chỉ cần 1 import path
+export type { CaseStudy, CaseStudyMetric, CaseStudyStatus } from './case-studies-types'
+export { slugify } from './case-studies-types'
 
 /** Public list — only published, ordered by sort_order desc then created_at desc */
 export async function getPublishedCaseStudies(limit?: number): Promise<CaseStudy[]> {
@@ -87,16 +60,4 @@ export async function getCaseStudyForAdmin(id: string): Promise<CaseStudy | null
 
   if (error || !data) return null
   return data as unknown as CaseStudy
-}
-
-/** Slugify helper — lowercase, vietnamese-safe, dash-separated */
-export function slugify(input: string): string {
-  return input
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80)
 }

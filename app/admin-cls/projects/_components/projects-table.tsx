@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Edit3, Trash2, Eye, EyeOff, ExternalLink, Archive } from 'lucide-react'
-import type { CaseStudy, CaseStudyStatus } from '@/lib/cms/case-studies'
+import type { CaseStudy, CaseStudyStatus } from '@/lib/cms/case-studies-types'
 import { deleteProject, setProjectStatus } from '../actions'
 
 const STATUS_LABEL: Record<CaseStudyStatus, { vi: string; cls: string }> = {
