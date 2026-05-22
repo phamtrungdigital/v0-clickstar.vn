@@ -8,8 +8,9 @@ import { Footer } from '@/components/layout/footer'
 import { getPublishedPost, listPublishedPosts } from '@/lib/cms/posts'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { getServerLang, makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
-import { TableOfContents, parseHeadings } from './_components/table-of-contents'
+import { TableOfContents } from './_components/table-of-contents'
 import { NewsletterCard } from './_components/newsletter-card'
+import { parseHeadings, slugifyId } from '@/lib/blog/headings'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,17 +33,6 @@ export async function generateMetadata({
     description,
     openGraph: { title, description, images: ogImage ? [ogImage] : [] },
   }
-}
-
-// Slugify khớp với TableOfContents để anchor jump hoạt động
-function slugifyId(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
 }
 
 function extractText(children: React.ReactNode): string {

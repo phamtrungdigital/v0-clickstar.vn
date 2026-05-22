@@ -2,45 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { List } from 'lucide-react'
-
-type Heading = { id: string; text: string; level: 2 | 3 }
-
-/** Parse markdown content to extract h2/h3 headings + generate slug-id matching ReactMarkdown's auto-id pattern */
-export function parseHeadings(markdown: string): Heading[] {
-  const lines = markdown.split('\n')
-  const headings: Heading[] = []
-  let inCodeBlock = false
-
-  for (const line of lines) {
-    // Skip headings inside ``` code blocks
-    if (line.startsWith('```')) {
-      inCodeBlock = !inCodeBlock
-      continue
-    }
-    if (inCodeBlock) continue
-
-    const m2 = /^## +(.+)$/.exec(line)
-    const m3 = /^### +(.+)$/.exec(line)
-    if (m2) {
-      const text = m2[1].trim().replace(/[*_`]/g, '')
-      headings.push({ id: slugifyId(text), text, level: 2 })
-    } else if (m3) {
-      const text = m3[1].trim().replace(/[*_`]/g, '')
-      headings.push({ id: slugifyId(text), text, level: 3 })
-    }
-  }
-  return headings
-}
-
-function slugifyId(text: string): string {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/đ/g, 'd')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
+import type { Heading } from '@/lib/blog/headings'
 
 export function TableOfContents({ headings }: { headings: Heading[] }) {
   const [activeId, setActiveId] = useState<string>('')
