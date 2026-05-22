@@ -26,6 +26,7 @@ import {
   Plus,
   HelpCircle,
   ExternalLink,
+  Briefcase,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSiteBranding } from '@/contexts/site-branding-context'
@@ -41,6 +42,7 @@ const sidebarItems = [
     items: [
       { label: 'Quản lý trang', href: '/admin-cls/pages', icon: FileText },
       { label: 'Bài viết', href: '/admin-cls/posts', icon: FileText },
+      { label: 'Dự án', href: '/admin-cls/projects', icon: Briefcase },
       { label: 'SEO', href: '/admin-cls/seo', icon: Search },
     ],
   },
