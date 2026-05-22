@@ -34,7 +34,7 @@ const pricingPlansData: Record<Language, PricingPlan[]> = {
       'Bảo trì 3 tháng miễn phí',
     ],
     cta: 'Liên hệ tư vấn',
-    href: '#contact',
+    href: '/contact',
   },
   {
     name: 'Nâng cao',
@@ -54,7 +54,7 @@ const pricingPlansData: Record<Language, PricingPlan[]> = {
       'Bảo trì 6 tháng miễn phí',
     ],
     cta: 'Liên hệ tư vấn',
-    href: '#contact',
+    href: '/contact',
   },
   {
     name: 'Cao cấp',
@@ -76,7 +76,7 @@ const pricingPlansData: Record<Language, PricingPlan[]> = {
       'Bảo trì 12 tháng miễn phí',
     ],
     cta: 'Liên hệ tư vấn',
-    href: '#contact',
+    href: '/contact',
   },
   ],
   en: [
@@ -96,7 +96,7 @@ const pricingPlansData: Record<Language, PricingPlan[]> = {
         '3 months free maintenance',
       ],
       cta: 'Contact us',
-      href: '#contact',
+      href: '/contact',
     },
     {
       name: 'Professional',
@@ -116,7 +116,7 @@ const pricingPlansData: Record<Language, PricingPlan[]> = {
         '6 months free maintenance',
       ],
       cta: 'Contact us',
-      href: '#contact',
+      href: '/contact',
     },
     {
       name: 'Enterprise',
@@ -138,7 +138,7 @@ const pricingPlansData: Record<Language, PricingPlan[]> = {
         '12 months free maintenance',
       ],
       cta: 'Contact us',
-      href: '#contact',
+      href: '/contact',
     },
   ]
 }

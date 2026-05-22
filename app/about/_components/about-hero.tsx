@@ -132,7 +132,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
             {content.cta_label?.vi && (
               <Link
                 data-cms-field="cta"
-                href={content.cta_href || '#contact'}
+                href={content.cta_href || '/contact'}
                 className="group inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 via-blue-500 to-blue-600 hover:from-sky-500 hover:via-blue-600 hover:to-blue-700 text-white font-semibold px-7 py-3.5 rounded-full text-base shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.03] transition-all"
               >
                 {t(content.cta_label.vi, content.cta_label.en)}

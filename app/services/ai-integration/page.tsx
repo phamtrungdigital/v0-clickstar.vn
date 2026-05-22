@@ -559,9 +559,9 @@ export default function AIIntegrationPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
               {integrationProcess.map((step, index) => (
-                <div key={index} className="relative">
+                <div key={index} className="relative h-full">
                   <div className="bg-white border border-border rounded-2xl p-6 h-full hover:shadow-lg transition-all">
                     <div className="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                       {step.step}
@@ -576,8 +576,8 @@ export default function AIIntegrationPage() {
                     </div>
                   </div>
                   {index < integrationProcess.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                      <ChevronRight className="w-6 h-6 text-primary/30" />
+                    <div className="hidden lg:flex items-center justify-center absolute top-0 -right-5 h-full w-10 z-10 pointer-events-none">
+                      <ChevronRight className="w-6 h-6 text-primary/40" />
                     </div>
                   )}
                 </div>

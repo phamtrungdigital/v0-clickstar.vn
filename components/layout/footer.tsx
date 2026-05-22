@@ -9,39 +9,39 @@ import { useSiteBranding } from '@/contexts/site-branding-context'
 
 const servicesData: Record<Language, { name: string; href: string }[]> = {
   vi: [
-    { name: 'Digital Marketing', href: '#' },
-    { name: 'Thiết kế Website', href: '#' },
-    { name: 'Dashboard dữ liệu', href: '#' },
-    { name: 'Tích hợp AI', href: '#' },
-    { name: 'AI Automation', href: '#' },
-    { name: 'CRM & CDP', href: '#' },
+    { name: 'Digital Marketing', href: '/services/digital-marketing' },
+    { name: 'Thiết kế Website', href: '/services/website' },
+    { name: 'Dashboard dữ liệu', href: '/services/dashboard' },
+    { name: 'Tích hợp AI', href: '/services/ai-integration' },
+    { name: 'AI Automation', href: '/services/automation' },
+    { name: 'CRM & CDP', href: '/services/crm-cdp' },
   ],
   en: [
-    { name: 'Digital Marketing', href: '#' },
-    { name: 'Website Design', href: '#' },
-    { name: 'Data Dashboard', href: '#' },
-    { name: 'AI Integration', href: '#' },
-    { name: 'AI Automation', href: '#' },
-    { name: 'CRM & CDP', href: '#' },
+    { name: 'Digital Marketing', href: '/services/digital-marketing' },
+    { name: 'Website Design', href: '/services/website' },
+    { name: 'Data Dashboard', href: '/services/dashboard' },
+    { name: 'AI Integration', href: '/services/ai-integration' },
+    { name: 'AI Automation', href: '/services/automation' },
+    { name: 'CRM & CDP', href: '/services/crm-cdp' },
   ]
 }
 
 const usefulLinksData: Record<Language, { name: string; href: string }[]> = {
   vi: [
-    { name: 'Về chúng tôi', href: '#about' },
-    { name: 'Đội ngũ', href: '#team' },
-    { name: 'Dự án', href: '#cases' },
+    { name: 'Về chúng tôi', href: '/about' },
+    { name: 'Đội ngũ', href: '/about#team' },
+    { name: 'Dự án', href: '/#cases' },
     { name: 'Bảng giá', href: '/pricing' },
-    { name: 'Tin tức', href: '#blog' },
-    { name: 'Liên hệ', href: '#contact' },
+    { name: 'Tin tức', href: '/blog' },
+    { name: 'Liên hệ', href: '/contact' },
   ],
   en: [
-    { name: 'About Us', href: '#about' },
-    { name: 'Our Team', href: '#team' },
-    { name: 'Projects', href: '#cases' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Our Team', href: '/about#team' },
+    { name: 'Projects', href: '/#cases' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Blog', href: '#blog' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Blog', href: '/blog' },
+    { name: 'Contact', href: '/contact' },
   ]
 }
 

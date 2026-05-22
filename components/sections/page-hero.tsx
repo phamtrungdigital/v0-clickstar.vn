@@ -50,7 +50,7 @@ export function PageHero({ fallback }: { fallback?: PageHeroContent }) {
           {content.cta_label?.vi && (
             <Link
               data-cms-field="cta"
-              href={content.cta_href || '#contact'}
+              href={content.cta_href || '/contact'}
               className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 rounded-full text-base sm:text-lg transition-all duration-200 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5"
             >
               {t(content.cta_label.vi, content.cta_label.en)}

@@ -137,6 +137,12 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
           <TextInput label="LinkedIn URL" value={draft.linkedin_url ?? ''} onChange={(v) => update('linkedin_url', v.trim() === '' ? null : v)} />
           <TextInput label="Instagram URL" value={draft.instagram_url ?? ''} onChange={(v) => update('instagram_url', v.trim() === '' ? null : v)} />
           <TextInput label="YouTube URL" value={draft.youtube_url ?? ''} onChange={(v) => update('youtube_url', v.trim() === '' ? null : v)} />
+          <TextInput
+            label="Zalo URL"
+            value={draft.zalo_url ?? ''}
+            onChange={(v) => update('zalo_url', v.trim() === '' ? null : v)}
+            hint="VD: https://zalo.me/0977713428 — để trống sẽ ẩn nút Zalo trên website"
+          />
         </div>
       </Section>
 

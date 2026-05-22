@@ -318,7 +318,7 @@ export default function DigitalMarketingPage() {
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-12">
                   <Link
-                    href="#contact"
+                    href="/contact"
                     className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   >
                     {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
@@ -540,7 +540,7 @@ export default function DigitalMarketingPage() {
                 {/* CTA */}
                 <div className="mt-10">
                   <Link
-                    href="#contact"
+                    href="/contact"
                     className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
                   >
                     {t('Tìm hiểu giải pháp cho doanh nghiệp của bạn', 'Find solutions for your business')}
@@ -835,7 +835,7 @@ export default function DigitalMarketingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="#"
+                href="/contact"
                 className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:shadow-lg"
               >
                 {t('Đặt lịch tư vấn', 'Book Consultation')}

@@ -16,6 +16,7 @@ export type SiteSettings = {
   linkedin_url: string | null
   instagram_url: string | null
   youtube_url: string | null
+  zalo_url: string | null
   default_seo_title: I18n | null
   default_seo_description: I18n | null
   default_og_image: string | null

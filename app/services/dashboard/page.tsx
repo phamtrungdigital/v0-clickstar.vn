@@ -402,7 +402,7 @@ export default function DashboardServicePage() {
                 </div>
 
                 <Link
-                  href="#contact"
+                  href="/contact"
                   className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
                 >
                   {t('Tích hợp dữ liệu của bạn ngay', 'Integrate your data now')}
