@@ -17,6 +17,10 @@ export type SectionType =
   | 'problems_grid'
   | 'feature_grid'
   | 'process_steps'
+  | 'about_story'
+  | 'about_values'
+  | 'about_timeline'
+  | 'about_why_choose_us'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -281,6 +285,65 @@ export type CtaContent = {
   partner_names: string[]
 }
 
+// ---------- About Page custom sections ----------
+// (unique to /about — Story image + paragraphs + industries pills)
+export type AboutStoryContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  image: string
+  image_alt: I18n
+  paragraphs: I18n[] // 1-5 paragraphs
+  industries_label: I18n
+  industries: I18n[] // chip list
+  stat_value: string // e.g. "10+"
+  stat_label: I18n
+}
+
+// Values: 4 cards with icon + title + description
+export type AboutValueItem = {
+  icon: string // lucide-react icon name
+  title: I18n
+  description: I18n
+}
+export type AboutValuesContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  items: AboutValueItem[]
+}
+
+// Timeline: 5 milestones year + title + description (dark theme)
+export type AboutTimelineItem = {
+  year: string
+  title: I18n
+  description: I18n
+}
+export type AboutTimelineContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  items: AboutTimelineItem[]
+}
+
+// Why Choose Us: heading + checkmark list + image gallery (2x2 staggered)
+export type AboutWhyChooseUsImage = {
+  src: string
+  alt: I18n
+  aspect: '4/3' | '4/5'
+}
+export type AboutWhyChooseUsContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  features: I18n[] // checkmark list
+  cta_label: I18n
+  cta_href: string
+  images: AboutWhyChooseUsImage[] // 4 images
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -298,6 +361,10 @@ export type Section =
   | { id: string; type: 'problems_grid'; enabled: boolean; content: ProblemsGridContent }
   | { id: string; type: 'feature_grid'; enabled: boolean; content: FeatureGridContent }
   | { id: string; type: 'process_steps'; enabled: boolean; content: ProcessStepsContent }
+  | { id: string; type: 'about_story'; enabled: boolean; content: AboutStoryContent }
+  | { id: string; type: 'about_values'; enabled: boolean; content: AboutValuesContent }
+  | { id: string; type: 'about_timeline'; enabled: boolean; content: AboutTimelineContent }
+  | { id: string; type: 'about_why_choose_us'; enabled: boolean; content: AboutWhyChooseUsContent }
 
 export type Page = {
   id: string

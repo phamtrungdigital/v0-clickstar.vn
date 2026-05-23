@@ -50,6 +50,10 @@ import { PricingTiersForm } from './pricing-tiers-form'
 import { ProblemsGridForm } from './problems-grid-form'
 import { FeatureGridForm } from './feature-grid-form'
 import { ProcessStepsForm } from './process-steps-form'
+import { AboutStoryForm } from './about-story-form'
+import { AboutValuesForm } from './about-values-form'
+import { AboutTimelineForm } from './about-timeline-form'
+import { AboutWhyChooseUsForm } from './about-why-choose-us-form'
 import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -68,6 +72,10 @@ const SECTION_LABELS: Record<string, string> = {
   problems_grid: 'Vấn đề & Giải pháp',
   feature_grid: 'Tính năng / Dịch vụ (cards)',
   process_steps: 'Quy trình (các bước)',
+  about_story: 'About — Story (image + paragraphs)',
+  about_values: 'About — Giá trị cốt lõi',
+  about_timeline: 'About — Hành trình (timeline)',
+  about_why_choose_us: 'About — Tại sao chọn (gallery)',
 }
 
 function renderForm(section: Section, onChange: (c: any) => void) {
@@ -102,6 +110,14 @@ function renderForm(section: Section, onChange: (c: any) => void) {
       return <FeatureGridForm content={section.content} onChange={onChange} />
     case 'process_steps':
       return <ProcessStepsForm content={section.content} onChange={onChange} />
+    case 'about_story':
+      return <AboutStoryForm content={section.content} onChange={onChange} />
+    case 'about_values':
+      return <AboutValuesForm content={section.content} onChange={onChange} />
+    case 'about_timeline':
+      return <AboutTimelineForm content={section.content} onChange={onChange} />
+    case 'about_why_choose_us':
+      return <AboutWhyChooseUsForm content={section.content} onChange={onChange} />
   }
 }
 
