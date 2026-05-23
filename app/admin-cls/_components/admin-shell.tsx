@@ -121,22 +121,24 @@ export default function AdminShell({
           >
             <Menu className="w-5 h-5" />
           </button>
-          <Link href="/admin-cls" className="flex items-center gap-2">
+          <Link href="/admin-cls" className="flex items-center gap-2.5 group">
             {branding.logoUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={branding.logoUrl}
                 alt={branding.siteName}
-                className="h-7 w-auto object-contain"
+                className="h-8 w-auto object-contain"
               />
             ) : (
-              <div className="w-7 h-7 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-bold text-xs">
                   {branding.siteName.slice(0, 2).toUpperCase()}
                 </span>
               </div>
             )}
-            <span className="font-bold text-sm hidden sm:block">{branding.siteName} Admin</span>
+            <span className="hidden sm:inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-orange-500/15 text-orange-400 ring-1 ring-orange-500/30 group-hover:bg-orange-500/25 transition-colors">
+              Admin
+            </span>
           </Link>
         </div>
 
