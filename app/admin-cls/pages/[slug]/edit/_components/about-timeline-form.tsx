@@ -29,9 +29,11 @@ export function AboutTimelineForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-about_timeline.eyebrow" className="scroll-mt-32">
+        <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about_timeline.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -61,8 +63,9 @@ export function AboutTimelineForm({
         {content.items.map((item, idx) => (
           <details
             key={idx}
+            id={`form-about_timeline.item.${idx}`}
             open={idx === 0}
-            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700"
+            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
           >
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium select-none flex items-center justify-between">
               <span>

@@ -42,7 +42,7 @@ export function AboutTimelineSection({ content }: { content: AboutTimelineConten
               key={index}
               data-cms-field="item"
               data-cms-item-index={index}
-              className="relative flex flex-col items-center h-full"
+              className="relative flex flex-col items-center h-full cursor-pointer"
             >
               {/* Dot on timeline line */}
               <div className="hidden lg:flex items-center justify-center w-6 h-6 mb-4 flex-shrink-0">

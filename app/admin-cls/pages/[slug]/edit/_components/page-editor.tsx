@@ -256,6 +256,17 @@ function PageEditorInner({ page }: { page: Page }) {
               .querySelector<HTMLInputElement | HTMLTextAreaElement>('input, textarea')
               ?.focus()
           }, 350)
+        } else if (detailsEl) {
+          // Section-only target (user clicked section background, not specific field)
+          // → scroll section <details> into view + flash highlight
+          detailsEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          detailsEl.animate(
+            [
+              { backgroundColor: 'rgba(59, 130, 246, 0.15)' },
+              { backgroundColor: 'rgba(59, 130, 246, 0)' },
+            ],
+            { duration: 1200 }
+          )
         }
       })
     }

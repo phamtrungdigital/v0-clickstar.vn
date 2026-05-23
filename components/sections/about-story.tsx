@@ -18,7 +18,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Image */}
           <div className="relative">
-            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+            <div data-cms-field="image" className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
               <Image
                 src={content.image}
                 alt={t(content.image_alt.vi, content.image_alt.en)}
@@ -28,7 +28,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
               />
             </div>
             {/* Floating stat card */}
-            <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 max-w-[240px]">
+            <div data-cms-field="stat" className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 max-w-[240px]">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                   <Award className="w-6 h-6 text-primary" />
@@ -64,20 +64,27 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
 
             <div className="space-y-5 text-muted-foreground leading-relaxed">
               {content.paragraphs.map((p, i) => (
-                <p key={i}>{t(p.vi, p.en)}</p>
+                <p key={i} data-cms-field="paragraph" data-cms-item-index={i}>
+                  {t(p.vi, p.en)}
+                </p>
               ))}
             </div>
 
             {/* Industries chip list */}
             {content.industries.length > 0 && (
               <div className="mt-8">
-                <p className="text-sm font-semibold text-foreground mb-4">
+                <p
+                  data-cms-field="industries_label"
+                  className="text-sm font-semibold text-foreground mb-4"
+                >
                   {t(content.industries_label.vi, content.industries_label.en)}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {content.industries.map((industry, i) => (
                     <span
                       key={i}
+                      data-cms-field="industry"
+                      data-cms-item-index={i}
                       className="px-3 py-1.5 bg-white rounded-full text-sm text-muted-foreground border border-border"
                     >
                       {t(industry.vi, industry.en)}

@@ -31,9 +31,11 @@ export function AboutValuesForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-about_values.eyebrow" className="scroll-mt-32">
+        <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about_values.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -46,13 +48,15 @@ export function AboutValuesForm({
         />
       </div>
 
-      <I18nInput
-        label="Mô tả ngắn dưới heading"
-        value={content.description}
-        onChange={(v) => update('description', v)}
-        multiline
-        rows={2}
-      />
+      <div id="form-about_values.description" className="scroll-mt-32">
+        <I18nInput
+          label="Mô tả ngắn dưới heading"
+          value={content.description}
+          onChange={(v) => update('description', v)}
+          multiline
+          rows={2}
+        />
+      </div>
 
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between">
@@ -71,8 +75,9 @@ export function AboutValuesForm({
         {content.items.map((item, idx) => (
           <details
             key={idx}
+            id={`form-about_values.item.${idx}`}
             open={idx === 0}
-            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700"
+            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
           >
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium select-none flex items-center justify-between">
               <span>

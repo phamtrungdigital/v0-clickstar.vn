@@ -37,9 +37,11 @@ export function AboutStoryForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-about_story.eyebrow" className="scroll-mt-32">
+        <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about_story.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -52,19 +54,23 @@ export function AboutStoryForm({
         />
       </div>
 
-      <ImagePicker
-        label="Ảnh story (4:3, ~800×600)"
-        value={content.image}
-        onChange={(v) => update('image', v)}
-      />
-      <I18nInput
-        label="Alt text ảnh"
-        value={content.image_alt}
-        onChange={(v) => update('image_alt', v)}
-      />
+      <div id="form-about_story.image" className="scroll-mt-32">
+        <ImagePicker
+          label="Ảnh story (4:3, ~800×600)"
+          value={content.image}
+          onChange={(v) => update('image', v)}
+        />
+      </div>
+      <div id="form-about_story.image_alt" className="scroll-mt-32">
+        <I18nInput
+          label="Alt text ảnh"
+          value={content.image_alt}
+          onChange={(v) => update('image_alt', v)}
+        />
+      </div>
 
       {/* Floating stat card */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
+      <div id="form-about_story.stat" className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32">
         <p className="lg:col-span-2 text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
           Card nổi (Award badge)
         </p>
@@ -99,8 +105,9 @@ export function AboutStoryForm({
         {content.paragraphs.map((p, idx) => (
           <details
             key={idx}
+            id={`form-about_story.paragraph.${idx}`}
             open={idx === 0}
-            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700"
+            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
           >
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium select-none flex items-center justify-between">
               <span>
@@ -133,11 +140,13 @@ export function AboutStoryForm({
 
       {/* Industries chip list */}
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
-        <I18nInput
-          label="Label trước chip"
-          value={content.industries_label}
-          onChange={(v) => update('industries_label', v)}
-        />
+        <div id="form-about_story.industries_label" className="scroll-mt-32">
+          <I18nInput
+            label="Label trước chip"
+            value={content.industries_label}
+            onChange={(v) => update('industries_label', v)}
+          />
+        </div>
         <div className="flex items-center justify-between">
           <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
             {content.industries.length} chip ngành
@@ -152,7 +161,11 @@ export function AboutStoryForm({
           </button>
         </div>
         {content.industries.map((ind, idx) => (
-          <div key={idx} className="flex items-start gap-2">
+          <div
+            key={idx}
+            id={`form-about_story.industry.${idx}`}
+            className="flex items-start gap-2 scroll-mt-32"
+          >
             <div className="flex-1">
               <I18nInput
                 label={`Chip ${idx + 1}`}

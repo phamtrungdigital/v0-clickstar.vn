@@ -46,7 +46,12 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
 
             <ul className="space-y-4 mb-8">
               {content.features.map((feature, index) => (
-                <li key={index} className="flex items-start gap-3">
+                <li
+                  key={index}
+                  data-cms-field="feature"
+                  data-cms-item-index={index}
+                  className="flex items-start gap-3"
+                >
                   <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
                   <span className="text-foreground">{t(feature.vi, feature.en)}</span>
                 </li>
@@ -54,6 +59,7 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
             </ul>
 
             <Link
+              data-cms-field="cta"
               href={content.cta_href}
               className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-primary-foreground font-semibold px-8 py-4 rounded-full transition-all duration-300 hover:shadow-lg group"
             >
@@ -69,9 +75,11 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
                 {leftImages.map((img, i) => (
                   <div
                     key={i}
+                    data-cms-field="image"
+                    data-cms-item-index={i}
                     className={`${
                       img.aspect === '4/5' ? 'aspect-[4/5]' : 'aspect-[4/3]'
-                    } rounded-2xl overflow-hidden shadow-lg`}
+                    } rounded-2xl overflow-hidden shadow-lg cursor-pointer`}
                   >
                     <Image
                       src={img.src}
@@ -88,9 +96,11 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
                 {rightImages.map((img, i) => (
                   <div
                     key={i}
+                    data-cms-field="image"
+                    data-cms-item-index={i + 2}
                     className={`${
                       img.aspect === '4/5' ? 'aspect-[4/5]' : 'aspect-[4/3]'
-                    } rounded-2xl overflow-hidden shadow-lg`}
+                    } rounded-2xl overflow-hidden shadow-lg cursor-pointer`}
                   >
                     <Image
                       src={img.src}

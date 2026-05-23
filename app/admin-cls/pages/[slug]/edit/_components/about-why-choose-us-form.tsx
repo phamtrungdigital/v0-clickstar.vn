@@ -46,9 +46,11 @@ export function AboutWhyChooseUsForm({
 
   return (
     <div className="space-y-4">
-      <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      <div id="form-about_why_choose_us.eyebrow" className="scroll-mt-32">
+        <I18nInput label="Eyebrow" value={content.eyebrow} onChange={(v) => update('eyebrow', v)} />
+      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+      <div id="form-about_why_choose_us.heading" className="grid grid-cols-1 lg:grid-cols-2 gap-3 scroll-mt-32">
         <I18nInput
           label="Heading — phần đầu"
           value={content.heading_lead}
@@ -61,13 +63,15 @@ export function AboutWhyChooseUsForm({
         />
       </div>
 
-      <I18nInput
-        label="Mô tả"
-        value={content.description}
-        onChange={(v) => update('description', v)}
-        multiline
-        rows={3}
-      />
+      <div id="form-about_why_choose_us.description" className="scroll-mt-32">
+        <I18nInput
+          label="Mô tả"
+          value={content.description}
+          onChange={(v) => update('description', v)}
+          multiline
+          rows={3}
+        />
+      </div>
 
       {/* Features (checkmark list) */}
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
@@ -85,7 +89,11 @@ export function AboutWhyChooseUsForm({
           </button>
         </div>
         {content.features.map((f, idx) => (
-          <div key={idx} className="flex items-start gap-2">
+          <div
+            key={idx}
+            id={`form-about_why_choose_us.feature.${idx}`}
+            className="flex items-start gap-2 scroll-mt-32"
+          >
             <div className="flex-1">
               <I18nInput label={`Feature ${idx + 1}`} value={f} onChange={(v) => updateFeature(idx, v)} />
             </div>
@@ -101,7 +109,7 @@ export function AboutWhyChooseUsForm({
       </div>
 
       {/* CTA */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
+      <div id="form-about_why_choose_us.cta" className="grid grid-cols-1 lg:grid-cols-2 gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32">
         <I18nInput
           label="Label nút CTA"
           value={content.cta_label}
@@ -133,8 +141,9 @@ export function AboutWhyChooseUsForm({
         {content.images.map((img, idx) => (
           <details
             key={idx}
+            id={`form-about_why_choose_us.image.${idx}`}
             open={idx === 0}
-            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700"
+            className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
           >
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium select-none flex items-center justify-between">
               <span>

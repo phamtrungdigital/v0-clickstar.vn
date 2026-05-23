@@ -44,7 +44,7 @@ export function AboutValuesSection({ content }: { content: AboutValuesContent })
               key={index}
               data-cms-field="item"
               data-cms-item-index={index}
-              className="group relative bg-white rounded-2xl p-8 shadow-sm border border-border/50 hover:shadow-xl hover:border-primary/20 transition-all duration-300"
+              className="group relative bg-white rounded-2xl p-8 shadow-sm border border-border/50 hover:shadow-xl hover:border-primary/20 transition-all duration-300 cursor-pointer"
             >
               <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                 {renderIcon(value.icon, 'w-6 h-6')}
