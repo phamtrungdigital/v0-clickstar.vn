@@ -5,13 +5,17 @@ import Link from 'next/link'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { AboutHero } from './_components/about-hero'
+import { StatsSection } from '@/components/sections/stats-section'
+import { TeamSection } from '@/components/sections/team-section'
+import { CTASection } from '@/components/sections/cta-section'
+import { usePageSection } from '@/lib/cms/page-data-context'
 import { useLanguage } from '@/contexts/language-context'
-import { 
-  Target, 
-  Heart, 
-  Zap, 
-  Users, 
-  TrendingUp, 
+import {
+  Target,
+  Heart,
+  Zap,
+  Users,
+  TrendingUp,
   Award,
   CheckCircle2,
   ArrowRight,
@@ -20,18 +24,14 @@ import {
   Sparkles,
   Lightbulb,
   Shield,
-  Rocket
+  Rocket,
 } from 'lucide-react'
 
 export default function AboutPage() {
   const { t } = useLanguage()
-
-  const stats = [
-    { value: '10+', label: t('Năm kinh nghiệm', 'Years of Experience') },
-    { value: '500+', label: t('Dự án hoàn thành', 'Projects Completed') },
-    { value: '50+', label: t('Chuyên gia', 'Experts') },
-    { value: '98%', label: t('Khách hàng hài lòng', 'Client Satisfaction') },
-  ]
+  const statsSection = usePageSection('stats')
+  const teamSection = usePageSection('team')
+  const ctaSection = usePageSection('cta')
 
   const values = [
     {
@@ -68,68 +68,7 @@ export default function AboutPage() {
     },
   ]
 
-  const team = [
-    {
-      name: 'Quỳnh Hương',
-      role: t('Co-Founder', 'Co-Founder'),
-      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/quynh-huong-1779284373776.png',
-      bio: t(
-        'Người sáng lập Click Star với tầm nhìn xây dựng giải pháp Digital Marketing & Automation toàn diện cho doanh nghiệp Việt Nam.',
-        'Co-Founder of Click Star with the vision of building comprehensive Digital Marketing & Automation solutions for Vietnamese businesses.'
-      ),
-      linkedin: '#'
-    },
-    {
-      name: 'Trần Hằng',
-      role: t('Advertising Specialist', 'Advertising Specialist'),
-      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/tran-hang-1779284392670.png',
-      bio: t(
-        'Chuyên gia quảng cáo đa nền tảng (Facebook, Google, TikTok, Zalo). Tối ưu chi phí/lead và mở rộng tệp khách hàng tiềm năng cho hàng chục dự án.',
-        'Multi-platform advertising specialist (Facebook, Google, TikTok, Zalo). Optimizes cost per lead and expands customer base for dozens of projects.'
-      ),
-      linkedin: '#'
-    },
-    {
-      name: 'Ngọc Hưng',
-      role: t('Designing Expert', 'Designing Expert'),
-      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/ngoc-hung-1779284416736.png',
-      bio: t(
-        'Chuyên gia thiết kế UI/UX với phong cách hiện đại, tối ưu trải nghiệm người dùng và chuyển đổi cho website thương hiệu.',
-        'UI/UX design expert with a modern style, optimizing user experience and conversions for brand websites.'
-      ),
-      linkedin: '#'
-    },
-    {
-      name: 'Như Quỳnh',
-      role: t('SEO Specialist', 'SEO Specialist'),
-      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/nhu-quynh-1779284437974.png',
-      bio: t(
-        'Chuyên gia SEO technical + content. Đưa nhiều website Click Star lên TOP Google ở các từ khóa cạnh tranh trong lĩnh vực giáo dục, y tế, bán lẻ.',
-        'Technical + content SEO specialist. Has ranked multiple Click Star sites on Google TOP for competitive keywords in education, healthcare and retail.'
-      ),
-      linkedin: '#'
-    },
-    {
-      name: 'Trung Đức',
-      role: t('Design Team Leader', 'Design Team Leader'),
-      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/trung-duc-1779284539211.png',
-      bio: t(
-        'Trưởng nhóm thiết kế, dẫn dắt đội ngũ creative trong xây dựng nhận diện thương hiệu và sản phẩm số cho khách hàng doanh nghiệp.',
-        'Design team leader, guiding the creative team in building brand identity and digital products for enterprise clients.'
-      ),
-      linkedin: '#'
-    },
-    {
-      name: 'Hồng Ánh',
-      role: t('Content Social', 'Content Social'),
-      image: 'https://ffcqkrlzgofptspukrmo.supabase.co/storage/v1/object/public/media/cms/team/hong-anh-1779284493246.png',
-      bio: t(
-        'Chuyên gia content social với khả năng xây dựng kế hoạch nội dung đa nền tảng, giúp thương hiệu tiếp cận đúng khách hàng mục tiêu.',
-        'Content social expert with the ability to build multi-platform content plans that help brands reach the right target audience.'
-      ),
-      linkedin: '#'
-    },
-  ]
+  // Team data moved to CMS (pages.about section type='team'). Edit via /admin-cls/pages/about/edit.
 
   const milestones = [
     { year: '2014', title: t('Thành lập Click Star', 'Click Star Founded'), description: t('Bắt đầu với đội ngũ 5 người, tập trung vào Digital Marketing.', 'Started with a team of 5, focusing on Digital Marketing.') },
@@ -156,23 +95,8 @@ export default function AboutPage() {
 
       <AboutHero />
 
-      {/* Stats row */}
-      <section className="bg-background py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-10 max-w-4xl mx-auto">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-primary mb-2">
-                  {stat.value}
-                </div>
-                <div className="text-sm sm:text-base text-muted-foreground">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Stats — CMS-driven (section type: stats) */}
+      {statsSection && <StatsSection content={statsSection.content} />}
 
       {/* Story Section */}
       <section id="story" className="py-20 lg:py-28 bg-secondary/30">
@@ -340,71 +264,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Team Section */}
-      <section className="py-20 lg:py-28">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
-              <Users className="w-4 h-4" />
-              {t('Đội ngũ chuyên gia', 'Our Expert Team')}
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6">
-              {t('Những con người', 'The People')}{' '}
-              <span className="text-primary">{t('đứng sau thành công', 'Behind Success')}</span>
-            </h2>
-            <p className="text-muted-foreground text-lg">
-              {t(
-                'Đội ngũ chuyên gia giàu kinh nghiệm trong Digital Marketing, AI, Data và Chuyển đổi số.',
-                'A team of experts with extensive experience in Digital Marketing, AI, Data and Digital Transformation.'
-              )}
-            </p>
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <div 
-                key={index}
-                className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-border/50 hover:shadow-xl transition-all duration-300"
-              >
-                {/* Image */}
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  {/* Social Links */}
-                  <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <a 
-                      href={member.linkedin}
-                      className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors"
-                    >
-                      <Linkedin className="w-4 h-4" />
-                    </a>
-                    <a 
-                      href="#"
-                      className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-foreground hover:bg-primary hover:text-white transition-colors"
-                    >
-                      <Mail className="w-4 h-4" />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div className="p-6">
-                  <h3 className="text-lg font-bold text-foreground mb-1">{member.name}</h3>
-                  <p className="text-primary font-medium text-sm mb-3">{member.role}</p>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Team — CMS-driven (section type: team) */}
+      {teamSection && <TeamSection content={teamSection.content} />}
 
       {/* Why Choose Us */}
       <section className="py-20 lg:py-28 bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
@@ -504,36 +365,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 lg:py-28 bg-primary">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight mb-6">
-            {t('Sẵn sàng bắt đầu hành trình', 'Ready to Start Your')}{' '}
-            <span className="text-accent">{t('chuyển đổi số?', 'Digital Transformation?')}</span>
-          </h2>
-          <p className="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
-            {t(
-              'Liên hệ ngay với đội ngũ chuyên gia của chúng tôi để được tư vấn miễn phí và nhận giải pháp phù hợp nhất.',
-              'Contact our expert team now for free consultation and receive the most suitable solution.'
-            )}
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-white/90 transition-all duration-300 hover:shadow-lg group"
-            >
-              {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
-              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-            <Link
-              href="tel:+84123456789"
-              className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition-all duration-300"
-            >
-              {t('Gọi ngay: 0977 713 428', 'Call: 0977 713 428')}
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* CTA — CMS-driven (section type: cta) */}
+      {ctaSection && <CTASection content={ctaSection.content} />}
 
       <Footer />
     </div>

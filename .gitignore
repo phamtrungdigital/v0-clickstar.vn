@@ -8,5 +8,7 @@ build/
 .DS_Store
 *.log
 .vercel
-.claude/
+# Claude Code: commit settings.json (team allow list) + launch.json,
+# ignore only personal/local files
+.claude/settings.local.json
 *.tsbuildinfo
