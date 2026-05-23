@@ -101,7 +101,7 @@ export default async function AdminPagesList() {
 
       <div className="text-[11px] text-slate-500 px-1">
         <Globe className="w-3 h-3 inline mr-1" />
-        Phase 2A.1: 4 section types được edit (Hero, Services, About, CTA). Các section khác sẽ được migrate ở phase tiếp.
+        Tất cả 19 section types đã có form editor. Click "Sửa" để chỉnh từng section.
       </div>
     </div>
   )

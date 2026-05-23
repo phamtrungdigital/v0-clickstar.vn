@@ -98,3 +98,39 @@ except: sys.exit(1)
 ```
 
 Chạy với `run_in_background: true` để không block khi đợi.
+
+---
+
+## QUY ĐỊNH 5 — BẮT BUỘC đưa link test sau mỗi push (anh nhắc 22/5/2026)
+
+**Sau MỖI lần push code (dev hoặc main), em PHẢI:**
+
+1. **Đợi Vercel build READY** (poll background, không gửi link khi còn Building)
+2. **Verify build thực sự pick up commit mới** (check 1-2 markers HTML cụ thể từ thay đổi, không chỉ check 200 OK — vì 200 có thể là commit cũ vẫn cached)
+3. **Gửi anh:**
+   - ✅ Link preview URL (dev) hoặc prod URL
+   - ✅ 2-5 bước test cụ thể anh có thể click ngay
+   - ✅ Tóm tắt fix gì + commit hash
+   - ✅ Note nếu có credential cần login (email/password admin)
+
+**KHÔNG được:**
+- ❌ Push xong rồi đứng yên đợi anh hỏi link
+- ❌ Báo "em đã ship" mà không kèm URL
+- ❌ Gửi URL khi build còn Building (anh mở sẽ thấy commit cũ → confused)
+- ❌ Chỉ gửi tóm tắt code thay đổi mà không có link click được
+
+**Pattern chuẩn (sau khi build READY):**
+
+```
+## 🚀 [Phase X] đã ship dev/prod — Anh test giúp em
+
+🔗 **Link:** https://...
+
+📋 **N bước test:**
+1. Mở [URL cụ thể]
+2. Click vào...
+3. Check...
+
+**Commit:** abc1234
+**Fix:** tóm tắt 1-2 dòng
+```

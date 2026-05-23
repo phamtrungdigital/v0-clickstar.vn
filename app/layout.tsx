@@ -6,6 +6,7 @@ import { LanguageProvider, type Language } from '@/contexts/language-context'
 import { SiteBrandingProvider, type SiteBranding } from '@/contexts/site-branding-context'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { FloatingAiChat } from '@/components/floating-ai-chat'
+import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -68,6 +69,7 @@ export default async function RootLayout({
           <LanguageProvider initialLang={initialLang}>
             {children}
             <FloatingAiChat />
+            <EditModeOverlay />
           </LanguageProvider>
         </SiteBrandingProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
