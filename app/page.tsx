@@ -11,7 +11,7 @@ import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
 import { AiServiceRouter } from '@/components/sections/ai-service-router'
 import { Footer } from '@/components/layout/footer'
-import { EditModeOverlay } from '@/components/edit-mode-overlay'
+// EditModeOverlay moved to app/layout.tsx — covers all pages now
 import { getPublishedPage } from '@/lib/cms/queries'
 import type { Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
@@ -91,7 +91,6 @@ export default async function Home() {
       ))}
 
       <Footer />
-      <EditModeOverlay />
     </div>
   )
 }
