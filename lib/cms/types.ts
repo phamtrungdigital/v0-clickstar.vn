@@ -21,6 +21,8 @@ export type SectionType =
   | 'about_values'
   | 'about_timeline'
   | 'about_why_choose_us'
+  | 'pricing_tabs_nav'
+  | 'pricing_setup_addons'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -344,6 +346,31 @@ export type AboutWhyChooseUsContent = {
   images: AboutWhyChooseUsImage[] // 4 images
 }
 
+// ---------- Pricing Tabs Nav (sticky scroll-spy nav) ----------
+export type PricingTabItem = {
+  label: I18n
+  anchor: string // CSS selector id of target pricing_tiers section, e.g. "marketing-pricing"
+}
+export type PricingTabsNavContent = {
+  tabs: PricingTabItem[]
+  hint?: I18n // small text dưới tabs (optional)
+}
+
+// ---------- Pricing Setup Add-ons (one-time costs table) ----------
+export type PricingAddonItem = {
+  name: I18n
+  description: I18n
+  price: I18n // "Từ 20tr" hoặc "Liên hệ"
+  duration?: I18n // "2-4 tuần"
+}
+export type PricingSetupAddonsContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  items: PricingAddonItem[]
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -365,6 +392,8 @@ export type Section =
   | { id: string; type: 'about_values'; enabled: boolean; content: AboutValuesContent }
   | { id: string; type: 'about_timeline'; enabled: boolean; content: AboutTimelineContent }
   | { id: string; type: 'about_why_choose_us'; enabled: boolean; content: AboutWhyChooseUsContent }
+  | { id: string; type: 'pricing_tabs_nav'; enabled: boolean; content: PricingTabsNavContent }
+  | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
 
 export type Page = {
   id: string

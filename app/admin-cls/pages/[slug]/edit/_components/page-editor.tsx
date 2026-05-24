@@ -54,6 +54,8 @@ import { AboutStoryForm } from './about-story-form'
 import { AboutValuesForm } from './about-values-form'
 import { AboutTimelineForm } from './about-timeline-form'
 import { AboutWhyChooseUsForm } from './about-why-choose-us-form'
+import { PricingTabsNavForm } from './pricing-tabs-nav-form'
+import { PricingSetupAddonsForm } from './pricing-setup-addons-form'
 import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -118,6 +120,10 @@ function renderForm(section: Section, onChange: (c: any) => void) {
       return <AboutTimelineForm content={section.content} onChange={onChange} />
     case 'about_why_choose_us':
       return <AboutWhyChooseUsForm content={section.content} onChange={onChange} />
+    case 'pricing_tabs_nav':
+      return <PricingTabsNavForm content={section.content} onChange={onChange} />
+    case 'pricing_setup_addons':
+      return <PricingSetupAddonsForm content={section.content} onChange={onChange} />
   }
 }
 
