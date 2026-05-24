@@ -4,7 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Facebook, Twitter, Linkedin, Instagram, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { useTeamMembers } from '@/contexts/team-members-context'
 import type { TeamContent, TeamMemberItem } from '@/lib/cms/types'
+import type { TeamMember } from '@/lib/cms/team-members-types'
 
 function TeamCard({
   member,
@@ -62,8 +64,29 @@ function TeamCard({
 const socialClass =
   'w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300'
 
+/** Convert shared TeamMember (table) → TeamMemberItem (section content shape) */
+function toMemberItem(m: TeamMember, lang: 'vi' | 'en'): TeamMemberItem {
+  return {
+    name: m.name,
+    role: { vi: m.role_vi ?? '', en: m.role_en ?? m.role_vi ?? '' },
+    image: m.image ?? '',
+    facebook: m.facebook ?? undefined,
+    twitter: m.twitter ?? undefined,
+    linkedin: m.linkedin ?? undefined,
+    instagram: m.instagram ?? undefined,
+  }
+}
+
 export function TeamSection({ content }: { content: TeamContent }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const sharedMembers = useTeamMembers()
+
+  // Source of truth: shared team_members table via context.
+  // Fallback to content.members (page CMS) if context empty (backward compat).
+  const members: TeamMemberItem[] =
+    sharedMembers && sharedMembers.length > 0
+      ? sharedMembers.map((m) => toMemberItem(m, language))
+      : content.members
 
   return (
     <section data-cms-section="team" className="py-20 lg:py-28 bg-background">
@@ -94,9 +117,9 @@ export function TeamSection({ content }: { content: TeamContent }) {
           </p>
         </div>
 
-        {/* Team Grid */}
+        {/* Team Grid — members source: shared table (sync home + about) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 mb-16">
-          {content.members.map((member, index) => (
+          {members.map((member, index) => (
             <TeamCard
               key={index}
               member={member}
