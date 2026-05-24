@@ -27,6 +27,7 @@ import {
   HelpCircle,
   ExternalLink,
   Briefcase,
+  Target,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSiteBranding } from '@/contexts/site-branding-context'
@@ -52,6 +53,7 @@ const sidebarItems = [
       { label: 'Chiến dịch', href: '/admin-cls/campaigns', icon: Megaphone },
       { label: 'Email Marketing', href: '/admin-cls/email-marketing', icon: Mail },
       { label: 'Leads', href: '/admin-cls/leads', icon: Users },
+      { label: 'Cá nhân hóa', href: '/admin-cls/personalize', icon: Target },
     ],
   },
   {

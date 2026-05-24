@@ -155,6 +155,26 @@ export function reset(): void {
   localStorage.removeItem(STORAGE_KEY)
 }
 
+/** Distinct paths visited so far (for campaign matching) */
+export function getDistinctPaths(): string[] {
+  const data = loadVisits()
+  return Array.from(new Set(data.visits.map((v) => v.path)))
+}
+
+/** Device detection — basic UA sniff (good enough for desktop/mobile split) */
+export function detectDevice(): 'desktop' | 'mobile' {
+  if (typeof window === 'undefined') return 'desktop'
+  return /Mobi|Android|iPhone|iPad/i.test(window.navigator.userAgent) ? 'mobile' : 'desktop'
+}
+
+/** Returning visitor = visited site on a different calendar day before today */
+export function isReturningVisitor(): boolean {
+  const data = loadVisits()
+  if (data.visits.length === 0) return false
+  const today = new Date().toDateString()
+  return data.visits.some((v) => new Date(v.ts).toDateString() !== today)
+}
+
 if (typeof window !== 'undefined') {
   ;(window as any).__resetCSPersonalize = reset
 }

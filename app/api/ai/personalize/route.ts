@@ -7,6 +7,7 @@ export const maxDuration = 30
 const InputSchema = z.object({
   interests: z.array(z.string()).max(10),
   recent_pages: z.array(z.string()).max(15),
+  prompt_hint: z.string().max(500).optional().default(''),
 })
 
 type PersonalizeResponse = {
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
     return Response.json({ error: 'invalid_input' }, { status: 400 })
   }
 
-  const { interests, recent_pages } = parsed.data
+  const { interests, recent_pages, prompt_hint } = parsed.data
 
   // Get AI config via RPC (SECURITY DEFINER bypasses RLS for anon)
   const supabase = await createClient()
@@ -70,6 +71,7 @@ Trả về JSON CHÍNH XÁC:
   const userPrompt = `Khách vừa xem:
 - Top interest: ${interests.slice(0, 3).map((i) => SERVICE_LABELS[i] || i).join(', ')}
 - Trang gần đây: ${recent_pages.slice(-5).join(' → ')}
+${prompt_hint ? `\nGợi ý từ campaign admin: ${prompt_hint}` : ''}
 
 Viết JSON greeting hấp dẫn nhất.`
 
