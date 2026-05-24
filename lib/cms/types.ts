@@ -23,6 +23,7 @@ export type SectionType =
   | 'about_why_choose_us'
   | 'pricing_tabs_nav'
   | 'pricing_setup_addons'
+  | 'pricing_grouped_tiers'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -371,6 +372,23 @@ export type PricingSetupAddonsContent = {
   items: PricingAddonItem[]
 }
 
+// ---------- Pricing Grouped Tiers (tabs in 1 section, only 1 group visible at a time) ----------
+export type PricingTierGroup = {
+  id: string // unique within section, used as tab key
+  label: I18n // tab label
+  badge?: I18n // optional small text badge on tab (e.g. "Phổ biến")
+  tiers: PricingTierItem[]
+  disclaimer?: I18n // hint text dưới group tiers (e.g. "Phí ads tính riêng...")
+}
+
+export type PricingGroupedTiersContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  groups: PricingTierGroup[]
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -394,6 +412,7 @@ export type Section =
   | { id: string; type: 'about_why_choose_us'; enabled: boolean; content: AboutWhyChooseUsContent }
   | { id: string; type: 'pricing_tabs_nav'; enabled: boolean; content: PricingTabsNavContent }
   | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
+  | { id: string; type: 'pricing_grouped_tiers'; enabled: boolean; content: PricingGroupedTiersContent }
 
 export type Page = {
   id: string

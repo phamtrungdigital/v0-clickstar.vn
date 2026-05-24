@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/footer'
 import { PageHero } from '@/components/sections/page-hero'
 import { PricingTiers } from '@/components/sections/pricing-tiers'
 import { PricingTabsNav } from '@/components/sections/pricing-tabs-nav'
+import { PricingGroupedTiers } from '@/components/sections/pricing-grouped-tiers'
 import { PricingSetupAddons } from '@/components/sections/pricing-setup-addons'
 import { FAQSection } from '@/components/sections/faq-section'
 import { CTASectionDynamic } from '@/components/sections/cta-section-dynamic'
@@ -32,6 +33,8 @@ function renderSection(section: Section) {
       return <PricingTabsNav key={section.id} content={section.content} />
     case 'pricing_tiers':
       return <PricingTiers key={section.id} content={section.content} sectionId={section.id} />
+    case 'pricing_grouped_tiers':
+      return <PricingGroupedTiers key={section.id} content={section.content} />
     case 'pricing_setup_addons':
       return <PricingSetupAddons key={section.id} content={section.content} />
     case 'faq':
