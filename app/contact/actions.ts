@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { sendLeadNotification } from '@/lib/email/send-lead-notification'
 
 const ContactSchema = z.object({
   name: z.string().trim().min(2, 'Vui lòng nhập họ tên (tối thiểu 2 ký tự)').max(120),
@@ -93,6 +94,18 @@ export async function submitContactForm(
       message: 'Không gửi được. Vui lòng thử lại sau hoặc liên hệ qua điện thoại.',
     }
   }
+
+  // Fire-and-forget email notification — không block user response
+  // Resend API key missing → silently skip (graceful)
+  sendLeadNotification({
+    id: data.id,
+    name: parsed.data.name,
+    phone: parsed.data.phone,
+    email: parsed.data.email || null,
+    company: parsed.data.company || null,
+    message: parsed.data.message || null,
+    service: parsed.data.service || null,
+  }).catch((e) => console.error('[contact] notification failed:', e))
 
   return { status: 'success', leadId: data.id }
 }
