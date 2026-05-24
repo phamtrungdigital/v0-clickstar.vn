@@ -132,6 +132,8 @@ export function PersonalizeBanner() {
       markBannerShown()
     }
 
+    // (auto-dismiss timer setup in separate useEffect below — depends on campaign state)
+
     if (matched !== null) {
       showMatched(matched)
       return
@@ -153,6 +155,22 @@ export function PersonalizeBanner() {
       })
       .catch(() => {})
   }, [pathname])
+
+  // Auto-dismiss timer — runs when banner becomes visible
+  useEffect(() => {
+    if (!visible || !campaign) return
+    const autoDismissMs = campaign.auto_dismiss_ms ?? 0
+    if (autoDismissMs <= 0) return // 0 = no auto-close
+
+    const timer = setTimeout(() => {
+      setAnimating(false)
+      // After fade-out animation, fully hide. DO NOT call dismissBanner (that sets 7-day cookie).
+      // Auto-close should let banner reappear next page navigation if conditions still match.
+      setTimeout(() => setVisible(false), 200)
+    }, autoDismissMs)
+
+    return () => clearTimeout(timer)
+  }, [visible, campaign])
 
   if (!visible || !campaign || !aiMessage) return null
 
