@@ -65,6 +65,7 @@ export function CampaignEditor({
       size: 'default',
     },
     delay_ms: campaign?.delay_ms ?? 1200,
+    auto_dismiss_ms: campaign?.auto_dismiss_ms ?? 0,
     dismiss_days: campaign?.dismiss_days ?? 7,
   }))
 
@@ -523,29 +524,74 @@ export function CampaignEditor({
         </div>
       </Section>
 
-      {/* Section: Frequency */}
-      <Section title="⏱ Tần suất hiển thị">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {/* Section: Frequency + Display timing */}
+      <Section title="⏱ Tần suất + thời gian hiển thị">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <Label>Delay sau route change (ms)</Label>
+            <Label>Delay xuất hiện (ms)</Label>
             <input
               type="number"
+              min={0}
+              step={100}
               value={draft.delay_ms}
-              onChange={(e) => update('delay_ms', parseInt(e.target.value) || 1200)}
+              onChange={(e) => update('delay_ms', parseInt(e.target.value) || 0)}
               className={inputCls}
             />
-            <p className="text-[10px] text-slate-500 mt-0.5">Mặc định 1200ms (1.2s)</p>
+            <p className="text-[10px] text-slate-500 mt-0.5">Mặc định 1200ms (1.2s sau khi vào trang)</p>
           </div>
           <div>
-            <Label>Số ngày ẩn sau khi user dismiss</Label>
+            <Label>Tự đóng sau (ms)</Label>
             <input
               type="number"
+              min={0}
+              step={1000}
+              value={draft.auto_dismiss_ms}
+              onChange={(e) => update('auto_dismiss_ms', parseInt(e.target.value) || 0)}
+              className={inputCls}
+              placeholder="0 = không tự đóng"
+            />
+            <p className="text-[10px] text-slate-500 mt-0.5">
+              {draft.auto_dismiss_ms === 0
+                ? '0 = giữ mãi tới khi user dismiss'
+                : `Tự đóng sau ${(draft.auto_dismiss_ms / 1000).toFixed(1)}s`}
+            </p>
+          </div>
+          <div>
+            <Label>Ẩn lại sau dismiss (ngày)</Label>
+            <input
+              type="number"
+              min={1}
               value={draft.dismiss_days}
               onChange={(e) => update('dismiss_days', parseInt(e.target.value) || 7)}
               className={inputCls}
             />
             <p className="text-[10px] text-slate-500 mt-0.5">Mặc định 7 ngày</p>
           </div>
+        </div>
+
+        {/* Quick presets cho auto_dismiss */}
+        <div className="flex items-center gap-2 flex-wrap text-xs">
+          <span className="text-slate-500">Presets nhanh tự đóng:</span>
+          {[
+            { label: 'Không tự đóng', ms: 0 },
+            { label: '8s', ms: 8000 },
+            { label: '15s', ms: 15000 },
+            { label: '30s', ms: 30000 },
+            { label: '1 phút', ms: 60000 },
+          ].map((p) => (
+            <button
+              key={p.ms}
+              type="button"
+              onClick={() => update('auto_dismiss_ms', p.ms)}
+              className={`px-2 py-0.5 rounded ${
+                draft.auto_dismiss_ms === p.ms
+                  ? 'bg-primary text-white font-semibold'
+                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+              }`}
+            >
+              {p.label}
+            </button>
+          ))}
         </div>
       </Section>
     </div>

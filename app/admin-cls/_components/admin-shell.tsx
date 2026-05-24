@@ -44,6 +44,7 @@ const sidebarItems = [
       { label: 'Quản lý trang', href: '/admin-cls/pages', icon: FileText },
       { label: 'Bài viết', href: '/admin-cls/posts', icon: FileText },
       { label: 'Dự án', href: '/admin-cls/projects', icon: Briefcase },
+      { label: 'Đội ngũ', href: '/admin-cls/team', icon: Users },
       { label: 'SEO', href: '/admin-cls/seo', icon: Search },
     ],
   },

@@ -16,6 +16,7 @@ export type CampaignFormData = {
   content: CampaignContent
   styles: CampaignStyles
   delay_ms: number
+  auto_dismiss_ms: number
   dismiss_days: number
 }
 
@@ -28,6 +29,7 @@ function normalize(input: CampaignFormData) {
     content: input.content,
     styles: input.styles ?? {},
     delay_ms: Number.isFinite(input.delay_ms) ? Math.max(0, input.delay_ms) : 1200,
+    auto_dismiss_ms: Number.isFinite(input.auto_dismiss_ms) ? Math.max(0, input.auto_dismiss_ms) : 0,
     dismiss_days: Number.isFinite(input.dismiss_days) ? Math.max(1, input.dismiss_days) : 7,
   }
 }

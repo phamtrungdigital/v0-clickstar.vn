@@ -44,6 +44,7 @@ export type PersonalizeCampaign = {
   content: CampaignContent
   styles: CampaignStyles
   delay_ms: number
+  auto_dismiss_ms: number // 0 = no auto-close; otherwise self-close after N ms
   dismiss_days: number
   created_at: string
   updated_at: string

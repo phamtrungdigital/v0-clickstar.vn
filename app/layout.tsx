@@ -4,7 +4,9 @@ import { Analytics } from '@vercel/analytics/next'
 import { cookies } from 'next/headers'
 import { LanguageProvider, type Language } from '@/contexts/language-context'
 import { SiteBrandingProvider, type SiteBranding } from '@/contexts/site-branding-context'
+import { TeamMembersProvider } from '@/contexts/team-members-context'
 import { getSiteSettings } from '@/lib/cms/settings'
+import { getActiveTeamMembers } from '@/lib/cms/team-members'
 import { FloatingAiChat } from '@/components/floating-ai-chat'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
@@ -53,7 +55,7 @@ export default async function RootLayout({
   const langCookie = cookieStore.get('cs-lang')?.value
   const initialLang: Language = langCookie === 'en' ? 'en' : 'vi'
 
-  const settings = await getSiteSettings()
+  const [settings, teamMembers] = await Promise.all([getSiteSettings(), getActiveTeamMembers()])
   const branding: SiteBranding = {
     logoUrl: settings?.logo_url || '/images/logo-clickstar.png',
     faviconUrl: settings?.favicon_url || null,
@@ -67,12 +69,14 @@ export default async function RootLayout({
     <html lang={initialLang} className="bg-background">
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
         <SiteBrandingProvider branding={branding}>
-          <LanguageProvider initialLang={initialLang}>
-            {children}
-            <FloatingAiChat />
-            <EditModeOverlay />
-            <PersonalizeBanner />
-          </LanguageProvider>
+          <TeamMembersProvider members={teamMembers}>
+            <LanguageProvider initialLang={initialLang}>
+              {children}
+              <FloatingAiChat />
+              <EditModeOverlay />
+              <PersonalizeBanner />
+            </LanguageProvider>
+          </TeamMembersProvider>
         </SiteBrandingProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
