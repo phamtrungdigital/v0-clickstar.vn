@@ -4,15 +4,28 @@ import Link from 'next/link'
 import { Check, Sparkles, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'
+import type { PricingTiersContent } from '@/lib/cms/types'
 
-export function PricingTiers() {
+/**
+ * Support 2 modes:
+ *  1. Standalone (no props): pulls first `pricing_tiers` section from page data context — backward compat for service pages
+ *  2. Controlled (content + id): explicit content + section id anchor, used when page has MULTIPLE pricing_tiers sections (e.g. /pricing with tabs)
+ */
+export function PricingTiers({
+  content: contentProp,
+  sectionId,
+}: { content?: PricingTiersContent; sectionId?: string } = {}) {
   const { t } = useLanguage()
   const section = usePageSection('pricing_tiers')
-  if (!section) return null
-  const content = section.content
+  const content = contentProp ?? section?.content
+  if (!content) return null
 
   return (
-    <section data-cms-section="pricing_tiers" className="py-20 lg:py-28 bg-background">
+    <section
+      id={sectionId}
+      data-cms-section="pricing_tiers"
+      className="py-20 lg:py-28 bg-background scroll-mt-20"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
