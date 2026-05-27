@@ -57,6 +57,7 @@ import { AboutWhyChooseUsForm } from './about-why-choose-us-form'
 import { PricingTabsNavForm } from './pricing-tabs-nav-form'
 import { PricingSetupAddonsForm } from './pricing-setup-addons-form'
 import { PricingGroupedTiersForm } from './pricing-grouped-tiers-form'
+import { AdsHubScreenshotsForm } from './ads-hub-screenshots-form'
 import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -127,6 +128,8 @@ function renderForm(section: Section, onChange: (c: any) => void) {
       return <PricingSetupAddonsForm content={section.content} onChange={onChange} />
     case 'pricing_grouped_tiers':
       return <PricingGroupedTiersForm content={section.content} onChange={onChange} />
+    case 'ads_hub_screenshots':
+      return <AdsHubScreenshotsForm content={section.content} onChange={onChange} />
   }
 }
 

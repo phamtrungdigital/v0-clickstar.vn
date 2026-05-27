@@ -24,6 +24,7 @@ export type SectionType =
   | 'pricing_tabs_nav'
   | 'pricing_setup_addons'
   | 'pricing_grouped_tiers'
+  | 'ads_hub_screenshots'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -389,6 +390,20 @@ export type PricingGroupedTiersContent = {
   groups: PricingTierGroup[]
 }
 
+// ---------- ADS Hub Screenshots Gallery (grid với image + title + caption) ----------
+export type AdsHubScreenshotItem = {
+  image: string
+  title: I18n
+  caption: I18n
+}
+export type AdsHubScreenshotsContent = {
+  eyebrow: I18n
+  heading_lead: I18n
+  heading_highlight: I18n
+  description: I18n
+  items: AdsHubScreenshotItem[]
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -413,6 +428,7 @@ export type Section =
   | { id: string; type: 'pricing_tabs_nav'; enabled: boolean; content: PricingTabsNavContent }
   | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
   | { id: string; type: 'pricing_grouped_tiers'; enabled: boolean; content: PricingGroupedTiersContent }
+  | { id: string; type: 'ads_hub_screenshots'; enabled: boolean; content: AdsHubScreenshotsContent }
 
 export type Page = {
   id: string
