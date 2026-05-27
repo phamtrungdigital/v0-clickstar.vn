@@ -8,6 +8,7 @@ import { TeamMembersProvider } from '@/contexts/team-members-context'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { getActiveTeamMembers } from '@/lib/cms/team-members'
 import { FloatingAiChat } from '@/components/floating-ai-chat'
+import { FloatingAiServiceRouter } from '@/components/floating-ai-service-router'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
 import './globals.css'
@@ -73,6 +74,7 @@ export default async function RootLayout({
             <LanguageProvider initialLang={initialLang}>
               {children}
               <FloatingAiChat />
+              <FloatingAiServiceRouter />
               <EditModeOverlay />
               <PersonalizeBanner />
             </LanguageProvider>
