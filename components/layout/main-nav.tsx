@@ -26,6 +26,7 @@ const navItemsData = {
     },
     { label: 'Giới thiệu', href: '/about' },
     { label: 'Dự án', href: '/projects' },
+    { label: 'ADS hub', href: '/ads-hub', badge: 'MỚI' },
     { label: 'Bảng giá', href: '/pricing' },
     { label: 'Tin tức', href: '/blog' },
   ],
@@ -46,6 +47,7 @@ const navItemsData = {
     },
     { label: 'About', href: '/about' },
     { label: 'Projects', href: '/projects' },
+    { label: 'ADS hub', href: '/ads-hub', badge: 'NEW' },
     { label: 'Pricing', href: '/pricing' },
     { label: 'Blog', href: '/blog' },
   ]
@@ -118,9 +120,14 @@ export function MainNav() {
               >
                 <Link
                   href={item.href}
-                  className="group relative flex items-center gap-1 text-foreground/70 hover:text-primary font-medium text-[15px] transition-all duration-300 py-2 px-1"
+                  className="group relative flex items-center gap-1.5 text-foreground/70 hover:text-primary font-medium text-[15px] transition-all duration-300 py-2 px-1"
                 >
                   <span className="relative z-10">{item.label}</span>
+                  {'badge' in item && item.badge && (
+                    <span className="relative z-10 inline-flex items-center text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-sm animate-pulse">
+                      {item.badge}
+                    </span>
+                  )}
                   {item.hasDropdown && (
                     <ChevronDown className={cn(
                       "h-4 w-4 transition-transform duration-300 relative z-10",
