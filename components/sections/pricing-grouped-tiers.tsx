@@ -121,12 +121,12 @@ function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
             </p>
 
             <div className="mb-7">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl sm:text-4xl font-extrabold text-foreground">
+              <div className="flex items-baseline gap-x-2 gap-y-1 flex-wrap">
+                <span className="text-[26px] sm:text-3xl lg:text-[34px] font-extrabold text-foreground whitespace-nowrap leading-none">
                   {t(tier.price.vi, tier.price.en)}
                 </span>
                 {tier.price_period?.vi && (
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-xs sm:text-sm text-muted-foreground leading-tight">
                     {t(tier.price_period.vi, tier.price_period.en)}
                   </span>
                 )}
