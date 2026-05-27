@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Sparkles, ArrowUp, X, ChevronUp, ChevronDown, Bot, Loader2, ExternalLink, RotateCcw } from 'lucide-react'
@@ -147,11 +147,15 @@ export function FloatingAiServiceRouter() {
   }, [pathname])
 
   // Auto-scroll to bottom on new message
-  useEffect(() => {
+  const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
-  }, [messages, loading])
+  }, [])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, loading, scrollToBottom])
 
   // Start auto-close countdown when bar first appears (collapsed, no interaction)
   useEffect(() => {
@@ -408,6 +412,8 @@ export function FloatingAiServiceRouter() {
                       <ChatBubble
                         key={idx}
                         message={msg}
+                        animate={msg.role === 'ai' && idx === messages.length - 1}
+                        onTick={scrollToBottom}
                         labels={{ you: copy.you, ai: copy.ai, suggested: copy.suggested }}
                       />
                     ))}
@@ -580,12 +586,16 @@ function RouterIcon({
   )
 }
 
-/** Chat bubble — user (right, primary) vs AI (left, glass) */
+/** Chat bubble — user (right, primary) vs AI (left, glass + typewriter) */
 function ChatBubble({
   message,
+  animate,
+  onTick,
   labels,
 }: {
   message: ChatMessage
+  animate?: boolean
+  onTick?: () => void
   labels: { you: string; ai: string; suggested: string }
 }) {
   if (message.role === 'user') {
@@ -599,13 +609,84 @@ function ChatBubble({
   }
 
   return (
+    <AiBubble message={message} animate={!!animate} onTick={onTick} labels={labels} />
+  )
+}
+
+/**
+ * AI bubble với typewriter effect
+ * - animate=true: chữ chạy ra ~3 char/16ms ≈ 180 char/s (≈ 1s cho câu 180 ký tự)
+ * - Cursor ▍ nhấp nháy khi đang typing
+ * - Suggested links chỉ render sau khi typing xong (fade-in slide-up)
+ * - Ref-guard để không re-animate sau khi đã hoàn tất (rerender khi parent push msg mới)
+ */
+function AiBubble({
+  message,
+  animate,
+  onTick,
+  labels,
+}: {
+  message: Extract<ChatMessage, { role: 'ai' }>
+  animate: boolean
+  onTick?: () => void
+  labels: { you: string; ai: string; suggested: string }
+}) {
+  const fullText = message.text
+  const doneRef = useRef(!animate)
+  const [displayText, setDisplayText] = useState(animate ? '' : fullText)
+  const [done, setDone] = useState(!animate)
+
+  useEffect(() => {
+    if (!animate) {
+      setDisplayText(fullText)
+      setDone(true)
+      doneRef.current = true
+      return
+    }
+    if (doneRef.current) {
+      // Already typed in a previous mount — keep full text
+      setDisplayText(fullText)
+      setDone(true)
+      return
+    }
+
+    let i = 0
+    const CHUNK = 2 // chars per tick
+    const TICK_MS = 16 // ~60fps
+
+    const timer = setInterval(() => {
+      i += CHUNK
+      if (i >= fullText.length) {
+        setDisplayText(fullText)
+        setDone(true)
+        doneRef.current = true
+        clearInterval(timer)
+        onTick?.()
+        return
+      }
+      setDisplayText(fullText.slice(0, i))
+      onTick?.()
+    }, TICK_MS)
+
+    return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fullText, animate])
+
+  return (
     <div className="flex justify-start animate-in fade-in slide-in-from-left-2 duration-300">
       <div className="max-w-[88%] flex flex-col gap-2">
         <div className="bg-white/10 border border-white/10 text-white/95 text-sm px-3.5 py-2 rounded-2xl rounded-bl-sm whitespace-pre-wrap leading-relaxed">
-          {message.text}
+          {displayText}
+          {!done && (
+            <span
+              className="inline-block w-[2px] h-[1em] bg-primary ml-0.5 align-text-bottom animate-pulse"
+              style={{ verticalAlign: '-0.15em' }}
+              aria-hidden="true"
+            />
+          )}
         </div>
-        {message.links.length > 0 && (
-          <div className="flex flex-col gap-1.5">
+        {done && message.links.length > 0 && (
+          <div className="flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-1 duration-300">
             <div className="text-[10px] uppercase tracking-widest text-white/40 font-semibold">
               {labels.suggested}
             </div>
