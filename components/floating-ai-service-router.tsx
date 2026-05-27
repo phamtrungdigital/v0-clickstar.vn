@@ -1,15 +1,17 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Sparkles, ArrowUp, X, ChevronUp, ChevronDown, Bot, Loader2, ExternalLink, RotateCcw } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 
 const STORAGE_KEY = 'cs_floating_router_dismissed_v1'
+const SESSION_AUTOCLOSE_KEY = 'cs_floating_router_session_autoclose'
 const SHOW_DELAY_MS = 10_000 // 10s after page load
 const DISMISS_HOURS = 24 // hide 24h after user dismiss
 const MAX_TURNS = 3 // max user turns before forcing CTA
+const AUTO_DISMISS_MS = 15_000 // 15s no-interaction → auto close (session-only)
 
 type LinkItem = { title: string; href: string; type: string }
 
@@ -96,10 +98,21 @@ function shouldShow(currentPath: string): boolean {
   if (currentPath === '/contact') return false
   if (currentPath === '/ads-hub') return false
 
+  // Auto-closed this session → don't show again until next tab/session
+  try {
+    if (sessionStorage.getItem(SESSION_AUTOCLOSE_KEY) === '1') return false
+  } catch {}
+
   const dismissed = loadDismissed()
   if (!dismissed) return true
   const hoursSince = (Date.now() - dismissed) / 3_600_000
   return hoursSince >= DISMISS_HOURS
+}
+
+function markSessionAutoclosed(): void {
+  try {
+    sessionStorage.setItem(SESSION_AUTOCLOSE_KEY, '1')
+  } catch {}
 }
 
 export function FloatingAiServiceRouter() {
@@ -107,10 +120,14 @@ export function FloatingAiServiceRouter() {
   const { language } = useLanguage()
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const interactedRef = useRef(false)
   const [phase, setPhase] = useState<'hidden' | 'collapsed' | 'expanded'>('hidden')
   const [value, setValue] = useState('')
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState(false)
+  const [autoCloseAt, setAutoCloseAt] = useState<number | null>(null)
+  const [remainingMs, setRemainingMs] = useState<number>(AUTO_DISMISS_MS)
+  const [closing, setClosing] = useState(false)
 
   const copy = COPY[language]
   const prompts = QUICK_PROMPTS[language]
@@ -130,15 +147,70 @@ export function FloatingAiServiceRouter() {
   }, [pathname])
 
   // Auto-scroll to bottom on new message
-  useEffect(() => {
+  const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
-  }, [messages, loading])
+  }, [])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, loading, scrollToBottom])
+
+  // Start auto-close countdown when bar first appears (collapsed, no interaction)
+  useEffect(() => {
+    if (phase !== 'collapsed') return
+    if (interactedRef.current) return
+    if (messages.length > 0) return
+
+    const target = Date.now() + AUTO_DISMISS_MS
+    setAutoCloseAt(target)
+    setRemainingMs(AUTO_DISMISS_MS)
+  }, [phase, messages.length])
+
+  // Tick countdown with requestAnimationFrame (smooth ring animation)
+  useEffect(() => {
+    if (!autoCloseAt) return
+
+    let rafId: number
+    const tick = () => {
+      const remaining = autoCloseAt - Date.now()
+      if (remaining <= 0) {
+        setRemainingMs(0)
+        setAutoCloseAt(null)
+        handleAutoClose()
+        return
+      }
+      setRemainingMs(remaining)
+      rafId = requestAnimationFrame(tick)
+    }
+    rafId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(rafId)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoCloseAt])
+
+  const cancelAutoClose = () => {
+    if (interactedRef.current && !autoCloseAt) return
+    interactedRef.current = true
+    setAutoCloseAt(null)
+  }
 
   const handleClose = () => {
-    setPhase('hidden')
-    setDismissed()
+    setClosing(true)
+    setTimeout(() => {
+      setPhase('hidden')
+      setDismissed()
+      setClosing(false)
+    }, 350)
+  }
+
+  const handleAutoClose = () => {
+    setClosing(true)
+    setTimeout(() => {
+      setPhase('hidden')
+      markSessionAutoclosed() // session-only — không block 24h như dismiss
+      setClosing(false)
+    }, 350)
   }
 
   const handleReset = () => {
@@ -150,6 +222,8 @@ export function FloatingAiServiceRouter() {
   const submitQuery = async (q: string) => {
     const trimmed = q.trim()
     if (!trimmed || loading) return
+
+    cancelAutoClose()
 
     // Expand if collapsed
     if (phase === 'collapsed') {
@@ -226,9 +300,21 @@ export function FloatingAiServiceRouter() {
   if (phase === 'hidden') return null
 
   const hasMessages = messages.length > 0
+  const showCountdown = autoCloseAt !== null && !hasMessages && phase === 'collapsed'
+  const remainingSec = Math.ceil(remainingMs / 1000)
+  // Progress 0 → 1 (filled)
+  const progress = autoCloseAt ? 1 - remainingMs / AUTO_DISMISS_MS : 0
+  const urgent = remainingMs < 3000
+  const warning = remainingMs < 5000 && !urgent
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[55] transition-transform duration-500 ease-out translate-y-0 animate-in slide-in-from-bottom-4 fade-in">
+    <div
+      onMouseEnter={cancelAutoClose}
+      onTouchStart={cancelAutoClose}
+      className={`fixed inset-x-0 bottom-0 z-[55] transition-all duration-300 ease-out ${
+        closing ? 'translate-y-full opacity-0' : 'translate-y-0 opacity-100 animate-in slide-in-from-bottom-4 fade-in'
+      }`}
+    >
       <div className="mx-auto max-w-5xl px-3 pb-3 lg:pb-4">
         <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl shadow-primary/30 border border-white/10 backdrop-blur-xl overflow-hidden">
           {/* Decorative glow */}
@@ -239,9 +325,7 @@ export function FloatingAiServiceRouter() {
           {/* Top bar */}
           <div className="relative flex items-center justify-between px-4 lg:px-5 pt-3 pb-2">
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-primary via-purple-500 to-orange-500 flex items-center justify-center shrink-0 shadow-lg shadow-primary/40">
-                <Sparkles className="w-4 h-4 text-white" />
-              </div>
+              <RouterIcon showRing={showCountdown} progress={progress} urgent={urgent} warning={warning} />
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-primary/90">
@@ -251,6 +335,20 @@ export function FloatingAiServiceRouter() {
                     <span className="w-1 h-1 bg-emerald-400 rounded-full mr-1 animate-pulse" />
                     LIVE
                   </span>
+                  {showCountdown && (
+                    <span
+                      className={`flex items-center gap-1 text-[9px] font-mono font-bold tabular-nums transition-colors duration-300 ${
+                        urgent
+                          ? 'text-red-400 animate-pulse'
+                          : warning
+                            ? 'text-amber-400'
+                            : 'text-white/50'
+                      }`}
+                    >
+                      <span className="hidden sm:inline opacity-70">·</span>
+                      AUTO-CLOSE {remainingSec}s
+                    </span>
+                  )}
                 </div>
                 <div className="text-sm font-semibold text-white truncate">{copy.title}</div>
               </div>
@@ -268,7 +366,10 @@ export function FloatingAiServiceRouter() {
                 </button>
               )}
               <button
-                onClick={() => setPhase(phase === 'collapsed' ? 'expanded' : 'collapsed')}
+                onClick={() => {
+                  cancelAutoClose()
+                  setPhase(phase === 'collapsed' ? 'expanded' : 'collapsed')
+                }}
                 className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"
                 aria-label={phase === 'collapsed' ? 'Mở rộng' : 'Thu gọn'}
                 title={phase === 'collapsed' ? 'Mở rộng' : 'Thu gọn'}
@@ -311,6 +412,8 @@ export function FloatingAiServiceRouter() {
                       <ChatBubble
                         key={idx}
                         message={msg}
+                        animate={msg.role === 'ai' && idx === messages.length - 1}
+                        onTick={scrollToBottom}
                         labels={{ you: copy.you, ai: copy.ai, suggested: copy.suggested }}
                       />
                     ))}
@@ -354,11 +457,17 @@ export function FloatingAiServiceRouter() {
                 ref={inputRef}
                 type="text"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                  cancelAutoClose()
+                  setValue(e.target.value)
+                }}
                 placeholder={hasMessages ? copy.placeholderReply : copy.placeholder}
                 disabled={loading || hasReachedMax}
                 className="w-full pl-9 pr-3 py-2.5 lg:py-3 bg-white/10 hover:bg-white/15 focus:bg-white/15 border border-white/10 focus:border-primary/60 rounded-full text-sm text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                onFocus={() => phase === 'collapsed' && setPhase('expanded')}
+                onFocus={() => {
+                  cancelAutoClose()
+                  if (phase === 'collapsed') setPhase('expanded')
+                }}
               />
             </div>
             <button
@@ -387,7 +496,10 @@ export function FloatingAiServiceRouter() {
                 {prompts.map((p, idx) => (
                   <button
                     key={idx}
-                    onClick={() => handleChip(p.value)}
+                    onClick={() => {
+                      cancelAutoClose()
+                      handleChip(p.value)
+                    }}
                     disabled={loading}
                     className="text-xs px-3 py-1.5 bg-white/8 hover:bg-white/15 border border-white/10 hover:border-primary/40 text-white/85 hover:text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -403,12 +515,87 @@ export function FloatingAiServiceRouter() {
   )
 }
 
-/** Chat bubble — user (right, primary) vs AI (left, glass) */
+/**
+ * Avatar icon + circular progress ring countdown
+ * Ring fills 0 → 1 as time runs out, color shifts blue → amber → red
+ */
+function RouterIcon({
+  showRing,
+  progress,
+  urgent,
+  warning,
+}: {
+  showRing: boolean
+  progress: number // 0 (full time left) → 1 (zero)
+  urgent: boolean
+  warning: boolean
+}) {
+  const ringColor = urgent ? '#ef4444' : warning ? '#f59e0b' : '#1B7BFF'
+  const glowColor = urgent ? 'shadow-red-500/60' : warning ? 'shadow-amber-500/50' : 'shadow-primary/40'
+  // r=17, circumference ≈ 106.81
+  const R = 17
+  const C = 2 * Math.PI * R
+  const offset = C * (1 - progress)
+
+  return (
+    <div className="relative w-9 h-9 shrink-0">
+      {/* Avatar */}
+      <div
+        className={`absolute inset-0.5 rounded-full bg-gradient-to-br from-primary via-purple-500 to-orange-500 flex items-center justify-center shadow-lg transition-shadow duration-300 ${glowColor} ${
+          urgent ? 'animate-pulse' : ''
+        }`}
+      >
+        <Sparkles className="w-4 h-4 text-white" />
+      </div>
+
+      {/* Countdown progress ring */}
+      {showRing && (
+        <svg
+          className="absolute inset-0 w-9 h-9 -rotate-90 pointer-events-none"
+          viewBox="0 0 36 36"
+          aria-hidden="true"
+        >
+          {/* Track */}
+          <circle
+            cx="18"
+            cy="18"
+            r={R}
+            fill="none"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="2"
+          />
+          {/* Progress */}
+          <circle
+            cx="18"
+            cy="18"
+            r={R}
+            fill="none"
+            stroke={ringColor}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeDasharray={C}
+            strokeDashoffset={offset}
+            style={{
+              transition: 'stroke 300ms ease',
+              filter: `drop-shadow(0 0 4px ${ringColor})`,
+            }}
+          />
+        </svg>
+      )}
+    </div>
+  )
+}
+
+/** Chat bubble — user (right, primary) vs AI (left, glass + typewriter) */
 function ChatBubble({
   message,
+  animate,
+  onTick,
   labels,
 }: {
   message: ChatMessage
+  animate?: boolean
+  onTick?: () => void
   labels: { you: string; ai: string; suggested: string }
 }) {
   if (message.role === 'user') {
@@ -422,13 +609,84 @@ function ChatBubble({
   }
 
   return (
+    <AiBubble message={message} animate={!!animate} onTick={onTick} labels={labels} />
+  )
+}
+
+/**
+ * AI bubble với typewriter effect
+ * - animate=true: chữ chạy ra ~3 char/16ms ≈ 180 char/s (≈ 1s cho câu 180 ký tự)
+ * - Cursor ▍ nhấp nháy khi đang typing
+ * - Suggested links chỉ render sau khi typing xong (fade-in slide-up)
+ * - Ref-guard để không re-animate sau khi đã hoàn tất (rerender khi parent push msg mới)
+ */
+function AiBubble({
+  message,
+  animate,
+  onTick,
+  labels,
+}: {
+  message: Extract<ChatMessage, { role: 'ai' }>
+  animate: boolean
+  onTick?: () => void
+  labels: { you: string; ai: string; suggested: string }
+}) {
+  const fullText = message.text
+  const doneRef = useRef(!animate)
+  const [displayText, setDisplayText] = useState(animate ? '' : fullText)
+  const [done, setDone] = useState(!animate)
+
+  useEffect(() => {
+    if (!animate) {
+      setDisplayText(fullText)
+      setDone(true)
+      doneRef.current = true
+      return
+    }
+    if (doneRef.current) {
+      // Already typed in a previous mount — keep full text
+      setDisplayText(fullText)
+      setDone(true)
+      return
+    }
+
+    let i = 0
+    const CHUNK = 2 // chars per tick
+    const TICK_MS = 16 // ~60fps
+
+    const timer = setInterval(() => {
+      i += CHUNK
+      if (i >= fullText.length) {
+        setDisplayText(fullText)
+        setDone(true)
+        doneRef.current = true
+        clearInterval(timer)
+        onTick?.()
+        return
+      }
+      setDisplayText(fullText.slice(0, i))
+      onTick?.()
+    }, TICK_MS)
+
+    return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fullText, animate])
+
+  return (
     <div className="flex justify-start animate-in fade-in slide-in-from-left-2 duration-300">
       <div className="max-w-[88%] flex flex-col gap-2">
         <div className="bg-white/10 border border-white/10 text-white/95 text-sm px-3.5 py-2 rounded-2xl rounded-bl-sm whitespace-pre-wrap leading-relaxed">
-          {message.text}
+          {displayText}
+          {!done && (
+            <span
+              className="inline-block w-[2px] h-[1em] bg-primary ml-0.5 align-text-bottom animate-pulse"
+              style={{ verticalAlign: '-0.15em' }}
+              aria-hidden="true"
+            />
+          )}
         </div>
-        {message.links.length > 0 && (
-          <div className="flex flex-col gap-1.5">
+        {done && message.links.length > 0 && (
+          <div className="flex flex-col gap-1.5 animate-in fade-in slide-in-from-bottom-1 duration-300">
             <div className="text-[10px] uppercase tracking-widest text-white/40 font-semibold">
               {labels.suggested}
             </div>
