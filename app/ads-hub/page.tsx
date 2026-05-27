@@ -2,7 +2,7 @@
 
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
-import { PageHero } from '@/components/sections/page-hero'
+import { AdsHubHero } from '@/components/sections/ads-hub-hero'
 import { FeatureGrid } from '@/components/sections/feature-grid'
 import { AdsHubScreenshots } from '@/components/sections/ads-hub-screenshots'
 import { PricingGroupedTiers } from '@/components/sections/pricing-grouped-tiers'
@@ -20,8 +20,10 @@ export default function AdsHubPage() {
     <div className="min-h-screen bg-background">
       <MainNav />
 
-      <PageHero />
-      <FeatureGrid />
+      <AdsHubHero />
+      <div id="features">
+        <FeatureGrid />
+      </div>
       {screenshots && <AdsHubScreenshots content={screenshots.content} />}
       {pricing && <PricingGroupedTiers content={pricing.content} />}
       {faq && <FAQSection content={faq.content} />}
