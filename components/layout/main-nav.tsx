@@ -8,11 +8,12 @@ import { cn } from '@/lib/utils'
 import { useLanguage } from '@/contexts/language-context'
 import { useSiteBranding } from '@/contexts/site-branding-context'
 
+// Navbar tối ưu: 4 items chính + lang + CTA. Loại 'Trang chủ' (logo đã trỏ /).
+// 'Tài nguyên' gom Giới thiệu + Dự án + Tin tức.
 const navItemsData = {
   vi: [
-    { label: 'Trang chủ', href: '/' },
-    { 
-      label: 'Dịch vụ', 
+    {
+      label: 'Dịch vụ',
       href: '#services',
       hasDropdown: true,
       dropdownItems: [
@@ -22,18 +23,25 @@ const navItemsData = {
         { label: 'Tích hợp AI', href: '/services/ai-integration' },
         { label: 'AI Automation', href: '/services/automation' },
         { label: 'CRM & CDP', href: '/services/crm-cdp' },
-      ]
+      ],
     },
-    { label: 'Giới thiệu', href: '/about' },
-    { label: 'Dự án', href: '/projects' },
     { label: 'ADS hub', href: '/ads-hub', badge: 'MỚI' },
     { label: 'Bảng giá', href: '/pricing' },
-    { label: 'Tin tức', href: '/blog' },
+    {
+      label: 'Tài nguyên',
+      href: '#resources',
+      hasDropdown: true,
+      dropdownItems: [
+        { label: 'Giới thiệu', href: '/about' },
+        { label: 'Dự án đã làm', href: '/projects' },
+        { label: 'Tin tức', href: '/blog' },
+        { label: 'Liên hệ tư vấn', href: '/contact' },
+      ],
+    },
   ],
   en: [
-    { label: 'Home', href: '/' },
-    { 
-      label: 'Services', 
+    {
+      label: 'Services',
       href: '#services',
       hasDropdown: true,
       dropdownItems: [
@@ -43,14 +51,22 @@ const navItemsData = {
         { label: 'AI Integration', href: '/services/ai-integration' },
         { label: 'AI Automation', href: '/services/automation' },
         { label: 'CRM & CDP', href: '/services/crm-cdp' },
-      ]
+      ],
     },
-    { label: 'About', href: '/about' },
-    { label: 'Projects', href: '/projects' },
     { label: 'ADS hub', href: '/ads-hub', badge: 'NEW' },
     { label: 'Pricing', href: '/pricing' },
-    { label: 'Blog', href: '/blog' },
-  ]
+    {
+      label: 'Resources',
+      href: '#resources',
+      hasDropdown: true,
+      dropdownItems: [
+        { label: 'About Us', href: '/about' },
+        { label: 'Our Projects', href: '/projects' },
+        { label: 'Blog', href: '/blog' },
+        { label: 'Contact', href: '/contact' },
+      ],
+    },
+  ],
 }
 
 const ctaText = {
