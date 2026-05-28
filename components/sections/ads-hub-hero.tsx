@@ -83,9 +83,9 @@ export function AdsHubHero() {
 
             {/* Trust bar */}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-              <Trust label="14 ngày dùng thử" />
-              <Trust label="Không cần thẻ" />
-              <Trust label="Setup 5 phút" />
+              <Trust label="Setup chuyên gia 1-1" />
+              <Trust label="Tích hợp Meta + CRM riêng" />
+              <Trust label="Triển khai 3-7 ngày" />
               <Trust label="Hỗ trợ Claude + GPT" />
             </div>
           </div>
