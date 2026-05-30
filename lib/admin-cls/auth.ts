@@ -9,6 +9,15 @@ export type AdminProfile = {
   role: string
 }
 
+/** Headers are URI-encoded in middleware; decode defensively (old cookies may be raw). */
+function safeDecode(v: string): string {
+  try {
+    return decodeURIComponent(v)
+  } catch {
+    return v
+  }
+}
+
 /**
  * Get current admin profile — memoized PER REQUEST via React.cache().
  *
@@ -22,10 +31,14 @@ export const getAdminProfile = cache(async (): Promise<AdminProfile | null> => {
   const headerUserId = h.get('x-admin-user-id')
 
   if (headerUserId) {
+    // x-admin-email / x-admin-name are URI-encoded in middleware (full_name can
+    // contain Vietnamese diacritics which are invalid in raw HTTP headers).
+    const rawEmail = h.get('x-admin-email')
+    const rawName = h.get('x-admin-name')
     return {
       user_id: headerUserId,
-      email: h.get('x-admin-email') || '',
-      full_name: h.get('x-admin-name') || null,
+      email: rawEmail ? safeDecode(rawEmail) : '',
+      full_name: rawName ? safeDecode(rawName) : null,
       role: h.get('x-admin-role') || 'viewer',
     }
   }

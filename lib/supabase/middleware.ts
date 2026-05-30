@@ -128,10 +128,13 @@ export async function updateSession(request: NextRequest) {
       })
     }
 
-    // Pass admin profile to RSC via request headers — layout reads from these
+    // Pass admin profile to RSC via request headers — layout reads from these.
+    // HTTP headers only allow latin1 (ISO-8859-1). full_name can contain
+    // Vietnamese diacritics (non-latin1) which throws on Headers.set → 500.
+    // Encode to ASCII here, decode in getAdminProfile().
     requestHeaders.set('x-admin-user-id', cache.uid)
-    requestHeaders.set('x-admin-email', cache.email)
-    if (cache.name) requestHeaders.set('x-admin-name', cache.name)
+    requestHeaders.set('x-admin-email', encodeURIComponent(cache.email))
+    if (cache.name) requestHeaders.set('x-admin-name', encodeURIComponent(cache.name))
     requestHeaders.set('x-admin-role', cache.role)
 
     const finalResponse = NextResponse.next({
