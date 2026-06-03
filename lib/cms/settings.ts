@@ -22,6 +22,10 @@ export type SiteSettings = {
   default_og_image: string | null
   logo_url: string | null
   favicon_url: string | null
+  // Tracking / custom code — anh tự paste GTM, GA4, FB Pixel, verification meta...
+  head_code: string | null
+  body_start_code: string | null
+  body_end_code: string | null
   updated_at: string
 }
 

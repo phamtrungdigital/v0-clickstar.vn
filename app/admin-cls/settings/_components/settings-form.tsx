@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2, Image as ImageIcon } from 'lucide-react'
+import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2, Image as ImageIcon, Code2 } from 'lucide-react'
 import type { SiteSettings } from '@/lib/cms/settings'
 import { saveSettings, type SettingsUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
@@ -164,6 +164,80 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
           OG image mặc định: cấu hình ở section "Branding" phía trên.
         </p>
       </Section>
+
+      {/* Tracking / custom code */}
+      <Section icon={<Code2 className="w-4 h-4 text-slate-400" />} title="Mã tracking / Code tuỳ chỉnh">
+        <div className="bg-blue-50 border border-blue-200 rounded-md px-3 py-2 text-[11px] text-blue-800 leading-relaxed">
+          <strong>Dán mã của bên thứ 3 vào đây</strong> (Google Tag Manager, GA4, Facebook
+          Pixel, TikTok Pixel, thẻ xác minh website…). Mã chạy trên <strong>toàn bộ website</strong>{' '}
+          ngay sau khi Lưu. Paste nguyên đoạn <code className="bg-blue-100 px-1 rounded">&lt;script&gt;…&lt;/script&gt;</code> hoặc <code className="bg-blue-100 px-1 rounded">&lt;meta&gt;</code> mà nhà cung cấp đưa.
+          <br />
+          <span className="text-amber-700">⚠ Lưu ý: chỉ dán mã từ nguồn anh tin tưởng — code chạy trực tiếp trên trình duyệt khách.</span>
+        </div>
+
+        <CodeArea
+          label="① Mã Header"
+          badge="GTM · GA4 · FB Pixel · Verification"
+          hint="Đặt đầu trang (sát thẻ <head>). Dùng cho Google Tag Manager (đoạn head), GA4 gtag, Facebook Pixel, thẻ xác minh Google/Facebook."
+          value={draft.head_code ?? ''}
+          onChange={(v) => update('head_code', v.trim() === '' ? null : v)}
+          placeholder={'<!-- Google Tag Manager -->\n<script>(function(w,d,s,l,i){...})(window,document,...);</script>\n<!-- End Google Tag Manager -->'}
+        />
+
+        <CodeArea
+          label="② Mã Body"
+          badge="GTM noscript · Chat widget"
+          hint="Đặt ngay đầu <body>, sau header. Dùng cho đoạn <noscript> của GTM, widget chat (Messenger, Zalo, Tawk…)."
+          value={draft.body_start_code ?? ''}
+          onChange={(v) => update('body_start_code', v.trim() === '' ? null : v)}
+          placeholder={'<!-- Google Tag Manager (noscript) -->\n<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXX"...></iframe></noscript>'}
+        />
+
+        <CodeArea
+          label="③ Mã Footer"
+          badge="Script defer · Remarketing"
+          hint="Đặt cuối <body>. Dùng cho script chạy sau cùng, mã remarketing, analytics phụ không cần load sớm."
+          value={draft.body_end_code ?? ''}
+          onChange={(v) => update('body_end_code', v.trim() === '' ? null : v)}
+          placeholder={'<!-- Script chạy cuối trang -->\n<script defer src="..."></script>'}
+        />
+      </Section>
+    </div>
+  )
+}
+
+function CodeArea({
+  label,
+  badge,
+  hint,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string
+  badge: string
+  hint: string
+  value: string
+  onChange: (v: string) => void
+  placeholder?: string
+}) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-1">
+        <label className="text-xs font-medium text-slate-700">{label}</label>
+        <span className="text-[9px] uppercase tracking-wide font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
+          {badge}
+        </span>
+      </div>
+      <textarea
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        spellCheck={false}
+        rows={5}
+        className="w-full px-3 py-2 text-[12px] font-mono leading-relaxed border border-slate-300 rounded bg-slate-50 text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary resize-y"
+      />
+      <p className="text-[10px] text-slate-500 mt-1">{hint}</p>
     </div>
   )
 }
