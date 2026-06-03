@@ -11,6 +11,7 @@ import { FloatingAiChat } from '@/components/floating-ai-chat'
 import { FloatingAiServiceRouter } from '@/components/floating-ai-service-router'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
+import { TrackingCode } from '@/components/tracking-scripts'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -69,6 +70,11 @@ export default async function RootLayout({
   return (
     <html lang={initialLang} className="bg-background">
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
+        {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
+        <TrackingCode code={settings?.head_code} />
+        {/* Tracking code — vị trí "Body" (đầu trang): GTM noscript, chat widget */}
+        <TrackingCode code={settings?.body_start_code} />
+
         <SiteBrandingProvider branding={branding}>
           <TeamMembersProvider members={teamMembers}>
             <LanguageProvider initialLang={initialLang}>
@@ -81,6 +87,9 @@ export default async function RootLayout({
           </TeamMembersProvider>
         </SiteBrandingProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
+
+        {/* Tracking code — vị trí "Footer" (cuối body): script defer, remarketing */}
+        <TrackingCode code={settings?.body_end_code} />
       </body>
     </html>
   )
