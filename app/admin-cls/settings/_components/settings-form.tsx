@@ -35,7 +35,13 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
         setErrorMsg(result.error)
       } else {
         setStatus('saved')
-        setTimeout(() => setStatus('idle'), 2500)
+        if (result?.warning === 'tracking_columns_missing') {
+          setErrorMsg('Đã lưu các mục khác. Riêng Mã tracking chưa lưu được vì DB thiếu cột — cần chạy migration trước.')
+        }
+        setTimeout(() => {
+          setStatus('idle')
+          setErrorMsg('')
+        }, 4000)
       }
     })
   }
