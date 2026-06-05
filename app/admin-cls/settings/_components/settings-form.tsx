@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2, Image as ImageIcon, Code2 } from 'lucide-react'
+import { useState, useEffect, useTransition } from 'react'
+import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2, Image as ImageIcon, Code2, Database, Loader2, RefreshCw, XCircle } from 'lucide-react'
 import type { SiteSettings } from '@/lib/cms/settings'
 import { saveSettings, type SettingsUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
@@ -208,6 +208,159 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
           placeholder={'<!-- Script chạy cuối trang -->\n<script defer src="..."></script>'}
         />
       </Section>
+
+      {/* Kết nối CRM */}
+      <Section icon={<Database className="w-4 h-4 text-slate-400" />} title="Kết nối CRM (crm.clickstar.vn)">
+        <CrmConnectionSection
+          enabled={draft.crm_sync_enabled}
+          onToggle={(v) => update('crm_sync_enabled', v)}
+        />
+      </Section>
+    </div>
+  )
+}
+
+type CrmStatus = {
+  configured: boolean
+  env: { url: boolean; anonKey: boolean; secret: boolean }
+  crmHost: string | null
+  reachable: boolean
+  message: string
+}
+
+function CrmConnectionSection({
+  enabled,
+  onToggle,
+}: {
+  enabled: boolean
+  onToggle: (v: boolean) => void
+}) {
+  const [status, setStatus] = useState<CrmStatus | null>(null)
+  const [testing, setTesting] = useState(false)
+
+  const runTest = async () => {
+    setTesting(true)
+    try {
+      const res = await fetch('/api/admin/crm-status', { cache: 'no-store' })
+      const data = (await res.json()) as CrmStatus
+      setStatus(data)
+    } catch {
+      setStatus({
+        configured: false,
+        env: { url: false, anonKey: false, secret: false },
+        crmHost: null,
+        reachable: false,
+        message: 'Không gọi được API kiểm tra.',
+      })
+    } finally {
+      setTesting(false)
+    }
+  }
+
+  useEffect(() => {
+    runTest()
+  }, [])
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-slate-500 leading-relaxed">
+        Khi khách đăng ký ở form <code className="bg-slate-100 px-1 rounded">/contact</code>, hệ thống
+        tự tạo hồ sơ khách hàng bên CRM (nguồn <strong>"Website"</strong>, trạng thái{' '}
+        <strong>"Mới"</strong>). Tự động chống trùng theo số điện thoại.
+      </p>
+
+      <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
+        <div>
+          <div className="text-sm font-medium text-slate-900">Tự động đẩy lead sang CRM</div>
+          <div className="text-[11px] text-slate-500">
+            Tắt = chỉ lưu lead nội bộ, không tạo hồ sơ CRM
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => onToggle(!enabled)}
+          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+            enabled ? 'bg-emerald-500' : 'bg-slate-300'
+          }`}
+          aria-pressed={enabled}
+        >
+          <span
+            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+              enabled ? 'translate-x-6' : 'translate-x-1'
+            }`}
+          />
+        </button>
+      </div>
+
+      <div className="p-3 rounded-lg border border-slate-200">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-slate-600">
+            Trạng thái kết nối
+          </span>
+          <button
+            type="button"
+            onClick={runTest}
+            disabled={testing}
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-primary border border-primary/30 rounded hover:bg-primary/5 disabled:opacity-50"
+          >
+            {testing ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <RefreshCw className="w-3.5 h-3.5" />
+            )}
+            {testing ? 'Đang test…' : 'Test kết nối'}
+          </button>
+        </div>
+
+        {status === null ? (
+          <p className="text-xs text-slate-400">Đang kiểm tra…</p>
+        ) : (
+          <div className="space-y-2">
+            <div
+              className={`flex items-start gap-2 px-3 py-2 rounded-md text-xs ${
+                status.reachable
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}
+            >
+              {status.reachable ? (
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-px" />
+              ) : (
+                <XCircle className="w-4 h-4 shrink-0 mt-px" />
+              )}
+              <span>{status.message}</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-600">
+              <EnvRow label="CRM URL" ok={status.env.url} extra={status.crmHost} />
+              <EnvRow label="Anon key" ok={status.env.anonKey} />
+              <EnvRow label="Secret" ok={status.env.secret} />
+            </div>
+
+            {!status.configured && (
+              <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1.5">
+                ⚠ Một số cấu hình CRM còn thiếu. Báo kỹ thuật bổ sung biến môi trường để kích hoạt.
+              </p>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function EnvRow({ label, ok, extra }: { label: string; ok: boolean; extra?: string | null }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      {ok ? (
+        <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
+      ) : (
+        <XCircle className="w-3 h-3 text-red-400 shrink-0" />
+      )}
+      <span className="font-medium">{label}:</span>
+      <span className={ok ? 'text-emerald-600' : 'text-red-500'}>
+        {ok ? extra || 'OK' : 'thiếu'}
+      </span>
     </div>
   )
 }

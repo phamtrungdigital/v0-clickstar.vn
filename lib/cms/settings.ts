@@ -26,6 +26,8 @@ export type SiteSettings = {
   head_code: string | null
   body_start_code: string | null
   body_end_code: string | null
+  // Kết nối CRM — bật/tắt tự động đẩy lead website sang crm.clickstar.vn
+  crm_sync_enabled: boolean
   updated_at: string
 }
 

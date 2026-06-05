@@ -112,8 +112,19 @@ export async function submitContactForm(
   // Đẩy lead sang CRM (crm.clickstar.vn) tạo hồ sơ khách hàng — chạy SAU khi
   // response gửi cho user (after() đảm bảo execute trên Vercel serverless, không
   // bị kill giữa chừng như fire-and-forget thường). Dedup theo SĐT bên CRM.
+  // Tôn trọng cờ crm_sync_enabled (admin tắt ở Settings → skip).
   // Thiếu env CRM → skip graceful. Ghi crm_customer_id ngược lại bảng leads.
   after(async () => {
+    // Đọc cờ bật/tắt từ site_settings — admin có thể tắt đồng bộ ở Settings
+    const { data: cfg } = await supabase
+      .from('site_settings')
+      .select('crm_sync_enabled')
+      .eq('id', 1)
+      .maybeSingle()
+    if (cfg && cfg.crm_sync_enabled === false) {
+      return // admin đã tắt đồng bộ CRM
+    }
+
     const res = await pushLeadToCrm({
       name: parsed.data.name,
       phone: parsed.data.phone,
