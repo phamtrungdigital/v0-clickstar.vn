@@ -1,8 +1,10 @@
 'use server'
 
+import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
 import { sendLeadNotification } from '@/lib/email/send-lead-notification'
+import { pushLeadToCrm } from '@/lib/crm/push-lead'
 
 const ContactSchema = z.object({
   name: z.string().trim().min(2, 'Vui lòng nhập họ tên (tối thiểu 2 ký tự)').max(120),
@@ -106,6 +108,40 @@ export async function submitContactForm(
     message: parsed.data.message || null,
     service: parsed.data.service || null,
   }).catch((e) => console.error('[contact] notification failed:', e))
+
+  // Đẩy lead sang CRM (crm.clickstar.vn) tạo hồ sơ khách hàng — chạy SAU khi
+  // response gửi cho user (after() đảm bảo execute trên Vercel serverless, không
+  // bị kill giữa chừng như fire-and-forget thường). Dedup theo SĐT bên CRM.
+  // Tôn trọng cờ crm_sync_enabled (admin tắt ở Settings → skip).
+  // Thiếu env CRM → skip graceful. Ghi crm_customer_id ngược lại bảng leads.
+  after(async () => {
+    // Đọc cờ bật/tắt từ site_settings — admin có thể tắt đồng bộ ở Settings
+    const { data: cfg } = await supabase
+      .from('site_settings')
+      .select('crm_sync_enabled')
+      .eq('id', 1)
+      .maybeSingle()
+    if (cfg && cfg.crm_sync_enabled === false) {
+      return // admin đã tắt đồng bộ CRM
+    }
+
+    const res = await pushLeadToCrm({
+      name: parsed.data.name,
+      phone: parsed.data.phone,
+      email: parsed.data.email || null,
+      company: parsed.data.company || null,
+      message: parsed.data.message || null,
+      service: parsed.data.service || null,
+    })
+    if (res.ok) {
+      await supabase
+        .from('leads')
+        .update({ crm_customer_id: res.customerId, crm_synced_at: new Date().toISOString() })
+        .eq('id', data.id)
+    } else {
+      console.error('[contact] CRM push skipped/failed:', res.reason)
+    }
+  })
 
   return { status: 'success', leadId: data.id }
 }

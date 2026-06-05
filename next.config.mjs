@@ -15,6 +15,13 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.supabase.co' },
     ],
   },
+  async redirects() {
+    return [
+      // URL đăng nhập gọn: clickstar.vn/login → trang login admin (/admin-cls/login vẫn chạy như cũ)
+      { source: '/login', destination: '/admin-cls/login', permanent: false },
+      { source: '/dang-nhap', destination: '/admin-cls/login', permanent: false },
+    ]
+  },
 }
 
 export default nextConfig
