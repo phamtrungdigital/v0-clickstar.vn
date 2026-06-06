@@ -14,9 +14,9 @@
   --popover: #ffffff;
   --popover-foreground: #1a1a2e;
   
-  /* Primary Blue */
-  --primary: #1B7BFF;
-  --primary-dark: #3B5FFF;
+  /* Primary Blue — Clickstar Growth OS brand */
+  --primary: #3687FC;
+  --primary-dark: #1E6DDB;
   --primary-foreground: #ffffff;
   
   /* Secondary */
@@ -35,10 +35,10 @@
   
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #1B7BFF;
-  
-  --chart-1: #1B7BFF;
-  --chart-2: #3B5FFF;
+  --ring: #3687FC;
+
+  --chart-1: #3687FC;
+  --chart-2: #1E6DDB;
   --chart-3: #FF5A7A;
   --chart-4: #10b981;
   --chart-5: #f59e0b;
@@ -49,12 +49,27 @@
   
   --sidebar: #ffffff;
   --sidebar-foreground: #1a1a2e;
-  --sidebar-primary: #1B7BFF;
+  --sidebar-primary: #3687FC;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #EEF3FF;
   --sidebar-accent-foreground: #1a1a2e;
   --sidebar-border: #e2e8f0;
-  --sidebar-ring: #1B7BFF;
+  --sidebar-ring: #3687FC;
+
+  /* ── Clickstar Growth OS design tokens ─────────────────────────────
+     Shared scale used app-wide; the .admin-scope block below wires the
+     theme variables to these for the dashboard-grade look. */
+  --cs-primary-50:#E8F1FF; --cs-primary-100:#CFE1FF; --cs-primary-500:#3687FC; --cs-primary-600:#1E6DDB; --cs-primary-700:#155CBD;
+  --cs-neutral-50:#FAFAFA; --cs-neutral-100:#F5F7FA; --cs-neutral-200:#EEF1F4; --cs-neutral-300:#E2E6EB; --cs-neutral-400:#CBD1D8;
+  --cs-neutral-500:#9AA1AC; --cs-neutral-600:#6B7280; --cs-neutral-700:#4B5563; --cs-neutral-900:#0F172A;
+  --cs-success:#22C55E; --cs-warning:#F59E0B; --cs-error:#EF4444; --cs-info:#3687FC; --cs-accent:#8B5CF6;
+  --cs-bg:#F5F7FA; --cs-surface:#FFFFFF; --cs-border:#E5EAF2; --cs-text:#0F172A; --cs-text-sub:#6B7280;
+  --cs-table-head:#F8FAFC; --cs-row-hover:#F5F9FF;
+  --r-sm:8px; --r-md:12px; --r-lg:16px; --r-xl:20px; --r-full:999px;
+  --sh-1:0 1px 2px rgba(15,23,42,.05); --sh-2:0 4px 12px rgba(15,23,42,.08);
+  --sh-3:0 8px 24px rgba(15,23,42,.06); --sh-4:0 16px 40px rgba(15,23,42,.12);
+  --ease:cubic-bezier(.4,0,.2,1); --dur-fast:150ms; --dur-normal:250ms; --dur-slow:350ms;
+  --sidebar-w:248px; --header-h:60px;
 }
 
 .dark {
@@ -147,10 +162,66 @@
   }
 }
 
-/* Admin scope: dùng Inter thay Plus Jakarta cho toàn bộ /admin */
+/* Admin scope: dùng Inter thay Plus Jakarta cho toàn bộ /admin
+   + áp đầy đủ Clickstar Growth OS design system (đây là "dashboard" của web).
+   Override các biến theme THẬT để giao diện đổi nhận diện, không chỉ token chết. */
 .admin-scope {
   --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-family: var(--font-sans);
+
+  /* Surfaces & text */
+  --background: var(--cs-bg);            /* nền #F5F7FA */
+  --foreground: var(--cs-text);
+  --card: var(--cs-surface);
+  --card-foreground: var(--cs-text);
+  --popover: var(--cs-surface);
+  --popover-foreground: var(--cs-text);
+  --muted: var(--cs-neutral-100);
+  --muted-foreground: var(--cs-text-sub);
+
+  /* Brand primary #3687FC */
+  --primary: var(--cs-primary-500);
+  --primary-dark: var(--cs-primary-600);
+  --primary-foreground: #ffffff;
+  --secondary: var(--cs-primary-50);
+  --secondary-foreground: var(--cs-text);
+
+  /* AI accent tím #8B5CF6 (phần AI của dashboard) */
+  --accent: var(--cs-accent);
+  --accent-foreground: #ffffff;
+
+  /* Borders / inputs / focus ring theo brand */
+  --border: var(--cs-border);            /* #E5EAF2 */
+  --input: var(--cs-border);
+  --ring: var(--cs-primary-500);
+
+  /* Card bo 16px + shadow mềm (sh-3) cho mọi card trong dashboard */
+  --radius: var(--r-lg);                 /* 16px */
+
+  --destructive: var(--cs-error);
+  --destructive-foreground: #ffffff;
+
+  --chart-1: var(--cs-primary-500);
+  --chart-2: var(--cs-primary-600);
+  --chart-3: var(--cs-accent);
+  --chart-4: var(--cs-success);
+  --chart-5: var(--cs-warning);
+
+  /* Sidebar dùng surface trắng trên nền xám, primary brand */
+  --sidebar: var(--cs-surface);
+  --sidebar-foreground: var(--cs-text);
+  --sidebar-primary: var(--cs-primary-500);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: var(--cs-primary-50);
+  --sidebar-accent-foreground: var(--cs-text);
+  --sidebar-border: var(--cs-border);
+  --sidebar-ring: var(--cs-primary-500);
+}
+
+/* Card lõi trong dashboard: viền brand + shadow mềm sh-3 (đồng bộ design system).
+   Chỉ áp trong .admin-scope để KHÔNG đụng landing v0. */
+.admin-scope [data-slot='card'] {
+  box-shadow: var(--sh-3);
 }
 
 /* Smooth scrolling globally (anchor links, programmatic scroll) */
