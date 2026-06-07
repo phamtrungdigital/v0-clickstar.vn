@@ -3,6 +3,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    // Tree-shake import từ barrel (icon/date) → giảm JS client (landing + admin).
+    optimizePackageImports: ['lucide-react', 'date-fns'],
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [360, 640, 750, 828, 1080, 1200, 1920],

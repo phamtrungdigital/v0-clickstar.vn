@@ -6,8 +6,10 @@ import { NextResponse, type NextRequest } from 'next/server'
  *
  * Optimization: caches the admin_users check result via signed cookie
  * (cs-admin-cache) valid for 5 minutes, so we skip the second DB query
- * on every navigation. We still always call auth.getUser() to verify the
- * Supabase session is fresh.
+ * on every navigation. Session freshness is verified LOCALLY via
+ * auth.getClaims() (asymmetric ES256 JWT, WebCrypto) — no Auth-server
+ * round-trip per request; getClaims still refreshes/rotates the cookie
+ * when the token has expired.
  *
  * Also passes admin profile to RSC via request headers (x-admin-*) so
  * layout/pages can read it without re-querying.
@@ -68,9 +70,11 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  // getClaims() thay getUser(): JWT bất đối xứng (ES256) verify CỤC BỘ qua WebCrypto +
+  // JWKS cache → KHÔNG round-trip Auth server mỗi request /admin-cls/*. Vẫn refresh &
+  // rotate cookie khi token hết hạn (getClaims -> getSession). Admin check + RLS giữ nguyên.
+  const { data: claimsData } = await supabase.auth.getClaims()
+  const user = claimsData?.claims ? { id: claimsData.claims.sub } : null
 
   const { pathname } = request.nextUrl
   const isAdminRoute = pathname.startsWith('/admin-cls')
