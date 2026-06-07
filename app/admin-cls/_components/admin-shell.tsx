@@ -287,7 +287,7 @@ export default function AdminShell({
                     aria-expanded={openSections.has(idx)}
                     className="w-full flex items-center justify-between gap-2 pl-[22px] pr-3 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
                   >
-                    <span className="text-[10px] font-semibold text-[#6B7280] uppercase tracking-[0.06em]">
+                    <span className="text-xs font-semibold text-[#0F172A]">
                       {section.title}
                     </span>
                     <ChevronDown
