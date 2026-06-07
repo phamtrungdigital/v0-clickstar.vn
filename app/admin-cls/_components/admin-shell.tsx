@@ -75,6 +75,15 @@ const sidebarItems = [
   },
 ]
 
+/** Chỉ số nhóm chứa route đang xem (để accordion mở đúng nhóm). -1 nếu không khớp. */
+function sectionIndexOfPath(pathname: string): number {
+  return sidebarItems.findIndex((s) =>
+    s.items.some(
+      (it) => pathname === it.href || (it.href !== '/admin-cls' && pathname.startsWith(it.href)),
+    ),
+  )
+}
+
 export type AdminUser = {
   email: string
   full_name: string | null
@@ -95,10 +104,29 @@ export default function AdminShell({
   const pathname = usePathname()
   const branding = useSiteBranding()
 
+  // Accordion nhóm menu — mặc định mở nhóm chứa trang đang xem.
+  const [openSections, setOpenSections] = useState<Set<number>>(() => {
+    const i = sectionIndexOfPath(pathname)
+    return new Set(i >= 0 ? [i] : [0])
+  })
+  const toggleSection = (idx: number) =>
+    setOpenSections((prev) => {
+      const next = new Set(prev)
+      if (next.has(idx)) next.delete(idx)
+      else next.add(idx)
+      return next
+    })
+
   useEffect(() => {
     const saved = localStorage.getItem('admin-sidebar-collapsed')
     if (saved === '1') setSidebarCollapsed(true)
   }, [])
+
+  // Điều hướng sang trang khác → đảm bảo nhóm chứa nó được mở (không đóng nhóm khác).
+  useEffect(() => {
+    const i = sectionIndexOfPath(pathname)
+    if (i >= 0) setOpenSections((prev) => (prev.has(i) ? prev : new Set(prev).add(i)))
+  }, [pathname])
 
   const toggleSidebar = () => {
     setSidebarCollapsed((c) => {
@@ -247,49 +275,73 @@ export default function AdminShell({
           <X className="w-4 h-4 text-slate-600" />
         </button>
 
-        <nav className="py-3 px-2 space-y-4 overflow-y-auto h-[calc(100%-3rem)]">
-          {sidebarItems.map((section, idx) => (
-            <div key={idx}>
-              {!sidebarCollapsed && (
-                <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 px-2">
-                  {section.title}
-                </h3>
-              )}
-              <ul className="space-y-0.5">
-                {section.items.map((item) => {
-                  const isActive =
-                    pathname === item.href ||
-                    (item.href !== '/admin-cls' && pathname.startsWith(item.href))
-                  return (
-                    <li key={item.href} className="relative">
-                      <Link
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        title={sidebarCollapsed ? item.label : undefined}
-                        className={cn(
-                          'flex items-center gap-2.5 px-2.5 py-2 rounded-md transition-colors text-[13px] font-medium relative',
-                          isActive
-                            ? 'bg-orange-50 text-orange-700'
-                            : 'text-slate-700 hover:bg-slate-100'
-                        )}
-                      >
-                        {isActive && (
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 bg-orange-500 rounded-r" />
-                        )}
-                        <item.icon
-                          className={cn(
-                            'w-4 h-4 flex-shrink-0',
-                            isActive ? 'text-orange-600' : 'text-slate-500'
-                          )}
-                        />
-                        {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
-                      </Link>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
-          ))}
+        <nav className="py-3 space-y-2.5 overflow-y-auto h-[calc(100%-3rem)]">
+          {sidebarItems.map((section, idx) => {
+            const open = sidebarCollapsed || openSections.has(idx)
+            return (
+              <div key={idx}>
+                {!sidebarCollapsed && (
+                  <button
+                    type="button"
+                    onClick={() => toggleSection(idx)}
+                    aria-expanded={openSections.has(idx)}
+                    className="w-full flex items-center justify-between gap-2 pl-[22px] pr-3 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
+                  >
+                    <span className="text-sm font-semibold text-[#0F172A]">
+                      {section.title}
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        'w-3.5 h-3.5 text-slate-400 transition-transform duration-200',
+                        openSections.has(idx) ? '' : '-rotate-90'
+                      )}
+                    />
+                  </button>
+                )}
+                <div
+                  className={cn(
+                    'grid transition-all duration-200 ease-out',
+                    open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+                  )}
+                >
+                  <ul className="space-y-0.5 overflow-hidden min-h-0">
+                    {section.items.map((item) => {
+                      const isActive =
+                        pathname === item.href ||
+                        (item.href !== '/admin-cls' && pathname.startsWith(item.href))
+                      return (
+                        <li key={item.href} className="relative mx-3">
+                          <Link
+                            href={item.href}
+                            onClick={() => setMobileMenuOpen(false)}
+                            title={sidebarCollapsed ? item.label : undefined}
+                            className={cn(
+                              'group relative flex items-center gap-[11px] px-2.5 py-[9px] rounded-xl transition-colors text-sm',
+                              isActive
+                                ? 'bg-[#E8F1FF] text-[#3687FC] font-semibold'
+                                : 'font-normal text-[#0F172A] hover:bg-[#F5F7FA]'
+                            )}
+                          >
+                            {isActive && (
+                              <span className="absolute left-[-12px] top-[6px] bottom-[6px] w-[3px] rounded-r-[3px] bg-[#3687FC]" />
+                            )}
+                            <item.icon
+                              className={cn(
+                                'h-5 w-5 flex-shrink-0 transition-colors',
+                                isActive ? 'text-[#3687FC]' : 'text-[#6B7280] group-hover:text-[#0F172A]'
+                              )}
+                              strokeWidth={1.9}
+                            />
+                            {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
+                          </Link>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              </div>
+            )
+          })}
         </nav>
 
         {/* Collapse toggle — bottom of sidebar */}
