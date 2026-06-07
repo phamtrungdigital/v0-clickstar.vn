@@ -275,7 +275,7 @@ export default function AdminShell({
           <X className="w-4 h-4 text-slate-600" />
         </button>
 
-        <nav className="py-3 px-3 space-y-2.5 overflow-y-auto h-[calc(100%-3rem)]">
+        <nav className="py-3 space-y-2.5 overflow-y-auto h-[calc(100%-3rem)]">
           {sidebarItems.map((section, idx) => {
             const open = sidebarCollapsed || openSections.has(idx)
             return (
@@ -285,7 +285,7 @@ export default function AdminShell({
                     type="button"
                     onClick={() => toggleSection(idx)}
                     aria-expanded={openSections.has(idx)}
-                    className="w-full flex items-center justify-between gap-2 px-3 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
+                    className="w-full flex items-center justify-between gap-2 pl-[22px] pr-3 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
                   >
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       {section.title}
@@ -310,27 +310,27 @@ export default function AdminShell({
                         pathname === item.href ||
                         (item.href !== '/admin-cls' && pathname.startsWith(item.href))
                       return (
-                        <li key={item.href} className="relative">
+                        <li key={item.href} className="relative mx-3">
                           <Link
                             href={item.href}
                             onClick={() => setMobileMenuOpen(false)}
                             title={sidebarCollapsed ? item.label : undefined}
                             className={cn(
-                              'group flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all text-[15px] font-semibold relative',
+                              'group relative flex items-center gap-[11px] px-2.5 py-[9px] rounded-xl transition-colors text-sm',
                               isActive
-                                ? 'bg-[#E8F1FF] text-[#3687FC]'
-                                : 'text-slate-700 hover:bg-gray-50'
+                                ? 'bg-[#E8F1FF] text-[#3687FC] font-semibold'
+                                : 'font-normal text-[#0F172A] hover:bg-[#F5F7FA]'
                             )}
                           >
                             {isActive && (
-                              <span className="absolute left-0 top-1/2 -translate-y-1/2 h-7 w-[3px] rounded-r-full bg-[#3687FC]" />
+                              <span className="absolute left-[-12px] top-[6px] bottom-[6px] w-[3px] rounded-r-[3px] bg-[#3687FC]" />
                             )}
                             <item.icon
                               className={cn(
-                                'h-[22px] w-[22px] flex-shrink-0 transition-colors',
-                                isActive ? 'text-[#3687FC]' : 'text-slate-500 group-hover:text-slate-700'
+                                'h-5 w-5 flex-shrink-0 transition-colors',
+                                isActive ? 'text-[#3687FC]' : 'text-[#6B7280] group-hover:text-[#0F172A]'
                               )}
-                              strokeWidth={isActive ? 2.4 : 2}
+                              strokeWidth={1.9}
                             />
                             {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
                           </Link>
