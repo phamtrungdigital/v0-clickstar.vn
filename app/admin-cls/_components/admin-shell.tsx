@@ -275,7 +275,7 @@ export default function AdminShell({
           <X className="w-4 h-4 text-slate-600" />
         </button>
 
-        <nav className="py-3 px-2 space-y-2.5 overflow-y-auto h-[calc(100%-3rem)]">
+        <nav className="py-3 px-3 space-y-2.5 overflow-y-auto h-[calc(100%-3rem)]">
           {sidebarItems.map((section, idx) => {
             const open = sidebarCollapsed || openSections.has(idx)
             return (
@@ -285,7 +285,7 @@ export default function AdminShell({
                     type="button"
                     onClick={() => toggleSection(idx)}
                     aria-expanded={openSections.has(idx)}
-                    className="w-full flex items-center justify-between gap-2 px-2 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
+                    className="w-full flex items-center justify-between gap-2 px-3 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
                   >
                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                       {section.title}
@@ -316,19 +316,19 @@ export default function AdminShell({
                             onClick={() => setMobileMenuOpen(false)}
                             title={sidebarCollapsed ? item.label : undefined}
                             className={cn(
-                              'flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all text-[13px] font-semibold relative',
+                              'group flex items-center gap-3.5 px-3.5 py-3 rounded-xl transition-all text-[15px] font-semibold relative',
                               isActive
                                 ? 'bg-[#E8F1FF] text-[#3687FC]'
-                                : 'text-slate-700 hover:bg-slate-100'
+                                : 'text-slate-700 hover:bg-gray-50'
                             )}
                           >
                             {isActive && (
-                              <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[#3687FC]" />
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 h-7 w-[3px] rounded-r-full bg-[#3687FC]" />
                             )}
                             <item.icon
                               className={cn(
-                                'w-[18px] h-[18px] flex-shrink-0 transition-colors',
-                                isActive ? 'text-[#3687FC]' : 'text-slate-500'
+                                'h-[22px] w-[22px] flex-shrink-0 transition-colors',
+                                isActive ? 'text-[#3687FC]' : 'text-slate-500 group-hover:text-slate-700'
                               )}
                               strokeWidth={isActive ? 2.4 : 2}
                             />
