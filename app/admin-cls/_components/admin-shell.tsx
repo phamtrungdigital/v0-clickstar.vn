@@ -316,20 +316,21 @@ export default function AdminShell({
                             onClick={() => setMobileMenuOpen(false)}
                             title={sidebarCollapsed ? item.label : undefined}
                             className={cn(
-                              'flex items-center gap-2.5 px-2.5 py-2 rounded-md transition-colors text-[13px] font-medium relative',
+                              'flex items-center gap-2.5 px-2.5 py-2.5 rounded-xl transition-all text-[13px] font-semibold relative',
                               isActive
-                                ? 'bg-orange-50 text-orange-700'
+                                ? 'bg-[#E8F1FF] text-[#3687FC]'
                                 : 'text-slate-700 hover:bg-slate-100'
                             )}
                           >
                             {isActive && (
-                              <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-0.5 bg-orange-500 rounded-r" />
+                              <span className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[3px] rounded-r-full bg-[#3687FC]" />
                             )}
                             <item.icon
                               className={cn(
-                                'w-4 h-4 flex-shrink-0',
-                                isActive ? 'text-orange-600' : 'text-slate-500'
+                                'w-[18px] h-[18px] flex-shrink-0 transition-colors',
+                                isActive ? 'text-[#3687FC]' : 'text-slate-500'
                               )}
+                              strokeWidth={isActive ? 2.4 : 2}
                             />
                             {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
                           </Link>
