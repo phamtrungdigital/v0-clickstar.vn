@@ -75,22 +75,21 @@ export async function submitContactForm(
     .filter(Boolean)
     .join('\n\n')
 
-  const { data, error } = await supabase
-    .from('leads')
-    .insert({
-      name: parsed.data.name,
-      phone: parsed.data.phone,
-      email: parsed.data.email || null,
-      company: parsed.data.company || null,
-      message: messageWithMeta || null,
-      source: 'contact_form',
-      status: 'new',
-    })
-    .select('id')
-    .single()
+  // Insert qua RPC SECURITY DEFINER: anon submit được + trả id mà KHÔNG cần quyền
+  // SELECT trên bảng leads (policy đọc chỉ cho admin). Tránh lỗi 42501
+  // "new row violates row-level security policy" khi .insert().select() vì phần
+  // RETURNING bị áp policy SELECT.
+  const { data: leadId, error } = await supabase.rpc('submit_lead', {
+    p_name: parsed.data.name,
+    p_phone: parsed.data.phone,
+    p_email: parsed.data.email || null,
+    p_company: parsed.data.company || null,
+    p_message: messageWithMeta || null,
+    p_source: 'contact_form',
+  })
 
-  if (error) {
-    console.error('[contact] insert failed:', error.message)
+  if (error || !leadId) {
+    console.error('[contact] insert failed:', error?.message)
     return {
       status: 'error',
       message: 'Không gửi được. Vui lòng thử lại sau hoặc liên hệ qua điện thoại.',
@@ -100,7 +99,7 @@ export async function submitContactForm(
   // Fire-and-forget email notification — không block user response
   // Resend API key missing → silently skip (graceful)
   sendLeadNotification({
-    id: data.id,
+    id: leadId,
     name: parsed.data.name,
     phone: parsed.data.phone,
     email: parsed.data.email || null,
@@ -134,14 +133,15 @@ export async function submitContactForm(
       service: parsed.data.service || null,
     })
     if (res.ok) {
-      await supabase
-        .from('leads')
-        .update({ crm_customer_id: res.customerId, crm_synced_at: new Date().toISOString() })
-        .eq('id', data.id)
+      // Ghi ngược qua RPC SECURITY DEFINER (anon không có quyền UPDATE bảng leads)
+      await supabase.rpc('mark_lead_crm_synced', {
+        p_lead_id: leadId,
+        p_crm_customer_id: res.customerId,
+      })
     } else {
       console.error('[contact] CRM push skipped/failed:', res.reason)
     }
   })
 
-  return { status: 'success', leadId: data.id }
+  return { status: 'success', leadId }
 }
