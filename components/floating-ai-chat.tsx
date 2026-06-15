@@ -2,7 +2,6 @@
 
 import { useState, useTransition, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import {
   Sparkles,
   X,
@@ -15,6 +14,8 @@ import {
   AlertCircle,
 } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { useChatbotGate } from '@/components/chatbot-gate'
+import type { ChatbotPublicConfig } from '@/lib/cms/chatbot-shared'
 
 type ResultLink = {
   title: string
@@ -28,44 +29,23 @@ type Message = {
   links?: ResultLink[]
 }
 
-const QUICK_PROMPTS_VI = [
-  'Bảng giá thế nào?',
-  'Click Star có dịch vụ gì?',
-  'Tôi muốn liên hệ tư vấn',
-]
-
-const QUICK_PROMPTS_EN = [
-  'What is the pricing?',
-  'What services do you offer?',
-  'I want to contact for consultation',
-]
-
-const COPY = {
+// Nhãn UI tĩnh (không phải nội dung do admin chỉnh — nội dung lấy từ config).
+const UI = {
   vi: {
-    buttonLabel: 'Hỏi AI Click Star',
-    title: 'Click Star AI',
     subtitle: 'Trợ lý ảo · trả lời mọi câu hỏi',
     online: 'Đang hoạt động',
-    welcome:
-      'Chào anh/chị! Em là trợ lý AI của Click Star. Anh/chị có thắc mắc gì về dịch vụ, bảng giá hay dự án? Em sẵn sàng giải đáp.',
     quickLabel: 'Câu hỏi gợi ý:',
     placeholder: 'Nhập câu hỏi…',
-    thinking: 'Đang suy nghĩ…',
-    poweredBy: 'AI có thể nhầm. Hotline: 0977 713 428',
     closeLabel: 'Đóng',
+    ask: 'Hỏi',
   },
   en: {
-    buttonLabel: 'Ask Click Star AI',
-    title: 'Click Star AI',
     subtitle: 'Virtual assistant · answers anything',
     online: 'Online',
-    welcome:
-      'Hello! I am Click Star AI assistant. Any questions about services, pricing or projects? I am ready to help.',
     quickLabel: 'Quick questions:',
     placeholder: 'Type your question…',
-    thinking: 'Thinking…',
-    poweredBy: 'AI may be wrong. Hotline: 0977 713 428',
     closeLabel: 'Close',
+    ask: 'Ask',
   },
 }
 
@@ -76,16 +56,11 @@ function formatAnswer(text: string): string {
     .replace(/\n/g, '<br/>')
 }
 
-export function FloatingAiChat() {
-  const pathname = usePathname()
+export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
+  // ── Tất cả hook gọi UNCONDITIONALLY ở đầu (tránh lỗi Rules of Hooks) ──
+  const visible = useChatbotGate(config)
   const { language } = useLanguage()
-  const t = COPY[language as 'vi' | 'en'] || COPY.vi
-  const quickPrompts = language === 'en' ? QUICK_PROMPTS_EN : QUICK_PROMPTS_VI
-
   const [open, setOpen] = useState(false)
-
-  // Hide chat widget on admin routes
-  if (pathname?.startsWith('/admin-cls')) return null
   const [input, setInput] = useState('')
   const [isPending, startTransition] = useTransition()
   const [messages, setMessages] = useState<Message[]>([])
@@ -108,6 +83,16 @@ export function FloatingAiChat() {
       }
     }
   }, [open])
+
+  const lang: 'vi' | 'en' = language === 'en' ? 'en' : 'vi'
+  const t = UI[lang]
+  const botName = config.bot_name?.[lang] || 'Click Star AI'
+  const welcome = config.welcome_message?.[lang] || ''
+  const quickPrompts = config.quick_prompts?.[lang] || []
+  const buttonLabel = `${t.ask} ${botName}`
+  const hotline = config.hotline || '0977 713 428'
+  const poweredBy =
+    lang === 'vi' ? `AI có thể nhầm. Hotline: ${hotline}` : `AI may be wrong. Hotline: ${hotline}`
 
   const submit = (q: string) => {
     if (!q || q.trim().length < 2 || isPending) return
@@ -133,10 +118,13 @@ export function FloatingAiChat() {
           { role: 'ai', content: data.answer, links: data.links },
         ])
       } catch (e: any) {
-        setError('Không kết nối được. Vui lòng gọi 0977 713 428.')
+        setError(`Không kết nối được. Vui lòng gọi ${hotline}.`)
       }
     })
   }
+
+  // Ẩn theo rule trang/thiết bị — return SAU khi mọi hook đã chạy.
+  if (!visible) return null
 
   return (
     <>
@@ -144,7 +132,7 @@ export function FloatingAiChat() {
       {!open && (
         <button
           onClick={() => setOpen(true)}
-          aria-label={t.buttonLabel}
+          aria-label={buttonLabel}
           className="fixed bottom-5 right-5 z-50 group"
         >
           {/* Outer glow rings */}
@@ -163,7 +151,7 @@ export function FloatingAiChat() {
 
           {/* Tooltip */}
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-900 text-white text-xs font-medium rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity shadow-xl border border-white/10">
-            {t.buttonLabel}
+            {buttonLabel}
             <span className="absolute left-full top-1/2 -translate-y-1/2 border-4 border-transparent border-l-slate-900" />
           </span>
         </button>
@@ -198,7 +186,7 @@ export function FloatingAiChat() {
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-pulse" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-bold text-sm leading-tight">{t.title}</h3>
+                  <h3 className="text-white font-bold text-sm leading-tight">{botName}</h3>
                   <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
                     <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
                     {t.online}
@@ -219,21 +207,21 @@ export function FloatingAiChat() {
                 className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
               >
                 {/* Welcome message */}
-                <MessageBubble role="ai" content={t.welcome} />
+                <MessageBubble role="ai" content={welcome} />
 
                 {/* Quick prompts (shown only at start) */}
-                {messages.length === 0 && !isPending && (
+                {messages.length === 0 && !isPending && quickPrompts.length > 0 && (
                   <div className="space-y-1.5 pt-1">
                     <p className="text-[11px] text-slate-500 px-1 uppercase tracking-wider font-medium">
                       {t.quickLabel}
                     </p>
                     {quickPrompts.map((p) => (
                       <button
-                        key={p}
-                        onClick={() => submit(p)}
+                        key={p.value}
+                        onClick={() => submit(p.value)}
                         className="block w-full text-left px-3 py-2 text-sm text-slate-200 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-sky-300/60 rounded-lg transition-all"
                       >
-                        {p}
+                        {p.label}
                       </button>
                     ))}
                   </div>
@@ -312,7 +300,7 @@ export function FloatingAiChat() {
                     )}
                   </button>
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1.5 text-center">{t.poweredBy}</p>
+                <p className="text-[10px] text-slate-500 mt-1.5 text-center">{poweredBy}</p>
               </form>
             </div>
           </div>

@@ -2,39 +2,20 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { Sparkles, ArrowUp, X, ChevronUp, ChevronDown, Bot, Loader2, ExternalLink, RotateCcw } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { useChatbotGate } from '@/components/chatbot-gate'
+import type { ChatbotPublicConfig } from '@/lib/cms/chatbot-shared'
 
 const STORAGE_KEY = 'cs_floating_router_dismissed_v1'
 const SESSION_AUTOCLOSE_KEY = 'cs_floating_router_session_autoclose'
-const SHOW_DELAY_MS = 10_000 // 10s after page load
-const DISMISS_HOURS = 24 // hide 24h after user dismiss
 const MAX_TURNS = 3 // max user turns before forcing CTA
-const AUTO_DISMISS_MS = 15_000 // 15s no-interaction → auto close (session-only)
 
 type LinkItem = { title: string; href: string; type: string }
 
 type ChatMessage =
   | { role: 'user'; text: string }
   | { role: 'ai'; text: string; links: LinkItem[] }
-
-const QUICK_PROMPTS = {
-  vi: [
-    { label: 'Chạy quảng cáo FB & Google', value: 'Tôi muốn chạy quảng cáo Facebook & Google' },
-    { label: 'Làm website chuẩn SEO', value: 'Cần làm website mới chuẩn SEO' },
-    { label: 'Dashboard quản lý', value: 'Thiết kế dashboard để theo dõi tình hình doanh nghiệp' },
-    { label: 'Tích hợp AI Chatbot', value: 'Tích hợp chatbot AI cho website' },
-    { label: 'Bảng giá dịch vụ', value: 'Bảng giá dịch vụ thế nào?' },
-  ],
-  en: [
-    { label: 'Facebook & Google Ads', value: 'I want to run Facebook & Google ads' },
-    { label: 'SEO Website', value: 'Build a new SEO-optimized website' },
-    { label: 'Dashboard', value: 'Design a dashboard to monitor business performance' },
-    { label: 'AI Chatbot', value: 'Integrate AI chatbot for website' },
-    { label: 'Pricing', value: 'What is the pricing?' },
-  ],
-}
 
 const COPY = {
   vi: {
@@ -90,23 +71,16 @@ function setDismissed(): void {
   } catch {}
 }
 
-function shouldShow(currentPath: string): boolean {
+/** Session/dismiss check (rule trang + thiết bị do useChatbotGate lo riêng). */
+function passesDismissRules(dismissHours: number): boolean {
   if (typeof window === 'undefined') return false
-  // Skip admin + contact + ads-hub (already has CTAs)
-  if (currentPath.startsWith('/admin-cls')) return false
-  if (currentPath.startsWith('/api')) return false
-  if (currentPath === '/contact') return false
-  if (currentPath === '/ads-hub') return false
-
-  // Auto-closed this session → don't show again until next tab/session
   try {
     if (sessionStorage.getItem(SESSION_AUTOCLOSE_KEY) === '1') return false
   } catch {}
-
   const dismissed = loadDismissed()
   if (!dismissed) return true
   const hoursSince = (Date.now() - dismissed) / 3_600_000
-  return hoursSince >= DISMISS_HOURS
+  return hoursSince >= dismissHours
 }
 
 function markSessionAutoclosed(): void {
@@ -115,9 +89,16 @@ function markSessionAutoclosed(): void {
   } catch {}
 }
 
-export function FloatingAiServiceRouter() {
-  const pathname = usePathname()
+export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfig }) {
+  const gateVisible = useChatbotGate(config)
   const { language } = useLanguage()
+  const lang: 'vi' | 'en' = language === 'en' ? 'en' : 'vi'
+
+  const showDelayMs = config.show_delay_ms
+  const autoCloseMs = config.auto_close_ms
+  const dismissHours = config.dismiss_hours
+  const hotline = config.hotline || '0977 713 428'
+
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const interactedRef = useRef(false)
@@ -126,25 +107,23 @@ export function FloatingAiServiceRouter() {
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState(false)
   const [autoCloseAt, setAutoCloseAt] = useState<number | null>(null)
-  const [remainingMs, setRemainingMs] = useState<number>(AUTO_DISMISS_MS)
+  const [remainingMs, setRemainingMs] = useState<number>(autoCloseMs)
   const [closing, setClosing] = useState(false)
 
-  const copy = COPY[language]
-  const prompts = QUICK_PROMPTS[language]
+  const copy = COPY[lang]
+  const prompts = config.quick_prompts?.[lang] || []
   const userTurns = messages.filter((m) => m.role === 'user').length
   const hasReachedMax = userTurns >= MAX_TURNS
 
-  // Show after delay
+  // Show after delay (rule trang/thiết bị qua gate + rule session/dismiss)
   useEffect(() => {
-    if (!pathname) return
-    if (!shouldShow(pathname)) {
+    if (!gateVisible || !passesDismissRules(dismissHours)) {
       setPhase('hidden')
       return
     }
-
-    const timer = setTimeout(() => setPhase('collapsed'), SHOW_DELAY_MS)
+    const timer = setTimeout(() => setPhase('collapsed'), showDelayMs)
     return () => clearTimeout(timer)
-  }, [pathname])
+  }, [gateVisible, showDelayMs, dismissHours])
 
   // Auto-scroll to bottom on new message
   const scrollToBottom = useCallback(() => {
@@ -162,11 +141,12 @@ export function FloatingAiServiceRouter() {
     if (phase !== 'collapsed') return
     if (interactedRef.current) return
     if (messages.length > 0) return
+    if (autoCloseMs <= 0) return // 0 = tắt auto-close
 
-    const target = Date.now() + AUTO_DISMISS_MS
+    const target = Date.now() + autoCloseMs
     setAutoCloseAt(target)
-    setRemainingMs(AUTO_DISMISS_MS)
-  }, [phase, messages.length])
+    setRemainingMs(autoCloseMs)
+  }, [phase, messages.length, autoCloseMs])
 
   // Tick countdown with requestAnimationFrame (smooth ring animation)
   useEffect(() => {
@@ -208,7 +188,7 @@ export function FloatingAiServiceRouter() {
     setClosing(true)
     setTimeout(() => {
       setPhase('hidden')
-      markSessionAutoclosed() // session-only — không block 24h như dismiss
+      markSessionAutoclosed() // session-only — không block như dismiss
       setClosing(false)
     }, 350)
   }
@@ -303,7 +283,7 @@ export function FloatingAiServiceRouter() {
   const showCountdown = autoCloseAt !== null && !hasMessages && phase === 'collapsed'
   const remainingSec = Math.ceil(remainingMs / 1000)
   // Progress 0 → 1 (filled)
-  const progress = autoCloseAt ? 1 - remainingMs / AUTO_DISMISS_MS : 0
+  const progress = autoCloseAt && autoCloseMs > 0 ? 1 - remainingMs / autoCloseMs : 0
   const urgent = remainingMs < 3000
   const warning = remainingMs < 5000 && !urgent
 
@@ -384,7 +364,7 @@ export function FloatingAiServiceRouter() {
                 onClick={handleClose}
                 className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"
                 aria-label="Đóng"
-                title="Đóng (ẩn 24h)"
+                title={`Đóng (ẩn ${dismissHours}h)`}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -487,7 +467,7 @@ export function FloatingAiServiceRouter() {
           </form>
 
           {/* Quick prompts — only when expanded AND no messages */}
-          {phase === 'expanded' && !hasMessages && (
+          {phase === 'expanded' && !hasMessages && prompts.length > 0 && (
             <div className="relative px-4 lg:px-5 pb-4 animate-in fade-in slide-in-from-bottom-2 duration-300">
               <div className="text-[10px] uppercase tracking-widest text-white/40 font-semibold mb-2">
                 {copy.quickLabel}
@@ -615,10 +595,6 @@ function ChatBubble({
 
 /**
  * AI bubble với typewriter effect
- * - animate=true: chữ chạy ra ~3 char/16ms ≈ 180 char/s (≈ 1s cho câu 180 ký tự)
- * - Cursor ▍ nhấp nháy khi đang typing
- * - Suggested links chỉ render sau khi typing xong (fade-in slide-up)
- * - Ref-guard để không re-animate sau khi đã hoàn tất (rerender khi parent push msg mới)
  */
 function AiBubble({
   message,
