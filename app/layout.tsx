@@ -8,7 +8,9 @@ import { TeamMembersProvider } from '@/contexts/team-members-context'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { getActiveTeamMembers } from '@/lib/cms/team-members'
 import { getChatbotSettings, toPublicConfig } from '@/lib/cms/chatbot'
+import { getWebContent, normalizeWebContent } from '@/lib/cms/web-content'
 import { ChatbotWidgets } from '@/components/chatbot-widgets'
+import { WebContentProvider } from '@/contexts/web-content-context'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
 import { TrackingCode } from '@/components/tracking-scripts'
@@ -57,12 +59,14 @@ export default async function RootLayout({
   const langCookie = cookieStore.get('cs-lang')?.value
   const initialLang: Language = langCookie === 'en' ? 'en' : 'vi'
 
-  const [settings, teamMembers, chatbot] = await Promise.all([
+  const [settings, teamMembers, chatbot, webContent] = await Promise.all([
     getSiteSettings(),
     getActiveTeamMembers(),
     getChatbotSettings(),
+    getWebContent(),
   ])
   const chatbotConfig = toPublicConfig(chatbot)
+  const { footer: footerContent, service_ctas: serviceCtas } = normalizeWebContent(webContent)
   const branding: SiteBranding = {
     logoUrl: settings?.logo_url || '/images/logo-clickstar.png',
     faviconUrl: settings?.favicon_url || null,
@@ -83,7 +87,9 @@ export default async function RootLayout({
         <SiteBrandingProvider branding={branding}>
           <TeamMembersProvider members={teamMembers}>
             <LanguageProvider initialLang={initialLang}>
-              {children}
+              <WebContentProvider value={{ footer: footerContent, serviceCtas }}>
+                {children}
+              </WebContentProvider>
               <ChatbotWidgets config={chatbotConfig} />
               <EditModeOverlay />
               <PersonalizeBanner />

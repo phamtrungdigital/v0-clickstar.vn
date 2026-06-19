@@ -3,6 +3,8 @@
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
+import { useServiceCta } from '@/contexts/web-content-context'
+import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
 import Link from 'next/link'
 import Image from 'next/image'
 import { 
@@ -43,6 +45,7 @@ import {
 
 export default function WebsiteDesignPage() {
   const { language, t } = useLanguage()
+  const cta = useServiceCta('website') ?? DEFAULT_SERVICE_CTAS.website
 
   const problems = language === 'vi' ? [
     { 
@@ -930,28 +933,23 @@ export default function WebsiteDesignPage() {
         <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-purple-600 to-blue-600">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
-              {t('Sẵn sàng có website mới?', 'Ready for a new website?')}
+              {cta.heading[language]}
             </h2>
-            <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              {t(
-                'Liên hệ ngay để nhận tư vấn miễn phí và báo giá chi tiết cho dự án của bạn.',
-                'Contact us now for free consultation and detailed quote for your project.'
-              )}
-            </p>
-            
+            <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">{cta.description[language]}</p>
+
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="tel:+84123456789"
+                href={cta.primary.href}
                 className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
               >
                 <Settings className="w-5 h-5" />
-                {t('Gọi ngay: 0977 713 428', 'Call now: 0977 713 428')}
+                {cta.primary.label[language]}
               </Link>
               <Link
-                href="/contact"
+                href={cta.secondary.href}
                 className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all border border-white/30"
               >
-                {t('Nhận báo giá qua email', 'Get quote via email')}
+                {cta.secondary.label[language]}
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
