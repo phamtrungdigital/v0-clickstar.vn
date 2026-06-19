@@ -4,61 +4,33 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, Send } from 'lucide-react'
 import { useState } from 'react'
-import { useLanguage, type Language } from '@/contexts/language-context'
+import { useLanguage } from '@/contexts/language-context'
 import { useSiteBranding } from '@/contexts/site-branding-context'
+import { useFooterContent } from '@/contexts/web-content-context'
+import { SOCIAL_KEYS, type FooterSocial } from '@/lib/cms/web-content-shared'
 
-const servicesData: Record<Language, { name: string; href: string }[]> = {
-  vi: [
-    { name: 'Digital Marketing', href: '/services/digital-marketing' },
-    { name: 'Thiết kế Website', href: '/services/website' },
-    { name: 'Dashboard dữ liệu', href: '/services/dashboard' },
-    { name: 'Tích hợp AI', href: '/services/ai-integration' },
-    { name: 'AI Automation', href: '/services/automation' },
-    { name: 'CRM & CDP', href: '/services/crm-cdp' },
-  ],
-  en: [
-    { name: 'Digital Marketing', href: '/services/digital-marketing' },
-    { name: 'Website Design', href: '/services/website' },
-    { name: 'Data Dashboard', href: '/services/dashboard' },
-    { name: 'AI Integration', href: '/services/ai-integration' },
-    { name: 'AI Automation', href: '/services/automation' },
-    { name: 'CRM & CDP', href: '/services/crm-cdp' },
-  ]
+const SOCIAL_ICONS: Record<keyof FooterSocial, typeof Facebook> = {
+  facebook: Facebook,
+  twitter: Twitter,
+  instagram: Instagram,
+  linkedin: Linkedin,
+  youtube: Youtube,
 }
-
-const usefulLinksData: Record<Language, { name: string; href: string }[]> = {
-  vi: [
-    { name: 'Về chúng tôi', href: '/about' },
-    { name: 'Đội ngũ', href: '/about#team' },
-    { name: 'Dự án', href: '/projects' },
-    { name: 'Bảng giá', href: '/pricing' },
-    { name: 'Tin tức', href: '/blog' },
-    { name: 'Liên hệ', href: '/contact' },
-  ],
-  en: [
-    { name: 'About Us', href: '/about' },
-    { name: 'Our Team', href: '/about#team' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Pricing', href: '/pricing' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
-  ]
+const SOCIAL_HOVER: Record<keyof FooterSocial, string> = {
+  facebook: 'hover:bg-blue-600',
+  twitter: 'hover:bg-sky-500',
+  instagram: 'hover:bg-pink-600',
+  linkedin: 'hover:bg-blue-700',
+  youtube: 'hover:bg-red-600',
 }
-
-const socialLinks = [
-  { name: 'Facebook', icon: Facebook, href: '#', color: 'hover:bg-blue-600' },
-  { name: 'Twitter', icon: Twitter, href: '#', color: 'hover:bg-sky-500' },
-  { name: 'Instagram', icon: Instagram, href: '#', color: 'hover:bg-pink-600' },
-  { name: 'LinkedIn', icon: Linkedin, href: '#', color: 'hover:bg-blue-700' },
-  { name: 'YouTube', icon: Youtube, href: '#', color: 'hover:bg-red-600' },
-]
 
 export function Footer() {
   const [email, setEmail] = useState('')
-  const { language, t } = useLanguage()
+  const { language } = useLanguage()
   const branding = useSiteBranding()
-  const services = servicesData[language]
-  const usefulLinks = usefulLinksData[language]
+  const footer = useFooterContent()
+
+  const telHref = `tel:${(footer.contact_phone || '').replace(/\s+/g, '')}`
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -84,42 +56,42 @@ export function Footer() {
                 unoptimized
               />
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">
-              {t(
-                'Chúng tôi là đơn vị cung cấp giải pháp chuyển đổi số toàn diện, giúp doanh nghiệp tối ưu vận hành và tăng trưởng bền vững.',
-                'We provide comprehensive digital transformation solutions to help businesses optimize operations and achieve sustainable growth.'
-              )}
-            </p>
+            <p className="text-gray-400 text-sm leading-relaxed mb-6">{footer.description[language]}</p>
             {/* Social Icons */}
             <div className="flex items-center gap-2">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.name}
-                  href={social.href}
-                  className={`w-9 h-9 bg-white/10 rounded-full flex items-center justify-center transition-all duration-300 ${social.color} hover:text-white`}
-                  aria-label={social.name}
-                >
-                  <social.icon className="w-4 h-4" />
-                </Link>
-              ))}
+              {SOCIAL_KEYS.map((key) => {
+                const href = footer.social?.[key]
+                if (!href) return null
+                const Icon = SOCIAL_ICONS[key]
+                return (
+                  <Link
+                    key={key}
+                    href={href}
+                    className={`w-9 h-9 bg-white/10 rounded-full flex items-center justify-center transition-all duration-300 ${SOCIAL_HOVER[key]} hover:text-white`}
+                    aria-label={key}
+                  >
+                    <Icon className="w-4 h-4" />
+                  </Link>
+                )
+              })}
             </div>
           </div>
 
           {/* Column 2: Services */}
           <div>
             <h4 className="text-lg font-bold mb-6 relative">
-              {t('Dịch vụ', 'Services')}
+              {footer.services_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
             </h4>
             <ul className="space-y-3">
-              {services.map((service) => (
-                <li key={service.name}>
+              {footer.services_links.map((service) => (
+                <li key={service.href + service.label[language]}>
                   <Link
                     href={service.href}
                     className="text-gray-400 hover:text-primary transition-colors text-sm inline-flex items-center gap-2 group"
                   >
                     <span className="w-1.5 h-1.5 bg-primary/50 rounded-full group-hover:bg-primary transition-colors" />
-                    {service.name}
+                    {service.label[language]}
                   </Link>
                 </li>
               ))}
@@ -129,18 +101,18 @@ export function Footer() {
           {/* Column 3: Useful Links */}
           <div>
             <h4 className="text-lg font-bold mb-6 relative">
-              {t('Liên kết', 'Quick Links')}
+              {footer.quick_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
             </h4>
             <ul className="space-y-3">
-              {usefulLinks.map((link) => (
-                <li key={link.name}>
+              {footer.quick_links.map((link) => (
+                <li key={link.href + link.label[language]}>
                   <Link
                     href={link.href}
                     className="text-gray-400 hover:text-primary transition-colors text-sm inline-flex items-center gap-2 group"
                   >
                     <span className="w-1.5 h-1.5 bg-primary/50 rounded-full group-hover:bg-primary transition-colors" />
-                    {link.name}
+                    {link.label[language]}
                   </Link>
                 </li>
               ))}
@@ -150,7 +122,7 @@ export function Footer() {
           {/* Column 4: Contact Info */}
           <div>
             <h4 className="text-lg font-bold mb-6 relative">
-              {t('Liên hệ', 'Contact')}
+              {footer.contact_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
             </h4>
             <ul className="space-y-4">
@@ -158,48 +130,48 @@ export function Footer() {
                 <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <MapPin className="w-4 h-4 text-primary" />
                 </span>
-                <span className="text-gray-400 text-sm leading-relaxed">
-                  {t(
-                    'Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, Thành phố Hà Nội, Việt Nam',
-                    'Floor 6, MD Complex Tower (Office Building), 68 Nguyen Co Thach, Tu Liem Ward, Hanoi, Vietnam'
-                  )}
-                </span>
+                <span className="text-gray-400 text-sm leading-relaxed">{footer.contact_address[language]}</span>
               </li>
-              <li className="flex items-center gap-3">
-                <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-4 h-4 text-primary" />
-                </span>
-                <Link href="tel:0977713428" className="text-gray-400 hover:text-primary transition-colors text-sm">
-                  0977 713 428
-                </Link>
-              </li>
-              <li className="flex items-center gap-3">
-                <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-4 h-4 text-primary" />
-                </span>
-                <Link href="mailto:clickstar.vn@gmail.com" className="text-gray-400 hover:text-primary transition-colors text-sm">
-                  clickstar.vn@gmail.com
-                </Link>
-              </li>
+              {footer.contact_phone && (
+                <li className="flex items-center gap-3">
+                  <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-4 h-4 text-primary" />
+                  </span>
+                  <Link href={telHref} className="text-gray-400 hover:text-primary transition-colors text-sm">
+                    {footer.contact_phone}
+                  </Link>
+                </li>
+              )}
+              {footer.contact_email && (
+                <li className="flex items-center gap-3">
+                  <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-4 h-4 text-primary" />
+                  </span>
+                  <Link
+                    href={`mailto:${footer.contact_email}`}
+                    className="text-gray-400 hover:text-primary transition-colors text-sm"
+                  >
+                    {footer.contact_email}
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 
           {/* Column 5: Newsletter */}
           <div>
             <h4 className="text-lg font-bold mb-6 relative">
-              {t('Đăng ký nhận tin', 'Newsletter')}
+              {footer.newsletter_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
             </h4>
-            <p className="text-gray-400 text-sm mb-4">
-              {t('Đăng ký để nhận thông tin mới nhất về xu hướng công nghệ và chuyển đổi số.', 'Subscribe to get the latest updates on technology trends and digital transformation.')}
-            </p>
+            <p className="text-gray-400 text-sm mb-4">{footer.newsletter_desc[language]}</p>
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t('Nhập email của bạn', 'Enter your email')}
+                  placeholder={language === 'vi' ? 'Nhập email của bạn' : 'Enter your email'}
                   className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-primary transition-colors"
                   required
                 />
@@ -208,7 +180,7 @@ export function Footer() {
                 type="submit"
                 className="w-full bg-primary hover:bg-primary/90 text-white font-semibold px-4 py-3 rounded-lg text-sm transition-all duration-300 flex items-center justify-center gap-2 group"
               >
-                {t('Đăng ký ngay', 'Subscribe now')}
+                {language === 'vi' ? 'Đăng ký ngay' : 'Subscribe now'}
                 <Send className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </form>
@@ -221,18 +193,18 @@ export function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-gray-400 text-sm text-center md:text-left">
-              © {new Date().getFullYear()} {t('CÔNG TY TNHH CLICK STAR DIGITAL', 'CLICK STAR DIGITAL CO., LTD')}. {t('Bảo lưu mọi quyền.', 'All rights reserved.')}
+              © {new Date().getFullYear()} {footer.copyright[language]}
             </p>
             <div className="flex items-center gap-6">
-              <Link href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">
-                {t('Chính sách bảo mật', 'Privacy Policy')}
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">
-                {t('Điều khoản sử dụng', 'Terms of Service')}
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">
-                {t('Chính sách Cookie', 'Cookie Policy')}
-              </Link>
+              {footer.policy_links.map((link) => (
+                <Link
+                  key={link.href + link.label[language]}
+                  href={link.href}
+                  className="text-gray-400 hover:text-primary text-sm transition-colors"
+                >
+                  {link.label[language]}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

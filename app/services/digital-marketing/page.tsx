@@ -30,11 +30,14 @@ import {
   ThumbsUp
 } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { useServiceCta } from '@/contexts/web-content-context'
+import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 
 export default function DigitalMarketingPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const cta = useServiceCta('digital-marketing') ?? DEFAULT_SERVICE_CTAS['digital-marketing']
 
   const platforms = [
     { name: 'Google Ads', icon: '/images/platforms/google.svg', color: 'bg-red-50 border-red-200' },
@@ -829,28 +832,23 @@ export default function DigitalMarketingPage() {
         <section id="contact" className="py-12 lg:py-16 bg-primary">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
-              {t('Sẵn sàng tăng trưởng?', 'Ready to grow?')}
+              {cta.heading[language]}
             </h2>
-            <p className="text-lg text-white/80 mb-8">
-              {t(
-                'Đặt lịch tư vấn miễn phí với chuyên gia Digital Marketing của chúng tôi ngay hôm nay.',
-                'Schedule a free consultation with our Digital Marketing experts today.'
-              )}
-            </p>
+            <p className="text-lg text-white/80 mb-8">{cta.description[language]}</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/contact"
+                href={cta.primary.href}
                 className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:shadow-lg"
               >
-                {t('Đặt lịch tư vấn', 'Book Consultation')}
+                {cta.primary.label[language]}
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <a
-                href="tel:+84123456789"
+                href={cta.secondary.href}
                 className="inline-flex items-center justify-center gap-2 bg-white/10 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all duration-300 border border-white/30"
               >
                 <Clock className="w-5 h-5" />
-                {t('Gọi ngay: 0977 713 428', 'Call now: 0977 713 428')}
+                {cta.secondary.label[language]}
               </a>
             </div>
           </div>
