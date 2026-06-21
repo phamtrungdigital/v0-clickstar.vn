@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { WebContentUpdate } from '@/lib/cms/web-content-shared'
 
@@ -18,6 +18,7 @@ export async function saveWebContent(input: WebContentUpdate) {
 
   if (error) return { error: error.message }
 
+  revalidateTag('web_content')
   revalidatePath('/admin-cls/footer-cta')
   // Footer ở mọi trang + CTA services → revalidate toàn bộ trang dùng root layout.
   revalidatePath('/', 'layout')

@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { runServiceRouter } from '@/lib/ai/chatbot-run'
 import type { ChatbotSettingsUpdate, WidgetMode, QuickPrompt } from '@/lib/cms/chatbot-shared'
@@ -71,6 +71,7 @@ export async function saveChatbotSettings(input: ChatbotSettingsUpdate) {
   const { error } = await supabase.from('chatbot_settings').update(payload).eq('id', 1)
   if (error) return { error: error.message }
 
+  revalidateTag('chatbot_settings')
   revalidatePath('/admin-cls/ai')
   // Widget nằm ở root layout → revalidate toàn bộ trang dùng layout để áp config mới.
   revalidatePath('/', 'layout')

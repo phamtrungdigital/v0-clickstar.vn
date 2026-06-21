@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { TeamMemberFormData } from '@/lib/cms/team-members-types'
 
@@ -36,6 +36,7 @@ export async function createTeamMember(input: TeamMemberFormData) {
     .select('id')
     .single()
   if (error) return { error: error.message }
+  revalidateTag('team_members')
   revalidatePath('/admin-cls/team')
   revalidatePath('/')
   revalidatePath('/about')
@@ -52,6 +53,7 @@ export async function updateTeamMember(id: string, input: TeamMemberFormData) {
   const payload = { ...normalize(input), updated_by: user.id }
   const { error } = await supabase.from('team_members').update(payload).eq('id', id)
   if (error) return { error: error.message }
+  revalidateTag('team_members')
   revalidatePath('/admin-cls/team')
   revalidatePath('/')
   revalidatePath('/about')
@@ -62,6 +64,7 @@ export async function deleteTeamMember(id: string) {
   const supabase = await createClient()
   const { error } = await supabase.from('team_members').delete().eq('id', id)
   if (error) return { error: error.message }
+  revalidateTag('team_members')
   revalidatePath('/admin-cls/team')
   revalidatePath('/')
   revalidatePath('/about')
@@ -79,6 +82,7 @@ export async function toggleTeamMember(id: string, enabled: boolean) {
     .update({ enabled, updated_by: user.id })
     .eq('id', id)
   if (error) return { error: error.message }
+  revalidateTag('team_members')
   revalidatePath('/admin-cls/team')
   revalidatePath('/')
   revalidatePath('/about')
