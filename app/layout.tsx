@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
-import { cookies } from 'next/headers'
-import { LanguageProvider, type Language } from '@/contexts/language-context'
+import { LanguageProvider } from '@/contexts/language-context'
 import { SiteBrandingProvider, type SiteBranding } from '@/contexts/site-branding-context'
 import { TeamMembersProvider } from '@/contexts/team-members-context'
 import { getSiteSettings } from '@/lib/cms/settings'
@@ -55,10 +54,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = await cookies()
-  const langCookie = cookieStore.get('cs-lang')?.value
-  const initialLang: Language = langCookie === 'en' ? 'en' : 'vi'
-
+  // Static-friendly: KHÔNG đọc cookie ở layout (cookie → ép dynamic toàn site).
+  // LanguageProvider tự đọc cookie cs-lang ở client khi mount để đổi sang EN nếu cần.
   const [settings, teamMembers, chatbot, webContent] = await Promise.all([
     getSiteSettings(),
     getActiveTeamMembers(),
@@ -77,7 +74,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={initialLang} className="bg-background">
+    <html lang="vi" className="bg-background">
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
         {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
         <TrackingCode code={settings?.head_code} />
@@ -86,7 +83,7 @@ export default async function RootLayout({
 
         <SiteBrandingProvider branding={branding}>
           <TeamMembersProvider members={teamMembers}>
-            <LanguageProvider initialLang={initialLang}>
+            <LanguageProvider>
               <WebContentProvider value={{ footer: footerContent, serviceCtas }}>
                 {children}
               </WebContentProvider>

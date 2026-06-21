@@ -31,6 +31,15 @@ export function LanguageProvider({
   const [language, setLanguageState] = useState<Language>(initialLang)
   const router = useRouter()
 
+  // Trang giờ render tĩnh (SSR mặc định 'vi') → đọc cookie cs-lang ở client khi mount
+  // để đổi sang 'en' nếu user đã chọn. KHÔNG router.refresh ở đây (chỉ đổi state client).
+  useEffect(() => {
+    const m = document.cookie.match(/(?:^|;\s*)cs-lang=(en|vi)/)
+    const saved = (m?.[1] as Language) || 'vi'
+    if (saved !== language) setLanguageState(saved)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // Update <html lang="…"> on language change so screen readers + Chrome translate know.
   useEffect(() => {
     if (typeof document !== 'undefined') {
