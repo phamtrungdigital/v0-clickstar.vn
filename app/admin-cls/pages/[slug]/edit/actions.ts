@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { Section } from '@/lib/cms/types'
 import type { SeoFields } from './_components/seo-form'
@@ -26,6 +26,8 @@ export async function savePage(slug: string, sections: Section[], seo?: SeoField
   const { error } = await supabase.from('pages').update(update).eq('slug', slug)
   if (error) return { error: error.message }
 
+  revalidateTag('pages')
+  revalidateTag(`page:${slug}`)
   revalidatePath(slug === 'home' ? '/' : `/${slug}`)
   revalidatePath(`/admin-cls/pages/${slug}/edit`)
 

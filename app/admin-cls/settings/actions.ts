@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { SiteSettings } from '@/lib/cms/settings'
 
@@ -28,12 +28,14 @@ export async function saveSettings(input: SettingsUpdate) {
     for (const k of TRACKING_KEYS) delete stripped[k]
     const retry = await supabase.from('site_settings').update(stripped).eq('id', 1)
     if (retry.error) return { error: retry.error.message }
+    revalidateTag('site_settings')
     revalidatePath('/admin-cls/settings')
     revalidatePath('/')
     return { ok: true, warning: 'tracking_columns_missing' }
   }
 
   if (error) return { error: error.message }
+  revalidateTag('site_settings')
   revalidatePath('/admin-cls/settings')
   revalidatePath('/')
   return { ok: true }

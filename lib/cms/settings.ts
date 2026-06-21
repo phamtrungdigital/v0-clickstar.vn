@@ -1,4 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
+import { unstable_cache } from 'next/cache'
+import { createPublicClient } from '@/lib/supabase/public'
 import type { I18n } from './types'
 
 export type SiteSettings = {
@@ -31,8 +32,14 @@ export type SiteSettings = {
   updated_at: string
 }
 
-export async function getSiteSettings(): Promise<SiteSettings | null> {
-  const supabase = await createClient()
-  const { data } = await supabase.from('site_settings').select('*').eq('id', 1).maybeSingle()
-  return (data as unknown as SiteSettings) || null
-}
+// Cache cross-request (data cache) — config toàn site, hiếm đổi. Tự làm mới khi
+// admin Lưu (revalidateTag('site_settings')) hoặc fallback sau 1h.
+export const getSiteSettings = unstable_cache(
+  async (): Promise<SiteSettings | null> => {
+    const supabase = createPublicClient()
+    const { data } = await supabase.from('site_settings').select('*').eq('id', 1).maybeSingle()
+    return (data as unknown as SiteSettings) || null
+  },
+  ['site-settings'],
+  { tags: ['site_settings'], revalidate: 3600 }
+)
