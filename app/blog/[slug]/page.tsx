@@ -125,7 +125,7 @@ export default async function BlogPostPage({
 
               {post.cover_image && (
                 <div className="relative aspect-video rounded-2xl overflow-hidden mb-10">
-                  <Image
+                  <Image quality={95}
                     src={post.cover_image}
                     alt={title}
                     fill
@@ -227,7 +227,7 @@ export default async function BlogPostPage({
                           >
                             {p.cover_image && (
                               <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                                <Image
+                                <Image quality={95}
                                   src={p.cover_image}
                                   alt={rTitle}
                                   fill

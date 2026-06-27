@@ -105,7 +105,7 @@ export default async function ProjectDetailPage({
         <section className="py-8 lg:py-12 bg-background">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="relative aspect-[16/9] rounded-2xl overflow-hidden shadow-lg">
-              <Image
+              <Image quality={95}
                 src={project.cover_image}
                 alt={project.title_vi}
                 fill
@@ -160,7 +160,7 @@ export default async function ProjectDetailPage({
                 >
                   <div className="relative aspect-[4/3] bg-muted overflow-hidden">
                     {p.cover_image && (
-                      <Image
+                      <Image quality={95}
                         src={p.cover_image}
                         alt={p.title_vi}
                         fill

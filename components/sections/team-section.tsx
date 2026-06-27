@@ -26,7 +26,7 @@ function TeamCard({
       <div className="relative mx-auto w-32 h-32 mb-6">
         <div className="absolute inset-0 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-500" />
         <div className="relative w-32 h-32 rounded-full border-4 border-background shadow-lg overflow-hidden group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-primary/20 transition-all duration-300">
-          <Image src={member.image} alt={member.name} fill className="object-cover" sizes="128px" />
+          <Image quality={95} src={member.image} alt={member.name} fill className="object-cover" sizes="128px" />
         </div>
       </div>
 

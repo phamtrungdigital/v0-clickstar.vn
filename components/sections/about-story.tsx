@@ -19,7 +19,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
           {/* Image */}
           <div className="relative">
             <div data-cms-field="image" className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
-              <Image
+              <Image quality={95}
                 src={content.image}
                 alt={t(content.image_alt.vi, content.image_alt.en)}
                 fill

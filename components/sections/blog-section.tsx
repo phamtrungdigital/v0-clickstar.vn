@@ -60,7 +60,7 @@ export function BlogSection({ content }: { content: BlogContent }) {
               className="group bg-card border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <Link href={post.slug} className="block relative aspect-video overflow-hidden">
-                <Image
+                <Image quality={95}
                   src={post.image}
                   alt={t(post.title.vi, post.title.en)}
                   fill

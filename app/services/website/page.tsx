@@ -323,19 +323,19 @@ export default function WebsiteDesignPage() {
     {
       title: 'TechVision Corp',
       category: language === 'vi' ? 'Website Doanh nghiệp' : 'Corporate Website',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=1000&fit=crop',
       metrics: { conversion: '+180%', speed: '95/100', bounce: '-45%' }
     },
     {
       title: 'Fashion Store',
       category: language === 'vi' ? 'E-commerce' : 'E-commerce',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&h=1000&fit=crop',
       metrics: { conversion: '+250%', speed: '92/100', bounce: '-38%' }
     },
     {
       title: 'EduLearn Platform',
       category: language === 'vi' ? 'Website Giáo dục' : 'Education Website',
-      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&h=500&fit=crop',
+      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1600&h=1000&fit=crop',
       metrics: { conversion: '+320%', speed: '90/100', bounce: '-52%' }
     },
   ]
@@ -460,8 +460,8 @@ export default function WebsiteDesignPage() {
                     </div>
                   </div>
                   <div className="aspect-[4/3] bg-gradient-to-br from-purple-100 to-blue-100 rounded-b-xl overflow-hidden">
-                    <Image
-                      src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop"
+                    <Image quality={95}
+                      src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1600&h=1200&fit=crop"
                       alt="Website Design Preview"
                       width={800}
                       height={600}
@@ -874,7 +874,7 @@ export default function WebsiteDesignPage() {
                 >
                   {/* Image */}
                   <div className="aspect-[16/10] overflow-hidden">
-                    <Image
+                    <Image quality={95}
                       src={item.image}
                       alt={item.title}
                       width={800}

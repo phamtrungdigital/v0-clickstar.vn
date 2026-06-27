@@ -81,7 +81,7 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
                       img.aspect === '4/5' ? 'aspect-[4/5]' : 'aspect-[4/3]'
                     } rounded-2xl overflow-hidden shadow-lg cursor-pointer`}
                   >
-                    <Image
+                    <Image quality={95}
                       src={img.src}
                       alt={t(img.alt.vi, img.alt.en)}
                       width={400}
@@ -102,7 +102,7 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
                       img.aspect === '4/5' ? 'aspect-[4/5]' : 'aspect-[4/3]'
                     } rounded-2xl overflow-hidden shadow-lg cursor-pointer`}
                   >
-                    <Image
+                    <Image quality={95}
                       src={img.src}
                       alt={t(img.alt.vi, img.alt.en)}
                       width={400}
