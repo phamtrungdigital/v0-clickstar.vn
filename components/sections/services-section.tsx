@@ -5,6 +5,7 @@ import { Reveal } from '@/components/reveal'
 import * as Icons from 'lucide-react'
 import Link from 'next/link'
 import { useLanguage } from '@/contexts/language-context'
+import { InlineSvgImage } from '@/components/inline-svg-image'
 import type { ServicesContent, ServiceItem } from '@/lib/cms/types'
 import type { LucideIcon } from 'lucide-react'
 
@@ -121,11 +122,10 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
             </p>
           </div>
 
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <InlineSvgImage
             src={content.pipeline_image_src}
             alt={t(content.pipeline_image_alt.vi, content.pipeline_image_alt.en)}
-            className="w-full h-auto rounded-2xl"
+            className="w-full h-auto rounded-2xl overflow-hidden [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
           />
         </div>
       </div>
