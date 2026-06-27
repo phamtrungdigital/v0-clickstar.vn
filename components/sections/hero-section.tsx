@@ -2,6 +2,7 @@
 
 import { Phone } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { InlineSvgImage } from '@/components/inline-svg-image'
 import type { HeroContent } from '@/lib/cms/types'
 
 export function HeroSection({ content }: { content: HeroContent }) {
@@ -98,12 +99,11 @@ export function HeroSection({ content }: { content: HeroContent }) {
           {/* Right Illustration */}
           <div className="relative flex items-center justify-center lg:justify-end">
             <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                data-cms-field="image"
+              <InlineSvgImage
+                cmsField="image"
                 src={content.image_src}
                 alt={t(content.image_alt.vi, content.image_alt.en)}
-                className="w-full h-auto relative z-10 rounded-2xl"
+                className="w-full h-auto relative z-10 rounded-2xl overflow-hidden [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
               />
             </div>
           </div>
