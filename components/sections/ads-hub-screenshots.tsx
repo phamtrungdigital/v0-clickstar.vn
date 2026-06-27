@@ -56,7 +56,7 @@ export function AdsHubScreenshots({ content }: { content: AdsHubScreenshotsConte
                 disabled={!item.image}
               >
                 {item.image ? (
-                  <Image
+                  <Image quality={95}
                     src={item.image}
                     alt={t(item.title.vi, item.title.en)}
                     fill
@@ -97,7 +97,7 @@ export function AdsHubScreenshots({ content }: { content: AdsHubScreenshotsConte
             <X className="w-6 h-6" />
           </button>
           <div className="relative max-w-6xl w-full max-h-full">
-            <Image
+            <Image quality={95}
               src={content.items[lightboxIdx].image}
               alt={t(content.items[lightboxIdx].title.vi, content.items[lightboxIdx].title.en)}
               width={1600}

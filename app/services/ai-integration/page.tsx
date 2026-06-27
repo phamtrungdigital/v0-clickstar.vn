@@ -169,7 +169,7 @@ const aiArticles = [
     date: '05/05/2026',
     category: 'LLM',
     readTime: '5 phút',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop&q=80'
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=800&fit=crop&q=80'
   },
   {
     title: 'Sora OpenAI: Cách mạng hóa sản xuất video marketing',
@@ -177,7 +177,7 @@ const aiArticles = [
     date: '28/04/2026',
     category: 'Video AI',
     readTime: '7 phút',
-    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&h=400&fit=crop&q=80'
+    image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1200&h=800&fit=crop&q=80'
   },
   {
     title: 'Tích hợp AI vào CRM: Tăng 50% tỷ lệ chuyển đổi',
@@ -185,7 +185,7 @@ const aiArticles = [
     date: '20/04/2026',
     category: 'AI Business',
     readTime: '6 phút',
-    image: 'https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=600&h=400&fit=crop&q=80'
+    image: 'https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=1200&h=800&fit=crop&q=80'
   },
   {
     title: 'Midjourney V7: Tạo hình ảnh quảng cáo chuyên nghiệp',
@@ -193,7 +193,7 @@ const aiArticles = [
     date: '15/04/2026',
     category: 'Image AI',
     readTime: '4 phút',
-    image: 'https://images.unsplash.com/photo-1547954575-855750c57bd3?w=600&h=400&fit=crop&q=80'
+    image: 'https://images.unsplash.com/photo-1547954575-855750c57bd3?w=1200&h=800&fit=crop&q=80'
   }
 ]
 
@@ -510,7 +510,7 @@ export default function AIIntegrationPage() {
                   <div className="flex items-center gap-3 mb-4">
                     {/* Real AI Logos */}
                     <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-sm shrink-0">
-                      <Image
+                      <Image quality={95}
                         src={tool.logo}
                         alt={tool.name}
                         width={28}
@@ -615,7 +615,7 @@ export default function AIIntegrationPage() {
               {aiArticles.map((article, index) => (
                 <article key={index} className="bg-white/5 backdrop-blur rounded-xl overflow-hidden hover:bg-white/10 transition-all group border border-white/10">
                   <div className="relative aspect-video overflow-hidden">
-                    <Image
+                    <Image quality={95}
                       src={article.image}
                       alt={article.title}
                       fill

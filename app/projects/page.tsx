@@ -59,7 +59,7 @@ export default async function ProjectsPage() {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                     {p.cover_image ? (
-                      <Image
+                      <Image quality={95}
                         src={p.cover_image}
                         alt={p.title_vi}
                         fill

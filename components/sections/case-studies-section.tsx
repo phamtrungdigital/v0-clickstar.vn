@@ -138,7 +138,7 @@ function CaseStudyCard({
       data-cms-item-index={itemIndex}
       className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-muted"
     >
-      <Image
+      <Image quality={95}
         src={study.image}
         alt={title}
         fill

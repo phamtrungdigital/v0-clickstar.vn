@@ -640,7 +640,7 @@ export default function AIAutomationPage() {
                   <div className="flex items-center gap-3 mb-3">
                     <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-sm shrink-0">
                       {tool.logo ? (
-                        <Image
+                        <Image quality={95}
                           src={tool.logo}
                           alt={tool.name}
                           width={28}

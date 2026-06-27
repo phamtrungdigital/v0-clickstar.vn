@@ -72,7 +72,7 @@ export default async function BlogList() {
                       className="block relative aspect-video overflow-hidden"
                     >
                       {post.cover_image ? (
-                        <Image
+                        <Image quality={95}
                           src={post.cover_image}
                           alt={title}
                           fill

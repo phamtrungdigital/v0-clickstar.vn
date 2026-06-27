@@ -91,7 +91,7 @@ export function AboutSection({ content }: { content: AboutContent }) {
                 className="relative aspect-video rounded-2xl overflow-hidden cursor-pointer group"
                 onClick={() => setIsVideoOpen(true)}
               >
-                <Image
+                <Image quality={95}
                   src={content.thumbnail_src}
                   alt="Video thumbnail"
                   fill
