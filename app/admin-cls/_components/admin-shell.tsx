@@ -55,6 +55,7 @@ const sidebarItems = [
     items: [
       { label: 'Chiến dịch', href: '/admin-cls/campaigns', icon: Megaphone },
       { label: 'Email Marketing', href: '/admin-cls/email-marketing', icon: Mail },
+      { label: 'Thông báo', href: '/admin-cls/announcements', icon: Bell },
       { label: 'Leads', href: '/admin-cls/leads', icon: Users },
       { label: 'Cá nhân hóa', href: '/admin-cls/personalize', icon: Target },
     ],
