@@ -1024,15 +1024,15 @@ export default function SpeechInsightAiPage() {
                   {t('BẢNG GIÁ', 'PRICING')}
                 </span>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                  {t('Ba cấp theo ', 'Three tiers by ')}
+                  {t('Ba gói theo ', 'Three plans by ')}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
-                    {t('phạm vi triển khai', 'deployment scope')}
+                    {t('hạn mức phút', 'minute quota')}
                   </span>
                 </h2>
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   {t(
-                    'Bắt đầu từ một phòng ban rồi mở rộng dần — không phải trả cho quy mô bạn chưa dùng tới.',
-                    'Start with one department and expand from there — you don’t pay for scale you are not using yet.'
+                    'Trả theo lượng phút ghi âm thực xử lý — gọi ít không phải trả như gọi nhiều.',
+                    'You pay for the recorded minutes actually processed — calling less does not cost the same as calling a lot.'
                   )}
                 </p>
               </div>
