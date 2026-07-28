@@ -59,7 +59,7 @@ export type ServiceItem = {
   title: I18n
   description: I18n
   tag: I18n
-  color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan'
+  color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan' | 'teal'
   href?: string
   /** Nhãn nhỏ góc phải thẻ (vd "MỚI"/"NEW") — để trống thì không hiện */
   badge?: I18n

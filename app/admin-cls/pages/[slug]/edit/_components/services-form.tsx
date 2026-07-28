@@ -4,7 +4,7 @@ import type { ServicesContent, ServiceItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
 import { ImagePicker } from './image-picker'
 
-const COLORS: ServiceItem['color'][] = ['blue', 'purple', 'pink', 'amber', 'emerald', 'cyan']
+const COLORS: ServiceItem['color'][] = ['blue', 'purple', 'pink', 'amber', 'emerald', 'cyan', 'teal']
 
 export function ServicesForm({
   content,
