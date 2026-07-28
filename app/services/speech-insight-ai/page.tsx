@@ -10,8 +10,9 @@
  * 2. KHÔNG viết số liệu kiểu "73% theo báo cáo X" khi chưa có nguồn thật.
  *    Số trên trang này chỉ được là: sự thật cấu trúc (100% cuộc gọi, 9 lớp,
  *    6 bước) hoặc phép tính ghi rõ "giả định".
- * 3. Mọi mockup/demo có số PHẢI kèm caption "Ví dụ minh hoạ, không phải dữ liệu
- *    khách hàng thật."
+ * 3. Số trong mockup/demo là dữ liệu dựng sẵn để minh hoạ giao diện — KHÔNG được
+ *    gắn tên khách hàng thật hoặc trình bày như kết quả đã đo của một khách cụ thể.
+ *    (Anh Trung yêu cầu bỏ các caption "ví dụ minh hoạ" khỏi giao diện.)
  */
 
 import Link from 'next/link'
@@ -540,12 +541,6 @@ export default function SpeechInsightAiPage() {
               </div>
             </div>
 
-            <p className="text-xs text-muted-foreground text-center mt-8">
-              {t(
-                'Ví dụ minh hoạ để mô tả cách hệ thống hoạt động, không phải dữ liệu khách hàng thật.',
-                'Illustrative example showing how the system works — not real customer data.'
-              )}
-            </p>
           </div>
         </section>
 
@@ -617,10 +612,10 @@ export default function SpeechInsightAiPage() {
                   {t('sau khi AI xử lý', 'after AI processing')}
                 </span>
               </h2>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 {t(
-                  'Nội dung dưới đây là ví dụ minh hoạ để mô tả cách hệ thống hoạt động, không phải dữ liệu khách hàng thật.',
-                  'The content below is an illustrative example of how the system works — not real customer data.'
+                  'Cùng một cuộc gọi, bên trái là thứ bạn đang có, bên phải là thứ Speech Insight AI trả về.',
+                  'The same call: what you have today on the left, what Speech Insight AI returns on the right.'
                 )}
               </p>
             </div>
@@ -722,8 +717,8 @@ export default function SpeechInsightAiPage() {
 
             <p className="text-center text-sm text-muted-foreground mt-6">
               {t(
-                'Ví dụ minh hoạ cấu trúc dữ liệu. Tên trường và ánh xạ sang CRM được cấu hình theo hệ thống của bạn.',
-                'Illustrative data structure. Field names and CRM mapping are configured to match your system.'
+                'Tên trường và ánh xạ sang CRM được cấu hình theo đúng hệ thống của bạn.',
+                'Field names and CRM mapping are configured to match your own system.'
               )}
             </p>
           </div>

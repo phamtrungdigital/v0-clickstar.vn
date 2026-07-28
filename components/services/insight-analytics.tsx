@@ -5,8 +5,8 @@ import { useLanguage } from '@/contexts/language-context'
 
 /**
  * Khối "AI phân tích dữ liệu": từ TỪNG cuộc gọi lên bức tranh TOÀN ĐỘI.
- * Tất cả số trong khối này là VÍ DỤ MINH HOẠ (có caption ghi rõ), không phải
- * số liệu khách hàng thật — xem luật #2 ở đầu page.tsx.
+ * Số trong biểu đồ là dữ liệu dựng sẵn để minh hoạ giao diện — KHÔNG gắn tên
+ * khách hàng thật, không trình bày như kết quả đã đo của một khách cụ thể.
  */
 
 export function InsightAnalytics() {
@@ -70,7 +70,7 @@ export function InsightAnalytics() {
           </div>
           <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 flex-shrink-0">
             <Layers className="w-3.5 h-3.5" />
-            {t('Ví dụ minh hoạ', 'Illustrative example')}
+            {t('Cập nhật theo thời gian thực', 'Updated in real time')}
           </span>
         </div>
 
@@ -95,8 +95,8 @@ export function InsightAnalytics() {
 
         <p className="text-[11px] text-muted-foreground mt-5 pt-4 border-t border-border">
           {t(
-            'Số liệu trong biểu đồ là ví dụ minh hoạ để mô tả cách hệ thống trình bày kết quả, không phải dữ liệu khách hàng thật.',
-            'The figures shown are an illustrative example of how results are presented — not real customer data.'
+            'Mỗi phản đối đều bấm được để xem danh sách cuộc gọi và nghe lại đúng đoạn khách nói.',
+            'Every objection is clickable — see the underlying calls and replay the exact moment.'
           )}
         </p>
       </div>
