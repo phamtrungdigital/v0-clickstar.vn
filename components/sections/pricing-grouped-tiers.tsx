@@ -89,7 +89,13 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
   )
 }
 
-function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
+/**
+ * Render 3 gói của MỘT nhóm giá.
+ * Export ra ngoài để trang dịch vụ dùng lại — nhờ vậy bảng giá ở /pricing và ở
+ * trang dịch vụ luôn CÙNG một giao diện và CÙNG một nguồn dữ liệu (anh Trung
+ * yêu cầu đồng bộ 28/7/2026). Sửa ở đây là cả 2 nơi đổi theo.
+ */
+export function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
   const { t } = useLanguage()
 
   return (

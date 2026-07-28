@@ -36,6 +36,7 @@ import {
   ScrollText,
   Braces,
   Bot,
+  Wallet,
   MessageSquare,
   CheckCircle2,
   XCircle,
@@ -50,7 +51,9 @@ import { AnalysisDemo } from '@/components/services/analysis-demo'
 import { TechPayload } from '@/components/services/tech-payload'
 import { InsightAnalytics } from '@/components/services/insight-analytics'
 import { FaqAccordion } from '@/components/services/faq-accordion'
+import { PricingGroupTiers } from '@/components/sections/pricing-grouped-tiers'
 import { useLanguage } from '@/contexts/language-context'
+import { useServicePricingGroup } from '@/lib/cms/service-pricing'
 import { useServiceCta } from '@/contexts/web-content-context'
 import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
 import { FAQ_ITEMS } from './_data/faq'
@@ -62,6 +65,8 @@ const CONTACT_HREF = `/contact?service=${encodeURIComponent(SERVICE_LABEL)}`
 export default function SpeechInsightAiPage() {
   const { t, language } = useLanguage()
   const cta = useServiceCta('speech-insight-ai') ?? DEFAULT_SERVICE_CTAS['speech-insight-ai']
+  // Giá lấy từ trang /pricing — KHÔNG hardcode ở đây, xem lib/cms/service-pricing.tsx
+  const pricingGroup = useServicePricingGroup()
 
   const problems = [
     {
@@ -1009,7 +1014,45 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑫ FAQ ═══════════ */}
+        {/* ═══════════ ⑫ BẢNG GIÁ (đồng bộ từ trang /pricing) ═══════════ */}
+        {pricingGroup && (
+          <section id="bang-gia" className="py-12 lg:py-16 bg-background scroll-mt-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-10">
+                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+                  <Wallet className="w-4 h-4" />
+                  {t('BẢNG GIÁ', 'PRICING')}
+                </span>
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
+                  {t('Ba cấp theo ', 'Three tiers by ')}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                    {t('phạm vi triển khai', 'deployment scope')}
+                  </span>
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                  {t(
+                    'Bắt đầu từ một phòng ban rồi mở rộng dần — không phải trả cho quy mô bạn chưa dùng tới.',
+                    'Start with one department and expand from there — you don’t pay for scale you are not using yet.'
+                  )}
+                </p>
+              </div>
+
+              <PricingGroupTiers group={pricingGroup} />
+
+              <div className="text-center mt-8">
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center gap-2 text-cyan-700 font-semibold hover:text-cyan-800 transition-colors"
+                >
+                  {t('Xem bảng giá đầy đủ của Clickstar', 'See Clickstar’s full pricing')}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ═══════════ ⑬ FAQ ═══════════ */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -1036,7 +1079,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑬ CTA CUỐI ═══════════ */}
+        {/* ═══════════ ⑭ CTA CUỐI ═══════════ */}
         <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-cyan-600 to-teal-600">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Hộp trung thực — giữ lại từ khối "Kết quả đo được" */}
