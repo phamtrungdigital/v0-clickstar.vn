@@ -33,6 +33,26 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     q: {
+      vi: 'Hệ thống dùng mô hình AI nào để phân tích?',
+      en: 'Which AI model does the analysis run on?',
+    },
+    a: {
+      vi: 'Phần phân tích chạy trên Claude của Anthropic. Chúng tôi chọn mô hình này vì ba lý do kỹ thuật: hiểu được tiếng Việt đời thường (nói lẫn tiếng Anh, nói tắt, giọng ba miền) chứ không chỉ tiếng Việt chuẩn; đọc trọn một cuộc gọi dài trong cùng một lượt nên không mất mạch hội thoại giữa đầu và cuối cuộc; và trả kết quả về đúng khuôn dữ liệu định sẵn để ghi thẳng vào CRM thay vì trả một đoạn văn. Chúng tôi chọn phiên bản phù hợp với khối lượng và độ khó của từng doanh nghiệp, thay vì áp một cấu hình chung cho mọi khách.',
+      en: 'The analysis runs on Claude by Anthropic. We chose it for three technical reasons: it understands everyday spoken Vietnamese (mixed with English, abbreviated, across regional accents) rather than only textbook Vietnamese; it reads a long call in a single pass, so context between the start and end of the conversation is not lost; and it returns results in a predefined data shape that writes straight into your CRM instead of a block of prose. We match the model tier to each company’s volume and complexity rather than applying one configuration to everyone.',
+    },
+  },
+  {
+    q: {
+      vi: 'Dữ liệu cuộc gọi của chúng tôi có bị dùng để huấn luyện AI không?',
+      en: 'Is our call data used to train AI models?',
+    },
+    a: {
+      vi: 'Không. Dữ liệu cuộc gọi của bạn không được dùng để huấn luyện mô hình AI. Thông tin nhạy cảm trong bản bóc băng được tự động che trước khi đưa vào phân tích, và toàn bộ quá trình có nhật ký đầy đủ: cuộc gọi nào được xử lý, xử lý lúc nào, ai đã mở kết quả. Điều khoản cụ thể về nơi lưu trữ và thời gian lưu được ghi rõ trong hợp đồng trước khi bạn bàn giao bất kỳ file ghi âm nào.',
+      en: 'No. Your call data is not used to train AI models. Sensitive details in transcripts are masked automatically before analysis, and the whole process is fully logged: which call was processed, when, and who opened the result. The specific terms on storage location and retention period are written into the contract before you hand over any recording.',
+    },
+  },
+  {
+    q: {
       vi: 'Bóc băng tiếng Việt có chuẩn không? Giọng miền Trung, miền Nam thì sao?',
       en: 'How accurate is Vietnamese transcription across regional accents?',
     },
