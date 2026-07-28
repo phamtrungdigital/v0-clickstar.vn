@@ -89,7 +89,13 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
   )
 }
 
-function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
+/**
+ * Render 3 gói của MỘT nhóm giá.
+ * Export ra ngoài để trang dịch vụ dùng lại — nhờ vậy bảng giá ở /pricing và ở
+ * trang dịch vụ luôn CÙNG một giao diện và CÙNG một nguồn dữ liệu (anh Trung
+ * yêu cầu đồng bộ 28/7/2026). Sửa ở đây là cả 2 nơi đổi theo.
+ */
+export function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
   const { t } = useLanguage()
 
   return (
@@ -109,7 +115,7 @@ function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
             {tier.popular && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap">
                 <Sparkles className="w-3.5 h-3.5" />
-                Phổ biến nhất
+                {t('Phổ biến nhất', 'Most popular')}
               </div>
             )}
 
