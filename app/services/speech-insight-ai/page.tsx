@@ -35,6 +35,8 @@ import {
   Trash2,
   ScrollText,
   Braces,
+  Bot,
+  MessageSquare,
   CheckCircle2,
   XCircle,
   ArrowRight,
@@ -43,6 +45,8 @@ import {
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { SpeechReportSample } from '@/components/services/speech-report-sample'
+import { ClaudeEngine } from '@/components/services/claude-engine'
+import { AnalysisDemo } from '@/components/services/analysis-demo'
 import { TechPayload } from '@/components/services/tech-payload'
 import { InsightAnalytics } from '@/components/services/insight-analytics'
 import { FaqAccordion } from '@/components/services/faq-accordion'
@@ -690,7 +694,60 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑤ DỮ LIỆU AI TRẢ VỀ (kỹ thuật) ═══════════ */}
+        {/* ═══════════ ⑤ BỘ NÃO PHÂN TÍCH — CLAUDE ═══════════ */}
+        <section className="py-12 lg:py-16 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+                <Bot className="w-4 h-4" />
+                {t('MÔ HÌNH AI', 'AI MODEL')}
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
+                {t('Bộ não đọc cuộc gọi là ', 'The brain reading your calls is ')}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  Claude
+                </span>
+                {t(' của Anthropic', ' by Anthropic')}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t(
+                  'Chúng tôi nói thẳng mình dùng gì. Bên dưới là bốn lý do kỹ thuật cho lựa chọn đó — và ranh giới rõ ràng giữa việc AI làm và việc con người quyết định.',
+                  'We are upfront about what we run on. Below are the four technical reasons for that choice — and a clear line between what the AI does and what people decide.'
+                )}
+              </p>
+            </div>
+
+            <ClaudeEngine />
+          </div>
+        </section>
+
+        {/* ═══════════ ⑥ DEMO PHÂN TÍCH CỤ THỂ ═══════════ */}
+        <section id="demo-phan-tich" className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+                <MessageSquare className="w-4 h-4" />
+                {t('DEMO PHÂN TÍCH', 'ANALYSIS DEMO')}
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
+                {t('Cùng một cuộc gọi, ', 'The same call — ')}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  {t('AI nhìn ra những gì', 'here is what the AI sees')}
+                </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t(
+                  'Chọn ngành gần với bạn nhất, rồi đi theo ba bước: nghe đoạn hội thoại, xem AI đọc ra tín hiệu gì, và nhận dữ liệu trả về.',
+                  'Pick the industry closest to yours, then follow three steps: read the conversation, see the signals the AI picks up, and get the data back.'
+                )}
+              </p>
+            </div>
+
+            <AnalysisDemo />
+          </div>
+        </section>
+
+        {/* ═══════════ ⑦ DỮ LIỆU AI TRẢ VỀ (kỹ thuật) ═══════════ */}
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -724,7 +781,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑥ AI PHÂN TÍCH DỮ LIỆU (tổng hợp) ═══════════ */}
+        {/* ═══════════ ⑧ AI PHÂN TÍCH DỮ LIỆU (tổng hợp) ═══════════ */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -750,7 +807,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑦ QUY TRÌNH 6 BƯỚC (nền tối) ═══════════ */}
+        {/* ═══════════ ⑨ QUY TRÌNH 6 BƯỚC (nền tối) ═══════════ */}
         <section className="py-12 lg:py-16 bg-foreground text-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -803,7 +860,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑧ BẢO MẬT & TUÂN THỦ ═══════════ */}
+        {/* ═══════════ ⑩ BẢO MẬT & TUÂN THỦ ═══════════ */}
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -853,7 +910,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑨ TÍCH HỢP ═══════════ */}
+        {/* ═══════════ ⑪ TÍCH HỢP ═══════════ */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-cyan-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -945,7 +1002,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑩ FAQ ═══════════ */}
+        {/* ═══════════ ⑫ FAQ ═══════════ */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -972,7 +1029,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑪ CTA CUỐI ═══════════ */}
+        {/* ═══════════ ⑬ CTA CUỐI ═══════════ */}
         <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-cyan-600 to-teal-600">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Hộp trung thực — giữ lại từ khối "Kết quả đo được" */}
