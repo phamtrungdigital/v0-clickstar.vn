@@ -40,14 +40,15 @@ const CRM_FIELDS: { label: string; value: string }[] = [
 
 const SCORE_CRITERIA = ['Chào hỏi & xác nhận nhu cầu', 'Khai thác ngân sách', 'Xử lý phản đối', 'Chốt bước tiếp theo']
 
-function TranscriptPanel({ label }: { label: string }) {
+function TranscriptPanel({ label, className = '' }: { label: string; className?: string }) {
   return (
-    <div className="rounded-2xl bg-slate-900 border border-white/10 overflow-hidden">
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10">
+    <div className={`rounded-2xl bg-slate-900 border border-white/10 overflow-hidden flex flex-col ${className}`}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 flex-shrink-0">
         <FileAudio className="w-4 h-4 text-slate-400 flex-shrink-0" />
         <span className="text-xs font-medium text-slate-300">{label}</span>
       </div>
-      <div className="p-4 space-y-3">
+      {/* flex-1 để panel giãn đầy chiều cao cột → 2 cột desktop đều nhau */}
+      <div className="p-4 space-y-3 flex-1">
         {TRANSCRIPT.map((line, i) => (
           <div key={i} className={`text-[11px] sm:text-xs font-mono leading-relaxed ${line.flag ? 'rounded-md bg-rose-500/10 border border-rose-500/30 p-2 -mx-1' : ''}`}>
             <span className="text-slate-500">[{line.t}]</span>{' '}
@@ -59,7 +60,7 @@ function TranscriptPanel({ label }: { label: string }) {
           </div>
         ))}
       </div>
-      <div className="flex flex-wrap gap-2 px-4 pb-4">
+      <div className="flex flex-wrap gap-2 px-4 pb-4 flex-shrink-0">
         {['Sale nói 62%', 'Khách nói 38%', '2 lần ngắt lời'].map((chip) => (
           <span key={chip} className="text-[10px] px-2 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400">
             {chip}
@@ -79,29 +80,23 @@ export function SpeechReportSample() {
 
   return (
     <>
-      {/* ── Desktop: 2 cột trước/sau ── */}
-      <div className="hidden lg:grid lg:grid-cols-2 gap-6 items-start">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-            {t('TRƯỚC', 'BEFORE')}
-          </p>
-          <TranscriptPanel label={beforeLabel} />
+      {/* ── Desktop: 2 cột trước/sau — cùng cấu trúc header, cùng chiều cao ── */}
+      <div className="hidden lg:grid lg:grid-cols-2 gap-6">
+        <div className="flex flex-col">
+          <ColumnHeader eyebrow={t('TRƯỚC', 'BEFORE')} note={beforeLabel} />
+          <TranscriptPanel label={t('Bản ghi cuộc gọi', 'Call transcript')} className="flex-1" />
         </div>
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600 mb-3">
-            {t('SAU KHI AI XỬ LÝ', 'AFTER AI PROCESSING')}
-          </p>
-          <ResultCards afterLabel={afterLabel} language={language} t={t} />
+        <div className="flex flex-col">
+          <ColumnHeader eyebrow={t('SAU KHI AI XỬ LÝ', 'AFTER AI PROCESSING')} note={afterLabel} accent />
+          <ResultCards language={language} t={t} className="flex-1" />
         </div>
       </div>
 
       {/* ── Mobile: kết quả TRƯỚC, transcript gốc thu gọn ── */}
       <div className="lg:hidden space-y-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600 mb-3">
-            {t('SAU KHI AI XỬ LÝ', 'AFTER AI PROCESSING')}
-          </p>
-          <ResultCards afterLabel={afterLabel} language={language} t={t} />
+          <ColumnHeader eyebrow={t('SAU KHI AI XỬ LÝ', 'AFTER AI PROCESSING')} note={afterLabel} accent />
+          <ResultCards language={language} t={t} />
         </div>
 
         <button
@@ -122,19 +117,36 @@ export function SpeechReportSample() {
   )
 }
 
+/**
+ * Header 2 cột — CÙNG cấu trúc và CÙNG chiều cao (min-h) để nội dung 2 bên
+ * bắt đầu trên cùng một đường ngang.
+ */
+function ColumnHeader({ eyebrow, note, accent = false }: { eyebrow: string; note: string; accent?: boolean }) {
+  return (
+    <div className="mb-3 min-h-[44px]">
+      <p
+        className={`text-xs font-semibold uppercase tracking-wider ${
+          accent ? 'text-cyan-600' : 'text-muted-foreground'
+        }`}
+      >
+        {eyebrow}
+      </p>
+      <p className="text-xs text-muted-foreground mt-1">{note}</p>
+    </div>
+  )
+}
+
 function ResultCards({
-  afterLabel,
   language,
   t,
+  className = '',
 }: {
-  afterLabel: string
   language: string
   t: (vi: string, en: string) => string
+  className?: string
 }) {
   return (
-    <div className="space-y-4">
-      <p className="text-xs text-muted-foreground">{afterLabel}</p>
-
+    <div className={`flex flex-col gap-4 ${className}`}>
       {/* Card A — AI phân tích */}
       <div className="rounded-2xl bg-white border border-border shadow-lg shadow-cyan-500/5 p-5">
         <div className="flex items-center gap-2 mb-4">
