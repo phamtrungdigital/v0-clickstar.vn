@@ -109,7 +109,7 @@ function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
             {tier.popular && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap">
                 <Sparkles className="w-3.5 h-3.5" />
-                Phổ biến nhất
+                {t('Phổ biến nhất', 'Most popular')}
               </div>
             )}
 
