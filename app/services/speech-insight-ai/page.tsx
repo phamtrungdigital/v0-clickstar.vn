@@ -324,6 +324,13 @@ export default function SpeechInsightAiPage() {
 
   const securityPoints = [
     {
+      icon: <Bot className="w-5 h-5" />,
+      title: t(
+        'Dữ liệu cuộc gọi của bạn không được dùng để huấn luyện mô hình AI',
+        'Your call data is not used to train AI models'
+      ),
+    },
+    {
       icon: <Lock className="w-5 h-5" />,
       title: t('Mã hoá khi truyền và khi lưu trữ', 'Encrypted in transit and at rest'),
     },
@@ -901,8 +908,8 @@ export default function SpeechInsightAiPage() {
 
                 <p className="text-muted-foreground">
                   {t(
-                    'Các thông số triển khai cụ thể — nơi lưu trữ dữ liệu, mô hình AI sử dụng, khả năng cài đặt riêng tại hạ tầng của bạn và thời gian lưu trữ — sẽ được xác nhận bằng văn bản trong buổi trao đổi kỹ thuật, trước khi bạn gửi bất kỳ file ghi âm nào.',
-                    'Specific deployment parameters — where data is stored, which AI models are used, private/on-premise deployment options and retention periods — are confirmed in writing during the technical session, before you send us a single recording.'
+                    'Mô hình AI sử dụng đã được nêu rõ ở phần trên. Các thông số triển khai còn lại — nơi lưu trữ dữ liệu, khả năng cài đặt riêng tại hạ tầng của bạn và thời gian lưu trữ — sẽ được xác nhận bằng văn bản trong buổi trao đổi kỹ thuật, trước khi bạn gửi bất kỳ file ghi âm nào.',
+                    'The AI model we run on is stated openly above. The remaining deployment parameters — where data is stored, private/on-premise deployment options and retention periods — are confirmed in writing during the technical session, before you send us a single recording.'
                   )}
                 </p>
               </div>
