@@ -33,6 +33,7 @@ import {
   EyeOff,
   Trash2,
   ScrollText,
+  Braces,
   CheckCircle2,
   XCircle,
   ArrowRight,
@@ -41,6 +42,8 @@ import {
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { SpeechReportSample } from '@/components/services/speech-report-sample'
+import { TechPayload } from '@/components/services/tech-payload'
+import { InsightAnalytics } from '@/components/services/insight-analytics'
 import { FaqAccordion } from '@/components/services/faq-accordion'
 import { useLanguage } from '@/contexts/language-context'
 import { useServiceCta } from '@/contexts/web-content-context'
@@ -382,24 +385,27 @@ export default function SpeechInsightAiPage() {
               <div>
                 <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-cyan-500/25">
                   <AudioLines className="w-4 h-4" />
-                  {t('SPEECH INSIGHT AI — PHÂN TÍCH CUỘC GỌI BẰNG AI', 'SPEECH INSIGHT AI — AI CALL ANALYTICS')}
+                  {t('PHÂN TÍCH CUỘC GỌI BẰNG AI', 'AI CALL ANALYTICS')}
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-                  {t('Phân tích cuộc gọi bằng AI: ', 'AI call analytics: ')}
+                  {t('Biến mọi cuộc gọi thành ', 'Turn every call into ')}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
-                    {t('nghe 100% cuộc gọi', 'hear 100% of your calls')}
+                    {t('dữ liệu bán hàng', 'sales data')}
                   </span>
-                  {t(
-                    ', thay vì nghe mẫu vài phần trăm rồi đoán phần còn lại',
-                    ', instead of sampling a few percent and guessing the rest'
-                  )}
                 </h1>
 
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
+                <p className="text-lg text-muted-foreground leading-relaxed mb-4 max-w-xl">
                   {t(
-                    'Kết nối tổng đài sẵn có của bạn. Mỗi cuộc gọi kết thúc, Speech Insight AI tự bóc băng tiếng Việt, tóm tắt, chấm điểm theo kịch bản của doanh nghiệp, trích xuất nhu cầu – ngân sách – lý do từ chối và cập nhật hồ sơ trong CRM.',
-                    'Connect your existing phone system. The moment a call ends, Speech Insight AI transcribes it in Vietnamese, summarises it, scores it against your playbook, extracts needs, budget and objections, then updates the record in your CRM.'
+                    'AI nghe thay bạn, chấm điểm và điền thẳng vào CRM.',
+                    'AI listens for you, scores the call and writes straight into your CRM.'
+                  )}
+                </p>
+
+                <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-xl">
+                  {t(
+                    'Speech Insight AI kết nối tổng đài sẵn có, tự bóc băng tiếng Việt và trích xuất nhu cầu – ngân sách – lý do từ chối sau mỗi cuộc gọi.',
+                    'Speech Insight AI connects to your existing phone system, transcribes Vietnamese automatically and extracts needs, budget and objections after every call.'
                   )}
                 </p>
 
@@ -689,7 +695,67 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑤ QUY TRÌNH 6 BƯỚC (nền tối) ═══════════ */}
+        {/* ═══════════ ⑤ DỮ LIỆU AI TRẢ VỀ (kỹ thuật) ═══════════ */}
+        <section className="py-12 lg:py-16 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+                <Braces className="w-4 h-4" />
+                {t('DỮ LIỆU TRẢ VỀ', 'DATA OUTPUT')}
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
+                {t('Không phải hộp đen — ', 'Not a black box — ')}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  {t('dữ liệu có cấu trúc', 'structured data')}
+                </span>
+                {t(' đội kỹ thuật dùng được ngay', ' your engineers can use right away')}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t(
+                  'Mỗi cuộc gọi phân tích xong trả về một bản ghi JSON đầy đủ, bắn webhook về hệ thống của bạn hoặc lấy theo lô qua API.',
+                  'Every analysed call returns a complete JSON record, delivered by webhook to your system or pulled in batches via API.'
+                )}
+              </p>
+            </div>
+
+            <TechPayload />
+
+            <p className="text-center text-sm text-muted-foreground mt-6">
+              {t(
+                'Ví dụ minh hoạ cấu trúc dữ liệu. Tên trường và ánh xạ sang CRM được cấu hình theo hệ thống của bạn.',
+                'Illustrative data structure. Field names and CRM mapping are configured to match your system.'
+              )}
+            </p>
+          </div>
+        </section>
+
+        {/* ═══════════ ⑥ AI PHÂN TÍCH DỮ LIỆU (tổng hợp) ═══════════ */}
+        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+                <BarChart3 className="w-4 h-4" />
+                {t('AI PHÂN TÍCH DỮ LIỆU', 'AI DATA ANALYSIS')}
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
+                {t('Từ từng cuộc gọi lên ', 'From single calls to ')}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  {t('bức tranh toàn đội', 'the whole team picture')}
+                </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                {t(
+                  'Khi đã có hàng nghìn cuộc gọi ở dạng dữ liệu, AI trả lời được những câu mà trước đây chỉ có thể phỏng đoán.',
+                  'Once thousands of calls exist as data, AI answers questions that used to be pure guesswork.'
+                )}
+              </p>
+            </div>
+
+            <InsightAnalytics />
+          </div>
+        </section>
+
+        {/* ═══════════ ⑦ QUY TRÌNH 6 BƯỚC (nền tối) ═══════════ */}
         <section className="py-12 lg:py-16 bg-foreground text-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
@@ -742,7 +808,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑥ BẢO MẬT & TUÂN THỦ ═══════════ */}
+        {/* ═══════════ ⑧ BẢO MẬT & TUÂN THỦ ═══════════ */}
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -792,7 +858,7 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑦ TÍCH HỢP ═══════════ */}
+        {/* ═══════════ ⑨ TÍCH HỢP ═══════════ */}
         <section className="py-12 lg:py-16 bg-gradient-to-b from-cyan-50 to-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
