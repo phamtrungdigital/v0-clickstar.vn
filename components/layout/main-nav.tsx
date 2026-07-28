@@ -23,6 +23,7 @@ const navItemsData = {
         { label: 'Tích hợp AI', href: '/services/ai-integration' },
         { label: 'AI Automation', href: '/services/automation' },
         { label: 'CRM & CDP', href: '/services/crm-cdp' },
+        { label: 'Phân tích cuộc gọi AI', href: '/services/speech-insight-ai', badge: 'MỚI' },
       ],
     },
     { label: 'ADS hub', href: '/ads-hub', badge: 'MỚI' },
@@ -51,6 +52,7 @@ const navItemsData = {
         { label: 'AI Integration', href: '/services/ai-integration' },
         { label: 'AI Automation', href: '/services/automation' },
         { label: 'CRM & CDP', href: '/services/crm-cdp' },
+        { label: 'AI Call Analytics', href: '/services/speech-insight-ai', badge: 'NEW' },
       ],
     },
     { label: 'ADS hub', href: '/ads-hub', badge: 'NEW' },
@@ -179,6 +181,11 @@ export function MainNav() {
                           <span className="relative transform group-hover/item:translate-x-2 transition-transform duration-200">
                             {dropdownItem.label}
                           </span>
+                          {'badge' in dropdownItem && dropdownItem.badge && (
+                            <span className="ml-auto text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white">
+                              {dropdownItem.badge}
+                            </span>
+                          )}
                         </Link>
                       ))}
                     </div>
@@ -279,6 +286,11 @@ export function MainNav() {
                         >
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-primary/30 rounded-full group-hover/sub:bg-primary transition-colors duration-200" />
                           <span className="transform group-hover/sub:translate-x-1 inline-block transition-transform duration-200">{dropdownItem.label}</span>
+                          {'badge' in dropdownItem && dropdownItem.badge && (
+                            <span className="ml-2 text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white align-middle">
+                              {dropdownItem.badge}
+                            </span>
+                          )}
                         </Link>
                       ))}
                     </div>

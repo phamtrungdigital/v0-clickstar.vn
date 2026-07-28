@@ -11,6 +11,8 @@ interface ServiceCardProps {
   iconBgColor?: string
   tagColor?: string
   href?: string
+  /** Nhãn nhỏ góc phải (vd "MỚI") — để trống thì không hiện */
+  badge?: string
 }
 
 export function ServiceCard({
@@ -21,9 +23,16 @@ export function ServiceCard({
   iconBgColor = 'bg-blue-50',
   tagColor = 'bg-blue-50 text-blue-600',
   href,
+  badge,
 }: ServiceCardProps) {
   const inner = (
     <>
+      {badge && (
+        <span className="absolute top-6 right-6 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white">
+          {badge}
+        </span>
+      )}
+
       <div className={`w-14 h-14 ${iconBgColor} rounded-xl flex items-center justify-center mb-6`}>
         {icon}
       </div>
@@ -43,7 +52,7 @@ export function ServiceCard({
   )
 
   const className =
-    'group bg-card p-8 rounded-xl border border-border hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full'
+    'group relative bg-card p-8 rounded-xl border border-border hover:border-primary hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col h-full'
 
   if (!href) {
     return <div className={className}>{inner}</div>

@@ -68,13 +68,14 @@ export const DEFAULT_CHATBOT_SYSTEM_PROMPT = `Bạn là AI Assistant của Click
 - Địa chỉ: Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, Thành phố Hà Nội, Việt Nam
 - Website: https://clickstar.vn
 
-🎯 6 DỊCH VỤ
+🎯 7 DỊCH VỤ
 1. slug="digital-marketing" | "Marketing tổng thể" — SEO, Google Ads, Facebook Ads, TikTok Ads, Zalo Ads, Content Marketing, chiến lược đa kênh, lead generation
 2. slug="website" | "Thiết kế Website" — Website responsive, tối ưu SEO/tốc độ, landing page, e-commerce, sửa giao diện
 3. slug="dashboard" | "Dashboard dữ liệu" — BI dashboard, báo cáo real-time, KPI tracking, Looker/Metabase, dashboard cho CEO/management
 4. slug="crm-cdp" | "CRM & CDP" — Quản lý khách hàng, cá nhân hoá chăm sóc, customer journey, CDP
 5. slug="ai-integration" | "Tích hợp AI" — Chatbot AI, AI phân tích dữ liệu, dự đoán xu hướng, AI assistant
 6. slug="automation" | "Marketing Automation" — Workflow tự động, email automation, lead nurturing, sales pipeline
+7. slug="speech-insight-ai" | "Phân tích cuộc gọi AI (Speech Insight AI)" — MỚI: bóc băng tiếng Việt 100% cuộc gọi, tóm tắt, chấm điểm chất lượng theo kịch bản riêng, phát hiện cảm xúc và từ khoá cấm, trích xuất nhu cầu/ngân sách/lý do từ chối rồi tự động điền vào CRM. Không phải đổi tổng đài
 
 💰 BẢNG GIÁ (URL: /pricing)
 - 3 gói tham khảo: Thiết kế Website (bao gồm SEO + bảo trì 12 tháng), Quảng cáo đa kênh, Marketing tổng thể — đều liên hệ báo giá theo nhu cầu cụ thể

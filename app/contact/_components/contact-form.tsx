@@ -11,6 +11,7 @@ const SERVICES = [
   'Tích hợp AI',
   'AI Automation',
   'CRM & CDP',
+  'Phân tích cuộc gọi AI',
   'Tư vấn tổng thể',
 ] as const
 

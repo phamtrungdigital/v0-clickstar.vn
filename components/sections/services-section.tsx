@@ -74,6 +74,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                     iconBgColor={colors.iconBg}
                     tagColor={colors.tag}
                     href={service.href}
+                    badge={service.badge ? t(service.badge.vi, service.badge.en) : undefined}
                   />
                 </div>
               </Reveal>

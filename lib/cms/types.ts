@@ -61,6 +61,8 @@ export type ServiceItem = {
   tag: I18n
   color: 'blue' | 'purple' | 'pink' | 'amber' | 'emerald' | 'cyan'
   href?: string
+  /** Nhãn nhỏ góc phải thẻ (vd "MỚI"/"NEW") — để trống thì không hiện */
+  badge?: I18n
 }
 
 export type ServicesContent = {
