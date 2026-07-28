@@ -24,6 +24,7 @@ const SERVICE_LABELS: Record<string, string> = {
   ai: 'Tích hợp AI',
   automation: 'AI Automation',
   crm: 'CRM & CDP',
+  speech: 'Phân tích cuộc gọi AI',
   pricing: 'Tư vấn tổng thể',
 }
 

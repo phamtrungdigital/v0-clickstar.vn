@@ -26,6 +26,7 @@ const SERVICE_OPTIONS = [
   'Tích hợp AI',
   'AI Automation',
   'CRM & CDP',
+  'Phân tích cuộc gọi AI',
   'Tư vấn tổng thể',
 ]
 

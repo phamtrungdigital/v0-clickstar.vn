@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: `${siteName} - Giải pháp chuyển đổi số toàn diện`,
     description:
       settings?.default_seo_description?.vi ||
-      'Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, Automation và CRM/CDP cho doanh nghiệp Việt Nam',
+      'Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, Automation, CRM/CDP và Phân tích cuộc gọi AI cho doanh nghiệp Việt Nam',
     generator: 'v0.app',
     icons,
     openGraph: ogImage ? { images: [ogImage] } : undefined,

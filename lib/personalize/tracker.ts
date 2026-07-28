@@ -18,6 +18,7 @@ const PAGE_INTEREST: { match: (p: string) => boolean; category: string; weight: 
   { match: (p) => p.startsWith('/services/ai-integration'), category: 'ai', weight: 3 },
   { match: (p) => p.startsWith('/services/automation'), category: 'automation', weight: 3 },
   { match: (p) => p.startsWith('/services/crm-cdp'), category: 'crm', weight: 3 },
+  { match: (p) => p.startsWith('/services/speech-insight-ai'), category: 'speech', weight: 3 },
   { match: (p) => p.startsWith('/projects'), category: 'projects', weight: 2 },
   { match: (p) => p.startsWith('/blog'), category: 'content', weight: 1 },
   { match: (p) => p === '/about', category: 'about', weight: 1 },
@@ -31,6 +32,7 @@ export const CATEGORY_TO_SERVICE: Record<string, string> = {
   ai: 'Tích hợp AI',
   automation: 'AI Automation',
   crm: 'CRM & CDP',
+  speech: 'Phân tích cuộc gọi AI',
   pricing: 'Tư vấn tổng thể',
 }
 

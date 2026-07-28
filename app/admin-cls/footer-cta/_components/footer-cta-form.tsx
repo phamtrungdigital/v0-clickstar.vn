@@ -19,6 +19,7 @@ import type { I18n } from '@/lib/cms/types'
 const CTA_LABELS: Record<string, string> = {
   'digital-marketing': 'Trang Digital Marketing — /services/digital-marketing',
   website: 'Trang Thiết kế Website — /services/website',
+  'speech-insight-ai': 'Trang Phân tích cuộc gọi AI — /services/speech-insight-ai',
 }
 
 function initDraft(initial: WebContent | null): WebContentUpdate {

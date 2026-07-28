@@ -4,7 +4,7 @@ import type { ServicesContent, ServiceItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
 import { ImagePicker } from './image-picker'
 
-const COLORS: ServiceItem['color'][] = ['blue', 'purple', 'pink', 'amber', 'emerald', 'cyan']
+const COLORS: ServiceItem['color'][] = ['blue', 'purple', 'pink', 'amber', 'emerald', 'cyan', 'teal']
 
 export function ServicesForm({
   content,
@@ -125,6 +125,16 @@ export function ServicesForm({
                 }
                 placeholder="/services/digital-marketing  hoặc  https://example.com"
                 hint="Nội bộ: bắt đầu bằng / (vd /services/website). Bên ngoài: dán full URL https://… (mở tab mới). Để trống = không click được."
+              />
+              <I18nInput
+                label="🏷️ Nhãn góc thẻ (để trống = không hiện)"
+                value={service.badge ?? { vi: '', en: '' }}
+                onChange={(v) =>
+                  updateService(idx, {
+                    ...service,
+                    badge: v.vi.trim() === '' && v.en.trim() === '' ? undefined : v,
+                  })
+                }
               />
             </div>
           </details>

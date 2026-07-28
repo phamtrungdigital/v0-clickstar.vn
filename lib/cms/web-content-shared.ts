@@ -50,8 +50,12 @@ export type WebContentUpdate = {
   service_ctas: ServiceCtas
 }
 
-/** Slug các trang dịch vụ có CTA chỉnh được (mở rộng sau nếu cần). */
-export const CTA_SLUGS = ['digital-marketing', 'website'] as const
+/**
+ * Slug các trang dịch vụ có CTA chỉnh được.
+ * ⚠️ Thêm slug ở đây PHẢI thêm luôn entry tương ứng trong DEFAULT_SERVICE_CTAS bên dưới
+ * (footer-cta-form dựng lại service_ctas CHỈ từ mảng này → thiếu là mất key khi admin Lưu).
+ */
+export const CTA_SLUGS = ['digital-marketing', 'website', 'speech-insight-ai'] as const
 
 export const SOCIAL_KEYS: (keyof FooterSocial)[] = [
   'facebook',
@@ -132,6 +136,24 @@ export const DEFAULT_SERVICE_CTAS: ServiceCtas = {
       href: 'tel:0977713428',
     },
     secondary: { label: { vi: 'Nhận báo giá qua email', en: 'Get quote via email' }, href: '/contact' },
+  },
+  'speech-insight-ai': {
+    heading: {
+      vi: 'Gửi chúng tôi 50 cuộc gọi thật. Nhận lại bản phân tích của chính đội bạn.',
+      en: 'Send us 50 real calls. Get back an analysis of your own team.',
+    },
+    description: {
+      vi: 'Không cần đổi tổng đài, không cần cam kết trước. Chúng tôi bóc băng, chấm điểm, trích xuất dữ liệu rồi ngồi cùng bạn soát kết quả. Sau buổi review, bạn quyết định có triển khai hay không.',
+      en: 'No phone system change, no upfront commitment. We transcribe, score and extract the data, then review the results together with you. After that session, you decide whether to proceed.',
+    },
+    primary: {
+      label: { vi: 'Nhận phân tích thử', en: 'Get a free trial analysis' },
+      href: '/contact?service=Ph%C3%A2n%20t%C3%ADch%20cu%E1%BB%99c%20g%E1%BB%8Di%20AI',
+    },
+    secondary: {
+      label: { vi: 'Gọi ngay: 0977 713 428', en: 'Call now: 0977 713 428' },
+      href: 'tel:0977713428',
+    },
   },
 }
 
