@@ -1060,8 +1060,13 @@ export default function SpeechInsightAiPage() {
                 <ListChecks className="w-4 h-4" />
                 {t('CÂU HỎI THƯỜNG GẶP', 'FREQUENTLY ASKED')}
               </span>
+              {/* Số câu lấy thẳng từ FAQ_ITEMS.length — thêm/bớt câu là tiêu đề tự đúng.
+                  Trước đây hardcode "Bảy câu" nên khi thêm 2 câu về mô hình AI thì sai số. */}
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground">
-                {t('Bảy câu quản lý sale hay hỏi nhất — ', 'The seven questions sales leaders ask most — ')}
+                {t(
+                  `${FAQ_ITEMS.length} câu quản lý sale hay hỏi nhất — `,
+                  `The ${FAQ_ITEMS.length} questions sales leaders ask most — `
+                )}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
                   {t('trả lời thẳng', 'answered directly')}
                 </span>
