@@ -25,6 +25,7 @@ export type SectionType =
   | 'pricing_setup_addons'
   | 'pricing_grouped_tiers'
   | 'ads_hub_screenshots'
+  | 'client_logos'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -406,6 +407,24 @@ export type AdsHubScreenshotsContent = {
   items: AdsHubScreenshotItem[]
 }
 
+// ---------- Client Logos (dải logo khách hàng — bằng chứng uy tín) ----------
+/**
+ * ⚠️ Logo ở đây là của DOANH NGHIỆP KHÁC. Chỉ đăng khi khách đã đồng ý cho dùng
+ * nhãn hiệu (điều khoản hợp đồng hoặc email xác nhận) — anh Trung nắm phần này.
+ * `name` KHÔNG hiển thị trên giao diện, nó là alt text cho trình đọc màn hình
+ * và cho trường hợp ảnh lỗi, nên vẫn phải điền.
+ */
+export type ClientLogoItem = {
+  logo: string // URL ảnh, upload trong admin (Supabase Storage)
+  name: I18n // tên khách — dùng làm alt, bắt buộc điền
+  href?: string // link website khách (tuỳ chọn)
+}
+
+export type ClientLogosContent = {
+  eyebrow: I18n // dòng chữ nhỏ phía trên, vd "ĐƯỢC TIN DÙNG BỞI"
+  items: ClientLogoItem[]
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -430,6 +449,7 @@ export type Section =
   | { id: string; type: 'pricing_tabs_nav'; enabled: boolean; content: PricingTabsNavContent }
   | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
   | { id: string; type: 'pricing_grouped_tiers'; enabled: boolean; content: PricingGroupedTiersContent }
+  | { id: string; type: 'client_logos'; enabled: boolean; content: ClientLogosContent }
   | { id: string; type: 'ads_hub_screenshots'; enabled: boolean; content: AdsHubScreenshotsContent }
 
 export type Page = {

@@ -58,6 +58,7 @@ import { PricingTabsNavForm } from './pricing-tabs-nav-form'
 import { PricingSetupAddonsForm } from './pricing-setup-addons-form'
 import { PricingGroupedTiersForm } from './pricing-grouped-tiers-form'
 import { AdsHubScreenshotsForm } from './ads-hub-screenshots-form'
+import { ClientLogosForm } from './client-logos-form'
 import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -80,6 +81,7 @@ const SECTION_LABELS: Record<string, string> = {
   about_values: 'About — Giá trị cốt lõi',
   about_timeline: 'About — Hành trình (timeline)',
   about_why_choose_us: 'About — Tại sao chọn (gallery)',
+  client_logos: 'Logo khách hàng (dải uy tín)',
 }
 
 function renderForm(section: Section, onChange: (c: any) => void) {
@@ -130,6 +132,8 @@ function renderForm(section: Section, onChange: (c: any) => void) {
       return <PricingGroupedTiersForm content={section.content} onChange={onChange} />
     case 'ads_hub_screenshots':
       return <AdsHubScreenshotsForm content={section.content} onChange={onChange} />
+    case 'client_logos':
+      return <ClientLogosForm content={section.content} onChange={onChange} />
   }
 }
 

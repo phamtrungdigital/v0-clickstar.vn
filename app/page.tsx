@@ -9,6 +9,7 @@ import { TeamSection } from '@/components/sections/team-section'
 import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
+import { ClientLogos } from '@/components/sections/client-logos'
 import { AiServiceRouter } from '@/components/sections/ai-service-router'
 import { Footer } from '@/components/layout/footer'
 // EditModeOverlay moved to app/layout.tsx — covers all pages now
@@ -71,6 +72,8 @@ function renderSection(section: Section) {
       return <BlogSection key={section.id} content={section.content} />
     case 'cta':
       return <CTASection key={section.id} content={section.content} />
+    case 'client_logos':
+      return <ClientLogos key={section.id} content={section.content} />
   }
 }
 
