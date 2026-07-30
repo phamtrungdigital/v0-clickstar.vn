@@ -2,7 +2,30 @@
 
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/language-context'
-import type { ClientLogosContent, ClientLogoItem } from '@/lib/cms/types'
+import type { ClientLogosContent, ClientLogoItem, ClientLogoSize } from '@/lib/cms/types'
+
+/**
+ * Cỡ logo — CHIỀU CAO là thứ quyết định với logo vuông (object-contain co ảnh
+ * theo cạnh ngắn nhất của ô). Class phải viết NGUYÊN CHUỖI, không ghép động,
+ * nếu không Tailwind sẽ không sinh ra class lúc build.
+ */
+const SIZE_STYLE: Record<ClientLogoSize, { box: string; cols: string; sizes: string }> = {
+  md: {
+    box: 'h-10 sm:h-12',
+    cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
+    sizes: '(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 160px',
+  },
+  lg: {
+    box: 'h-16 sm:h-20',
+    cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5',
+    sizes: '(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 200px',
+  },
+  xl: {
+    box: 'h-20 sm:h-28',
+    cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
+    sizes: '(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 260px',
+  },
+}
 
 /**
  * Dải logo khách hàng — "Kiểu A" anh Trung chọn 28/7/2026:
@@ -24,6 +47,8 @@ export function ClientLogos({ content }: { content: ClientLogosContent }) {
   const items = (content.items ?? []).filter((i) => i.logo)
   if (items.length === 0) return null
 
+  const style = SIZE_STYLE[content.size ?? 'lg']
+
   return (
     <section
       data-cms-section="client_logos"
@@ -39,9 +64,9 @@ export function ClientLogos({ content }: { content: ClientLogosContent }) {
           </p>
         )}
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-8 items-center">
+        <div className={`grid ${style.cols} gap-x-8 gap-y-10 items-center`}>
           {items.map((item, idx) => (
-            <LogoCell key={idx} item={item} index={idx} />
+            <LogoCell key={idx} item={item} index={idx} style={style} />
           ))}
         </div>
       </div>
@@ -49,18 +74,28 @@ export function ClientLogos({ content }: { content: ClientLogosContent }) {
   )
 }
 
-function LogoCell({ item, index }: { item: ClientLogoItem; index: number }) {
+function LogoCell({
+  item,
+  index,
+  style,
+}: {
+  item: ClientLogoItem
+  index: number
+  style: { box: string; sizes: string }
+}) {
   const { language } = useLanguage()
   const name = (language === 'en' ? item.name?.en : item.name?.vi) || item.name?.vi || ''
 
   const logo = (
-    <span className="relative block h-10 sm:h-12 w-full grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100">
+    <span
+      className={`relative block ${style.box} w-full grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100`}
+    >
       <Image
         src={item.logo}
         alt={name}
         fill
         quality={95}
-        sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 160px"
+        sizes={style.sizes}
         className="object-contain"
       />
     </span>

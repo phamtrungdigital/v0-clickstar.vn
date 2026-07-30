@@ -1,7 +1,7 @@
 'use client'
 
 import { Plus, Trash2 } from 'lucide-react'
-import type { ClientLogosContent, ClientLogoItem } from '@/lib/cms/types'
+import type { ClientLogosContent, ClientLogoItem, ClientLogoSize } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
 import { ImagePicker } from './image-picker'
 
@@ -49,6 +49,25 @@ export function ClientLogosForm({
         />
         <p className="text-[10px] text-slate-500 mt-1">
           vd: ĐƯỢC TIN DÙNG BỞI. Để trống thì không hiện dòng này.
+        </p>
+      </div>
+
+      <div id="form-client_logos.size" className="scroll-mt-32">
+        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          Cỡ logo
+        </label>
+        <select
+          value={content.size ?? 'lg'}
+          onChange={(e) => onChange({ ...content, size: e.target.value as ClientLogoSize })}
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        >
+          <option value="md">Vừa — cao 48px, 6 logo mỗi hàng</option>
+          <option value="lg">Lớn — cao 80px, 5 logo mỗi hàng (mặc định)</option>
+          <option value="xl">Rất lớn — cao 112px, 4 logo mỗi hàng</option>
+        </select>
+        <p className="text-[10px] text-slate-500 mt-1">
+          Logo vuông thì chiều cao mới quyết định to hay bé. Cỡ càng lớn, số logo mỗi hàng càng ít
+          để có chỗ thở.
         </p>
       </div>
 

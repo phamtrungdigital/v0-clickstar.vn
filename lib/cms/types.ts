@@ -420,8 +420,16 @@ export type ClientLogoItem = {
   href?: string // link website khách (tuỳ chọn)
 }
 
+/**
+ * Cỡ logo. Với logo VUÔNG thì CHIỀU CAO ô quyết định logo to hay bé —
+ * `object-contain` co ảnh vừa cạnh ngắn nhất, nên nới chiều rộng không ăn thua.
+ * Cỡ càng lớn thì số cột càng giảm để logo có chỗ thở.
+ */
+export type ClientLogoSize = 'md' | 'lg' | 'xl'
+
 export type ClientLogosContent = {
   eyebrow: I18n // dòng chữ nhỏ phía trên, vd "ĐƯỢC TIN DÙNG BỞI"
+  size?: ClientLogoSize // thiếu field = 'lg' (mặc định), không cần sửa DB cũ
   items: ClientLogoItem[]
 }
 
