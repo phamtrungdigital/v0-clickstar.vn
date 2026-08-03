@@ -48,6 +48,11 @@ export function ClientLogos({ content }: { content: ClientLogosContent }) {
   if (items.length === 0) return null
 
   const style = SIZE_STYLE[content.size ?? 'lg']
+  // Mặc định logo HIỆN MÀU luôn. Bật grayscale trong admin thì mới xám → hover ra màu.
+  // 2 chuỗi class phải viết NGUYÊN VẸN, không ghép động (JIT sẽ không sinh class).
+  const effect = content.grayscale
+    ? 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100'
+    : 'group-hover:scale-105'
 
   return (
     <section
@@ -66,7 +71,7 @@ export function ClientLogos({ content }: { content: ClientLogosContent }) {
 
         <div className={`grid ${style.cols} gap-x-8 gap-y-10 items-center`}>
           {items.map((item, idx) => (
-            <LogoCell key={idx} item={item} index={idx} style={style} />
+            <LogoCell key={idx} item={item} index={idx} style={style} effect={effect} />
           ))}
         </div>
       </div>
@@ -78,17 +83,19 @@ function LogoCell({
   item,
   index,
   style,
+  effect,
 }: {
   item: ClientLogoItem
   index: number
   style: { box: string; sizes: string }
+  effect: string
 }) {
   const { language } = useLanguage()
   const name = (language === 'en' ? item.name?.en : item.name?.vi) || item.name?.vi || ''
 
   const logo = (
     <span
-      className={`relative block ${style.box} w-full grayscale opacity-60 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100`}
+      className={`relative block ${style.box} w-full transition-all duration-300 ${effect}`}
     >
       <Image
         src={item.logo}

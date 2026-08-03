@@ -428,8 +428,13 @@ export type ClientLogoItem = {
 export type ClientLogoSize = 'md' | 'lg' | 'xl'
 
 export type ClientLogosContent = {
-  eyebrow: I18n // dòng chữ nhỏ phía trên, vd "ĐƯỢC TIN DÙNG BỞI"
+  eyebrow: I18n // dòng chữ nhỏ phía trên, vd "CÔNG NGHỆ TÍCH HỢP"
   size?: ClientLogoSize // thiếu field = 'lg' (mặc định), không cần sửa DB cũ
+  /**
+   * true = logo xám, rê chuột mới ra màu thật.
+   * Thiếu field hoặc false = logo HIỆN MÀU luôn (anh Trung chốt 28/7/2026).
+   */
+  grayscale?: boolean
   items: ClientLogoItem[]
 }
 
