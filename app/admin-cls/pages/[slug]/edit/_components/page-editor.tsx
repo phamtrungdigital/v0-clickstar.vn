@@ -81,7 +81,7 @@ const SECTION_LABELS: Record<string, string> = {
   about_values: 'About — Giá trị cốt lõi',
   about_timeline: 'About — Hành trình (timeline)',
   about_why_choose_us: 'About — Tại sao chọn (gallery)',
-  client_logos: 'Logo khách hàng (dải uy tín)',
+  client_logos: 'Dải logo',
 }
 
 function renderForm(section: Section, onChange: (c: any) => void) {
@@ -188,6 +188,14 @@ function SortableSection({
           <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
           <span className="text-sm font-semibold text-slate-900 dark:text-white truncate">
             {SECTION_LABELS[section.type] || section.type}
+            {/* Một trang có thể có NHIỀU dải logo (vd "Công nghệ tích hợp" và
+                "Công nghệ lõi AI") — kèm nhãn để phân biệt, không thì trùng tên hệt nhau. */}
+            {section.type === 'client_logos' && section.content?.eyebrow?.vi && (
+              <span className="font-normal text-slate-500 dark:text-slate-400">
+                {' '}
+                — {section.content.eyebrow.vi}
+              </span>
+            )}
           </span>
           <span className="text-[10px] uppercase font-mono text-slate-400 flex-shrink-0">
             {section.type}
