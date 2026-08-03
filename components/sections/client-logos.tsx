@@ -8,22 +8,27 @@ import type { ClientLogosContent, ClientLogoItem, ClientLogoSize } from '@/lib/c
  * Cỡ logo — CHIỀU CAO là thứ quyết định với logo vuông (object-contain co ảnh
  * theo cạnh ngắn nhất của ô). Class phải viết NGUYÊN CHUỖI, không ghép động,
  * nếu không Tailwind sẽ không sinh ra class lúc build.
+ *
+ * Dùng flex-wrap + justify-center thay grid: hàng cuối lẻ (4/5, 3/5...) sẽ
+ * tự CĂN GIỮA thay vì dồn trái — grid không làm được điều này.
+ * `cell` là bề rộng cố định mỗi ô; mobile phải đủ hẹp để 2 ô/hàng lọt
+ * màn 375px (2×cell + gap-x-8 ≤ ~343px).
  */
-const SIZE_STYLE: Record<ClientLogoSize, { box: string; cols: string; sizes: string }> = {
+const SIZE_STYLE: Record<ClientLogoSize, { box: string; cell: string; sizes: string }> = {
   md: {
     box: 'h-10 sm:h-12',
-    cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-6',
-    sizes: '(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 160px',
+    cell: 'w-[8.5rem] sm:w-40',
+    sizes: '(max-width: 640px) 136px, 160px',
   },
   lg: {
     box: 'h-16 sm:h-20',
-    cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-5',
-    sizes: '(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 200px',
+    cell: 'w-[9.5rem] sm:w-52',
+    sizes: '(max-width: 640px) 152px, 208px',
   },
   xl: {
     box: 'h-20 sm:h-28',
-    cols: 'grid-cols-2 sm:grid-cols-3 lg:grid-cols-4',
-    sizes: '(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 260px',
+    cell: 'w-[9.5rem] sm:w-64',
+    sizes: '(max-width: 640px) 152px, 256px',
   },
 }
 
@@ -69,7 +74,7 @@ export function ClientLogos({ content }: { content: ClientLogosContent }) {
           </p>
         )}
 
-        <div className={`grid ${style.cols} gap-x-8 gap-y-10 items-center`}>
+        <div className="flex flex-wrap justify-center gap-x-8 gap-y-10 items-center">
           {items.map((item, idx) => (
             <LogoCell key={idx} item={item} index={idx} style={style} effect={effect} />
           ))}
@@ -87,7 +92,7 @@ function LogoCell({
 }: {
   item: ClientLogoItem
   index: number
-  style: { box: string; sizes: string }
+  style: { box: string; cell: string; sizes: string }
   effect: string
 }) {
   const { language } = useLanguage()
@@ -117,12 +122,12 @@ function LogoCell({
       title={name}
       data-cms-field="logo"
       data-cms-item-index={index}
-      className="group block"
+      className={`group block ${style.cell}`}
     >
       {logo}
     </a>
   ) : (
-    <div data-cms-field="logo" data-cms-item-index={index} className="group">
+    <div data-cms-field="logo" data-cms-item-index={index} className={`group ${style.cell}`}>
       {logo}
     </div>
   )
