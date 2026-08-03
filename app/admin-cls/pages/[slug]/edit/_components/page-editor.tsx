@@ -59,6 +59,7 @@ import { PricingSetupAddonsForm } from './pricing-setup-addons-form'
 import { PricingGroupedTiersForm } from './pricing-grouped-tiers-form'
 import { AdsHubScreenshotsForm } from './ads-hub-screenshots-form'
 import { ClientLogosForm } from './client-logos-form'
+import { TechPipelineForm } from './tech-pipeline-form'
 import { SeoForm, type SeoFields } from './seo-form'
 
 const SECTION_LABELS: Record<string, string> = {
@@ -82,6 +83,7 @@ const SECTION_LABELS: Record<string, string> = {
   about_timeline: 'About — Hành trình (timeline)',
   about_why_choose_us: 'About — Tại sao chọn (gallery)',
   client_logos: 'Dải logo',
+  tech_pipeline: 'Sơ đồ công nghệ (pipeline)',
 }
 
 function renderForm(section: Section, onChange: (c: any) => void) {
@@ -134,6 +136,8 @@ function renderForm(section: Section, onChange: (c: any) => void) {
       return <AdsHubScreenshotsForm content={section.content} onChange={onChange} />
     case 'client_logos':
       return <ClientLogosForm content={section.content} onChange={onChange} />
+    case 'tech_pipeline':
+      return <TechPipelineForm content={section.content} onChange={onChange} />
   }
 }
 
@@ -190,7 +194,8 @@ function SortableSection({
             {SECTION_LABELS[section.type] || section.type}
             {/* Một trang có thể có NHIỀU dải logo (vd "Công nghệ tích hợp" và
                 "Công nghệ lõi AI") — kèm nhãn để phân biệt, không thì trùng tên hệt nhau. */}
-            {section.type === 'client_logos' && section.content?.eyebrow?.vi && (
+            {(section.type === 'client_logos' || section.type === 'tech_pipeline') &&
+              section.content?.eyebrow?.vi && (
               <span className="font-normal text-slate-500 dark:text-slate-400">
                 {' '}
                 — {section.content.eyebrow.vi}

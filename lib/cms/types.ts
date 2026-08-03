@@ -26,6 +26,7 @@ export type SectionType =
   | 'pricing_grouped_tiers'
   | 'ads_hub_screenshots'
   | 'client_logos'
+  | 'tech_pipeline'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -438,6 +439,30 @@ export type ClientLogosContent = {
   items: ClientLogoItem[]
 }
 
+// ---------- Tech Pipeline (sơ đồ hệ sinh thái công nghệ theo tầng) ----------
+/**
+ * Bố cục "pipeline khoa học" anh Trung duyệt mockup 3/8/2026: các tầng công nghệ
+ * xếp theo chiều dữ liệu chảy (kênh → xử lý → AI), giữa các tầng có chấm chảy.
+ * Tầng nào có `terminal` thì band chia đôi: khung code gõ từng dòng bên trái,
+ * logo bên phải. Khác client_logos: logo Ở ĐÂY CÓ TÊN hiển thị bên dưới.
+ */
+export type TechPipelineGroup = {
+  title: I18n // vd "① Kênh & dữ liệu"
+  caption?: I18n // dòng phụ nhỏ dưới title
+  /**
+   * Các dòng code cho khung terminal gõ động. Quy ước tô màu theo ký tự đầu:
+   * `$` = dòng lệnh (xanh dương), `→` = bước chạy (đuôi `✓` xanh lá),
+   * `✦` = dòng kết quả (xanh lá cả dòng).
+   */
+  terminal?: I18n[]
+  items: ClientLogoItem[] // dùng lại: logo + name (Ở ĐÂY name HIỂN THỊ) + href
+}
+export type TechPipelineContent = {
+  eyebrow: I18n
+  sub?: I18n // câu mô tả dưới eyebrow, để trống thì ẩn
+  groups: TechPipelineGroup[]
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -463,6 +488,7 @@ export type Section =
   | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
   | { id: string; type: 'pricing_grouped_tiers'; enabled: boolean; content: PricingGroupedTiersContent }
   | { id: string; type: 'client_logos'; enabled: boolean; content: ClientLogosContent }
+  | { id: string; type: 'tech_pipeline'; enabled: boolean; content: TechPipelineContent }
   | { id: string; type: 'ads_hub_screenshots'; enabled: boolean; content: AdsHubScreenshotsContent }
 
 export type Page = {
