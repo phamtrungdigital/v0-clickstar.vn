@@ -105,6 +105,18 @@ function TermLine({ text }: { text: string }) {
     )
   }
   if (text.startsWith('✓')) {
+    // Tag [tên-agent] đầu dòng được tô tím cho nổi — nhìn ra ngay đội agent
+    const m = text.slice(1).match(/^(\s*)\[([^\]]+)\](.*)$/)
+    if (m) {
+      return (
+        <div style={fade} className="whitespace-pre">
+          <span className="text-green-400">✓</span>
+          {m[1]}
+          <span className="text-violet-300">[{m[2]}]</span>
+          <span className="text-slate-200">{m[3]}</span>
+        </div>
+      )
+    }
     return (
       <div style={fade} className="whitespace-pre">
         <span className="text-green-400">✓</span>
