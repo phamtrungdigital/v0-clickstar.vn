@@ -26,6 +26,8 @@ export type SectionType =
   | 'pricing_grouped_tiers'
   | 'ads_hub_screenshots'
   | 'client_logos'
+  | 'logo_marquee'
+  | 'code_terminal'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -438,6 +440,37 @@ export type ClientLogosContent = {
   items: ClientLogoItem[]
 }
 
+// ---------- Logo Marquee (dải logo tự trôi — bố cục P2 anh duyệt 3/8/2026) ----------
+/**
+ * Các dải logo trôi ngang vô hạn, dải chẵn/lẻ tự chạy NGƯỢC chiều nhau,
+ * rê chuột thì dừng. Khác client_logos: logo ở đây CÓ TÊN hiển thị bên dưới
+ * (bài học vụ anh không nhận ra logo Claude).
+ */
+export type LogoMarqueeStrip = {
+  items: ClientLogoItem[] // dùng lại: logo + name (HIỂN THỊ) + href
+}
+export type LogoMarqueeContent = {
+  eyebrow: I18n
+  sub?: I18n // câu mô tả dưới eyebrow, để trống thì ẩn
+  showNames?: boolean // thiếu field = true (hiện tên dưới logo)
+  strips: LogoMarqueeStrip[]
+}
+
+// ---------- Code Terminal (khối cửa sổ code gõ động — khối RIÊNG BIỆT) ----------
+/**
+ * Cửa sổ terminal gõ từng dòng rồi lặp, đứng độc lập như một section.
+ * Quy ước tô màu theo ký tự đầu mỗi dòng:
+ * `$` = dòng lệnh (xanh dương) · `✓` = kết quả bước (check xanh lá)
+ * `→` = bước đang chạy · `✦` = dòng chốt (xanh lá cả dòng)
+ * dòng bắt đầu bằng khoảng trắng = output thường (xám).
+ */
+export type CodeTerminalContent = {
+  eyebrow?: I18n
+  sub?: I18n
+  tab?: I18n // nhãn tab cửa sổ, vd "clickstar-ops — zsh"
+  lines: I18n[]
+}
+
 // ---------- Discriminated union ----------
 export type Section =
   | { id: string; type: 'hero'; enabled: boolean; content: HeroContent }
@@ -463,6 +496,8 @@ export type Section =
   | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
   | { id: string; type: 'pricing_grouped_tiers'; enabled: boolean; content: PricingGroupedTiersContent }
   | { id: string; type: 'client_logos'; enabled: boolean; content: ClientLogosContent }
+  | { id: string; type: 'logo_marquee'; enabled: boolean; content: LogoMarqueeContent }
+  | { id: string; type: 'code_terminal'; enabled: boolean; content: CodeTerminalContent }
   | { id: string; type: 'ads_hub_screenshots'; enabled: boolean; content: AdsHubScreenshotsContent }
 
 export type Page = {

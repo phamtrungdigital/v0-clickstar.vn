@@ -10,6 +10,8 @@ import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
 import { ClientLogos } from '@/components/sections/client-logos'
+import { LogoMarquee } from '@/components/sections/logo-marquee'
+import { CodeTerminal } from '@/components/sections/code-terminal'
 import { AiServiceRouter } from '@/components/sections/ai-service-router'
 import { Footer } from '@/components/layout/footer'
 // EditModeOverlay moved to app/layout.tsx — covers all pages now
@@ -74,6 +76,10 @@ function renderSection(section: Section) {
       return <CTASection key={section.id} content={section.content} />
     case 'client_logos':
       return <ClientLogos key={section.id} content={section.content} />
+    case 'logo_marquee':
+      return <LogoMarquee key={section.id} content={section.content} />
+    case 'code_terminal':
+      return <CodeTerminal key={section.id} content={section.content} />
   }
 }
 
