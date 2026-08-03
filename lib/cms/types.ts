@@ -26,7 +26,8 @@ export type SectionType =
   | 'pricing_grouped_tiers'
   | 'ads_hub_screenshots'
   | 'client_logos'
-  | 'tech_pipeline'
+  | 'logo_marquee'
+  | 'code_terminal'
 
 // ---------- Hero ----------
 export type HeroContent = {
@@ -439,28 +440,35 @@ export type ClientLogosContent = {
   items: ClientLogoItem[]
 }
 
-// ---------- Tech Pipeline (sơ đồ hệ sinh thái công nghệ theo tầng) ----------
+// ---------- Logo Marquee (dải logo tự trôi — bố cục P2 anh duyệt 3/8/2026) ----------
 /**
- * Bố cục "pipeline khoa học" anh Trung duyệt mockup 3/8/2026: các tầng công nghệ
- * xếp theo chiều dữ liệu chảy (kênh → xử lý → AI), giữa các tầng có chấm chảy.
- * Tầng nào có `terminal` thì band chia đôi: khung code gõ từng dòng bên trái,
- * logo bên phải. Khác client_logos: logo Ở ĐÂY CÓ TÊN hiển thị bên dưới.
+ * Các dải logo trôi ngang vô hạn, dải chẵn/lẻ tự chạy NGƯỢC chiều nhau,
+ * rê chuột thì dừng. Khác client_logos: logo ở đây CÓ TÊN hiển thị bên dưới
+ * (bài học vụ anh không nhận ra logo Claude).
  */
-export type TechPipelineGroup = {
-  title: I18n // vd "① Kênh & dữ liệu"
-  caption?: I18n // dòng phụ nhỏ dưới title
-  /**
-   * Các dòng code cho khung terminal gõ động. Quy ước tô màu theo ký tự đầu:
-   * `$` = dòng lệnh (xanh dương), `→` = bước chạy (đuôi `✓` xanh lá),
-   * `✦` = dòng kết quả (xanh lá cả dòng).
-   */
-  terminal?: I18n[]
-  items: ClientLogoItem[] // dùng lại: logo + name (Ở ĐÂY name HIỂN THỊ) + href
+export type LogoMarqueeStrip = {
+  items: ClientLogoItem[] // dùng lại: logo + name (HIỂN THỊ) + href
 }
-export type TechPipelineContent = {
+export type LogoMarqueeContent = {
   eyebrow: I18n
   sub?: I18n // câu mô tả dưới eyebrow, để trống thì ẩn
-  groups: TechPipelineGroup[]
+  showNames?: boolean // thiếu field = true (hiện tên dưới logo)
+  strips: LogoMarqueeStrip[]
+}
+
+// ---------- Code Terminal (khối cửa sổ code gõ động — khối RIÊNG BIỆT) ----------
+/**
+ * Cửa sổ terminal gõ từng dòng rồi lặp, đứng độc lập như một section.
+ * Quy ước tô màu theo ký tự đầu mỗi dòng:
+ * `$` = dòng lệnh (xanh dương) · `✓` = kết quả bước (check xanh lá)
+ * `→` = bước đang chạy · `✦` = dòng chốt (xanh lá cả dòng)
+ * dòng bắt đầu bằng khoảng trắng = output thường (xám).
+ */
+export type CodeTerminalContent = {
+  eyebrow?: I18n
+  sub?: I18n
+  tab?: I18n // nhãn tab cửa sổ, vd "clickstar-ops — zsh"
+  lines: I18n[]
 }
 
 // ---------- Discriminated union ----------
@@ -488,7 +496,8 @@ export type Section =
   | { id: string; type: 'pricing_setup_addons'; enabled: boolean; content: PricingSetupAddonsContent }
   | { id: string; type: 'pricing_grouped_tiers'; enabled: boolean; content: PricingGroupedTiersContent }
   | { id: string; type: 'client_logos'; enabled: boolean; content: ClientLogosContent }
-  | { id: string; type: 'tech_pipeline'; enabled: boolean; content: TechPipelineContent }
+  | { id: string; type: 'logo_marquee'; enabled: boolean; content: LogoMarqueeContent }
+  | { id: string; type: 'code_terminal'; enabled: boolean; content: CodeTerminalContent }
   | { id: string; type: 'ads_hub_screenshots'; enabled: boolean; content: AdsHubScreenshotsContent }
 
 export type Page = {

@@ -1,98 +1,106 @@
 'use client'
 
 import { Plus, Trash2 } from 'lucide-react'
-import type { TechPipelineContent, TechPipelineGroup, ClientLogoItem } from '@/lib/cms/types'
+import type { LogoMarqueeContent, LogoMarqueeStrip, ClientLogoItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
 import { ImagePicker } from './image-picker'
 
 /**
- * Form khối "Sơ đồ công nghệ (pipeline)". Mỗi tầng có: tiêu đề, dòng phụ,
- * danh sách logo (CÓ TÊN hiển thị) và tuỳ chọn các dòng code cho terminal.
- * Dòng code nhập mỗi dòng 1 câu; ký tự đầu quyết định màu: $ lệnh, → bước
- * chạy (kết thúc ✓ được tô xanh), ✦ dòng kết quả.
+ * Form khối "Dải logo tự trôi". Mỗi dải là 1 hàng logo chạy ngang vô hạn;
+ * dải 1 trôi trái, dải 2 trôi phải, xen kẽ tiếp. Tên logo HIỂN THỊ dưới ảnh.
  */
-export function TechPipelineForm({
+export function LogoMarqueeForm({
   content,
   onChange,
 }: {
-  content: TechPipelineContent
-  onChange: (next: TechPipelineContent) => void
+  content: LogoMarqueeContent
+  onChange: (next: LogoMarqueeContent) => void
 }) {
-  const groups = content.groups ?? []
+  const strips = content.strips ?? []
 
-  const updateGroup = (idx: number, next: TechPipelineGroup) => {
-    const arr = [...groups]
+  const updateStrip = (idx: number, next: LogoMarqueeStrip) => {
+    const arr = [...strips]
     arr[idx] = next
-    onChange({ ...content, groups: arr })
+    onChange({ ...content, strips: arr })
   }
-  const addGroup = () =>
-    onChange({
-      ...content,
-      groups: [...groups, { title: { vi: '', en: '' }, caption: { vi: '', en: '' }, items: [] }],
-    })
-  const removeGroup = (idx: number) =>
-    onChange({ ...content, groups: groups.filter((_, i) => i !== idx) })
-  const moveGroup = (idx: number, dir: -1 | 1) => {
+  const addStrip = () => onChange({ ...content, strips: [...strips, { items: [] }] })
+  const removeStrip = (idx: number) =>
+    onChange({ ...content, strips: strips.filter((_, i) => i !== idx) })
+  const moveStrip = (idx: number, dir: -1 | 1) => {
     const to = idx + dir
-    if (to < 0 || to >= groups.length) return
-    const arr = [...groups]
+    if (to < 0 || to >= strips.length) return
+    const arr = [...strips]
     ;[arr[idx], arr[to]] = [arr[to], arr[idx]]
-    onChange({ ...content, groups: arr })
+    onChange({ ...content, strips: arr })
   }
 
   return (
     <div className="space-y-4">
-      <div id="form-tech_pipeline.eyebrow" className="scroll-mt-32">
+      <div id="form-logo_marquee.eyebrow" className="scroll-mt-32">
         <I18nInput
           label="Dòng chữ nhỏ phía trên"
           value={content.eyebrow}
           onChange={(v) => onChange({ ...content, eyebrow: v })}
         />
         <p className="text-[10px] text-slate-500 mt-1">
-          vd: HỆ SINH THÁI CÔNG NGHỆ CLICK STAR. Để trống thì không hiện.
+          vd: CÔNG NGHỆ TÍCH HỢP &amp; AI. Để trống thì không hiện.
         </p>
       </div>
 
-      <div id="form-tech_pipeline.sub" className="scroll-mt-32">
+      <div id="form-logo_marquee.sub" className="scroll-mt-32">
         <I18nInput
-          label="Câu mô tả dưới tiêu đề"
+          label="Câu mô tả dưới tiêu đề (tuỳ chọn)"
           value={content.sub ?? { vi: '', en: '' }}
           onChange={(v) => onChange({ ...content, sub: v })}
         />
       </div>
 
+      <div id="form-logo_marquee.showNames" className="scroll-mt-32">
+        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          Tên dưới logo
+        </label>
+        <select
+          value={(content.showNames ?? true) ? 'show' : 'hide'}
+          onChange={(e) => onChange({ ...content, showNames: e.target.value === 'show' })}
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        >
+          <option value="show">Hiện tên dưới từng logo (mặc định)</option>
+          <option value="hide">Chỉ logo, không tên</option>
+        </select>
+      </div>
+
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between">
           <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
-            {groups.length} tầng (thứ tự = chiều dữ liệu chảy)
+            {strips.length} dải (dải 1 trôi trái, dải 2 trôi phải, xen kẽ)
           </p>
           <button
             type="button"
-            onClick={addGroup}
+            onClick={addStrip}
             className="flex items-center gap-1 px-2 py-1 text-xs text-primary hover:bg-primary/10 rounded"
           >
             <Plus className="w-3 h-3" />
-            Thêm tầng
+            Thêm dải
           </button>
         </div>
 
-        {groups.map((group, gi) => (
+        {strips.map((strip, si) => (
           <details
-            key={gi}
-            id={`form-tech_pipeline.group.${gi}`}
-            open={gi === 0}
+            key={si}
+            id={`form-logo_marquee.strip.${si}`}
+            open={si === 0}
             className="bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
           >
             <summary className="px-3 py-2 cursor-pointer text-sm font-medium select-none flex items-center justify-between">
               <span className="truncate">
-                Tầng {gi + 1}: {group.title?.vi || '(chưa đặt tên)'}
+                Dải {si + 1} — {strip.items?.length ?? 0} logo, trôi {si % 2 === 0 ? 'trái' : 'phải'}
               </span>
               <span className="flex items-center gap-1 flex-shrink-0">
                 <button
                   type="button"
                   onClick={(e) => {
                     e.preventDefault()
-                    moveGroup(gi, -1)
+                    moveStrip(si, -1)
                   }}
                   className="px-1.5 py-0.5 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
                   title="Lên trên"
@@ -103,7 +111,7 @@ export function TechPipelineForm({
                   type="button"
                   onClick={(e) => {
                     e.preventDefault()
-                    moveGroup(gi, 1)
+                    moveStrip(si, 1)
                   }}
                   className="px-1.5 py-0.5 text-xs text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 rounded"
                   title="Xuống dưới"
@@ -114,8 +122,7 @@ export function TechPipelineForm({
                   type="button"
                   onClick={(e) => {
                     e.preventDefault()
-                    if (confirm(`Xoá tầng "${group.title?.vi || gi + 1}" và toàn bộ logo trong đó?`))
-                      removeGroup(gi)
+                    if (confirm(`Xoá dải ${si + 1} và toàn bộ logo trong đó?`)) removeStrip(si)
                   }}
                   className="p-1 text-red-500 hover:bg-red-50 dark:hover:bg-red-950 rounded"
                 >
@@ -124,21 +131,8 @@ export function TechPipelineForm({
               </span>
             </summary>
 
-            <div className="p-3 space-y-3 border-t border-slate-200 dark:border-slate-700">
-              <I18nInput
-                label="Tiêu đề tầng"
-                value={group.title}
-                onChange={(v) => updateGroup(gi, { ...group, title: v })}
-              />
-              <I18nInput
-                label="Dòng phụ (tuỳ chọn)"
-                value={group.caption ?? { vi: '', en: '' }}
-                onChange={(v) => updateGroup(gi, { ...group, caption: v })}
-              />
-
-              <TerminalEditor group={group} onChange={(next) => updateGroup(gi, next)} />
-
-              <GroupItems group={group} groupIndex={gi} onChange={(next) => updateGroup(gi, next)} />
+            <div className="p-3 border-t border-slate-200 dark:border-slate-700">
+              <StripItems strip={strip} stripIndex={si} onChange={(next) => updateStrip(si, next)} />
             </div>
           </details>
         ))}
@@ -147,94 +141,35 @@ export function TechPipelineForm({
   )
 }
 
-/** Ô nhập dòng code terminal: mỗi dòng textarea = 1 dòng gõ trên web */
-function TerminalEditor({
-  group,
+function StripItems({
+  strip,
+  stripIndex,
   onChange,
 }: {
-  group: TechPipelineGroup
-  onChange: (next: TechPipelineGroup) => void
+  strip: LogoMarqueeStrip
+  stripIndex: number
+  onChange: (next: LogoMarqueeStrip) => void
 }) {
-  const lines = group.terminal ?? []
-
-  const setLang = (lang: 'vi' | 'en', raw: string) => {
-    const rows = raw.split('\n')
-    // Ghép theo chỉ số dòng; dòng thiếu bên kia thì giữ chuỗi rỗng
-    const max = Math.max(rows.length, lines.length)
-    const next: { vi: string; en: string }[] = []
-    for (let i = 0; i < max; i++) {
-      const cur = lines[i] ?? { vi: '', en: '' }
-      next.push({ ...cur, [lang]: rows[i] ?? '' })
-    }
-    // Cắt đuôi các dòng rỗng cả 2 thứ tiếng
-    while (next.length > 0 && !next[next.length - 1].vi && !next[next.length - 1].en) next.pop()
-    onChange({ ...group, terminal: next.length > 0 ? next : undefined })
-  }
-
-  return (
-    <div className="rounded-md border border-slate-200 dark:border-slate-700 p-2.5 space-y-2">
-      <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
-        Terminal gõ code (tuỳ chọn)
-      </p>
-      <p className="text-[10px] text-slate-500 leading-relaxed">
-        Mỗi dòng 1 câu, web sẽ gõ lần lượt rồi lặp lại. Ký tự đầu quyết định màu:{' '}
-        <code>$</code> dòng lệnh · <code>→</code> bước chạy (kết thúc bằng <code>✓</code> sẽ
-        tô xanh) · <code>✦</code> dòng kết quả. Để trống cả ô = tầng không có terminal.
-      </p>
-      <div>
-        <label className="block text-[10px] font-medium text-slate-500 mb-1">Tiếng Việt</label>
-        <textarea
-          value={lines.map((l) => l.vi).join('\n')}
-          onChange={(e) => setLang('vi', e.target.value)}
-          rows={6}
-          spellCheck={false}
-          className="w-full px-2.5 py-2 bg-slate-900 text-green-300 font-mono text-xs rounded-md border border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/30"
-        />
-      </div>
-      <div>
-        <label className="block text-[10px] font-medium text-slate-500 mb-1">English</label>
-        <textarea
-          value={lines.map((l) => l.en).join('\n')}
-          onChange={(e) => setLang('en', e.target.value)}
-          rows={6}
-          spellCheck={false}
-          className="w-full px-2.5 py-2 bg-slate-900 text-green-300 font-mono text-xs rounded-md border border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/30"
-        />
-      </div>
-    </div>
-  )
-}
-
-/** Danh sách logo của 1 tầng — giống form Dải logo nhưng TÊN sẽ hiển thị dưới logo */
-function GroupItems({
-  group,
-  groupIndex,
-  onChange,
-}: {
-  group: TechPipelineGroup
-  groupIndex: number
-  onChange: (next: TechPipelineGroup) => void
-}) {
-  const items = group.items ?? []
+  const items = strip.items ?? []
 
   const updateItem = (idx: number, next: ClientLogoItem) => {
     const arr = [...items]
     arr[idx] = next
-    onChange({ ...group, items: arr })
+    onChange({ ...strip, items: arr })
   }
   const addItem = () =>
-    onChange({ ...group, items: [...items, { logo: '', name: { vi: '', en: '' }, href: '' }] })
-  const removeItem = (idx: number) => onChange({ ...group, items: items.filter((_, i) => i !== idx) })
+    onChange({ ...strip, items: [...items, { logo: '', name: { vi: '', en: '' }, href: '' }] })
+  const removeItem = (idx: number) => onChange({ ...strip, items: items.filter((_, i) => i !== idx) })
   const move = (idx: number, dir: -1 | 1) => {
     const to = idx + dir
     if (to < 0 || to >= items.length) return
     const arr = [...items]
     ;[arr[idx], arr[to]] = [arr[to], arr[idx]]
-    onChange({ ...group, items: arr })
+    onChange({ ...strip, items: arr })
   }
 
   return (
-    <div className="rounded-md border border-slate-200 dark:border-slate-700 p-2.5 space-y-2">
+    <div className="space-y-2">
       <div className="flex items-center justify-between">
         <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
           {items.length} logo
@@ -251,14 +186,14 @@ function GroupItems({
 
       {items.length === 0 && (
         <p className="text-xs text-slate-500 dark:text-slate-400 py-1">
-          Tầng chưa có logo nào sẽ tự ẩn khỏi trang.
+          Dải chưa có logo nào sẽ tự ẩn khỏi trang.
         </p>
       )}
 
       {items.map((item, idx) => (
         <details
           key={idx}
-          id={`form-tech_pipeline.group.${groupIndex}.item.${idx}`}
+          id={`form-logo_marquee.strip.${stripIndex}.item.${idx}`}
           className="bg-slate-50 dark:bg-slate-900/60 rounded-md border border-slate-200 dark:border-slate-700 scroll-mt-32"
         >
           <summary className="px-3 py-1.5 cursor-pointer text-xs font-medium select-none flex items-center justify-between">
@@ -314,9 +249,6 @@ function GroupItems({
                 value={item.name}
                 onChange={(v) => updateItem(idx, { ...item, name: v })}
               />
-              <p className="text-[10px] text-slate-500 mt-1">
-                Khác dải logo thường: tên ở khối này hiện ngay dưới logo cho dễ nhận diện.
-              </p>
             </div>
             <TextInput
               label="Link (tuỳ chọn)"
