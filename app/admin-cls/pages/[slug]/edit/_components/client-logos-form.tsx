@@ -71,6 +71,24 @@ export function ClientLogosForm({
         </p>
       </div>
 
+      <div id="form-client_logos.grayscale" className="scroll-mt-32">
+        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+          Màu logo
+        </label>
+        <select
+          value={content.grayscale ? 'gray' : 'color'}
+          onChange={(e) => onChange({ ...content, grayscale: e.target.value === 'gray' })}
+          className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        >
+          <option value="color">Màu thật ngay từ đầu (mặc định)</option>
+          <option value="gray">Xám, rê chuột mới ra màu</option>
+        </select>
+        <p className="text-[10px] text-slate-500 mt-1">
+          Để xám giúp dải logo bớt rối khi nhiều thương hiệu nhiều màu; để màu thật thì nổi bật và
+          nhận diện nhanh hơn.
+        </p>
+      </div>
+
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between">
           <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
