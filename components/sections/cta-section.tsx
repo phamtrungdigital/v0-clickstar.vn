@@ -70,22 +70,29 @@ export function CTASection({ content }: { content: CtaContent }) {
           </div>
         </Reveal>
 
-        {/* Partners */}
-        <Reveal delay={150} data-cms-field="partners" className="border-t border-primary/10 pt-12">
-          <p className="text-center text-sm text-muted-foreground mb-8">
-            {t(content.trust_label.vi, content.trust_label.en)}
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
-            {content.partner_names.map((partner) => (
-              <div
-                key={partner}
-                className="text-xl font-bold text-muted-foreground/50 hover:text-muted-foreground transition-colors cursor-pointer"
-              >
-                {partner}
-              </div>
-            ))}
-          </div>
-        </Reveal>
+        {/* Partners — danh sách rỗng thì ẩn cả khối (kể cả nhãn và đường kẻ),
+            admin xoá hết tên trong CMS là dải này biến mất, không cần deploy */}
+        {(content.partner_names?.length ?? 0) > 0 && (
+          <Reveal
+            delay={150}
+            data-cms-field="partners"
+            className="border-t border-primary/10 pt-12"
+          >
+            <p className="text-center text-sm text-muted-foreground mb-8">
+              {t(content.trust_label.vi, content.trust_label.en)}
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
+              {content.partner_names.map((partner) => (
+                <div
+                  key={partner}
+                  className="text-xl font-bold text-muted-foreground/50 hover:text-muted-foreground transition-colors cursor-pointer"
+                >
+                  {partner}
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        )}
       </div>
     </section>
   )
