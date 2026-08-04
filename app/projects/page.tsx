@@ -5,6 +5,7 @@ import { ArrowRight, Briefcase, Sparkles } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudies } from '@/lib/cms/case-studies'
+import { getServerLang, makeT } from '@/lib/i18n/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const projects = await getPublishedCaseStudies()
+  const lang = await getServerLang()
+  const t = makeT(lang)
 
   return (
     <div className="min-h-screen">
@@ -31,11 +34,14 @@ export default async function ProjectsPage() {
               Case Studies
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance">
-              Những dự án{' '}
-              <span className="text-primary">Click Star đã đồng hành</span>
+              {t('Những dự án', 'Success stories')}{' '}
+              <span className="text-primary">{t('Click Star đã đồng hành', 'Click Star has delivered')}</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
-              Từ E-commerce, Giáo dục đến Y tế và F&B — chúng tôi giúp doanh nghiệp đạt kết quả thực tế qua chuyển đổi số toàn diện.
+              {t(
+                'Từ E-commerce, Giáo dục đến Y tế và F&B — chúng tôi giúp doanh nghiệp đạt kết quả thực tế qua chuyển đổi số toàn diện.',
+                'From e-commerce and education to healthcare and F&B — we help businesses achieve real results through end-to-end digital transformation.',
+              )}
             </p>
           </div>
         </div>
@@ -47,7 +53,9 @@ export default async function ProjectsPage() {
           {projects.length === 0 ? (
             <div className="text-center py-20">
               <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">Chưa có dự án nào được đăng. Hãy quay lại sau!</p>
+              <p className="text-muted-foreground">
+                {t('Chưa có dự án nào được đăng. Hãy quay lại sau!', 'No projects have been published yet — check back soon!')}
+              </p>
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -106,7 +114,7 @@ export default async function ProjectsPage() {
                     )}
 
                     <div className="flex items-center gap-1.5 text-sm font-semibold text-primary pt-2">
-                      Xem chi tiết
+                      {t('Xem chi tiết', 'View case study')}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
@@ -121,17 +129,20 @@ export default async function ProjectsPage() {
       <section className="py-16 lg:py-20 bg-secondary/30">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground mb-4">
-            Doanh nghiệp của anh/chị muốn{' '}
-            <span className="text-primary">tăng trưởng đột phá</span>?
+            {t('Doanh nghiệp của anh/chị muốn', 'Ready for')}{' '}
+            <span className="text-primary">{t('tăng trưởng đột phá', 'breakthrough growth')}</span>?
           </h2>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Liên hệ Click Star để được tư vấn miễn phí giải pháp phù hợp với ngành nghề và quy mô.
+            {t(
+              'Liên hệ Click Star để được tư vấn miễn phí giải pháp phù hợp với ngành nghề và quy mô.',
+              'Talk to Click Star for a free consultation tailored to your industry and scale.',
+            )}
           </p>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-4 rounded-full transition-all hover:shadow-lg hover:shadow-primary/30"
           >
-            Nhận tư vấn miễn phí
+            {t('Nhận tư vấn miễn phí', 'Get a free consultation')}
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

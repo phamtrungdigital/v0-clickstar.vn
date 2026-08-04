@@ -16,6 +16,7 @@ import {
   isReturningVisitor,
 } from '@/lib/personalize/tracker'
 import { useTrackPage } from '@/hooks/use-track-page'
+import { useLanguage } from '@/contexts/language-context'
 import type { PersonalizeCampaign } from '@/lib/personalize/campaign-types'
 
 type AiMessageResponse = {
@@ -38,6 +39,7 @@ function renderIcon(name: string, className: string) {
 export function PersonalizeBanner() {
   useTrackPage()
 
+  const { t } = useLanguage()
   const pathname = usePathname()
   const [campaign, setCampaign] = useState<PersonalizeCampaign | null>(null)
   const [aiMessage, setAiMessage] = useState<string | null>(null)
@@ -248,7 +250,7 @@ export function PersonalizeBanner() {
           <button
             onClick={handleDismiss}
             className="p-1.5 hover:bg-white/20 rounded-full text-white/90 hover:text-white transition-colors flex-shrink-0"
-            aria-label="Đóng"
+            aria-label={t('Đóng', 'Close')}
           >
             <X className="w-4 h-4" />
           </button>
@@ -269,9 +271,12 @@ export function PersonalizeBanner() {
           </Link>
 
           <p className="text-[10px] text-muted-foreground text-center mt-3">
-            Gợi ý dựa trên trang bạn đã xem ·{' '}
+            {t('Gợi ý dựa trên trang bạn đã xem', "Suggested based on pages you've viewed")} ·{' '}
             <button onClick={handleDismiss} className="underline hover:text-foreground">
-              Không hiện lại {campaign.dismiss_days || 7} ngày
+              {t(
+                `Không hiện lại ${campaign.dismiss_days || 7} ngày`,
+                `Don't show this again for ${campaign.dismiss_days || 7} days`
+              )}
             </button>
           </p>
         </div>

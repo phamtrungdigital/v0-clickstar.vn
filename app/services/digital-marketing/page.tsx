@@ -722,17 +722,17 @@ export default function DigitalMarketingPage() {
                       <div className="bg-white rounded-xl p-4 shadow-sm">
                         <div className="text-sm text-muted-foreground mb-1">{t('Chi tiêu', 'Spend')}</div>
                         <div className="text-xl font-bold text-foreground">45.2M</div>
-                        <div className="text-xs text-emerald-600">+12% vs tuần trước</div>
+                        <div className="text-xs text-emerald-600">{t('+12% vs tuần trước', '+12% vs last week')}</div>
                       </div>
                       <div className="bg-white rounded-xl p-4 shadow-sm">
                         <div className="text-sm text-muted-foreground mb-1">{t('Leads', 'Leads')}</div>
                         <div className="text-xl font-bold text-foreground">324</div>
-                        <div className="text-xs text-emerald-600">+28% vs tuần trước</div>
+                        <div className="text-xs text-emerald-600">{t('+28% vs tuần trước', '+28% vs last week')}</div>
                       </div>
                       <div className="bg-white rounded-xl p-4 shadow-sm">
                         <div className="text-sm text-muted-foreground mb-1">ROAS</div>
                         <div className="text-xl font-bold text-foreground">3.8x</div>
-                        <div className="text-xs text-emerald-600">+0.5 vs tuần trước</div>
+                        <div className="text-xs text-emerald-600">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
                       </div>
                     </div>
 

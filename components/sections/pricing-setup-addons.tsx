@@ -64,7 +64,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
                   <>
                     <div className="text-[10px] uppercase tracking-wider text-muted-foreground lg:order-1 mt-1">
                       <Clock className="inline w-3 h-3 mr-1" />
-                      Thời gian
+                      {t('Thời gian', 'Timeline')}
                     </div>
                     <div className="text-sm font-semibold text-foreground">
                       {t(item.duration.vi, item.duration.en)}
@@ -76,7 +76,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
               {/* Price */}
               <div className="lg:text-center flex lg:flex-col items-baseline lg:items-center gap-1.5 lg:gap-0.5">
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground lg:order-1 mt-1">
-                  Chi phí
+                  {t('Chi phí', 'Price')}
                 </div>
                 <div className="text-lg font-extrabold text-primary">
                   {t(item.price.vi, item.price.en)}
@@ -89,7 +89,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
                   href="/contact"
                   className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background text-sm font-semibold rounded-full hover:bg-foreground/90 transition-colors whitespace-nowrap"
                 >
-                  Liên hệ
+                  {t('Liên hệ', 'Contact us')}
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>
@@ -98,7 +98,10 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-6">
-          💡 Tất cả gói setup đều được tư vấn 1-1 miễn phí trước khi báo giá cụ thể theo nhu cầu doanh nghiệp.
+          {t(
+            '💡 Tất cả gói setup đều được tư vấn 1-1 miễn phí trước khi báo giá cụ thể theo nhu cầu doanh nghiệp.',
+            '💡 Every setup package starts with a free 1-on-1 consultation before we tailor a quote to your business needs.'
+          )}
         </p>
       </div>
     </section>

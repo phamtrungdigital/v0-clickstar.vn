@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { List } from 'lucide-react'
 import type { Heading } from '@/lib/blog/headings'
+import { useLanguage } from '@/contexts/language-context'
 
 export function TableOfContents({ headings }: { headings: Heading[] }) {
+  const { t } = useLanguage()
   const [activeId, setActiveId] = useState<string>('')
   const [open, setOpen] = useState(false)
 
@@ -44,9 +46,11 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
         >
           <span className="flex items-center gap-2">
             <List className="w-4 h-4 text-primary" />
-            Mục lục bài viết ({headings.length})
+            {t('Mục lục bài viết', 'Table of contents')} ({headings.length})
           </span>
-          <span className="text-xs text-muted-foreground">{open ? 'Thu gọn' : 'Mở rộng'}</span>
+          <span className="text-xs text-muted-foreground">
+            {open ? t('Thu gọn', 'Collapse') : t('Mở rộng', 'Expand')}
+          </span>
         </button>
         {open && (
           <ul className="border-t border-border/50 px-4 py-3 space-y-2 text-sm">
@@ -69,7 +73,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
       <nav className="hidden lg:block sticky top-24">
         <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4 flex items-center gap-2">
           <List className="w-3.5 h-3.5" />
-          Mục lục
+          {t('Mục lục', 'Contents')}
         </div>
         <ul className="space-y-2 text-sm border-l-2 border-border">
           {headings.map((h) => {

@@ -247,19 +247,19 @@ export function PricingSection() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
             <div className="text-center">
               <div className="text-3xl font-extrabold text-primary mb-1">500+</div>
-              <div className="text-sm text-muted-foreground">Doanh nghiệp tin tưởng</div>
+              <div className="text-sm text-muted-foreground">{t('Doanh nghiệp tin tưởng', 'Businesses trust us')}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-extrabold text-primary mb-1">98%</div>
-              <div className="text-sm text-muted-foreground">Khách hàng hài lòng</div>
+              <div className="text-sm text-muted-foreground">{t('Khách hàng hài lòng', 'Customer satisfaction')}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-extrabold text-primary mb-1">24/7</div>
-              <div className="text-sm text-muted-foreground">Hỗ trợ kỹ thuật</div>
+              <div className="text-sm text-muted-foreground">{t('Hỗ trợ kỹ thuật', 'Technical support')}</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-extrabold text-primary mb-1">10+</div>
-              <div className="text-sm text-muted-foreground">Năm kinh nghiệm</div>
+              <div className="text-sm text-muted-foreground">{t('Năm kinh nghiệm', 'Years of experience')}</div>
             </div>
           </div>
         </div>

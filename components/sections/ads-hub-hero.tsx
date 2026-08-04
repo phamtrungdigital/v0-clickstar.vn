@@ -77,16 +77,16 @@ export function AdsHubHero() {
                 className="inline-flex items-center justify-center gap-2 bg-white border-2 border-border text-foreground font-bold px-7 py-3.5 rounded-full hover:border-primary hover:text-primary hover:shadow-md transition-all"
               >
                 <PlayCircle className="w-4 h-4" />
-                Xem tính năng
+                {t('Xem tính năng', 'Explore features')}
               </a>
             </div>
 
             {/* Trust bar */}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground">
-              <Trust label="Setup chuyên gia 1-1" />
-              <Trust label="Tích hợp Meta + CRM riêng" />
-              <Trust label="Triển khai 3-7 ngày" />
-              <Trust label="Hỗ trợ Claude + GPT" />
+              <Trust label={t('Setup chuyên gia 1-1', '1-on-1 expert setup')} />
+              <Trust label={t('Tích hợp Meta + CRM riêng', 'Meta + custom CRM integration')} />
+              <Trust label={t('Triển khai 3-7 ngày', 'Live in 3–7 days')} />
+              <Trust label={t('Hỗ trợ Claude + GPT', 'Works with Claude + GPT')} />
             </div>
           </div>
 
@@ -114,15 +114,15 @@ export function AdsHubHero() {
               <div className="p-4 lg:p-5 bg-gradient-to-br from-white via-white to-slate-50/50">
                 {/* KPI cards */}
                 <div className="grid grid-cols-3 gap-2.5 mb-4">
-                  <KpiCard label="Chi tiêu" value="11.7" suffix="tr" trend="+12%" trendColor="text-emerald-600" />
+                  <KpiCard label={t('Chi tiêu', 'Spend')} value="11.7" suffix="tr" trend="+12%" trendColor="text-emerald-600" />
                   <KpiCard label="Leads" value="47" suffix="" trend="+8" trendColor="text-emerald-600" />
-                  <KpiCard label="CPL TB" value="249" suffix="k" trend="-15%" trendColor="text-emerald-600" />
+                  <KpiCard label={t('CPL TB', 'Avg CPL')} value="249" suffix="k" trend="-15%" trendColor="text-emerald-600" />
                 </div>
 
                 {/* Chart mockup */}
                 <div className="bg-white rounded-lg border border-border/60 p-3 mb-3">
                   <div className="flex items-center justify-between mb-2">
-                    <div className="text-[10px] font-bold text-slate-700">Chi tiêu & Leads theo ngày</div>
+                    <div className="text-[10px] font-bold text-slate-700">{t('Chi tiêu & Leads theo ngày', 'Daily spend & leads')}</div>
                     <div className="flex gap-1.5">
                       <span className="text-[9px] text-slate-500 flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary" />
@@ -145,7 +145,7 @@ export function AdsHubHero() {
                   <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-semibold">
                     <TrendingUp className="w-2.5 h-2.5" /> 47 active
                   </span>
-                  <span className="text-slate-500">Sync mỗi 2h</span>
+                  <span className="text-slate-500">{t('Sync mỗi 2h', 'Syncs every 2h')}</span>
                 </div>
               </div>
             </div>
@@ -158,7 +158,7 @@ export function AdsHubHero() {
               <div className="min-w-0">
                 <div className="text-[11px] font-bold text-foreground">AI Insight</div>
                 <div className="text-[10px] text-muted-foreground leading-tight">
-                  "Campaign #3 CPL cao bất thường"
+                  {t('"Campaign #3 CPL cao bất thường"', '"Campaign #3 CPL is unusually high"')}
                 </div>
               </div>
             </div>
@@ -169,8 +169,8 @@ export function AdsHubHero() {
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               </div>
               <div className="min-w-0">
-                <div className="text-[11px] font-bold text-foreground">Sync thành công</div>
-                <div className="text-[10px] text-muted-foreground">12 accounts · 2 phút trước</div>
+                <div className="text-[11px] font-bold text-foreground">{t('Sync thành công', 'Sync completed')}</div>
+                <div className="text-[10px] text-muted-foreground">{t('12 accounts · 2 phút trước', '12 accounts · 2 min ago')}</div>
               </div>
             </div>
           </div>

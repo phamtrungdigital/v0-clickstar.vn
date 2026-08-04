@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, ExternalLink, Briefcase } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudyBySlug, getPublishedCaseStudies } from '@/lib/cms/case-studies'
+import { getServerLang, makeT } from '@/lib/i18n/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -38,6 +39,9 @@ export default async function ProjectDetailPage({
   const project = await getPublishedCaseStudyBySlug(slug)
   if (!project) notFound()
 
+  const lang = await getServerLang()
+  const t = makeT(lang)
+
   // Related projects: cùng industry hoặc share tag
   const allPublished = await getPublishedCaseStudies(20)
   const related = allPublished
@@ -61,7 +65,7 @@ export default async function ProjectDetailPage({
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            Tất cả dự án
+            {t('Tất cả dự án', 'All projects')}
           </Link>
 
           <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -73,7 +77,7 @@ export default async function ProjectDetailPage({
             )}
             {project.client_name && (
               <span className="text-sm text-muted-foreground">
-                Khách hàng: <span className="font-semibold text-foreground">{project.client_name}</span>
+                {t('Khách hàng:', 'Client:')} <span className="font-semibold text-foreground">{project.client_name}</span>
               </span>
             )}
           </div>
@@ -139,7 +143,7 @@ export default async function ProjectDetailPage({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary font-semibold rounded-full hover:bg-primary hover:text-white transition-colors"
             >
-              Truy cập website khách hàng
+              {t('Truy cập website khách hàng', 'Visit the live website')}
               <ExternalLink className="w-4 h-4" />
             </a>
           </div>
@@ -150,7 +154,7 @@ export default async function ProjectDetailPage({
       {related.length > 0 && (
         <section className="py-16 bg-secondary/30">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-extrabold text-foreground mb-8">Dự án liên quan</h2>
+            <h2 className="text-2xl font-extrabold text-foreground mb-8">{t('Dự án liên quan', 'Related projects')}</h2>
             <div className="grid sm:grid-cols-3 gap-6">
               {related.map((p) => (
                 <Link
@@ -188,14 +192,16 @@ export default async function ProjectDetailPage({
       <section className="py-16 bg-foreground text-background">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold mb-3">
-            Quan tâm đến giải pháp tương tự?
+            {t('Quan tâm đến giải pháp tương tự?', 'Interested in a similar solution?')}
           </h2>
-          <p className="text-white/70 mb-6">Đặt lịch tư vấn miễn phí với đội ngũ Click Star</p>
+          <p className="text-white/70 mb-6">
+            {t('Đặt lịch tư vấn miễn phí với đội ngũ Click Star', 'Book a free consultation with the Click Star team')}
+          </p>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-4 rounded-full transition-all hover:shadow-lg"
           >
-            Nhận tư vấn ngay
+            {t('Nhận tư vấn ngay', 'Get in touch now')}
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>

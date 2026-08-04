@@ -12,7 +12,8 @@ import { useLanguage } from '@/contexts/language-context'
  * guard overflow-x → khối tràn sẽ làm cả trang cuộn ngang trên mobile.
  */
 
-const JSON_PAYLOAD = `{
+const JSON_PAYLOAD = {
+  vi: `{
   "call_id": "cl_9f2a17",
   "duration_sec": 494,
   "agent": { "id": "sale_08", "name": "Nguyễn Thu Hà" },
@@ -55,24 +56,83 @@ const JSON_PAYLOAD = `{
   ],
 
   "crm": { "record_id": "kh_41022", "stage": "hen_gap", "task_created": true }
-}`
+}`,
+  en: `{
+  "call_id": "cl_9f2a17",
+  "duration_sec": 494,
+  "agent": { "id": "sale_08", "name": "Nguyễn Thu Hà" },
+  "transcript_url": "https://.../cl_9f2a17.txt",
 
-const WEBHOOK_SNIPPET = `POST /your-endpoint  HTTP/1.1
+  "summary": "Asked about a 2BR unit, budget ~2B VND,
+              needs financing. Felt the price was above
+              a competitor's. Site visit booked for
+              Saturday.",
+
+  "quality": {
+    "score": 82,
+    "criteria": {
+      "chao_hoi": true,
+      "khai_thac_nhu_cau": true,
+      "xu_ly_tu_choi": true,
+      "chot_buoc_tiep_theo": true
+    }
+  },
+
+  "sentiment": { "overall": "positive", "risk": false },
+
+  "talk_ratio": { "agent": 0.62, "customer": 0.38 },
+
+  "extracted": {
+    "nhu_cau": "2-bedroom apartment",
+    "ngan_sach": 2000000000,
+    "khu_vuc": "Thủ Đức",
+    "can_vay": true,
+    "objection": "gia_cao_hon_doi_thu",
+    "next_step": { "type": "site_visit", "date": "2026-07-04" }
+  },
+
+  "compliance": [
+    {
+      "type": "over_promise",
+      "at_sec": 333,
+      "quote": "the title deed will definitely be issued this quarter",
+      "severity": "high"
+    }
+  ],
+
+  "crm": { "record_id": "kh_41022", "stage": "hen_gap", "task_created": true }
+}`,
+}
+
+const WEBHOOK_SNIPPET = {
+  vi: `POST /your-endpoint  HTTP/1.1
 Content-Type: application/json
 X-Signature: sha256=<hmac_chu_ky>
 
 { "event": "call.analyzed", "data": { ...payload... } }
 
 # Hoặc chủ động lấy theo lô:
-GET /v1/calls?from=2026-07-01&to=2026-07-31&min_score=0&flagged=true`
+GET /v1/calls?from=2026-07-01&to=2026-07-31&min_score=0&flagged=true`,
+  en: `POST /your-endpoint  HTTP/1.1
+Content-Type: application/json
+X-Signature: sha256=<hmac_signature>
+
+{ "event": "call.analyzed", "data": { ...payload... } }
+
+# Or pull results in batches:
+GET /v1/calls?from=2026-07-01&to=2026-07-31&min_score=0&flagged=true`,
+}
 
 export function TechPayload() {
   const { t } = useLanguage()
   const [tab, setTab] = useState<'json' | 'api' | 'fields'>('json')
   const [copied, setCopied] = useState(false)
 
+  const jsonPayload = t(JSON_PAYLOAD.vi, JSON_PAYLOAD.en)
+  const webhookSnippet = t(WEBHOOK_SNIPPET.vi, WEBHOOK_SNIPPET.en)
+
   const copy = async () => {
-    const text = tab === 'json' ? JSON_PAYLOAD : WEBHOOK_SNIPPET
+    const text = tab === 'json' ? jsonPayload : webhookSnippet
     try {
       await navigator.clipboard.writeText(text)
       setCopied(true)
@@ -165,7 +225,7 @@ export function TechPayload() {
       {tab === 'json' && (
         <div className="bg-slate-900">
           <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-slate-300">
-            <code>{JSON_PAYLOAD}</code>
+            <code>{jsonPayload}</code>
           </pre>
         </div>
       )}
@@ -173,7 +233,7 @@ export function TechPayload() {
       {tab === 'api' && (
         <div className="bg-slate-900">
           <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-slate-300">
-            <code>{WEBHOOK_SNIPPET}</code>
+            <code>{webhookSnippet}</code>
           </pre>
           <div className="px-4 sm:px-5 pb-5 -mt-1">
             <p className="text-[11px] text-slate-400">

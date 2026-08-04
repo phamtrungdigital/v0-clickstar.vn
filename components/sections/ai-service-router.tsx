@@ -60,6 +60,8 @@ const COPY = {
     aiThinking: 'AI Click Star đang suy nghĩ…',
     seeMore: 'Có thể anh quan tâm:',
     note: 'AI có thể nhầm. Gọi hotline 0977 713 428 nếu cần tư vấn người thật.',
+    errorUnknown: 'Lỗi không xác định',
+    errorNetwork: 'Không kết nối được. Vui lòng thử lại hoặc gọi 0977 713 428.',
   },
   en: {
     badge: 'AI Assistant',
@@ -75,6 +77,8 @@ const COPY = {
     aiThinking: 'Click Star AI is thinking…',
     seeMore: 'You may also like:',
     note: 'AI may be wrong. Call 0977 713 428 for a real consultant.',
+    errorUnknown: 'Something went wrong. Please try again.',
+    errorNetwork: "Couldn't connect. Please try again or call 0977 713 428.",
   },
 }
 
@@ -131,12 +135,12 @@ export function AiServiceRouter() {
         })
         const data: ApiResponse = await res.json()
         if (!res.ok || data.error) {
-          setError(data.error || 'Lỗi không xác định')
+          setError(data.error || t.errorUnknown)
           return
         }
         setResult(data)
       } catch (e: any) {
-        setError('Không kết nối được. Vui lòng thử lại hoặc gọi 0977 713 428.')
+        setError(t.errorNetwork)
       }
     })
   }

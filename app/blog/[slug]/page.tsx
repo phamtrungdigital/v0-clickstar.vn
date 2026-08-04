@@ -163,16 +163,19 @@ export default async function BlogPostPage({
               <div className="mt-12 pt-8 border-t border-border">
                 <div className="bg-gradient-to-br from-primary/5 to-background border border-primary/20 rounded-2xl p-6 lg:p-8 text-center">
                   <h3 className="text-xl font-extrabold text-foreground mb-2">
-                    Cần tư vấn cụ thể cho doanh nghiệp?
+                    {t('Cần tư vấn cụ thể cho doanh nghiệp?', 'Need tailored advice for your business?')}
                   </h3>
                   <p className="text-muted-foreground mb-5 text-sm">
-                    Click Star sẽ giúp anh/chị xây dựng giải pháp phù hợp ngành nghề và quy mô.
+                    {t(
+                      'Click Star sẽ giúp anh/chị xây dựng giải pháp phù hợp ngành nghề và quy mô.',
+                      'Click Star will help you build a solution that fits your industry and scale.',
+                    )}
                   </p>
                   <Link
                     href="/contact"
                     className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-full transition-all hover:shadow-lg hover:shadow-primary/30"
                   >
-                    Đặt lịch tư vấn miễn phí
+                    {t('Đặt lịch tư vấn miễn phí', 'Book a free consultation')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
@@ -183,15 +186,17 @@ export default async function BlogPostPage({
             <aside className="order-3 space-y-6 lg:sticky lg:top-24 lg:self-start">
               {/* CTA tư vấn nhanh */}
               <div className="bg-foreground text-background rounded-2xl p-6">
-                <h3 className="text-base font-bold mb-2">Hỗ trợ trực tiếp</h3>
-                <p className="text-xs text-white/60 mb-4">Trả lời mọi câu hỏi trong giờ làm việc</p>
+                <h3 className="text-base font-bold mb-2">{t('Hỗ trợ trực tiếp', 'Talk to us directly')}</h3>
+                <p className="text-xs text-white/60 mb-4">
+                  {t('Trả lời mọi câu hỏi trong giờ làm việc', 'We answer every question during business hours')}
+                </p>
                 <div className="space-y-2">
                   <Link
                     href="/contact"
                     className="flex items-center gap-2 px-3 py-2 bg-primary hover:bg-primary-dark rounded-lg text-sm font-semibold transition-colors"
                   >
                     <Phone className="w-4 h-4" />
-                    Liên hệ tư vấn
+                    {t('Liên hệ tư vấn', 'Contact us for advice')}
                   </Link>
                   {zaloUrl && (
                     <a
@@ -201,7 +206,7 @@ export default async function BlogPostPage({
                       className="flex items-center gap-2 px-3 py-2 bg-[#0068FF] hover:bg-[#0055d4] rounded-lg text-sm font-semibold transition-colors"
                     >
                       <MessageCircle className="w-4 h-4" />
-                      Chat Zalo
+                      {t('Chat Zalo', 'Chat on Zalo')}
                     </a>
                   )}
                 </div>
@@ -214,7 +219,7 @@ export default async function BlogPostPage({
               {related.length > 0 && (
                 <div>
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    Bài liên quan
+                    {t('Bài liên quan', 'Related posts')}
                   </h3>
                   <ul className="space-y-3">
                     {related.map((p) => {
@@ -262,7 +267,7 @@ export default async function BlogPostPage({
               {post.tags.length > 0 && (
                 <div>
                   <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    Chủ đề
+                    {t('Chủ đề', 'Topics')}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {post.tags.map((tag) => (
