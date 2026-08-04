@@ -2,22 +2,26 @@
 
 import { useActionState } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
+import { useLanguage } from '@/contexts/language-context'
 import { submitContactForm, type ContactFormState } from '../actions'
 
-const SERVICES = [
-  'Digital Marketing',
-  'Thiết kế Website',
-  'Dashboard dữ liệu',
-  'Tích hợp AI',
-  'AI Automation',
-  'CRM & CDP',
-  'Phân tích cuộc gọi AI',
-  'Tư vấn tổng thể',
-] as const
+// value gửi đi (s.vi) giữ nguyên tiếng Việt để không lệch dữ liệu lead/CRM giữa 2 ngôn ngữ —
+// chỉ label hiển thị được dịch qua t(s.vi, s.en).
+const SERVICES: { vi: string; en: string }[] = [
+  { vi: 'Digital Marketing', en: 'Digital Marketing' },
+  { vi: 'Thiết kế Website', en: 'Website Design' },
+  { vi: 'Dashboard dữ liệu', en: 'Data Dashboards' },
+  { vi: 'Tích hợp AI', en: 'AI Integration' },
+  { vi: 'AI Automation', en: 'AI Automation' },
+  { vi: 'CRM & CDP', en: 'CRM & CDP' },
+  { vi: 'Phân tích cuộc gọi AI', en: 'AI Call Analytics' },
+  { vi: 'Tư vấn tổng thể', en: 'End-to-end Consulting' },
+]
 
 const INITIAL_STATE: ContactFormState = { status: 'idle' }
 
 export function ContactForm({ defaultService }: { defaultService?: string }) {
+  const { t } = useLanguage()
   const [state, formAction, isPending] = useActionState(submitContactForm, INITIAL_STATE)
 
   if (state.status === 'success') {
@@ -26,15 +30,20 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
         <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-8 h-8 text-emerald-600" />
         </div>
-        <h3 className="text-xl font-bold text-foreground mb-2">Đã gửi yêu cầu thành công!</h3>
+        <h3 className="text-xl font-bold text-foreground mb-2">
+          {t('Đã gửi yêu cầu thành công!', 'Your request has been sent!')}
+        </h3>
         <p className="text-muted-foreground mb-6">
-          Cảm ơn anh/chị đã liên hệ. Đội ngũ Click Star sẽ phản hồi trong vòng 24 giờ làm việc.
+          {t(
+            'Cảm ơn anh/chị đã liên hệ. Đội ngũ Click Star sẽ phản hồi trong vòng 24 giờ làm việc.',
+            'Thank you for reaching out. The Click Star team will get back to you within 24 business hours.',
+          )}
         </p>
         <button
           onClick={() => window.location.reload()}
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary-dark text-white font-semibold rounded-full transition-colors"
         >
-          Gửi yêu cầu khác
+          {t('Gửi yêu cầu khác', 'Send another request')}
         </button>
       </div>
     )
@@ -62,37 +71,40 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
       />
 
       <div className="grid sm:grid-cols-2 gap-5">
-        <Field label="Họ và tên *" name="name" placeholder="Nguyễn Văn A" error={fieldErrors.name} required />
-        <Field label="Số điện thoại *" name="phone" type="tel" placeholder="0977 713 428" error={fieldErrors.phone} required />
+        <Field label={t('Họ và tên *', 'Full name *')} name="name" placeholder="Nguyễn Văn A" error={fieldErrors.name} required />
+        <Field label={t('Số điện thoại *', 'Phone number *')} name="phone" type="tel" placeholder="0977 713 428" error={fieldErrors.phone} required />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-5">
-        <Field label="Email" name="email" type="email" placeholder="ban@congty.vn" error={fieldErrors.email} />
-        <Field label="Công ty / Thương hiệu" name="company" placeholder="Tên doanh nghiệp" error={fieldErrors.company} />
+        <Field label="Email" name="email" type="email" placeholder={t('ban@congty.vn', 'you@company.com')} error={fieldErrors.email} />
+        <Field label={t('Công ty / Thương hiệu', 'Company / Brand')} name="company" placeholder={t('Tên doanh nghiệp', 'Your business name')} error={fieldErrors.company} />
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">Dịch vụ quan tâm</label>
+        <label className="block text-sm font-semibold text-foreground mb-2">{t('Dịch vụ quan tâm', 'Service of interest')}</label>
         <select
           name="service"
           defaultValue={defaultService ?? ''}
           className="w-full px-4 py-3 bg-white border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"
         >
-          <option value="">— Chọn dịch vụ —</option>
+          <option value="">{t('— Chọn dịch vụ —', '— Select a service —')}</option>
           {SERVICES.map((s) => (
-            <option key={s} value={s}>
-              {s}
+            <option key={s.vi} value={s.vi}>
+              {t(s.vi, s.en)}
             </option>
           ))}
         </select>
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">Nội dung yêu cầu</label>
+        <label className="block text-sm font-semibold text-foreground mb-2">{t('Nội dung yêu cầu', 'Tell us about your project')}</label>
         <textarea
           name="message"
           rows={5}
-          placeholder="Mô tả ngắn về dự án hoặc nhu cầu của bạn (ngân sách, thời gian, mục tiêu...)"
+          placeholder={t(
+            'Mô tả ngắn về dự án hoặc nhu cầu của bạn (ngân sách, thời gian, mục tiêu...)',
+            'Briefly describe your project or needs (budget, timeline, goals...)',
+          )}
           className="w-full px-4 py-3 bg-white border border-border rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors resize-none"
         />
         {fieldErrors.message && <p className="mt-1 text-xs text-red-600">{fieldErrors.message}</p>}
@@ -106,19 +118,21 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
         {isPending ? (
           <>
             <Loader2 className="w-5 h-5 animate-spin" />
-            Đang gửi…
+            {t('Đang gửi…', 'Sending…')}
           </>
         ) : (
           <>
-            Gửi yêu cầu tư vấn
+            {t('Gửi yêu cầu tư vấn', 'Request a consultation')}
             <Send className="w-4 h-4" />
           </>
         )}
       </button>
 
       <p className="text-xs text-muted-foreground">
-        Bằng việc gửi yêu cầu, anh/chị đồng ý cho Click Star liên hệ tư vấn về dịch vụ. Thông tin được bảo mật theo
-        chính sách của chúng tôi.
+        {t(
+          'Bằng việc gửi yêu cầu, anh/chị đồng ý cho Click Star liên hệ tư vấn về dịch vụ. Thông tin được bảo mật theo chính sách của chúng tôi.',
+          'By submitting this form, you agree to be contacted by Click Star about our services. Your information is kept confidential under our privacy policy.',
+        )}
       </p>
     </form>
   )

@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Clock, MessageCircle, Sparkles } from 'lucide-reac
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getSiteSettings } from '@/lib/cms/settings'
+import { getServerLang, makeT, pickI18n } from '@/lib/i18n/server'
 import { ContactForm } from './_components/contact-form'
 
 export const dynamic = 'force-dynamic'
@@ -21,12 +22,17 @@ export default async function ContactPage({
 }) {
   const settings = await getSiteSettings()
   const params = await searchParams
+  const lang = await getServerLang()
+  const t = makeT(lang)
 
   const phone = settings?.contact_phone || '0977 713 428'
   const email = settings?.contact_email || 'clickstar.vn@gmail.com'
   const address =
-    settings?.address?.vi ||
-    'Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, TP Hà Nội'
+    pickI18n(lang, settings?.address) ||
+    t(
+      'Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, TP Hà Nội',
+      '6th Floor, MD Complex Building (Office Tower), 68 Nguyen Co Thach, Tu Liem Ward, Hanoi',
+    )
   const zaloUrl = settings?.zalo_url || null
 
   const phoneHref = `tel:${phone.replace(/[^+\d]/g, '')}`
@@ -45,15 +51,17 @@ export default async function ContactPage({
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-5">
               <Sparkles className="w-3.5 h-3.5" />
-              Tư vấn miễn phí
+              {t('Tư vấn miễn phí', 'Free consultation')}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance">
-              Để Click Star đồng hành{' '}
-              <span className="text-primary">cùng bạn chuyển đổi số</span>
+              {t('Để Click Star đồng hành', 'Let Click Star power')}{' '}
+              <span className="text-primary">{t('cùng bạn chuyển đổi số', 'your digital transformation')}</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
-              Điền form bên dưới hoặc liên hệ trực tiếp qua hotline, Zalo. Đội ngũ chuyên gia sẽ phản hồi trong vòng
-              24 giờ làm việc.
+              {t(
+                'Điền form bên dưới hoặc liên hệ trực tiếp qua hotline, Zalo. Đội ngũ chuyên gia sẽ phản hồi trong vòng 24 giờ làm việc.',
+                'Fill in the form below or reach us directly via hotline or Zalo. Our experts will get back to you within 24 business hours.',
+              )}
             </p>
           </div>
         </div>
@@ -66,9 +74,14 @@ export default async function ContactPage({
             {/* Form */}
             <div>
               <div className="bg-secondary/30 rounded-2xl p-6 lg:p-10 border border-border/50">
-                <h2 className="text-2xl font-bold text-foreground mb-2">Gửi yêu cầu tư vấn</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-2">
+                  {t('Gửi yêu cầu tư vấn', 'Request a consultation')}
+                </h2>
                 <p className="text-sm text-muted-foreground mb-8">
-                  Càng chi tiết, chúng tôi càng có thể chuẩn bị giải pháp phù hợp nhất.
+                  {t(
+                    'Càng chi tiết, chúng tôi càng có thể chuẩn bị giải pháp phù hợp nhất.',
+                    'The more details you share, the better we can tailor the right solution for you.',
+                  )}
                 </p>
                 <ContactForm defaultService={params.service} />
               </div>
@@ -78,7 +91,7 @@ export default async function ContactPage({
             <aside className="space-y-6">
               {/* Contact info card */}
               <div className="bg-foreground text-background rounded-2xl p-7">
-                <h3 className="text-lg font-bold mb-5">Thông tin liên hệ</h3>
+                <h3 className="text-lg font-bold mb-5">{t('Thông tin liên hệ', 'Contact information')}</h3>
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <span className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
@@ -107,7 +120,7 @@ export default async function ContactPage({
                       <MapPin className="w-4 h-4 text-primary" />
                     </span>
                     <div>
-                      <div className="text-xs text-white/60 mb-0.5">Văn phòng</div>
+                      <div className="text-xs text-white/60 mb-0.5">{t('Văn phòng', 'Office')}</div>
                       <p className="text-sm leading-relaxed">{address}</p>
                     </div>
                   </li>
@@ -116,9 +129,9 @@ export default async function ContactPage({
                       <Clock className="w-4 h-4 text-primary" />
                     </span>
                     <div>
-                      <div className="text-xs text-white/60 mb-0.5">Giờ làm việc</div>
-                      <p className="text-sm">Thứ 2 – Thứ 6: 8:30 – 18:00</p>
-                      <p className="text-sm text-white/60">Thứ 7: 8:30 – 12:00</p>
+                      <div className="text-xs text-white/60 mb-0.5">{t('Giờ làm việc', 'Working hours')}</div>
+                      <p className="text-sm">{t('Thứ 2 – Thứ 6: 8:30 – 18:00', 'Mon – Fri: 8:30 AM – 6:00 PM')}</p>
+                      <p className="text-sm text-white/60">{t('Thứ 7: 8:30 – 12:00', 'Sat: 8:30 AM – 12:00 PM')}</p>
                     </div>
                   </li>
                 </ul>
@@ -136,7 +149,7 @@ export default async function ContactPage({
                     <MessageCircle className="w-6 h-6" />
                   </span>
                   <div className="flex-1">
-                    <div className="text-sm text-white/80">Tư vấn nhanh qua</div>
+                    <div className="text-sm text-white/80">{t('Tư vấn nhanh qua', 'Chat with us on')}</div>
                     <div className="text-lg font-bold">Zalo Click Star</div>
                   </div>
                   <span className="text-2xl">→</span>
@@ -153,7 +166,7 @@ export default async function ContactPage({
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Bản đồ văn phòng Click Star"
+                  title={t('Bản đồ văn phòng Click Star', 'Click Star office map')}
                 />
               </div>
             </aside>

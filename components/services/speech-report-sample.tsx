@@ -21,26 +21,68 @@ import { useLanguage } from '@/contexts/language-context'
  * để user không phải cuộn qua khối chữ dài mới thấy phần giá trị.
  */
 
-const TRANSCRIPT: { t: string; who: 'NV' | 'KH'; text: string; flag?: boolean }[] = [
-  { t: '00:12', who: 'NV', text: 'Dạ em chào anh Hùng, em gọi về căn 2 phòng ngủ anh hỏi hôm qua ạ.' },
-  { t: '00:41', who: 'KH', text: 'Ừ, mà tầm giá lúc trước là bao nhiêu nhỉ, anh thấy hơi cao so với bên kia.' },
-  { t: '02:07', who: 'KH', text: 'Anh cần trong tầm 2 tỷ đổ lại, có hỗ trợ vay không em?' },
-  { t: '05:33', who: 'NV', text: 'Anh yên tâm, chỗ em chắc chắn ra sổ trong quý này ạ.', flag: true },
-  { t: '07:58', who: 'KH', text: 'Thôi để cuối tuần anh qua xem thử.' },
+const TRANSCRIPT: { t: string; who: 'NV' | 'KH'; text: { vi: string; en: string }; flag?: boolean }[] = [
+  {
+    t: '00:12',
+    who: 'NV',
+    text: {
+      vi: 'Dạ em chào anh Hùng, em gọi về căn 2 phòng ngủ anh hỏi hôm qua ạ.',
+      en: "Hello Mr. Hung, I'm calling about the 2-bedroom unit you asked about yesterday.",
+    },
+  },
+  {
+    t: '00:41',
+    who: 'KH',
+    text: {
+      vi: 'Ừ, mà tầm giá lúc trước là bao nhiêu nhỉ, anh thấy hơi cao so với bên kia.',
+      en: 'Right — what was the price again? It felt a bit high compared to the other place.',
+    },
+  },
+  {
+    t: '02:07',
+    who: 'KH',
+    text: {
+      vi: 'Anh cần trong tầm 2 tỷ đổ lại, có hỗ trợ vay không em?',
+      en: 'I need to stay under 2 billion — can you help with financing?',
+    },
+  },
+  {
+    t: '05:33',
+    who: 'NV',
+    text: {
+      vi: 'Anh yên tâm, chỗ em chắc chắn ra sổ trong quý này ạ.',
+      en: "Don't worry — the title deed will definitely be issued this quarter.",
+    },
+    flag: true,
+  },
+  {
+    t: '07:58',
+    who: 'KH',
+    text: {
+      vi: 'Thôi để cuối tuần anh qua xem thử.',
+      en: "Alright, I'll drop by this weekend to take a look.",
+    },
+  },
 ]
 
-const CRM_FIELDS: { label: string; value: string }[] = [
-  { label: 'Nhu cầu', value: 'Căn hộ 2 phòng ngủ' },
-  { label: 'Ngân sách', value: '~2 tỷ' },
-  { label: 'Cần vay', value: 'Có' },
-  { label: 'Lý do phản đối', value: 'Giá cao hơn đối thủ' },
-  { label: 'Mức sẵn sàng', value: 'Cao' },
-  { label: 'Bước tiếp theo', value: 'Hẹn xem nhà — Thứ 7' },
+const CRM_FIELDS: { label: { vi: string; en: string }; value: { vi: string; en: string } }[] = [
+  { label: { vi: 'Nhu cầu', en: 'Need' }, value: { vi: 'Căn hộ 2 phòng ngủ', en: '2-bedroom apartment' } },
+  { label: { vi: 'Ngân sách', en: 'Budget' }, value: { vi: '~2 tỷ', en: '~2 billion VND' } },
+  { label: { vi: 'Cần vay', en: 'Needs financing' }, value: { vi: 'Có', en: 'Yes' } },
+  { label: { vi: 'Lý do phản đối', en: 'Objection' }, value: { vi: 'Giá cao hơn đối thủ', en: 'Priced above competitor' } },
+  { label: { vi: 'Mức sẵn sàng', en: 'Readiness' }, value: { vi: 'Cao', en: 'High' } },
+  { label: { vi: 'Bước tiếp theo', en: 'Next step' }, value: { vi: 'Hẹn xem nhà — Thứ 7', en: 'Site visit — Saturday' } },
 ]
 
-const SCORE_CRITERIA = ['Chào hỏi & xác nhận nhu cầu', 'Khai thác ngân sách', 'Xử lý phản đối', 'Chốt bước tiếp theo']
+const SCORE_CRITERIA: { vi: string; en: string }[] = [
+  { vi: 'Chào hỏi & xác nhận nhu cầu', en: 'Greeting & needs confirmation' },
+  { vi: 'Khai thác ngân sách', en: 'Budget discovery' },
+  { vi: 'Xử lý phản đối', en: 'Objection handling' },
+  { vi: 'Chốt bước tiếp theo', en: 'Next-step close' },
+]
 
 function TranscriptPanel({ label, className = '' }: { label: string; className?: string }) {
+  const { t } = useLanguage()
   return (
     <div className={`rounded-2xl bg-slate-900 border border-white/10 overflow-hidden flex flex-col ${className}`}>
       <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 flex-shrink-0">
@@ -53,17 +95,23 @@ function TranscriptPanel({ label, className = '' }: { label: string; className?:
           <div key={i} className={`text-[11px] sm:text-xs font-mono leading-relaxed ${line.flag ? 'rounded-md bg-rose-500/10 border border-rose-500/30 p-2 -mx-1' : ''}`}>
             <span className="text-slate-500">[{line.t}]</span>{' '}
             <span className={line.who === 'NV' ? 'text-cyan-400 font-semibold' : 'text-teal-300 font-semibold'}>
-              {line.who}
+              {line.who === 'NV' ? t('NV', 'Agent') : t('KH', 'Customer')}
             </span>
             <span className="text-slate-500"> : </span>
-            <span className={`${line.flag ? 'text-rose-200' : 'text-slate-300'} break-words`}>{line.text}</span>
+            <span className={`${line.flag ? 'text-rose-200' : 'text-slate-300'} break-words`}>
+              {t(line.text.vi, line.text.en)}
+            </span>
           </div>
         ))}
       </div>
       <div className="flex flex-wrap gap-2 px-4 pb-4 flex-shrink-0">
-        {['Sale nói 62%', 'Khách nói 38%', '2 lần ngắt lời'].map((chip) => (
-          <span key={chip} className="text-[10px] px-2 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400">
-            {chip}
+        {[
+          { vi: 'Sale nói 62%', en: 'Agent spoke 62%' },
+          { vi: 'Khách nói 38%', en: 'Customer spoke 38%' },
+          { vi: '2 lần ngắt lời', en: '2 interruptions' },
+        ].map((chip) => (
+          <span key={chip.vi} className="text-[10px] px-2 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400">
+            {t(chip.vi, chip.en)}
           </span>
         ))}
       </div>
@@ -178,9 +226,9 @@ function ResultCards({
 
         <ul className="space-y-1.5 mb-4">
           {SCORE_CRITERIA.map((c) => (
-            <li key={c} className="flex items-center gap-2 text-xs text-muted-foreground">
+            <li key={c.vi} className="flex items-center gap-2 text-xs text-muted-foreground">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-              <span className="break-words">{c}</span>
+              <span className="break-words">{t(c.vi, c.en)}</span>
             </li>
           ))}
         </ul>
@@ -223,12 +271,12 @@ function ResultCards({
         <div className="space-y-2">
           {CRM_FIELDS.map((f) => (
             <div
-              key={f.label}
+              key={f.label.vi}
               className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 px-3 py-2"
             >
-              <span className="text-xs text-muted-foreground flex-shrink-0">{f.label}</span>
+              <span className="text-xs text-muted-foreground flex-shrink-0">{t(f.label.vi, f.label.en)}</span>
               <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground text-right min-w-0">
-                <span className="truncate">{f.value}</span>
+                <span className="truncate">{t(f.value.vi, f.value.en)}</span>
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
               </span>
             </div>

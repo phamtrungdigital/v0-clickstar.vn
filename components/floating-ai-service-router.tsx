@@ -34,6 +34,11 @@ const COPY = {
     contactCta: 'Liên hệ tư vấn chi tiết',
     resetCta: 'Hỏi câu mới',
     finalHint: 'Cần tư vấn chi tiết hơn? Bấm Liên hệ — chuyên gia Click Star sẽ phản hồi trong 2h.',
+    expand: 'Mở rộng',
+    collapse: 'Thu gọn',
+    close: 'Đóng',
+    closeHint: 'Đóng (ẩn {h}h)',
+    autoClose: 'TỰ ĐÓNG SAU {s}s',
   },
   en: {
     placeholder: 'What service do you need? Click Star will help…',
@@ -51,6 +56,11 @@ const COPY = {
     contactCta: 'Contact for detailed consultation',
     resetCta: 'New question',
     finalHint: 'Need more details? Click Contact — our experts reply within 2 hours.',
+    expand: 'Expand',
+    collapse: 'Collapse',
+    close: 'Close',
+    closeHint: 'Close (hidden for {h}h)',
+    autoClose: 'AUTO-CLOSE {s}s',
   },
 }
 
@@ -326,7 +336,7 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
                       }`}
                     >
                       <span className="hidden sm:inline opacity-70">·</span>
-                      AUTO-CLOSE {remainingSec}s
+                      {copy.autoClose.replace('{s}', String(remainingSec))}
                     </span>
                   )}
                 </div>
@@ -351,8 +361,8 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
                   setPhase(phase === 'collapsed' ? 'expanded' : 'collapsed')
                 }}
                 className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-                aria-label={phase === 'collapsed' ? 'Mở rộng' : 'Thu gọn'}
-                title={phase === 'collapsed' ? 'Mở rộng' : 'Thu gọn'}
+                aria-label={phase === 'collapsed' ? copy.expand : copy.collapse}
+                title={phase === 'collapsed' ? copy.expand : copy.collapse}
               >
                 {phase === 'collapsed' ? (
                   <ChevronUp className="w-4 h-4" />
@@ -363,8 +373,8 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
               <button
                 onClick={handleClose}
                 className="p-1.5 text-white/60 hover:text-white hover:bg-white/10 rounded-md transition-colors"
-                aria-label="Đóng"
-                title={`Đóng (ẩn ${dismissHours}h)`}
+                aria-label={copy.close}
+                title={copy.closeHint.replace('{h}', String(dismissHours))}
               >
                 <X className="w-4 h-4" />
               </button>

@@ -103,7 +103,9 @@ const RobotSVG = ({ className = "w-full h-full" }: { className?: string }) => (
 )
 
 // Automation Flow SVG Component
-const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string }) => (
+const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string }) => {
+  const { t } = useLanguage()
+  return (
   <svg viewBox="0 0 600 350" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
     {/* Background Grid */}
     <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
@@ -142,7 +144,7 @@ const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string
       <rect x="30" y="60" width="90" height="80" rx="12" fill="white" stroke="#D97757" strokeWidth="2" />
       <rect x="40" y="70" width="70" height="30" rx="6" fill="#D97757" opacity="0.1" />
       <text x="75" y="90" textAnchor="middle" fill="#D97757" fontSize="12" fontWeight="bold">Claude</text>
-      <text x="75" y="115" textAnchor="middle" fill="#64748B" fontSize="9">Phân tích</text>
+      <text x="75" y="115" textAnchor="middle" fill="#64748B" fontSize="9">{t('Phân tích', 'Analysis')}</text>
       <text x="75" y="127" textAnchor="middle" fill="#64748B" fontSize="9">& Content</text>
     </g>
     
@@ -160,8 +162,8 @@ const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string
       <rect x="390" y="210" width="90" height="80" rx="12" fill="white" stroke="#8B5CF6" strokeWidth="2" />
       <rect x="400" y="220" width="70" height="30" rx="6" fill="#8B5CF6" opacity="0.1" />
       <text x="435" y="240" textAnchor="middle" fill="#8B5CF6" fontSize="11" fontWeight="bold">Analytics</text>
-      <text x="435" y="265" textAnchor="middle" fill="#64748B" fontSize="9">Phân tích</text>
-      <text x="435" y="277" textAnchor="middle" fill="#64748B" fontSize="9">dữ liệu</text>
+      <text x="435" y="265" textAnchor="middle" fill="#64748B" fontSize="9">{t('Phân tích', 'Data')}</text>
+      <text x="435" y="277" textAnchor="middle" fill="#64748B" fontSize="9">{t('dữ liệu', 'analysis')}</text>
     </g>
     
     {/* Node 4 - Webapp */}
@@ -208,7 +210,8 @@ const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string
       </linearGradient>
     </defs>
   </svg>
-)
+  )
+}
 
 // Small Robot Icon SVG
 const SmallRobotSVG = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -228,33 +231,33 @@ const SmallRobotSVG = ({ className = "w-6 h-6" }: { className?: string }) => (
 const automationBenefits = [
   {
     icon: Clock,
-    title: 'Tiết kiệm 80% thời gian',
-    description: 'Tự động hóa các tác vụ lặp đi lặp lại: nhập liệu, gửi email, cập nhật CRM, tạo báo cáo...'
+    title: { vi: 'Tiết kiệm 80% thời gian', en: 'Save 80% of your time' },
+    description: { vi: 'Tự động hóa các tác vụ lặp đi lặp lại: nhập liệu, gửi email, cập nhật CRM, tạo báo cáo...', en: 'Automate the repetitive work: data entry, emails, CRM updates, reporting and more.' }
   },
   {
     icon: Zap,
-    title: 'Phản hồi tức thì 24/7',
-    description: 'Hệ thống tự động xử lý yêu cầu, chăm sóc khách hàng, gửi thông báo không cần can thiệp.'
+    title: { vi: 'Phản hồi tức thì 24/7', en: 'Instant response, 24/7' },
+    description: { vi: 'Hệ thống tự động xử lý yêu cầu, chăm sóc khách hàng, gửi thông báo không cần can thiệp.', en: 'The system handles requests, nurtures customers and sends notifications — no manual effort needed.' }
   },
   {
     icon: TrendingUp,
-    title: 'Tận dụng xu hướng AI',
-    description: 'Kết hợp sức mạnh của Claude, GPT, và các AI hàng đầu vào quy trình kinh doanh.'
+    title: { vi: 'Tận dụng xu hướng AI', en: 'Ride the AI wave' },
+    description: { vi: 'Kết hợp sức mạnh của Claude, GPT, và các AI hàng đầu vào quy trình kinh doanh.', en: 'Combine the power of Claude, GPT and other leading AI models right inside your business processes.' }
   },
   {
     icon: Shield,
-    title: 'Giảm thiểu sai sót',
-    description: 'Loại bỏ lỗi do con người, đảm bảo quy trình chạy chính xác và nhất quán.'
+    title: { vi: 'Giảm thiểu sai sót', en: 'Minimise errors' },
+    description: { vi: 'Loại bỏ lỗi do con người, đảm bảo quy trình chạy chính xác và nhất quán.', en: 'Eliminate human error and keep every process accurate and consistent.' }
   },
   {
     icon: RefreshCcw,
-    title: 'Tích hợp đa nền tảng',
-    description: 'Kết nối tất cả tools: CRM, Email, Social, Analytics... thành một hệ thống thống nhất.'
+    title: { vi: 'Tích hợp đa nền tảng', en: 'Cross-platform integration' },
+    description: { vi: 'Kết nối tất cả tools: CRM, Email, Social, Analytics... thành một hệ thống thống nhất.', en: 'Connect every tool — CRM, email, social, analytics — into one unified system.' }
   },
   {
     icon: Database,
-    title: 'Data-driven decisions',
-    description: 'Tự động thu thập, phân tích dữ liệu và đưa ra insights, đề xuất hành động.'
+    title: { vi: 'Data-driven decisions', en: 'Data-driven decisions' },
+    description: { vi: 'Tự động thu thập, phân tích dữ liệu và đưa ra insights, đề xuất hành động.', en: 'Automatically collect and analyse data, surface insights and recommend the next action.' }
   }
 ]
 
@@ -262,35 +265,55 @@ const automationBenefits = [
 const automationUseCases = [
   {
     icon: MessageSquare,
-    title: 'Chăm sóc khách hàng tự động',
-    description: 'Chatbot AI trả lời 24/7, phân loại ticket, escalate khi cần thiết',
-    flow: ['Khách hàng nhắn tin', 'AI phân tích intent', 'Trả lời hoặc chuyển đến nhân viên', 'Lưu vào CRM'],
+    title: { vi: 'Chăm sóc khách hàng tự động', en: 'Automated customer care' },
+    description: { vi: 'Chatbot AI trả lời 24/7, phân loại ticket, escalate khi cần thiết', en: 'AI chatbot answers 24/7, triages tickets and escalates when needed' },
+    flow: [
+      { vi: 'Khách hàng nhắn tin', en: 'Customer messages in' },
+      { vi: 'AI phân tích intent', en: 'AI detects intent' },
+      { vi: 'Trả lời hoặc chuyển đến nhân viên', en: 'Reply or hand off to an agent' },
+      { vi: 'Lưu vào CRM', en: 'Log to CRM' }
+    ],
     stats: '90%',
-    statsLabel: 'Tự động hóa'
+    statsLabel: { vi: 'Tự động hóa', en: 'Automated' }
   },
   {
     icon: Bell,
-    title: 'Thông báo & Alerts thông minh',
-    description: 'Nhận thông báo quan trọng từ mọi nguồn, AI lọc và ưu tiên',
-    flow: ['Monitor đa kênh', 'AI đánh giá mức độ', 'Gửi thông báo phù hợp', 'Đề xuất hành động'],
+    title: { vi: 'Thông báo & Alerts thông minh', en: 'Smart notifications & alerts' },
+    description: { vi: 'Nhận thông báo quan trọng từ mọi nguồn, AI lọc và ưu tiên', en: 'Get the alerts that matter from every source — AI filters and prioritises them' },
+    flow: [
+      { vi: 'Monitor đa kênh', en: 'Monitor all channels' },
+      { vi: 'AI đánh giá mức độ', en: 'AI scores severity' },
+      { vi: 'Gửi thông báo phù hợp', en: 'Send the right alert' },
+      { vi: 'Đề xuất hành động', en: 'Suggest next steps' }
+    ],
     stats: '24/7',
-    statsLabel: 'Giám sát'
+    statsLabel: { vi: 'Giám sát', en: 'Monitoring' }
   },
   {
     icon: FileText,
-    title: 'Content Workflow',
-    description: 'Tự động tạo, review, publish content theo lịch',
-    flow: ['Lên ý tưởng AI', 'Viết draft', 'Review & edit', 'Auto publish'],
+    title: { vi: 'Content Workflow', en: 'Content Workflow' },
+    description: { vi: 'Tự động tạo, review, publish content theo lịch', en: 'Automatically create, review and publish content on schedule' },
+    flow: [
+      { vi: 'Lên ý tưởng AI', en: 'AI ideation' },
+      { vi: 'Viết draft', en: 'Draft writing' },
+      { vi: 'Review & edit', en: 'Review & edit' },
+      { vi: 'Auto publish', en: 'Auto publish' }
+    ],
     stats: '10x',
-    statsLabel: 'Nhanh hơn'
+    statsLabel: { vi: 'Nhanh hơn', en: 'Faster' }
   },
   {
     icon: BarChart3,
-    title: 'Báo cáo & Analytics tự động',
-    description: 'Thu thập data từ mọi nguồn, AI phân tích và gửi insights',
-    flow: ['Collect data', 'AI phân tích', 'Tạo báo cáo', 'Gửi định kỳ'],
+    title: { vi: 'Báo cáo & Analytics tự động', en: 'Automated reporting & analytics' },
+    description: { vi: 'Thu thập data từ mọi nguồn, AI phân tích và gửi insights', en: 'Collect data from every source — AI analyses it and delivers the insights' },
+    flow: [
+      { vi: 'Collect data', en: 'Collect data' },
+      { vi: 'AI phân tích', en: 'AI analysis' },
+      { vi: 'Tạo báo cáo', en: 'Build the report' },
+      { vi: 'Gửi định kỳ', en: 'Send on schedule' }
+    ],
     stats: '100%',
-    statsLabel: 'Tự động'
+    statsLabel: { vi: 'Tự động', en: 'Automated' }
   }
 ]
 
@@ -299,37 +322,37 @@ const automationTools = [
   {
     name: 'N8N',
     category: 'Workflow Engine',
-    description: 'Nền tảng automation no-code/low-code mạnh mẽ',
+    description: { vi: 'Nền tảng automation no-code/low-code mạnh mẽ', en: 'A powerful no-code/low-code automation platform' },
     logo: '/images/automation/n8n.svg',
   },
   {
     name: 'Claude',
     category: 'AI Agent',
-    description: 'Xử lý ngôn ngữ tự nhiên, phân tích sâu',
+    description: { vi: 'Xử lý ngôn ngữ tự nhiên, phân tích sâu', en: 'Natural-language processing and deep analysis' },
     logo: '/images/ai-tools/claude.svg',
   },
   {
     name: 'GPT-4o',
     category: 'AI Agent',
-    description: 'Sáng tạo content, đa năng',
+    description: { vi: 'Sáng tạo content, đa năng', en: 'Creative content, all-round capability' },
     logo: '/images/ai-tools/openai.svg',
   },
   {
     name: 'Zapier',
     category: 'Integration',
-    description: 'Kết nối 5000+ ứng dụng',
+    description: { vi: 'Kết nối 5000+ ứng dụng', en: 'Connects 5,000+ apps' },
     logo: '/images/automation/zapier.svg',
   },
   {
     name: 'Make',
     category: 'Integration',
-    description: 'Visual automation builder',
+    description: { vi: 'Visual automation builder', en: 'Visual automation builder' },
     logo: '/images/automation/make.svg',
   },
   {
     name: 'Webhook',
     category: 'Trigger',
-    description: 'Real-time event triggers',
+    description: { vi: 'Real-time event triggers', en: 'Real-time event triggers' },
     logo: null, // dùng lucide Webhook icon vì không có brand logo
   }
 ]
@@ -338,27 +361,27 @@ const automationTools = [
 const automationProcess = [
   {
     step: '01',
-    title: 'Phân tích quy trình',
-    description: 'Xác định các tác vụ lặp lại, thủ công có thể tự động hóa',
-    duration: '1 tuần'
+    title: { vi: 'Phân tích quy trình', en: 'Process analysis' },
+    description: { vi: 'Xác định các tác vụ lặp lại, thủ công có thể tự động hóa', en: 'Identify the repetitive manual tasks ready for automation' },
+    duration: { vi: '1 tuần', en: '1 week' }
   },
   {
     step: '02',
-    title: 'Thiết kế workflow',
-    description: 'Vẽ sơ đồ automation, chọn tools và AI phù hợp',
-    duration: '1 tuần'
+    title: { vi: 'Thiết kế workflow', en: 'Workflow design' },
+    description: { vi: 'Vẽ sơ đồ automation, chọn tools và AI phù hợp', en: 'Map the automation and pick the right tools and AI' },
+    duration: { vi: '1 tuần', en: '1 week' }
   },
   {
     step: '03',
-    title: 'Xây dựng & Kết nối',
-    description: 'Setup N8N, tích hợp AI, kết nối các nền tảng',
-    duration: '2-3 tuần'
+    title: { vi: 'Xây dựng & Kết nối', en: 'Build & Connect' },
+    description: { vi: 'Setup N8N, tích hợp AI, kết nối các nền tảng', en: 'Set up N8N, integrate AI and connect your platforms' },
+    duration: { vi: '2-3 tuần', en: '2-3 weeks' }
   },
   {
     step: '04',
-    title: 'Test & Tối ưu',
-    description: 'Chạy thử, fix bugs, tối ưu performance liên tục',
-    duration: 'Liên tục'
+    title: { vi: 'Test & Tối ưu', en: 'Test & Optimise' },
+    description: { vi: 'Chạy thử, fix bugs, tối ưu performance liên tục', en: 'Trial runs, bug fixes and continuous performance tuning' },
+    duration: { vi: 'Liên tục', en: 'Ongoing' }
   }
 ]
 
@@ -387,16 +410,14 @@ export default function AIAutomationPage() {
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-                  Tự động hóa với{' '}
+                  {t('Tự động hóa với', 'Automate everything with')}{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
                     AI Automation
                   </span>
                 </h1>
 
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  Kết hợp sức mạnh của Claude, GPT, N8N và các công nghệ AI hàng đầu để 
-                  tự động hóa mọi quy trình kinh doanh. Tiết kiệm thời gian, tối ưu chi phí, 
-                  tận dụng xu hướng công nghệ lớn.
+                  {t('Kết hợp sức mạnh của Claude, GPT, N8N và các công nghệ AI hàng đầu để tự động hóa mọi quy trình kinh doanh. Tiết kiệm thời gian, tối ưu chi phí, tận dụng xu hướng công nghệ lớn.', 'Combine the power of Claude, GPT, N8N and leading AI technologies to automate every business process. Save time, cut costs and ride the biggest wave in tech.')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">
@@ -404,7 +425,7 @@ export default function AIAutomationPage() {
                     href="/contact"
                     className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
                   >
-                    Tư vấn miễn phí
+                    {t('Tư vấn miễn phí', 'Free consultation')}
                     <ArrowRight className="w-5 h-5" />
                   </Link>
                   <Link
@@ -412,7 +433,7 @@ export default function AIAutomationPage() {
                     className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-primary font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
                   >
                     <Play className="w-5 h-5" />
-                    Xem workflow
+                    {t('Xem workflow', 'See the workflow')}
                   </Link>
                 </div>
 
@@ -424,7 +445,7 @@ export default function AIAutomationPage() {
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">80%</p>
-                      <p className="text-xs text-muted-foreground">Tiết kiệm thời gian</p>
+                      <p className="text-xs text-muted-foreground">{t('Tiết kiệm thời gian', 'Time saved')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -433,7 +454,7 @@ export default function AIAutomationPage() {
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">24/7</p>
-                      <p className="text-xs text-muted-foreground">Hoạt động liên tục</p>
+                      <p className="text-xs text-muted-foreground">{t('Hoạt động liên tục', 'Always on')}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -442,7 +463,7 @@ export default function AIAutomationPage() {
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">100+</p>
-                      <p className="text-xs text-muted-foreground">Workflows đã triển khai</p>
+                      <p className="text-xs text-muted-foreground">{t('Workflows đã triển khai', 'Workflows deployed')}</p>
                     </div>
                   </div>
                 </div>
@@ -492,14 +513,13 @@ export default function AIAutomationPage() {
             <div className="text-center mb-12">
               <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
                 <SmallRobotSVG className="w-4 h-4" />
-                TẠI SAO CẦN AUTOMATION
+                {t('TẠI SAO CẦN AUTOMATION', 'WHY AUTOMATION')}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Tự động hóa là <span className="text-primary">xu hướng tất yếu</span>
+                {t('Tự động hóa là', 'Automation is')} <span className="text-primary">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
-                Doanh nghiệp không tự động hóa sẽ lãng phí thời gian vào các tác vụ lặp lại, 
-                bỏ lỡ cơ hội tận dụng sức mạnh của công nghệ AI.
+                {t('Doanh nghiệp không tự động hóa sẽ lãng phí thời gian vào các tác vụ lặp lại, bỏ lỡ cơ hội tận dụng sức mạnh của công nghệ AI.', "Businesses that don't automate waste time on repetitive work — and miss the chance to harness the power of AI.")}
               </p>
             </div>
 
@@ -512,8 +532,8 @@ export default function AIAutomationPage() {
                   <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-all">
                     <item.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{item.description}</p>
+                  <h3 className="text-lg font-bold text-white mb-2">{t(item.title.vi, item.title.en)}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
                 </div>
               ))}
             </div>
@@ -534,10 +554,10 @@ export default function AIAutomationPage() {
                 Workflow Automation
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Sơ đồ Automation với AI
+                {t('Sơ đồ Automation với AI', 'The AI automation flow')}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Kết hợp N8N, Claude, GPT và các công cụ khác thành một hệ thống tự động hóa hoàn chỉnh
+                {t('Kết hợp N8N, Claude, GPT và các công cụ khác thành một hệ thống tự động hóa hoàn chỉnh', 'N8N, Claude, GPT and more — combined into one complete automation system')}
               </p>
             </div>
 
@@ -550,9 +570,9 @@ export default function AIAutomationPage() {
             <div className="grid md:grid-cols-4 gap-4">
               {[
                 { icon: Globe, title: 'Input Triggers', desc: 'Webhook, Schedule, Events', color: 'from-amber-500 to-orange-400' },
-                { icon: Brain, title: 'AI Processing', desc: 'Claude + GPT phân tích', color: 'from-primary to-primary-dark' },
-                { icon: Workflow, title: 'N8N Orchestration', desc: 'Điều phối workflow', color: 'from-pink-500 to-rose-400' },
-                { icon: Rocket, title: 'Auto Actions', desc: 'Thực thi tự động', color: 'from-emerald-500 to-teal-400' }
+                { icon: Brain, title: 'AI Processing', desc: t('Claude + GPT phân tích', 'Claude + GPT analysis'), color: 'from-primary to-primary-dark' },
+                { icon: Workflow, title: 'N8N Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration'), color: 'from-pink-500 to-rose-400' },
+                { icon: Rocket, title: 'Auto Actions', desc: t('Thực thi tự động', 'Automated execution'), color: 'from-emerald-500 to-teal-400' }
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm text-center">
                   <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-lg flex items-center justify-center mx-auto mb-3`}>
@@ -574,10 +594,10 @@ export default function AIAutomationPage() {
                 Use Cases
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Ứng dụng AI Automation
+                {t('Ứng dụng AI Automation', 'AI Automation in action')}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Các trường hợp sử dụng phổ biến của AI Automation trong doanh nghiệp
+                {t('Các trường hợp sử dụng phổ biến của AI Automation trong doanh nghiệp', 'The most common AI automation use cases for business')}
               </p>
             </div>
 
@@ -593,18 +613,18 @@ export default function AIAutomationPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-primary">{useCase.stats}</p>
-                      <p className="text-xs text-muted-foreground">{useCase.statsLabel}</p>
+                      <p className="text-xs text-muted-foreground">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">{useCase.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{useCase.description}</p>
-                  
+                  <h3 className="text-lg font-bold text-foreground mb-2">{t(useCase.title.vi, useCase.title.en)}</h3>
+                  <p className="text-muted-foreground text-sm mb-4">{t(useCase.description.vi, useCase.description.en)}</p>
+
                   {/* Flow steps */}
                   <div className="flex flex-wrap items-center gap-2">
                     {useCase.flow.map((step, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full whitespace-nowrap">
-                          {step}
+                          {t(step.vi, step.en)}
                         </span>
                         {i < useCase.flow.length - 1 && (
                           <ChevronRight className="w-3 h-3 text-muted-foreground" />
@@ -627,10 +647,10 @@ export default function AIAutomationPage() {
                 TECH STACK
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                Công nghệ <span className="text-primary">Automation</span>
+                {t('Công nghệ', 'Our')} <span className="text-primary">{t('Automation', 'Automation stack')}</span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto">
-                Bộ công cụ automation và AI hàng đầu được ClickStar sử dụng
+                {t('Bộ công cụ automation và AI hàng đầu được ClickStar sử dụng', 'The leading automation and AI toolkit ClickStar builds with')}
               </p>
             </div>
 
@@ -656,7 +676,7 @@ export default function AIAutomationPage() {
                       <p className="text-xs text-gray-400">{tool.category}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-400">{tool.description}</p>
+                  <p className="text-sm text-gray-400">{t(tool.description.vi, tool.description.en)}</p>
                 </div>
               ))}
             </div>
@@ -674,13 +694,13 @@ export default function AIAutomationPage() {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
-                Quy trình
+                {t('Quy trình', 'Our process')}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Triển khai AI Automation
+                {t('Triển khai AI Automation', 'Deploying AI Automation')}
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                4 bước để xây dựng hệ thống automation cho doanh nghiệp
+                {t('4 bước để xây dựng hệ thống automation cho doanh nghiệp', '4 steps to build your business automation system')}
               </p>
             </div>
 
@@ -692,11 +712,11 @@ export default function AIAutomationPage() {
                       {step.step}
                     </div>
                     <div className="pt-4">
-                      <h3 className="text-lg font-bold text-foreground mb-2">{step.title}</h3>
-                      <p className="text-muted-foreground text-sm mb-4">{step.description}</p>
+                      <h3 className="text-lg font-bold text-foreground mb-2">{t(step.title.vi, step.title.en)}</h3>
+                      <p className="text-muted-foreground text-sm mb-4">{t(step.description.vi, step.description.en)}</p>
                       <span className="inline-flex items-center gap-1 text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-full">
                         <Clock className="w-3 h-3" />
-                        {step.duration}
+                        {t(step.duration.vi, step.duration.en)}
                       </span>
                     </div>
                   </div>
@@ -724,25 +744,24 @@ export default function AIAutomationPage() {
               <RobotSVG />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Sẵn sàng tự động hóa?
+              {t('Sẵn sàng tự động hóa?', 'Ready to automate?')}
             </h2>
             <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Để AI và automation làm việc thay bạn. Liên hệ ngay để được tư vấn 
-              giải pháp phù hợp với doanh nghiệp.
+              {t('Để AI và automation làm việc thay bạn. Liên hệ ngay để được tư vấn giải pháp phù hợp với doanh nghiệp.', 'Let AI and automation do the work for you. Get in touch for a solution tailored to your business.')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
               >
-                Bắt đầu ngay
+                {t('Bắt đầu ngay', 'Get started')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
               <Link
                 href="/services/ai-integration"
                 className="inline-flex items-center gap-2 bg-white text-foreground font-medium px-8 py-4 rounded-full hover:bg-secondary transition-all border border-border shadow-sm"
               >
-                Xem dịch vụ AI
+                {t('Xem dịch vụ AI', 'Explore AI services')}
               </Link>
             </div>
           </div>

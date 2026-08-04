@@ -158,7 +158,8 @@ export function AnalysisDemo() {
           ),
         },
       ],
-      json: `{
+      json: t(
+        `{
   "call_id": "cl_3b81e0",
   "duration_sec": 49,
   "quality": {
@@ -183,6 +184,32 @@ export function AnalysisDemo() {
   ],
   "crm": { "stage": "can_goi_lai", "task_created": true }
 }`,
+        `{
+  "call_id": "cl_3b81e0",
+  "duration_sec": 49,
+  "quality": {
+    "score": 41,
+    "criteria": {
+      "chao_hoi": true,
+      "khai_thac_nhu_cau": false,
+      "tra_loi_cau_hoi_gia": false,
+      "chot_buoc_tiep_theo": false
+    }
+  },
+  "sentiment": { "overall": "negative", "drop_at_sec": 34 },
+  "talk_ratio": { "agent": 0.71, "customer": 0.29 },
+  "extracted": {
+    "nhu_cau": "Vocational study in Germany",
+    "objection": "khong_duoc_bao_gia",
+    "next_step": null
+  },
+  "flags": [
+    "khach_chu_dong_cup_may",
+    "cau_hoi_gia_khong_duoc_tra_loi"
+  ],
+  "crm": { "stage": "can_goi_lai", "task_created": true }
+}`
+      ),
       outcomes: [
         {
           label: t('Điểm chất lượng', 'Quality score'),
@@ -286,7 +313,8 @@ export function AnalysisDemo() {
           ),
         },
       ],
-      json: `{
+      json: t(
+        `{
   "call_id": "cl_77c204",
   "duration_sec": 143,
   "quality": {
@@ -316,6 +344,37 @@ export function AnalysisDemo() {
   ],
   "crm": { "stage": "cho_dat_lich", "task_created": true }
 }`,
+        `{
+  "call_id": "cl_77c204",
+  "duration_sec": 143,
+  "quality": {
+    "score": 68,
+    "criteria": {
+      "khai_thac_nhu_cau": true,
+      "xu_ly_lo_ngai": true,
+      "bao_gia_ro_rang": true,
+      "chot_lich_cu_the": false
+    }
+  },
+  "sentiment": { "overall": "neutral", "concern": "so_dau" },
+  "extracted": {
+    "dich_vu": "Clear aligners",
+    "ngan_sach_khach": 50000000,
+    "bao_gia_da_dua": [80000000, 120000000],
+    "objection": "gia_cao_hon_du_kien",
+    "next_step": { "type": "clinic_visit", "date": null }
+  },
+  "compliance": [
+    {
+      "type": "medical_over_promise",
+      "at_sec": 74,
+      "quote": "almost painless",
+      "severity": "medium"
+    }
+  ],
+  "crm": { "stage": "cho_dat_lich", "task_created": true }
+}`
+      ),
       outcomes: [
         {
           label: t('Cảnh báo tuân thủ', 'Compliance alert'),
@@ -420,7 +479,8 @@ export function AnalysisDemo() {
           ),
         },
       ],
-      json: `{
+      json: t(
+        `{
   "call_id": "cl_5e19a4",
   "duration_sec": 298,
   "quality": {
@@ -444,6 +504,31 @@ export function AnalysisDemo() {
   "flags": ["de_khach_tu_goi_lai", "nguoi_quyet_dinh_vang_mat"],
   "crm": { "stage": "dang_can_nhac", "task_created": true }
 }`,
+        `{
+  "call_id": "cl_5e19a4",
+  "duration_sec": 298,
+  "quality": {
+    "score": 74,
+    "criteria": {
+      "khai_thac_nhu_cau": true,
+      "tu_van_tai_chinh": true,
+      "xu_ly_tu_choi": false,
+      "chot_buoc_tiep_theo": false
+    }
+  },
+  "sentiment": { "overall": "positive", "risk": false },
+  "extracted": {
+    "nhu_cau": "2-bedroom unit, south-east facing",
+    "ngan_sach": 2100000000,
+    "von_tu_co": 800000000,
+    "can_vay": true,
+    "objection": "can_ban_voi_gia_dinh",
+    "next_step": null
+  },
+  "flags": ["de_khach_tu_goi_lai", "nguoi_quyet_dinh_vang_mat"],
+  "crm": { "stage": "dang_can_nhac", "task_created": true }
+}`
+      ),
       outcomes: [
         {
           label: t('Việc hệ thống tự tạo', 'Task created automatically'),

@@ -3,30 +3,42 @@
 import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { z } from 'zod'
+import { getServerLang, makeT } from '@/lib/i18n/server'
 import { sendLeadNotification } from '@/lib/email/send-lead-notification'
 import { pushLeadToCrm } from '@/lib/crm/push-lead'
 
-const ContactSchema = z.object({
-  name: z.string().trim().min(2, 'Vui lòng nhập họ tên (tối thiểu 2 ký tự)').max(120),
-  phone: z
-    .string()
-    .trim()
-    .min(8, 'Số điện thoại không hợp lệ')
-    .max(20)
-    .regex(/^[\d\s+().-]+$/, 'Số điện thoại chỉ chứa số và các ký tự + - ( )'),
-  email: z
-    .string()
-    .trim()
-    .max(180)
-    .email('Email không hợp lệ')
-    .optional()
-    .or(z.literal('')),
-  company: z.string().trim().max(180).optional().or(z.literal('')),
-  service: z.string().trim().max(120).optional().or(z.literal('')),
-  message: z.string().trim().max(2000).optional().or(z.literal('')),
-  // honeypot — bots fill this hidden field, real users leave empty
-  website: z.string().max(0).optional().or(z.literal('')),
-})
+// Schema build theo ngôn ngữ lúc runtime (cookie cs-lang) để message validation
+// hiển thị đúng VI/EN — không thể là hằng module scope.
+function makeContactSchema(t: (vi: string, en: string) => string) {
+  return z.object({
+    name: z
+      .string()
+      .trim()
+      .min(2, t('Vui lòng nhập họ tên (tối thiểu 2 ký tự)', 'Please enter your full name (at least 2 characters)'))
+      .max(120),
+    phone: z
+      .string()
+      .trim()
+      .min(8, t('Số điện thoại không hợp lệ', 'Please enter a valid phone number'))
+      .max(20)
+      .regex(
+        /^[\d\s+().-]+$/,
+        t('Số điện thoại chỉ chứa số và các ký tự + - ( )', 'Phone number may only contain digits and + - ( ) characters'),
+      ),
+    email: z
+      .string()
+      .trim()
+      .max(180)
+      .email(t('Email không hợp lệ', 'Please enter a valid email address'))
+      .optional()
+      .or(z.literal('')),
+    company: z.string().trim().max(180).optional().or(z.literal('')),
+    service: z.string().trim().max(120).optional().or(z.literal('')),
+    message: z.string().trim().max(2000).optional().or(z.literal('')),
+    // honeypot — bots fill this hidden field, real users leave empty
+    website: z.string().max(0).optional().or(z.literal('')),
+  })
+}
 
 export type ContactFormState =
   | { status: 'idle' }
@@ -37,6 +49,9 @@ export async function submitContactForm(
   _prev: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
+  const lang = await getServerLang()
+  const t = makeT(lang)
+
   const raw = {
     name: String(formData.get('name') ?? ''),
     phone: String(formData.get('phone') ?? ''),
@@ -47,7 +62,7 @@ export async function submitContactForm(
     website: String(formData.get('website') ?? ''),
   }
 
-  const parsed = ContactSchema.safeParse(raw)
+  const parsed = makeContactSchema(t).safeParse(raw)
   if (!parsed.success) {
     const fieldErrors: Record<string, string> = {}
     for (const issue of parsed.error.issues) {
@@ -56,7 +71,7 @@ export async function submitContactForm(
     }
     return {
       status: 'error',
-      message: 'Vui lòng kiểm tra lại thông tin đã nhập',
+      message: t('Vui lòng kiểm tra lại thông tin đã nhập', 'Please double-check the information you entered'),
       fieldErrors,
     }
   }
@@ -92,7 +107,10 @@ export async function submitContactForm(
     console.error('[contact] insert failed:', error?.message)
     return {
       status: 'error',
-      message: 'Không gửi được. Vui lòng thử lại sau hoặc liên hệ qua điện thoại.',
+      message: t(
+        'Không gửi được. Vui lòng thử lại sau hoặc liên hệ qua điện thoại.',
+        "We couldn't send your request. Please try again later or give us a call.",
+      ),
     }
   }
 

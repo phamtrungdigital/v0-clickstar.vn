@@ -38,6 +38,9 @@ const UI = {
     placeholder: 'Nhập câu hỏi…',
     closeLabel: 'Đóng',
     ask: 'Hỏi',
+    send: 'Gửi',
+    errorUnknown: 'Lỗi không xác định',
+    errorNetwork: 'Không kết nối được. Vui lòng gọi {hotline}.',
   },
   en: {
     subtitle: 'Virtual assistant · answers anything',
@@ -46,6 +49,9 @@ const UI = {
     placeholder: 'Type your question…',
     closeLabel: 'Close',
     ask: 'Ask',
+    send: 'Send',
+    errorUnknown: 'Something went wrong. Please try again.',
+    errorNetwork: "We couldn't connect right now — please call us at {hotline}.",
   },
 }
 
@@ -110,7 +116,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
         })
         const data = await res.json()
         if (!res.ok || data.error) {
-          setError(data.error || 'Lỗi không xác định')
+          setError(data.error || t.errorUnknown)
           return
         }
         setMessages((m) => [
@@ -118,7 +124,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
           { role: 'ai', content: data.answer, links: data.links },
         ])
       } catch (e: any) {
-        setError(`Không kết nối được. Vui lòng gọi ${hotline}.`)
+        setError(t.errorNetwork.replace('{hotline}', hotline))
       }
     })
   }
@@ -290,7 +296,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
                   <button
                     type="submit"
                     disabled={isPending || input.trim().length < 2}
-                    aria-label="Send"
+                    aria-label={t.send}
                     className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-transform"
                   >
                     {isPending ? (
