@@ -8,23 +8,29 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(req: Request) {
   try {
-    const { query } = (await req.json()) as { query?: string }
+    const { query, history, lang } = (await req.json()) as {
+      query?: string
+      history?: unknown
+      lang?: string
+    }
 
     // Đọc cấu hình bot (public read). Nếu bảng trống/lỗi → fallback prompt mặc định trong runServiceRouter.
     let enabled = true
     let systemPrompt: string | null = null
     let model: string | null = null
+    let hotline: string | null = null
     try {
       const supabase = await createClient()
       const { data: cfg } = await supabase
         .from('chatbot_settings')
-        .select('enabled, system_prompt, model')
+        .select('enabled, system_prompt, model, hotline')
         .eq('id', 1)
         .maybeSingle()
       if (cfg) {
         enabled = cfg.enabled
         systemPrompt = cfg.system_prompt
         model = cfg.model
+        hotline = cfg.hotline
       }
     } catch (e) {
       // Bảng chưa tồn tại hoặc lỗi đọc → giữ default, bot vẫn chạy.
@@ -38,7 +44,7 @@ export async function POST(req: Request) {
       )
     }
 
-    const result = await runServiceRouter({ query: query ?? '', systemPrompt, model })
+    const result = await runServiceRouter({ query: query ?? '', systemPrompt, model, history, lang, hotline })
     if (!result.ok) {
       return NextResponse.json({ error: result.error }, { status: result.status })
     }
