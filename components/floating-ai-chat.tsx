@@ -209,8 +209,14 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
   if (!visible) return null
 
   const lastAiIndex = messages.map((m) => m.role).lastIndexOf('ai')
-  // Điện thoại: phủ đúng vùng nhìn thấy; máy tính: hộp nổi góc phải như cũ
-  const panelStyle = isMobile && vp ? { top: vp.top, height: vp.height } : undefined
+  // Điện thoại: tấm trượt cao 85% VÙNG NHÌN THẤY, dính đáy (anh Trung chốt 25/9 — chừa
+  // khoảng trống phía trên để vẫn thấy trang). Tính theo visualViewport nên khi bàn phím
+  // bật, tấm co theo và ô nhập vẫn nằm ngay trên phím. Máy tính: hộp nổi góc phải như cũ.
+  const SHEET_RATIO = 0.85
+  const panelStyle =
+    isMobile && vp
+      ? { top: vp.top + vp.height * (1 - SHEET_RATIO), height: vp.height * SHEET_RATIO }
+      : undefined
 
   return (
     <>
@@ -245,14 +251,22 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
 
       {/* ─── Chat Panel ─── */}
       {open && (
+        // Nền mờ phía trên tấm chat (chỉ điện thoại) — chạm vào để đóng
+        <div className="fixed inset-0 z-40 bg-black/45 sm:hidden" onClick={() => setOpen(false)} aria-hidden />
+      )}
+      {open && (
         <div
           role="dialog"
           aria-label={botName}
           style={panelStyle}
-          className="fixed z-50 inset-x-0 top-0 bottom-0 sm:top-auto sm:left-auto sm:bottom-5 sm:right-5 w-full sm:w-[400px] sm:h-[600px] sm:max-h-[calc(100dvh-2.5rem)] flex flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 sm:[filter:drop-shadow(0_25px_50px_rgba(27,123,255,0.35))]"
+          className="fixed z-50 inset-x-0 top-[15dvh] bottom-0 sm:top-auto sm:left-auto sm:bottom-5 sm:right-5 w-full sm:w-[400px] sm:h-[600px] sm:max-h-[calc(100dvh-2.5rem)] flex flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 sm:[filter:drop-shadow(0_25px_50px_rgba(27,123,255,0.35))]"
         >
           {/* Container with glow */}
-          <div className="relative h-full flex flex-col bg-slate-950 sm:bg-slate-950/95 sm:backdrop-blur-xl sm:rounded-2xl sm:border border-white/10 overflow-hidden">
+          <div className="relative h-full flex flex-col bg-slate-950 sm:bg-slate-950/95 sm:backdrop-blur-xl rounded-t-2xl sm:rounded-2xl border-t sm:border border-white/10 overflow-hidden shadow-[0_-12px_40px_rgba(0,0,0,0.35)] sm:shadow-none">
+            {/* Thanh kéo — dấu hiệu "tấm trượt" quen thuộc trên điện thoại */}
+            <div className="sm:hidden flex justify-center pt-2 shrink-0" aria-hidden>
+              <span className="h-1 w-10 rounded-full bg-white/25" />
+            </div>
             {/* Background mesh — hiệu ứng mờ nặng GPU, chỉ bật trên máy tính */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 -z-10" />
             <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-sky-400/25 rounded-full blur-3xl -z-10 animate-pulse" />

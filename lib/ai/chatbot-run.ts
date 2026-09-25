@@ -45,7 +45,7 @@ ${routes.join(', ')}
 ĐỊNH DẠNG TRẢ VỀ — JSON thuần, không bọc markdown:
 {"answer": "câu trả lời", "links": [{"title": "Tên hiển thị", "href": "/services/website", "type": "service" | "page" | "contact" | "blog"}]}
 Tối đa 4 links, liên quan trực tiếp đến câu trả lời, xếp theo mức phù hợp giảm dần.
-Trong "answer": được in đậm **chữ** và gạch đầu dòng "- " (mỗi ý 1 dòng); không dùng heading, bảng, link markdown.
+Trong "answer": gạch đầu dòng "- " (mỗi ý 1 dòng); chỉ in đậm **tên gói, mức giá, từ khoá chính** — KHÔNG in đậm cả câu hay cả đoạn (đọc trên điện thoại rất nặng); không dùng heading, bảng, link markdown.
 
 ════════ NỘI DUNG WEBSITE CLICKSTAR.VN (nguồn sự thật duy nhất · cập nhật ${builtAt}) ════════
 ${knowledgeText}

@@ -10,7 +10,7 @@ export const revalidate = 3600
 export const metadata: Metadata = {
   title: 'Dịch vụ — Giải pháp chuyển đổi số toàn diện | Clickstar',
   description:
-    'Bảy dịch vụ của Clickstar: Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, AI Automation, CRM & CDP và Phân tích cuộc gọi AI.',
+    'Bảy dịch vụ của Clickstar: Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, AI Automation, CRM & CDP và Phân tích cuộc gọi AI (Call to Text).',
 }
 
 export default function ServicesLayout({ children }: { children: React.ReactNode }) {

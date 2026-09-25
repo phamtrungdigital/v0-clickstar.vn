@@ -97,8 +97,8 @@ export default function ServicesIndexPage() {
       icon: <AudioLines className="w-7 h-7" />,
       title: t('Phân tích cuộc gọi AI', 'AI Call Analytics'),
       desc: t(
-        'Bóc băng 100% cuộc gọi, chấm điểm chất lượng theo kịch bản riêng và tự động điền dữ liệu vào CRM. Không phải đổi tổng đài.',
-        'Transcribe 100% of calls, score them against your own playbook and auto-fill your CRM. No phone system change required.'
+        'Call to Text: chuyển 100% cuộc gọi thành văn bản, chấm điểm chất lượng theo kịch bản riêng và tự động điền dữ liệu vào CRM. Không phải đổi tổng đài.',
+        'Call to Text: turn 100% of calls into text, score them against your own playbook and auto-fill your CRM. No phone system change required.'
       ),
       color: 'from-cyan-500 to-teal-500',
       soft: 'from-cyan-50 to-teal-100 text-cyan-600',
