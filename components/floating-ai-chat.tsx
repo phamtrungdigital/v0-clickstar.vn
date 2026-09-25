@@ -29,6 +29,9 @@ type Message = {
   links?: ResultLink[]
 }
 
+/** Số lượt gần nhất gửi kèm để bot hiểu câu hỏi nối tiếp ("gói đó giá bao nhiêu?"). */
+const HISTORY_TURNS = 8
+
 // Nhãn UI tĩnh (không phải nội dung do admin chỉnh — nội dung lấy từ config).
 const UI = {
   vi: {
@@ -55,11 +58,74 @@ const UI = {
   },
 }
 
+function escapeHtml(s: string) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+/**
+ * Markdown tối giản của câu trả lời AI → HTML. ESCAPE trước rồi mới gắn thẻ:
+ * câu trả lời là chữ do AI sinh, không được để nó chèn HTML/script vào trang.
+ */
 function formatAnswer(text: string): string {
-  return text
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
-    .replace(/\n/g, '<br/>')
+  const inline = (s: string) =>
+    escapeHtml(s)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
+  let html = ''
+  let inList = false
+  for (const raw of text.split('\n')) {
+    const line = raw.trim()
+    const bullet = line.match(/^[-•*]\s+(.*)$/)
+    if (bullet) {
+      if (!inList) {
+        html += '<ul class="list-disc pl-4 space-y-1 my-1.5">'
+        inList = true
+      }
+      // Ý con (thụt ≥ 2 dấu cách, vd gói nằm trong nhóm giá) → lùi vào + chấm rỗng
+      const nested = /^\s{2,}/.test(raw)
+      html += nested
+        ? `<li class="ml-4 list-[circle] text-slate-200">${inline(bullet[1])}</li>`
+        : `<li>${inline(bullet[1])}</li>`
+      continue
+    }
+    if (inList) {
+      html += '</ul>'
+      inList = false
+    }
+    if (line) html += `<p class="my-1 first:mt-0 last:mb-0">${inline(line)}</p>`
+  }
+  if (inList) html += '</ul>'
+  return html
+}
+
+/**
+ * Trên điện thoại, khung chat bám đúng VÙNG NHÌN THẤY (visualViewport) thay vì 80vh:
+ * iOS/Android không co layout khi bàn phím bật, nên khung `fixed bottom-0` cũ bị bàn
+ * phím che mất ô nhập. visualViewport co theo bàn phím → ô nhập luôn nằm ngay trên phím.
+ */
+function useMobileViewport(active: boolean) {
+  const [state, setState] = useState<{ mobile: boolean; top: number; height: number } | null>(null)
+  useEffect(() => {
+    if (!active) return
+    const mq = window.matchMedia('(max-width: 639px)')
+    const vv = window.visualViewport
+    const update = () =>
+      setState({
+        mobile: mq.matches,
+        top: vv ? vv.offsetTop : 0,
+        height: vv ? vv.height : window.innerHeight,
+      })
+    update()
+    vv?.addEventListener('resize', update)
+    vv?.addEventListener('scroll', update)
+    mq.addEventListener('change', update)
+    return () => {
+      vv?.removeEventListener('resize', update)
+      vv?.removeEventListener('scroll', update)
+      mq.removeEventListener('change', update)
+    }
+  }, [active])
+  return state
 }
 
 export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
@@ -72,23 +138,33 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
   const [messages, setMessages] = useState<Message[]>([])
   const [error, setError] = useState<string | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const lastAiRef = useRef<HTMLDivElement>(null)
+  const vp = useMobileViewport(open)
+  const isMobile = !!vp?.mobile
 
-  // Auto-scroll to bottom when messages update
+  // Có câu trả lời mới → đưa ĐẦU câu trả lời lên đầu khung (câu dài không bị cuộn
+  // mất đoạn mở đầu). Khách vừa gửi / đang chờ → cuộn xuống đáy.
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    const el = scrollRef.current
+    if (!el) return
+    const last = messages[messages.length - 1]
+    if (last?.role === 'ai' && !isPending && lastAiRef.current) {
+      el.scrollTo({ top: Math.max(0, lastAiRef.current.offsetTop - 12), behavior: 'smooth' })
+    } else {
+      el.scrollTop = el.scrollHeight
     }
   }, [messages, isPending])
 
-  // Lock body scroll when panel open on mobile
+  // Khoá cuộn trang nền khi mở chat trên điện thoại
   useEffect(() => {
-    if (open && window.innerWidth < 640) {
+    if (open && isMobile) {
+      const prev = document.body.style.overflow
       document.body.style.overflow = 'hidden'
       return () => {
-        document.body.style.overflow = ''
+        document.body.style.overflow = prev
       }
     }
-  }, [open])
+  }, [open, isMobile])
 
   const lang: 'vi' | 'en' = language === 'en' ? 'en' : 'vi'
   const t = UI[lang]
@@ -102,8 +178,11 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
 
   const submit = (q: string) => {
     if (!q || q.trim().length < 2 || isPending) return
-    const userMsg: Message = { role: 'user', content: q }
-    setMessages((m) => [...m, userMsg])
+    const history = messages.slice(-HISTORY_TURNS).map((m) => ({
+      role: m.role === 'ai' ? 'assistant' : 'user',
+      content: m.content,
+    }))
+    setMessages((m) => [...m, { role: 'user', content: q }])
     setInput('')
     setError(null)
 
@@ -112,18 +191,15 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
         const res = await fetch('/api/ai/service-router', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ query: q }),
+          body: JSON.stringify({ query: q, history, lang }),
         })
         const data = await res.json()
         if (!res.ok || data.error) {
           setError(data.error || t.errorUnknown)
           return
         }
-        setMessages((m) => [
-          ...m,
-          { role: 'ai', content: data.answer, links: data.links },
-        ])
-      } catch (e: any) {
+        setMessages((m) => [...m, { role: 'ai', content: data.answer, links: data.links }])
+      } catch {
         setError(t.errorNetwork.replace('{hotline}', hotline))
       }
     })
@@ -132,6 +208,10 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
   // Ẩn theo rule trang/thiết bị — return SAU khi mọi hook đã chạy.
   if (!visible) return null
 
+  const lastAiIndex = messages.map((m) => m.role).lastIndexOf('ai')
+  // Điện thoại: phủ đúng vùng nhìn thấy; máy tính: hộp nổi góc phải như cũ
+  const panelStyle = isMobile && vp ? { top: vp.top, height: vp.height } : undefined
+
   return (
     <>
       {/* ─── Floating Button ─── */}
@@ -139,7 +219,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
         <button
           onClick={() => setOpen(true)}
           aria-label={buttonLabel}
-          className="fixed bottom-5 right-5 z-50 group"
+          className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-50 group"
         >
           {/* Outer glow rings */}
           <span className="absolute inset-0 rounded-full bg-gradient-to-r from-sky-400 via-blue-500 to-blue-600 blur-lg opacity-60 group-hover:opacity-90 transition-opacity animate-pulse" />
@@ -165,152 +245,157 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
 
       {/* ─── Chat Panel ─── */}
       {open && (
-        <>
-          {/* Mobile backdrop */}
-          <div
-            className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 sm:hidden"
-            onClick={() => setOpen(false)}
-          />
+        <div
+          role="dialog"
+          aria-label={botName}
+          style={panelStyle}
+          className="fixed z-50 inset-x-0 top-0 bottom-0 sm:top-auto sm:left-auto sm:bottom-5 sm:right-5 w-full sm:w-[400px] sm:h-[600px] sm:max-h-[calc(100dvh-2.5rem)] flex flex-col animate-in slide-in-from-bottom-4 fade-in duration-300 sm:[filter:drop-shadow(0_25px_50px_rgba(27,123,255,0.35))]"
+        >
+          {/* Container with glow */}
+          <div className="relative h-full flex flex-col bg-slate-950 sm:bg-slate-950/95 sm:backdrop-blur-xl sm:rounded-2xl sm:border border-white/10 overflow-hidden">
+            {/* Background mesh — hiệu ứng mờ nặng GPU, chỉ bật trên máy tính */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 -z-10" />
+            <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-sky-400/25 rounded-full blur-3xl -z-10 animate-pulse" />
+            <div className="hidden sm:block absolute bottom-0 left-0 w-64 h-64 bg-blue-500/30 rounded-full blur-3xl -z-10" />
 
-          <div
-            className="fixed z-50 bottom-0 right-0 left-0 sm:left-auto sm:bottom-5 sm:right-5 w-full sm:w-[400px] h-[80vh] sm:h-[600px] sm:max-h-[calc(100vh-2.5rem)] flex flex-col animate-in slide-in-from-bottom-4 fade-in duration-300"
-            style={{ filter: 'drop-shadow(0 25px 50px rgba(27,123,255,0.35))' }}
-          >
-            {/* Container with glow */}
-            <div className="relative h-full flex flex-col bg-slate-950/95 backdrop-blur-xl rounded-t-2xl sm:rounded-2xl border border-white/10 overflow-hidden">
-              {/* Background mesh */}
-              <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 -z-10" />
-              <div className="absolute top-0 right-0 w-64 h-64 bg-sky-400/25 rounded-full blur-3xl -z-10 animate-pulse" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/30 rounded-full blur-3xl -z-10" />
-
-              {/* Header */}
-              <div className="flex items-center gap-3 p-4 border-b border-white/10">
-                <div className="relative">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/40">
-                    <Bot className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-pulse" />
+            {/* Header */}
+            <div className="flex items-center gap-3 px-4 py-3 sm:p-4 border-b border-white/10 shrink-0">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/40">
+                  <Bot className="w-5 h-5 text-white" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-bold text-sm leading-tight">{botName}</h3>
-                  <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
-                    {t.online}
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-pulse" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-white font-bold text-sm leading-tight">{botName}</h3>
+                <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                  {t.online}
+                </p>
+              </div>
+              <button
+                onClick={() => setOpen(false)}
+                aria-label={t.closeLabel}
+                className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5 sm:w-4.5 sm:h-4.5" />
+              </button>
+            </div>
+
+            {/* Messages — relative để offsetTop của câu trả lời tính theo khung này */}
+            <div
+              ref={scrollRef}
+              className="relative flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+            >
+              {/* Welcome message */}
+              <MessageBubble role="ai" content={welcome} />
+
+              {/* Quick prompts (shown only at start) */}
+              {messages.length === 0 && !isPending && quickPrompts.length > 0 && (
+                <div className="space-y-1.5 pt-1">
+                  <p className="text-[11px] text-slate-500 px-1 uppercase tracking-wider font-medium">
+                    {t.quickLabel}
                   </p>
+                  {quickPrompts.map((p) => (
+                    <button
+                      key={p.value}
+                      onClick={() => submit(p.value)}
+                      className="block w-full text-left px-3 py-2.5 sm:py-2 text-sm text-slate-200 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-sky-300/60 rounded-lg transition-all"
+                    >
+                      {p.label}
+                    </button>
+                  ))}
                 </div>
+              )}
+
+              {/* Conversation */}
+              {messages.map((m, i) => (
+                <MessageBubble
+                  key={i}
+                  role={m.role}
+                  content={m.content}
+                  links={m.links}
+                  bubbleRef={i === lastAiIndex ? lastAiRef : undefined}
+                  onNavigate={() => {
+                    // Điện thoại: khung chat phủ kín màn → đóng lại để khách thấy trang vừa mở
+                    if (isMobile) setOpen(false)
+                  }}
+                />
+              ))}
+
+              {/* Thinking indicator */}
+              {isPending && (
+                <div className="flex items-start gap-2.5">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+                    <Bot className="w-3.5 h-3.5 text-white" />
+                  </div>
+                  <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-2.5 flex items-center gap-1.5">
+                    <span
+                      className="w-1.5 h-1.5 bg-sky-300 rounded-full animate-bounce"
+                      style={{ animationDelay: '0ms' }}
+                    />
+                    <span
+                      className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"
+                      style={{ animationDelay: '150ms' }}
+                    />
+                    <span
+                      className="w-1.5 h-1.5 bg-cyan-300 rounded-full animate-bounce"
+                      style={{ animationDelay: '300ms' }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Error */}
+              {error && (
+                <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
+                  <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-red-200">{error}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Input */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault()
+                submit(input.trim())
+              }}
+              className="shrink-0 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] border-t border-white/10 bg-slate-950/50"
+            >
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => {
+                    // Bộ gõ tiếng Việt đang ghép âm tiết: Enter là để CHỐT chữ, không gửi.
+                    // Gửi lúc này làm IME chèn lại phần đang ghép vào ô đã xoá → dính chữ rác.
+                    if (e.key === 'Enter' && (e.nativeEvent.isComposing || e.keyCode === 229)) {
+                      e.preventDefault()
+                    }
+                  }}
+                  placeholder={t.placeholder}
+                  disabled={isPending}
+                  maxLength={500}
+                  enterKeyHint="send"
+                  autoComplete="off"
+                  // 16px trên điện thoại: iOS tự phóng to trang khi chạm vào ô chữ < 16px
+                  className="flex-1 min-w-0 px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400/60 focus:border-transparent disabled:opacity-60"
+                />
                 <button
-                  onClick={() => setOpen(false)}
-                  aria-label={t.closeLabel}
-                  className="w-8 h-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+                  type="submit"
+                  disabled={isPending || input.trim().length < 2}
+                  aria-label={t.send}
+                  className="flex items-center justify-center w-11 h-11 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-transform"
                 >
-                  <X className="w-4.5 h-4.5" />
+                  {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 </button>
               </div>
-
-              {/* Messages */}
-              <div
-                ref={scrollRef}
-                className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
-              >
-                {/* Welcome message */}
-                <MessageBubble role="ai" content={welcome} />
-
-                {/* Quick prompts (shown only at start) */}
-                {messages.length === 0 && !isPending && quickPrompts.length > 0 && (
-                  <div className="space-y-1.5 pt-1">
-                    <p className="text-[11px] text-slate-500 px-1 uppercase tracking-wider font-medium">
-                      {t.quickLabel}
-                    </p>
-                    {quickPrompts.map((p) => (
-                      <button
-                        key={p.value}
-                        onClick={() => submit(p.value)}
-                        className="block w-full text-left px-3 py-2 text-sm text-slate-200 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-sky-300/60 rounded-lg transition-all"
-                      >
-                        {p.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* Conversation */}
-                {messages.map((m, i) => (
-                  <MessageBubble
-                    key={i}
-                    role={m.role}
-                    content={m.content}
-                    links={m.links}
-                  />
-                ))}
-
-                {/* Thinking indicator */}
-                {isPending && (
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-2.5 flex items-center gap-1.5">
-                      <span
-                        className="w-1.5 h-1.5 bg-sky-300 rounded-full animate-bounce"
-                        style={{ animationDelay: '0ms' }}
-                      />
-                      <span
-                        className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"
-                        style={{ animationDelay: '150ms' }}
-                      />
-                      <span
-                        className="w-1.5 h-1.5 bg-cyan-300 rounded-full animate-bounce"
-                        style={{ animationDelay: '300ms' }}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* Error */}
-                {error && (
-                  <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                    <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-red-200">{error}</p>
-                  </div>
-                )}
-              </div>
-
-              {/* Input */}
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault()
-                  submit(input.trim())
-                }}
-                className="p-3 border-t border-white/10 bg-slate-950/50"
-              >
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder={t.placeholder}
-                    disabled={isPending}
-                    maxLength={500}
-                    className="flex-1 px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400/60 focus:border-transparent disabled:opacity-60"
-                  />
-                  <button
-                    type="submit"
-                    disabled={isPending || input.trim().length < 2}
-                    aria-label={t.send}
-                    className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-transform"
-                  >
-                    {isPending ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Send className="w-4 h-4" />
-                    )}
-                  </button>
-                </div>
-                <p className="text-[10px] text-slate-500 mt-1.5 text-center">{poweredBy}</p>
-              </form>
-            </div>
+              <p className="text-[10px] text-slate-500 mt-1.5 text-center">{poweredBy}</p>
+            </form>
           </div>
-        </>
+        </div>
       )}
     </>
   )
@@ -320,15 +405,19 @@ function MessageBubble({
   role,
   content,
   links,
+  bubbleRef,
+  onNavigate,
 }: {
   role: 'user' | 'ai'
   content: string
   links?: ResultLink[]
+  bubbleRef?: React.Ref<HTMLDivElement>
+  onNavigate?: () => void
 }) {
   if (role === 'user') {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] bg-gradient-to-br from-sky-400 to-blue-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm shadow-lg shadow-blue-500/20">
+        <div className="max-w-[85%] bg-gradient-to-br from-sky-400 to-blue-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm shadow-lg shadow-blue-500/20 break-words">
           {content}
         </div>
       </div>
@@ -336,19 +425,20 @@ function MessageBubble({
   }
 
   return (
-    <div className="flex items-start gap-2.5">
+    <div ref={bubbleRef} className="flex items-start gap-2 sm:gap-2.5">
       <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-blue-500/30">
         <Bot className="w-3.5 h-3.5 text-white" />
       </div>
       <div className="flex-1 min-w-0 space-y-2">
-        <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[85%]">
+        {/* Điện thoại: dùng hết bề ngang còn lại — 85% của cột vốn đã hẹp làm câu dài vỡ vụn */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm px-3.5 sm:px-4 py-2.5 max-w-full sm:max-w-[85%] w-fit">
           <div
-            className="text-sm text-slate-100 leading-relaxed"
+            className="text-sm text-slate-100 leading-relaxed break-words [&_strong]:text-white"
             dangerouslySetInnerHTML={{ __html: formatAnswer(content) }}
           />
         </div>
         {links && links.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 ml-1">
+          <div className="flex flex-wrap gap-1.5 sm:ml-1">
             {links.map((link, idx) => {
               const isContact = link.href.startsWith('tel:') || link.href.startsWith('mailto:')
               const Icon = link.href.startsWith('tel:')
@@ -356,8 +446,9 @@ function MessageBubble({
                 : link.href.startsWith('mailto:')
                 ? Mail
                 : ArrowRight
+              // Vùng chạm ≥ 36px trên điện thoại (chip 11px cũ chỉ cao ~24px, khó bấm)
               const cls =
-                'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border ' +
+                'inline-flex items-center gap-1 min-h-9 sm:min-h-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-full text-xs sm:text-[11px] font-medium transition-all border ' +
                 (idx === 0
                   ? 'bg-gradient-to-r from-sky-400/25 to-blue-500/25 hover:from-sky-400/40 hover:to-blue-500/40 border-sky-300/50 text-white'
                   : 'bg-white/5 hover:bg-white/10 border-white/10 text-slate-200')
@@ -370,7 +461,7 @@ function MessageBubble({
                 )
               }
               return (
-                <Link key={idx} href={link.href} className={cls}>
+                <Link key={idx} href={link.href} className={cls} onClick={onNavigate}>
                   {link.title}
                   <Icon className="w-3 h-3" />
                 </Link>

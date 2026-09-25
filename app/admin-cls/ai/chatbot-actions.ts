@@ -1,8 +1,9 @@
 'use server'
 
-import { revalidatePath, revalidateTag } from 'next/cache'
+import { revalidatePath, revalidateTag, updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { runServiceRouter } from '@/lib/ai/chatbot-run'
+import { getSiteKnowledge, SITE_KNOWLEDGE_TAG } from '@/lib/ai/site-knowledge'
 import type { ChatbotSettingsUpdate, WidgetMode, QuickPrompt } from '@/lib/cms/chatbot-shared'
 
 const WIDGET_MODES: WidgetMode[] = ['bubble', 'bar', 'both', 'none']
@@ -90,7 +91,7 @@ export async function testChatbot(query: string): Promise<ChatbotTestResult> {
 
   const { data: cfg } = await supabase
     .from('chatbot_settings')
-    .select('enabled, system_prompt, model')
+    .select('enabled, system_prompt, model, hotline')
     .eq('id', 1)
     .maybeSingle()
 
@@ -102,7 +103,33 @@ export async function testChatbot(query: string): Promise<ChatbotTestResult> {
     query,
     systemPrompt: cfg?.system_prompt ?? null,
     model: cfg?.model ?? null,
+    hotline: cfg?.hotline ?? null,
   })
   if (!result.ok) return { error: result.error }
   return { answer: result.answer, links: result.links }
+}
+
+export type SiteKnowledgeInfo = { chars: number; pages: number; builtAt: string; preview: string }
+
+/**
+ * "Cho AI học lại ngay": xoá cache kiến thức rồi dựng lại từ website hiện tại.
+ * Bình thường không cần bấm — Lưu trang trong admin đã tự làm mới, tối đa sau 1 giờ.
+ */
+export async function refreshSiteKnowledge(): Promise<SiteKnowledgeInfo | { error: string }> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'Chưa đăng nhập' }
+
+  // updateTag (không phải revalidateTag): hết hạn NGAY và lượt đọc kế tiếp trong
+  // chính action này dựng lại từ DB → admin thấy luôn bản mới.
+  updateTag(SITE_KNOWLEDGE_TAG)
+  const k = await getSiteKnowledge()
+  return {
+    chars: k.text.length,
+    pages: (k.text.match(/^### /gm) ?? []).length,
+    builtAt: k.builtAt,
+    preview: k.text,
+  }
 }

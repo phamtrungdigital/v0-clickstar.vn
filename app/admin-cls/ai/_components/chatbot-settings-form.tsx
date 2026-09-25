@@ -13,7 +13,12 @@ import {
   RotateCcw,
   Send,
 } from 'lucide-react'
-import { saveChatbotSettings, testChatbot } from '../chatbot-actions'
+import {
+  saveChatbotSettings,
+  testChatbot,
+  refreshSiteKnowledge,
+  type SiteKnowledgeInfo,
+} from '../chatbot-actions'
 import {
   CHATBOT_MODEL_OPTIONS,
   WIDGET_MODE_OPTIONS,
@@ -261,7 +266,9 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
             mono
           />
           <p className="text-[10px] text-slate-500 mt-1">
-            Để trống = dùng prompt mặc định (thông tin công ty, 6 dịch vụ, luật trả lời JSON). Sửa cẩn thận — bot trả về JSON {`{answer, links}`}.
+            Để trống = dùng prompt mặc định (tính cách + chính sách trả lời). <strong>Đừng gõ dịch vụ, giá, dự án vào đây</strong> —
+            bot tự đọc toàn bộ website (xem mục &quot;Kiến thức AI&quot; bên dưới), sửa website là bot biết.
+            Định dạng JSON và danh sách link do hệ thống tự gắn.
           </p>
         </div>
       </Section>
@@ -333,6 +340,9 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
         </p>
       </Section>
 
+      {/* ───── Kiến thức AI ───── */}
+      <KnowledgePanel />
+
       {/* ───── Test ───── */}
       <Section title="Test bot (gửi thật 1 câu)">
         <div className="flex gap-2">
@@ -378,6 +388,69 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
         </div>
       </Section>
     </div>
+  )
+}
+
+/**
+ * Kiến thức bot = toàn bộ nội dung công khai của website, tự làm mới khi Lưu trang
+ * hoặc sau tối đa 1 giờ. Nút này để anh ép học lại ngay + xem đúng thứ bot đang đọc.
+ */
+function KnowledgePanel() {
+  const [loading, setLoading] = useState(false)
+  const [info, setInfo] = useState<SiteKnowledgeInfo | null>(null)
+  const [error, setError] = useState('')
+
+  const handleRefresh = async () => {
+    setLoading(true)
+    setError('')
+    const r = await refreshSiteKnowledge()
+    setLoading(false)
+    if ('error' in r) setError(r.error)
+    else setInfo(r)
+  }
+
+  return (
+    <Section title="Kiến thức AI (đọc tự động từ website)">
+      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+        Bot đọc toàn bộ nội dung công khai: các trang dịch vụ, bảng giá, trang chủ, FAQ, dự án, blog, thông tin
+        liên hệ. Sửa nội dung trong admin rồi bấm Lưu là bot tự cập nhật (chậm nhất 1 giờ); nội dung viết trong
+        code cập nhật mỗi lần deploy. Bài nháp và dự án chưa xuất bản <strong>không</strong> bao giờ được đưa cho bot.
+      </p>
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          type="button"
+          onClick={handleRefresh}
+          disabled={loading}
+          className="inline-flex items-center gap-1.5 px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-medium rounded disabled:opacity-50"
+        >
+          {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
+          Cho AI học lại ngay
+        </button>
+        {info && (
+          <span className="inline-flex items-center gap-1 text-xs text-emerald-700">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            Đã học {info.pages} mục · {info.chars.toLocaleString('vi-VN')} ký tự · lúc{' '}
+            {new Date(info.builtAt).toLocaleString('vi-VN')}
+          </span>
+        )}
+      </div>
+      {error && (
+        <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700 flex items-start gap-1.5">
+          <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+          {error}
+        </div>
+      )}
+      {info && (
+        <details className="rounded border border-slate-200 dark:border-slate-700">
+          <summary className="px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
+            Xem toàn bộ nội dung bot đang đọc
+          </summary>
+          <pre className="px-3 pb-3 max-h-96 overflow-auto text-[11px] leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-400">
+            {info.preview}
+          </pre>
+        </details>
+      )}
+    </Section>
   )
 }
 
