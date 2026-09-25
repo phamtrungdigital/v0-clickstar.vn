@@ -13,6 +13,16 @@ export type FaqItem = { q: I18n; a: I18n }
 export const FAQ_ITEMS: FaqItem[] = [
   {
     q: {
+      vi: 'Speech Insight AI có phải là dịch vụ Call to Text (chuyển cuộc gọi thành văn bản) không?',
+      en: 'Is Speech Insight AI a Call-to-Text (speech-to-text) service?',
+    },
+    a: {
+      vi: 'Đúng vậy. Nền tảng của dịch vụ là Call to Text: tự động chuyển 100% cuộc gọi thành văn bản tiếng Việt (còn gọi là voice to text, speech to text hay bóc băng ghi âm), tách rõ lời nhân viên và lời khách. Khác công cụ chuyển giọng nói thông thường, sau khi có văn bản AI còn tóm tắt, chấm điểm chất lượng theo kịch bản riêng, trích xuất nhu cầu – ngân sách – lý do từ chối và điền thẳng vào CRM.',
+      en: 'Yes. The foundation of the service is Call to Text: every call is automatically converted into Vietnamese text (also known as voice-to-text, speech-to-text or call transcription), with agent and customer clearly separated. Unlike plain transcription tools, AI then summarises the call, scores it against your own playbook, extracts needs, budget and objections, and writes the results straight into your CRM.',
+    },
+  },
+  {
+    q: {
       vi: 'Chi phí dịch vụ tính như thế nào?',
       en: 'How is the service priced?',
     },
