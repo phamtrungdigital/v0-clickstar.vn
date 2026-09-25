@@ -22,6 +22,33 @@ export type SiteKnowledge = {
 // dải logo chỉ là tên hãng (đã có trong trang dịch vụ).
 const SKIP_SECTION_TYPES = new Set(['code_terminal', 'pricing_tabs_nav'])
 
+const SECTION_NAME: Record<string, string> = {
+  hero: 'Banner đầu trang',
+  page_hero: 'Giới thiệu trang',
+  services: 'Danh sách dịch vụ',
+  about: 'Giới thiệu công ty',
+  stats: 'Số liệu nổi bật',
+  case_studies: 'Dự án tiêu biểu',
+  team: 'Đội ngũ',
+  testimonials: 'Khách hàng đánh giá',
+  faq: 'Câu hỏi thường gặp',
+  blog: 'Tin tức',
+  cta: 'Kêu gọi liên hệ',
+  pricing_tiers: 'Bảng giá',
+  pricing_grouped_tiers: 'Bảng giá theo nhóm dịch vụ',
+  pricing_setup_addons: 'Dịch vụ triển khai / phí setup',
+  problems_grid: 'Vấn đề và giải pháp',
+  feature_grid: 'Tính năng',
+  process_steps: 'Quy trình',
+  about_story: 'Câu chuyện công ty',
+  about_values: 'Giá trị cốt lõi',
+  about_timeline: 'Hành trình phát triển',
+  about_why_choose_us: 'Vì sao chọn Click Star',
+  client_logos: 'Logo công nghệ',
+  logo_marquee: 'Logo công nghệ & AI đang tích hợp',
+  ads_hub_screenshots: 'Ảnh màn hình sản phẩm',
+}
+
 const SKIP_KEY =
   /(^|_)(href|url|image|img|logo|icon|color|gradient|bg|avatar|photo|video|src|id|slug|type|variant|style|theme|size|enabled|order|layout|target|rel|cover|thumbnail|grayscale|popular|cta_label|button_label|placeholder)$|^(showNames|show_names|delay_ms)$/i
 
@@ -79,7 +106,12 @@ function itemTitle(item: Json): string | null {
  */
 function flatten(node: Json, key: string | null, depth: number, out: string[], crumb = '') {
   const pad = '  '.repeat(depth)
-  const lab = (v: string) => (key && KEY_LABEL[key] ? `${KEY_LABEL[key]}: ${v}` : v)
+  const lab = (v: string) => {
+    // Ô "giá" của gói Phân tích cuộc gọi chứa HẠN MỨC PHÚT ("10.000 phút"), không phải tiền.
+    // Gắn nhãn "Giá:" thì AI đọc thành "giá 10.000 phút" dù prompt đã dặn — sửa ở dữ liệu.
+    if (key === 'price' && /phút|cuộc gọi|lượt/i.test(v)) return `Hạn mức: ${v}`
+    return key && KEY_LABEL[key] ? `${KEY_LABEL[key]}: ${v}` : v
+  }
   if (node == null || typeof node === 'boolean') return
   if (typeof node === 'number') {
     if (key && !SKIP_KEY.test(key)) out.push(pad + `${key}: ${node}`)
@@ -95,10 +127,20 @@ function flatten(node: Json, key: string | null, depth: number, out: string[], c
       out.push(pad + lab(node.map((x) => textOf(x)).join('; ')))
       return
     }
-    for (const item of node) {
+    const rendered = node.map((item) => {
       const title = itemTitle(item)
       const sub: string[] = []
       flatten(item, null, depth + 1, sub, title ? (crumb ? `${crumb} › ${title}` : title) : crumb)
+      return { title, sub }
+    })
+    // Mảng toàn phần tử chỉ có 1 dòng ngắn (dải logo: tên hãng) → gộp 1 dòng. Để 18 dòng
+    // rời không tiêu đề thì AI ghép sai nhóm ("OpenAI: Claude, Gemini…").
+    const allShort = rendered.every((r) => r.sub.length === 1 && r.sub[0].trim().length <= 40)
+    if (rendered.length > 2 && allShort) {
+      out.push(pad + lab(rendered.map((r) => r.sub[0].trim()).join('; ')))
+      return
+    }
+    for (const { title, sub } of rendered) {
       if (sub.length) {
         const first = sub[0].trimStart()
         sub[0] = pad + '- ' + (crumb && title && first === title ? `${crumb} › ${first}` : first)
@@ -144,7 +186,10 @@ async function build(): Promise<SiteKnowledge> {
     const lines: string[] = []
     for (const s of (p.sections as any[]) ?? []) {
       if (!s || s.enabled === false || SKIP_SECTION_TYPES.has(s.type)) continue
-      flatten(s.content as Json, null, 0, lines)
+      // Tên khối mở đầu mỗi phần → AI biết dòng nào thuộc bảng giá, dòng nào là logo, FAQ…
+      const block: string[] = []
+      flatten(s.content as Json, null, 0, block)
+      if (block.length) lines.push(`[${SECTION_NAME[s.type] ?? s.type}]`, ...block)
     }
     if (lines.length) dbByRoute[slugToRoute(p.slug)] = lines
   }
@@ -216,7 +261,7 @@ async function build(): Promise<SiteKnowledge> {
  * phần chữ trích từ code (đổi mỗi khi trang đổi chữ). Data Cache của Vercel sống qua
  * các lần deploy, nên thiếu 2 phần này thì bản deploy mới vẫn đọc kiến thức CŨ tới 1 giờ.
  */
-const FORMAT_VERSION = '2'
+const FORMAT_VERSION = '3'
 const staticVersion = (staticKnowledge as { version?: string }).version ?? 'dev'
 
 export const getSiteKnowledge = unstable_cache(build, ['site-knowledge', FORMAT_VERSION, staticVersion], {
