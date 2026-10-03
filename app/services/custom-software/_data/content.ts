@@ -157,8 +157,8 @@ export const SCOPE = {
 export type WorkShot = { src: string; width: number; height: number; alt: I18n }
 export type WorkItem = {
   id: string
-  sector: I18n
   title: I18n
+  sector: I18n
   problem: I18n
   built: I18n
   points: I18n[]
@@ -189,8 +189,8 @@ export const WORK = {
   items: [
     {
       id: 'ads-command-center',
-      sector: { vi: 'Giáo dục · nhiều cơ sở', en: 'Education · multi-campus' },
       title: { vi: 'Trung tâm điều hành quảng cáo', en: 'Ad performance command center' },
+      sector: { vi: 'Giáo dục · nhiều cơ sở', en: 'Education · multi-campus' },
       problem: {
         vi: 'Ngân sách quảng cáo chia cho nhiều cơ sở, mỗi nơi tự báo cáo bằng bảng tính. Ban điều hành thường chỉ biết một cơ sở đang kém khi đã hết tháng.',
         en: 'Ad budgets were split across many campuses, each reporting in its own spreadsheet. Management often learned a campus was underperforming only at month end.',
@@ -212,8 +212,8 @@ export const WORK = {
     },
     {
       id: 'customer-data-platform',
-      sector: { vi: 'Giáo dục', en: 'Education' },
       title: { vi: 'Nền tảng dữ liệu khách hàng (CDP)', en: 'Customer data platform (CDP)' },
+      sector: { vi: 'Giáo dục', en: 'Education' },
       problem: {
         vi: 'Thông tin của một người nằm rải ở form website, CRM, chatbot và danh sách sự kiện. Cùng một người có thể nhận nhiều tin nhắn trùng nhau.',
         en: "One person's details were spread across web forms, the CRM, the chatbot and event lists, so the same person could receive duplicate messages.",
@@ -235,8 +235,8 @@ export const WORK = {
     },
     {
       id: 'team-workspace',
-      sector: { vi: 'Doanh nghiệp · khối marketing', en: 'Corporate · marketing team' },
       title: { vi: 'Quản lý công việc và hiệu suất', en: 'Work and performance management' },
+      sector: { vi: 'Doanh nghiệp · khối marketing', en: 'Corporate · marketing team' },
       problem: {
         vi: 'Việc được giao qua nhóm chat nên hạn chót dễ trôi, trưởng nhóm phải tự tổng hợp báo cáo mỗi tuần.',
         en: 'Tasks were assigned in chat groups, deadlines slipped, and team leads compiled weekly reports by hand.',
@@ -258,8 +258,8 @@ export const WORK = {
     },
     {
       id: 'consent-management',
-      sector: { vi: 'Giáo dục · website tuyển sinh', en: 'Education · admissions website' },
       title: { vi: 'Quản trị đồng ý cookie và dữ liệu cá nhân', en: 'Cookie consent and personal data management' },
+      sector: { vi: 'Giáo dục · website tuyển sinh', en: 'Education · admissions website' },
       problem: {
         vi: 'Website gắn nhiều mã đo lường và quảng cáo, cần xin đồng ý trước khi thu thập và giữ được bằng chứng khi cơ quan quản lý yêu cầu.',
         en: 'The website ran several analytics and ad tags. It had to ask for consent before collecting data and keep proof for regulators.',
@@ -282,8 +282,8 @@ export const WORK = {
     },
     {
       id: 'ai-chat-assistant',
-      sector: { vi: 'Giáo dục · tư vấn tuyển sinh', en: 'Education · admissions' },
       title: { vi: 'Trợ lý tư vấn AI trên website', en: 'AI assistant on the website' },
+      sector: { vi: 'Giáo dục · tư vấn tuyển sinh', en: 'Education · admissions' },
       problem: {
         vi: 'Phụ huynh hỏi ngoài giờ hành chính, nhiều câu hỏi lặp lại, lead đến từ khung chat không được ghi nhận đầy đủ.',
         en: 'Parents asked questions after hours, many of them repeated, and leads from chat were not captured properly.',
@@ -305,8 +305,8 @@ export const WORK = {
     },
     {
       id: 'event-checkin',
-      sector: { vi: 'Giáo dục · sự kiện', en: 'Education · events' },
       title: { vi: 'Đăng ký và check-in sự kiện bằng mã QR', en: 'Event registration and QR check-in' },
+      sector: { vi: 'Giáo dục · sự kiện', en: 'Education · events' },
       problem: {
         vi: 'Sự kiện đông phụ huynh, đối chiếu danh sách giấy ở quầy chậm và không biết chính xác bao nhiêu người đã đến.',
         en: 'Busy events relied on paper lists at the desk, which was slow and gave no accurate attendance count.',

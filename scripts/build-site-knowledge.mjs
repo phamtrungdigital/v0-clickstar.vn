@@ -39,6 +39,20 @@ const INFO_KEYS = new Set([
   'step', 'result', 'results', 'benefit', 'benefits', 'text', 'content', 'excerpt', 'readTime',
 ])
 
+// Khối "dự án đã làm" (object có field `built`, vd WORK.items ở custom-software): đọc
+// phẳng thì bot không biết dòng nào là vấn đề, dòng nào là giải pháp, rồi kể lẫn với
+// "các loại hệ thống". Gắn nhãn từng field để bot kể đúng từng dự án.
+const CASE_LABELS = {
+  title: 'Dự án',
+  sector: 'Lĩnh vực',
+  problem: 'Vấn đề',
+  built: 'Đã xây dựng',
+  points: 'Điểm nổi bật',
+  stack: 'Công nghệ',
+}
+// Chữ giao diện (nút đóng, ảnh trước/sau) và mô tả ảnh chụp: không phải nội dung dịch vụ
+const SKIP_KEYS = new Set(['labels', 'shots'])
+
 function isClassLike(s) {
   const tokens = s.trim().split(/\s+/)
   return tokens.length > 0 && tokens.every((tk) => /^[a-z0-9:!\[\]\/.%#-]+$/.test(tk) && /-|:/.test(tk))
@@ -152,6 +166,21 @@ function extractFile(file) {
     }
     if (ts.isPropertyAssignment(node)) {
       const key = propName(node.name)
+      if (SKIP_KEYS.has(key)) return
+      const label = key && Object.hasOwn(CASE_LABELS, key) ? CASE_LABELS[key] : null
+      const isCase =
+        label &&
+        ts.isObjectLiteralExpression(node.parent) &&
+        node.parent.properties.some((p) => ts.isPropertyAssignment(p) && propName(p.name) === 'built')
+      if (isCase) {
+        const start = lines.length
+        const txt = templateText(node.initializer)
+        if (txt != null) push(txt)
+        else visit(node.initializer, key)
+        const got = lines.splice(start)
+        if (got.length) lines.push(`${label}: ${got.join('; ')}`)
+        return
+      }
       visit(node.initializer, key)
       return
     }
