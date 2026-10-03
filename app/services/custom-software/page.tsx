@@ -107,7 +107,7 @@ export default function CustomSoftwarePage() {
             <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
               <div className="min-w-0">
                 <Kicker>{tt(HERO.kicker)}</Kicker>
-                <h1 className="text-4xl sm:text-5xl lg:text-[3.6rem] font-bold leading-[1.1] tracking-[-0.02em] max-w-[15ch]">
+                <h1 className="text-[2rem] sm:text-[2.5rem] lg:text-[2.85rem] font-bold leading-[1.15] tracking-[-0.02em] max-w-[18ch]">
                   {tt(HERO.title)}
                 </h1>
                 <p className="mt-6 text-base sm:text-lg text-[#5B6576] leading-relaxed max-w-[60ch]">
