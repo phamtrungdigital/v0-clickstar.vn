@@ -148,6 +148,188 @@ export const SCOPE = {
   ] satisfies (Titled & { icon: ScopeIcon })[],
 }
 
+/**
+ * Dự án đã làm (anh Trung chốt 4/10/2026: hệ thống làm cho khách, ẨN TÊN; ảnh + mô tả).
+ * Ảnh chụp từ bản chạy thử/bản thiết kế với dữ liệu mẫu, đã che tên khách, cơ sở, nhân sự,
+ * tên miền và logo trước khi chụp. Mỗi ý trong `points` đã đối chiếu có trong mã nguồn thật,
+ * thêm ý mới thì kiểm tra trước, không viết tính năng hệ thống chưa có.
+ */
+export type WorkShot = { src: string; width: number; height: number; alt: I18n }
+export type WorkItem = {
+  id: string
+  sector: I18n
+  title: I18n
+  problem: I18n
+  built: I18n
+  points: I18n[]
+  stack: string
+  /** desktop: 1 ảnh màn hình máy tính · phone: các ảnh điện thoại xếp cạnh nhau */
+  frame: 'desktop' | 'phone'
+  shots: WorkShot[]
+}
+
+const IMG = '/images/custom-software'
+const DESKTOP = { width: 2400, height: 1500 }
+
+export const WORK = {
+  kicker: { vi: 'Dự án đã thực hiện', en: 'Selected work' },
+  title: { vi: 'Một số hệ thống chúng tôi đã xây dựng', en: 'Some of the systems we have built' },
+  lede: {
+    vi: 'Tên khách hàng được ẩn để bảo mật. Ảnh chụp từ bản chạy thử với dữ liệu mẫu, không chứa dữ liệu thật của khách hàng.',
+    en: 'Client names are withheld for confidentiality. Screenshots come from test builds with sample data and contain no real client data.',
+  },
+  labels: {
+    problem: { vi: 'Vấn đề', en: 'Problem' },
+    built: { vi: 'Đã xây dựng', en: 'What we built' },
+    zoom: { vi: 'Xem ảnh lớn', en: 'View full size' },
+    close: { vi: 'Đóng', en: 'Close' },
+    prev: { vi: 'Ảnh trước', en: 'Previous image' },
+    next: { vi: 'Ảnh sau', en: 'Next image' },
+  },
+  items: [
+    {
+      id: 'ads-command-center',
+      sector: { vi: 'Giáo dục · nhiều cơ sở', en: 'Education · multi-campus' },
+      title: { vi: 'Trung tâm điều hành quảng cáo', en: 'Ad performance command center' },
+      problem: {
+        vi: 'Ngân sách quảng cáo chia cho nhiều cơ sở, mỗi nơi tự báo cáo bằng bảng tính. Ban điều hành thường chỉ biết một cơ sở đang kém khi đã hết tháng.',
+        en: 'Ad budgets were split across many campuses, each reporting in its own spreadsheet. Management often learned a campus was underperforming only at month end.',
+      },
+      built: {
+        vi: 'Hệ thống lấy số liệu quảng cáo theo lịch, ghép với lead và nhập học, so sánh hiệu quả giữa các cơ sở và đưa các việc cần quyết định lên đầu.',
+        en: 'The system pulls ad data on a schedule, joins it with leads and enrolments, compares campuses side by side and puts the decisions that need attention first.',
+      },
+      points: [
+        { vi: 'Đồng bộ chi phí Meta Ads tự động, không nhập tay', en: 'Automatic Meta Ads cost sync, no manual entry' },
+        { vi: 'Bộ luật phát hiện bất thường, tạo việc kèm người phụ trách', en: 'Rule-based alerts that open an issue with a named owner' },
+        { vi: 'Phân quyền kiểm soát ở tầng cơ sở dữ liệu, có bộ kiểm thử riêng', en: 'Access control enforced in the database, with its own test suite' },
+      ],
+      stack: 'Next.js · PostgreSQL · Meta Marketing API',
+      frame: 'desktop',
+      shots: [
+        { src: `${IMG}/ads-command-center.webp`, ...DESKTOP, alt: { vi: 'Màn hình tổng quan hiệu quả quảng cáo theo cơ sở', en: 'Ad performance overview by campus' } },
+      ],
+    },
+    {
+      id: 'customer-data-platform',
+      sector: { vi: 'Giáo dục', en: 'Education' },
+      title: { vi: 'Nền tảng dữ liệu khách hàng (CDP)', en: 'Customer data platform (CDP)' },
+      problem: {
+        vi: 'Thông tin của một người nằm rải ở form website, CRM, chatbot và danh sách sự kiện. Cùng một người có thể nhận nhiều tin nhắn trùng nhau.',
+        en: "One person's details were spread across web forms, the CRM, the chatbot and event lists, so the same person could receive duplicate messages.",
+      },
+      built: {
+        vi: 'Gộp về một hồ sơ cho mỗi người, phân nhóm theo hành vi, gửi Email, Web Push, Zalo ZNS và chạy chuỗi chăm sóc tự động có chấm điểm lead.',
+        en: 'One profile per person, behavioural segments, Email, Web Push and Zalo ZNS sending, and automated journeys with lead scoring.',
+      },
+      points: [
+        { vi: 'Nhận diện và gộp hồ sơ trùng', en: 'Identity resolution across sources' },
+        { vi: 'Danh sách chặn gửi và trang hủy đăng ký', en: 'Suppression lists and unsubscribe pages' },
+        { vi: 'Nhật ký thao tác, phân quyền theo vai trò', en: 'Audit log and role-based permissions' },
+      ],
+      stack: 'Next.js · PostgreSQL · Web Push · Zalo ZNS',
+      frame: 'desktop',
+      shots: [
+        { src: `${IMG}/customer-data-platform.webp`, ...DESKTOP, alt: { vi: 'Trang chủ nền tảng dữ liệu khách hàng', en: 'Customer data platform home screen' } },
+      ],
+    },
+    {
+      id: 'team-workspace',
+      sector: { vi: 'Doanh nghiệp · khối marketing', en: 'Corporate · marketing team' },
+      title: { vi: 'Quản lý công việc và hiệu suất', en: 'Work and performance management' },
+      problem: {
+        vi: 'Việc được giao qua nhóm chat nên hạn chót dễ trôi, trưởng nhóm phải tự tổng hợp báo cáo mỗi tuần.',
+        en: 'Tasks were assigned in chat groups, deadlines slipped, and team leads compiled weekly reports by hand.',
+      },
+      built: {
+        vi: 'Bảng việc, dự án, lịch họp và báo cáo trên cùng một hệ thống. Mỗi người thấy việc của mình, trưởng nhóm thấy toàn đội.',
+        en: 'Tasks, projects, meetings and reports in one system. Each person sees their own work and leads see the whole team.',
+      },
+      points: [
+        { vi: 'Ba vai trò Admin, Leader, Nhân viên với quyền khác nhau', en: 'Three roles (admin, lead, member) with distinct permissions' },
+        { vi: 'Quyền xem việc kiểm soát ở tầng cơ sở dữ liệu', en: 'Task visibility enforced at the database layer' },
+        { vi: 'Việc định kỳ tự tạo theo lịch', en: 'Recurring tasks created on schedule' },
+      ],
+      stack: 'Next.js · PostgreSQL · Realtime',
+      frame: 'desktop',
+      shots: [
+        { src: `${IMG}/team-workspace.webp`, ...DESKTOP, alt: { vi: 'Bảng điều khiển công việc của đội', en: 'Team work dashboard' } },
+      ],
+    },
+    {
+      id: 'consent-management',
+      sector: { vi: 'Giáo dục · website tuyển sinh', en: 'Education · admissions website' },
+      title: { vi: 'Quản trị đồng ý cookie và dữ liệu cá nhân', en: 'Cookie consent and personal data management' },
+      problem: {
+        vi: 'Website gắn nhiều mã đo lường và quảng cáo, cần xin đồng ý trước khi thu thập và giữ được bằng chứng khi cơ quan quản lý yêu cầu.',
+        en: 'The website ran several analytics and ad tags. It had to ask for consent before collecting data and keep proof for regulators.',
+      },
+      built: {
+        vi: 'Hộp xin đồng ý theo từng mục đích, chỉ bật mã đo lường sau khi người dùng đồng ý, kèm trang quản trị theo dõi tỷ lệ đồng ý theo ngày và thiết bị.',
+        en: 'A purpose-based consent banner that enables tags only after the visitor agrees, plus an admin view of consent rates by day and device.',
+      },
+      points: [
+        { vi: 'Sổ bằng chứng nối chuỗi hash, phát hiện bản ghi bị sửa hoặc xóa', en: 'Hash-chained evidence log that detects edited or deleted records' },
+        { vi: 'Tự dọn dữ liệu theo thời hạn lưu trữ', en: 'Automatic clean-up by retention period' },
+        { vi: 'Che địa chỉ IP và thông tin trình duyệt khi hiển thị', en: 'IP addresses and browser details masked in the admin view' },
+      ],
+      stack: 'Next.js · PostgreSQL · Google Consent Mode',
+      frame: 'desktop',
+      shots: [
+        { src: `${IMG}/consent-overview.webp`, ...DESKTOP, alt: { vi: 'Tổng quan tỷ lệ đồng ý cookie', en: 'Cookie consent overview' } },
+        { src: `${IMG}/consent-setup.webp`, ...DESKTOP, alt: { vi: 'Trang cấu hình hộp xin đồng ý', en: 'Consent banner configuration' } },
+      ],
+    },
+    {
+      id: 'ai-chat-assistant',
+      sector: { vi: 'Giáo dục · tư vấn tuyển sinh', en: 'Education · admissions' },
+      title: { vi: 'Trợ lý tư vấn AI trên website', en: 'AI assistant on the website' },
+      problem: {
+        vi: 'Phụ huynh hỏi ngoài giờ hành chính, nhiều câu hỏi lặp lại, lead đến từ khung chat không được ghi nhận đầy đủ.',
+        en: 'Parents asked questions after hours, many of them repeated, and leads from chat were not captured properly.',
+      },
+      built: {
+        vi: 'Chatbot trả lời theo kho kiến thức đã duyệt của từng cơ sở, nút liên hệ đổi theo nội dung trang, lead chuyển thẳng về CRM.',
+        en: 'A chatbot that answers from an approved knowledge base for each campus, contact buttons that adapt to the page, and leads sent straight to the CRM.',
+      },
+      points: [
+        { vi: 'Ghi lại câu hỏi chưa có câu trả lời để bổ sung kiến thức', en: 'Unanswered questions logged as knowledge gaps' },
+        { vi: 'Nhân viên nhận lại hội thoại khi khách cần tư vấn trực tiếp', en: 'Staff can take over a conversation for live support' },
+        { vi: 'Báo cáo tỷ lệ chat thành lead theo nguồn', en: 'Chat-to-lead conversion reported by source' },
+      ],
+      stack: 'Next.js · PostgreSQL · Claude API · CRM API',
+      frame: 'desktop',
+      shots: [
+        { src: `${IMG}/ai-chat-assistant.webp`, ...DESKTOP, alt: { vi: 'Bảng theo dõi hiệu quả chatbot', en: 'Chatbot performance dashboard' } },
+      ],
+    },
+    {
+      id: 'event-checkin',
+      sector: { vi: 'Giáo dục · sự kiện', en: 'Education · events' },
+      title: { vi: 'Đăng ký và check-in sự kiện bằng mã QR', en: 'Event registration and QR check-in' },
+      problem: {
+        vi: 'Sự kiện đông phụ huynh, đối chiếu danh sách giấy ở quầy chậm và không biết chính xác bao nhiêu người đã đến.',
+        en: 'Busy events relied on paper lists at the desk, which was slow and gave no accurate attendance count.',
+      },
+      built: {
+        vi: 'Trang đăng ký gửi vé QR qua email, màn hình quét cho nhân viên tại quầy, số lượt check-in cập nhật ngay khi quét.',
+        en: 'A registration page that emails a QR ticket, a scanner screen for desk staff, and a check-in count that updates on every scan.',
+      },
+      points: [
+        { vi: 'Xin đồng ý xử lý dữ liệu cá nhân ngay trên form đăng ký', en: 'Personal data consent captured on the registration form' },
+        { vi: 'Quét bằng camera điện thoại, không cần máy quét riêng', en: 'Scans with a phone camera, no dedicated scanner needed' },
+        { vi: 'Tra cứu thủ công khi khách không mang mã', en: 'Manual lookup when a guest has no code' },
+      ],
+      stack: 'Next.js · PostgreSQL · Email',
+      frame: 'phone',
+      shots: [
+        { src: `${IMG}/event-registration.webp`, width: 760, height: 1748, alt: { vi: 'Form đăng ký nhận vé trên điện thoại', en: 'Ticket registration form on a phone' } },
+        { src: `${IMG}/event-checkin.webp`, width: 760, height: 1486, alt: { vi: 'Màn hình quét mã QR tại quầy', en: 'QR scanning screen at the desk' } },
+      ],
+    },
+  ] satisfies WorkItem[],
+}
+
 export type ControlIcon = 'lock' | 'key' | 'log' | 'code' | 'server' | 'shield'
 export const SECURITY = {
   kicker: { vi: 'Bảo mật', en: 'Security' },

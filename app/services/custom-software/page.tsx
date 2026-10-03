@@ -9,13 +9,16 @@
  * Mọi chuỗi hiển thị đi qua t(vi, en).
  */
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
   Activity,
   ArrowRight,
   BookOpen,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Code2,
   FileSearch,
   GitBranch,
@@ -23,6 +26,7 @@ import {
   LayoutGrid,
   LineChart,
   Lock,
+  Maximize2,
   Minus,
   Plug,
   Plus,
@@ -32,6 +36,7 @@ import {
   ShieldCheck,
   Smartphone,
   Users,
+  X,
   type LucideIcon,
 } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
@@ -53,9 +58,11 @@ import {
   SERVICE_LABEL,
   SIGNALS,
   STACK,
+  WORK,
   type ControlIcon,
   type OpsIcon,
   type ScopeIcon,
+  type WorkItem,
 } from './_data/content'
 
 const CONTACT_HREF = `/contact?service=${encodeURIComponent(SERVICE_LABEL)}`
@@ -186,6 +193,14 @@ export default function CustomSoftwarePage() {
               )
             })}
           </div>
+        </Section>
+
+        {/* ③b DỰ ÁN ĐÃ LÀM — ẩn tên khách, ảnh từ bản chạy thử */}
+        <Section id="du-an" className="scroll-mt-16">
+          <Kicker>{tt(WORK.kicker)}</Kicker>
+          <H2>{tt(WORK.title)}</H2>
+          <Lede>{tt(WORK.lede)}</Lede>
+          <WorkShowcase />
         </Section>
 
         {/* ④ BẢO MẬT — nền tối để nhấn */}
@@ -532,6 +547,241 @@ function Td({ children, label, className = '' }: { children: React.ReactNode; la
     >
       {children}
     </td>
+  )
+}
+
+/* ───────────────────────── Dự án đã làm ───────────────────────── */
+
+/**
+ * Máy tính: danh sách dự án bên trái, chi tiết bên phải. Điện thoại: danh sách thành dải cuộn ngang.
+ * Mọi khối chi tiết đều render (khối không chọn ẩn bằng class `hidden`) để Google và bot đọc đủ.
+ * Ảnh lớn mở bằng <dialog> gốc (top layer) nên không bị khung cha có transform/overflow cắt.
+ */
+function WorkShowcase() {
+  const { t } = useLanguage()
+  const tt = (s: I18n) => t(s.vi, s.en)
+  const [active, setActive] = useState(0)
+  const [shot, setShot] = useState(0)
+  const [zoom, setZoom] = useState<number | null>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
+  const item = WORK.items[active]
+
+  const select = (i: number) => {
+    setActive(i)
+    setShot(0)
+  }
+  const openZoom = (k: number) => {
+    setZoom(k)
+    dialogRef.current?.showModal()
+  }
+  const step = (d: number) => setZoom((z) => (z === null ? z : (z + d + item.shots.length) % item.shots.length))
+  const zoomed = zoom === null ? null : item.shots[zoom]
+
+  return (
+    <div className="mt-12 grid lg:grid-cols-[300px_1fr] gap-8 lg:gap-12 items-start">
+      <div
+        role="tablist"
+        aria-label={tt(WORK.title)}
+        className="flex lg:flex-col gap-2 lg:gap-0 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 lg:pb-0 lg:border-t border-[#E6E8EC] snap-x lg:sticky lg:top-24"
+      >
+        {WORK.items.map((it, i) => {
+          const on = i === active
+          return (
+            <button
+              key={it.id}
+              id={`tab-${it.id}`}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              aria-controls={`panel-${it.id}`}
+              onClick={() => select(i)}
+              className={`snap-start shrink-0 text-left transition-colors max-lg:rounded-lg max-lg:border max-lg:px-3.5 max-lg:py-2.5 lg:grid lg:grid-cols-[34px_1fr] lg:py-4 lg:pl-4 lg:border-b lg:border-l-2 ${
+                on
+                  ? 'max-lg:border-[#0B1220] max-lg:bg-[#0B1220] max-lg:text-white lg:border-l-[#0B1220] lg:bg-[#F6F7F9]'
+                  : 'max-lg:border-[#E6E8EC] max-lg:hover:border-[#0B1220] lg:border-l-transparent lg:hover:bg-[#F6F7F9]'
+              } lg:border-b-[#E6E8EC]`}
+            >
+              <span className={`${MONO} text-[12.5px] ${on ? 'max-lg:text-slate-300 lg:text-[#1E5FCB]' : 'text-[#5B6576]'} max-lg:mr-2`}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="max-lg:whitespace-nowrap">
+                <span className="text-[15px] font-semibold leading-snug">{tt(it.title)}</span>
+                <span className="hidden lg:block mt-0.5 text-[13px] text-[#5B6576]">{tt(it.sector)}</span>
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="min-w-0">
+        {WORK.items.map((it, i) => (
+          <div
+            key={it.id}
+            id={`panel-${it.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${it.id}`}
+            className={i === active ? 'block' : 'hidden'}
+          >
+            <ShotFrame item={it} shot={i === active ? shot : 0} onZoom={openZoom} />
+
+            {it.frame === 'desktop' && it.shots.length > 1 && (
+              <div className="mt-3 flex gap-2">
+                {it.shots.map((s, k) => (
+                  <button
+                    key={s.src}
+                    type="button"
+                    aria-pressed={k === shot}
+                    aria-label={tt(s.alt)}
+                    onClick={() => setShot(k)}
+                    className={`relative w-24 aspect-[16/10] rounded-md overflow-hidden border transition-opacity ${
+                      k === shot ? 'border-[#0B1220]' : 'border-[#E6E8EC] opacity-60 hover:opacity-100'
+                    }`}
+                  >
+                    <Image src={s.src} alt="" fill sizes="96px" className="object-cover object-top" />
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <p className={`${MONO} mt-7 text-[12.5px] uppercase tracking-[0.04em] text-[#5B6576]`}>{tt(it.sector)}</p>
+            <h3 className="mt-1.5 text-[22px] sm:text-2xl font-bold tracking-[-0.01em]">{tt(it.title)}</h3>
+
+            <div className="mt-5 grid sm:grid-cols-2 gap-5 sm:gap-10">
+              <div>
+                <p className="text-sm font-semibold">{tt(WORK.labels.problem)}</p>
+                <p className="mt-1.5 text-[15px] text-[#5B6576] leading-relaxed">{tt(it.problem)}</p>
+              </div>
+              <div>
+                <p className="text-sm font-semibold">{tt(WORK.labels.built)}</p>
+                <p className="mt-1.5 text-[15px] text-[#5B6576] leading-relaxed">{tt(it.built)}</p>
+              </div>
+            </div>
+
+            <ul className="mt-6 grid sm:grid-cols-3 gap-x-6 border-t border-[#E6E8EC]">
+              {it.points.map((p, k) => (
+                <li key={k} className="grid grid-cols-[20px_1fr] gap-2.5 py-3.5 text-[14.5px] max-sm:border-b border-[#E6E8EC]">
+                  <Check className="w-[18px] h-[18px] mt-0.5 text-emerald-700" strokeWidth={2} />
+                  {tt(p)}
+                </li>
+              ))}
+            </ul>
+            <p className={`${MONO} mt-3 text-[12.5px] text-[#5B6576]`}>{it.stack}</p>
+          </div>
+        ))}
+      </div>
+
+      <dialog
+        ref={dialogRef}
+        onClose={() => setZoom(null)}
+        onClick={(e) => e.target === e.currentTarget && dialogRef.current?.close()}
+        onKeyDown={(e) => {
+          if (e.key === 'ArrowRight') step(1)
+          if (e.key === 'ArrowLeft') step(-1)
+        }}
+        className="m-auto p-0 bg-transparent max-w-[96vw] max-h-[96vh] overflow-visible backdrop:bg-[#0B1220]/92"
+      >
+        {zoomed && (
+          <div>
+            <Image
+              src={zoomed.src}
+              alt={tt(zoomed.alt)}
+              width={zoomed.width}
+              height={zoomed.height}
+              sizes="96vw"
+              quality={90}
+              className="block w-auto h-auto max-w-[96vw] max-h-[84vh] rounded-lg"
+            />
+            <div className="mt-3 flex items-center justify-between gap-3 text-white">
+              <p className="text-sm text-slate-300 min-w-0 truncate">
+                {tt(item.title)} · {tt(zoomed.alt)}
+              </p>
+              <div className="flex gap-2 shrink-0">
+                {item.shots.length > 1 && (
+                  <>
+                    <button type="button" onClick={() => step(-1)} aria-label={tt(WORK.labels.prev)} className="p-2 rounded-md border border-slate-600 hover:border-white">
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button type="button" onClick={() => step(1)} aria-label={tt(WORK.labels.next)} className="p-2 rounded-md border border-slate-600 hover:border-white">
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </>
+                )}
+                <button
+                  type="button"
+                  onClick={() => dialogRef.current?.close()}
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-slate-600 hover:border-white text-sm"
+                >
+                  <X className="w-4 h-4" />
+                  {tt(WORK.labels.close)}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </dialog>
+    </div>
+  )
+}
+
+/** Khung ảnh: máy tính = cửa sổ trình duyệt tối giản; điện thoại = các máy đặt cạnh nhau trên nền xám. */
+function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoom: (k: number) => void }) {
+  const { t } = useLanguage()
+  const zoomLabel = t(WORK.labels.zoom.vi, WORK.labels.zoom.en)
+
+  if (item.frame === 'phone') {
+    return (
+      <div className="aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center gap-5 sm:gap-12 p-5 sm:p-8 rounded-xl border border-[#E6E8EC] bg-[#F6F7F9] overflow-hidden">
+        {item.shots.map((s, k) => (
+          <button
+            key={s.src}
+            type="button"
+            onClick={() => onZoom(k)}
+            aria-label={`${zoomLabel}: ${t(s.alt.vi, s.alt.en)}`}
+            className="h-full cursor-zoom-in"
+          >
+            <Image
+              src={s.src}
+              alt={t(s.alt.vi, s.alt.en)}
+              width={s.width}
+              height={s.height}
+              sizes="(min-width: 1024px) 240px, 40vw"
+              quality={90}
+              className="h-full w-auto drop-shadow-[0_14px_24px_rgba(11,18,32,0.18)]"
+            />
+          </button>
+        ))}
+      </div>
+    )
+  }
+
+  const s = item.shots[shot]
+  return (
+    <figure className="rounded-xl border border-[#E6E8EC] bg-white overflow-hidden shadow-[0_24px_48px_-28px_rgba(11,18,32,0.35)]">
+      <div className="flex items-center gap-1.5 px-3.5 h-8 bg-[#F6F7F9] border-b border-[#E6E8EC]" aria-hidden>
+        <i className="w-2.5 h-2.5 rounded-full bg-[#D5D9E0]" />
+        <i className="w-2.5 h-2.5 rounded-full bg-[#D5D9E0]" />
+        <i className="w-2.5 h-2.5 rounded-full bg-[#D5D9E0]" />
+      </div>
+      <button
+        type="button"
+        onClick={() => onZoom(shot)}
+        aria-label={`${zoomLabel}: ${t(s.alt.vi, s.alt.en)}`}
+        className="group relative block w-full aspect-[16/10] cursor-zoom-in"
+      >
+        <Image
+          src={s.src}
+          alt={t(s.alt.vi, s.alt.en)}
+          fill
+          sizes="(min-width: 1280px) 860px, (min-width: 1024px) 64vw, 100vw"
+          quality={90}
+          className="object-cover object-top"
+        />
+        <span className="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-md bg-[#0B1220]/85 text-white text-xs font-medium px-2.5 py-1.5 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+          <Maximize2 className="w-3.5 h-3.5" />
+          {zoomLabel}
+        </span>
+      </button>
+    </figure>
   )
 }
 
