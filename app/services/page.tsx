@@ -16,6 +16,7 @@ import {
   Workflow,
   Database,
   AudioLines,
+  Code2,
   ArrowRight,
 } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
@@ -104,6 +105,18 @@ export default function ServicesIndexPage() {
       soft: 'from-cyan-50 to-teal-100 text-cyan-600',
       badge: t('MỚI', 'NEW'),
     },
+    {
+      href: '/services/custom-software',
+      icon: <Code2 className="w-7 h-7" />,
+      title: t('Phần mềm theo yêu cầu', 'Custom Software'),
+      desc: t(
+        'Thiết kế, lập trình và vận hành phần mềm riêng theo nghiệp vụ: bảo mật theo OWASP, môi trường thử tách biệt, bàn giao 100% mã nguồn.',
+        'Software designed, built and operated around your workflows: OWASP-grade security, separate staging, 100% of the source code handed over.'
+      ),
+      color: 'from-slate-700 to-slate-900',
+      soft: 'from-slate-100 to-slate-200 text-slate-700',
+      badge: t('MỚI', 'NEW'),
+    },
   ]
 
   return (
@@ -121,8 +134,8 @@ export default function ServicesIndexPage() {
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               {t(
-                'Bảy dịch vụ kết nối thành một hệ thống: thu hút khách hàng, chuyển đổi, quản lý dữ liệu và tối ưu liên tục bằng AI.',
-                'Seven services that connect into one system: attract customers, convert them, manage the data and keep optimising with AI.'
+                'Tám dịch vụ kết nối thành một hệ thống: thu hút khách hàng, chuyển đổi, quản lý dữ liệu và tối ưu liên tục bằng AI.',
+                'Eight services that connect into one system: attract customers, convert them, manage the data and keep optimising with AI.'
               )}
             </p>
           </div>
