@@ -96,6 +96,8 @@ export type ScopeIcon = 'ops' | 'crm' | 'chart' | 'mobile' | 'plug' | 'ai'
 export const SCOPE = {
   kicker: { vi: 'Phạm vi', en: 'What we build' },
   title: { vi: 'Các loại hệ thống chúng tôi thiết kế và vận hành', en: 'The systems we design and operate' },
+  // Bot hay kể danh sách này khi khách hỏi "đã làm hệ thống nào" → gắn nhãn rõ là phạm vi.
+  // @knowledge-prefix: Loại hệ thống nhận làm (phạm vi dịch vụ, không phải dự án đã làm)
   items: [
     {
       icon: 'ops',

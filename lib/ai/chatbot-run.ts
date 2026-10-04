@@ -52,6 +52,17 @@ ${knowledgeText}
 ════════ HẾT NỘI DUNG WEBSITE ════════`
 }
 
+/**
+ * Câu hỏi "đã làm dự án / hệ thống nào": gpt-4o-mini hay trả lời bằng mục phạm vi ("Các loại hệ
+ * thống chúng tôi thiết kế…") vì trùng chữ "hệ thống", dù luật prompt đã dặn và dữ liệu đã gắn
+ * nhãn (đo trên preview 4/10/2026: sai 2-3/4 lần). Nhắc lại ngay sát câu hỏi thì model nhỏ theo
+ * được. Chỉ chèn khi câu hỏi khớp, không đổi phần system prompt lớn (giữ cache tiền tố của OpenAI).
+ */
+const PAST_WORK_RE =
+  /(từng|đã)\s+(làm|triển khai|xây dựng|thực hiện|phát triển)|case\s*stud|dự án\s+(nào|gì|tiêu biểu)|làm cho\s+(ai|khách|bên nào)|(have|did)\s+you\s+(built|build|made|done|delivered)|past (projects|work)|portfolio/i
+const PAST_WORK_NOTE =
+  'Câu này hỏi về DỰ ÁN ĐÃ LÀM: trả lời từ khối "DỰ ÁN ĐÃ TRIỂN KHAI" (gồm cả các hệ thống phần mềm ẩn tên khách), mỗi dự án 1 dòng kèm lĩnh vực. KHÔNG liệt kê các dòng "Loại hệ thống nhận làm" (đó là phạm vi dịch vụ).'
+
 export async function runServiceRouter(opts: {
   query: string
   systemPrompt?: string | null
@@ -108,6 +119,7 @@ export async function runServiceRouter(opts: {
           { role: 'system', content: system },
           { role: 'system', content: langNote },
           ...sanitizeHistory(opts.history),
+          ...(PAST_WORK_RE.test(q) ? [{ role: 'system' as const, content: PAST_WORK_NOTE }] : []),
           { role: 'user', content: q },
         ],
         temperature: 0.2,

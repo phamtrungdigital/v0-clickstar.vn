@@ -198,6 +198,21 @@ function extractFile(file) {
     if (ts.isPropertyAssignment(node)) {
       const key = propName(node.name)
       if (SKIP_KEYS.has(key)) return
+      // Chú thích `// @knowledge-prefix: Nhãn` ngay trên một mảng → mỗi phần tử thành 1 dòng
+      // "Nhãn: …". Dùng khi bot hay hiểu nhầm một danh sách (vd phạm vi nhận làm ≠ dự án đã làm).
+      const comments = (ts.getLeadingCommentRanges(src.text, node.pos) || []).map((c) => src.text.slice(c.pos, c.end))
+      const prefix = comments.map((c) => c.match(/@knowledge-prefix:\s*(.+?)\s*(?:\*\/)?$/m)).find(Boolean)?.[1]
+      let arr = node.initializer
+      while (arr && (ts.isAsExpression(arr) || (ts.isSatisfiesExpression && ts.isSatisfiesExpression(arr)))) arr = arr.expression
+      if (prefix && arr && ts.isArrayLiteralExpression(arr)) {
+        for (const el of arr.elements) {
+          const start = lines.length
+          visit(el, key)
+          const got = lines.splice(start)
+          if (got.length) lines.push(`${prefix}: ${got.join(' · ')}`)
+        }
+        return
+      }
       const label = key && Object.hasOwn(CASE_LABELS, key) ? CASE_LABELS[key] : null
       const isCase =
         label &&

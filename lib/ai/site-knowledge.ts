@@ -300,7 +300,7 @@ async function build(): Promise<SiteKnowledge> {
  * phần chữ trích từ code (đổi mỗi khi trang đổi chữ). Data Cache của Vercel sống qua
  * các lần deploy, nên thiếu 2 phần này thì bản deploy mới vẫn đọc kiến thức CŨ tới 1 giờ.
  */
-const FORMAT_VERSION = '5'
+const FORMAT_VERSION = '6'
 const staticVersion = (staticKnowledge as { version?: string }).version ?? 'dev'
 
 export const getSiteKnowledge = unstable_cache(build, ['site-knowledge', FORMAT_VERSION, staticVersion], {
