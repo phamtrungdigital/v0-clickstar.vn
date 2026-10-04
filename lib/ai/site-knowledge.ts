@@ -259,7 +259,9 @@ async function build(): Promise<SiteKnowledge> {
       // client_name "Bảo mật" = khách yêu cầu ẩn tên — giữ nguyên để bot không tự đoán tên
       return `- ${c.title_vi} (khách: ${c.client_name}${c.industry_vi ? ', ngành ' + c.industry_vi : ''}) → /projects/${c.slug}\n  ${clean(c.summary_vi ?? '')}${metrics ? `\n  Kết quả: ${metrics}` : ''}`
     })
-    blocks.push(`### DỰ ÁN ĐÃ TRIỂN KHAI (trang /projects và mục "Dự án đã thực hiện" ở trang dịch vụ)\n${[...lines, ...codeCases].join('\n')}`)
+    blocks.push(
+      `### DỰ ÁN ĐÃ TRIỂN KHAI (${lines.length} dự án ở trang /projects + ${codeCases.length} hệ thống phần mềm ẩn tên khách ở mục "Dự án đã thực hiện" của trang dịch vụ)\n${[...lines, ...codeCases].join('\n')}`,
+    )
   }
 
   const posts = postsRes.data ?? []
@@ -298,7 +300,7 @@ async function build(): Promise<SiteKnowledge> {
  * phần chữ trích từ code (đổi mỗi khi trang đổi chữ). Data Cache của Vercel sống qua
  * các lần deploy, nên thiếu 2 phần này thì bản deploy mới vẫn đọc kiến thức CŨ tới 1 giờ.
  */
-const FORMAT_VERSION = '4'
+const FORMAT_VERSION = '5'
 const staticVersion = (staticKnowledge as { version?: string }).version ?? 'dev'
 
 export const getSiteKnowledge = unstable_cache(build, ['site-knowledge', FORMAT_VERSION, staticVersion], {
