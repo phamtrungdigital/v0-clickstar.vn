@@ -2,7 +2,7 @@
 
 Thư mục này KHÔNG được build hay deploy. Đây là bản nguồn HTML của các hình minh hoạ, giữ lại để sửa về sau.
 
-- Ảnh đang dùng trên website: `public/images/custom-software/v3/*.webp`
+- Ảnh đang dùng trên website: `public/images/custom-software/v4/*.webp`
 - Nội dung chữ của từng dự án: `app/services/custom-software/_data/content.ts` (`WORK`)
 - Quy tắc thiết kế và dữ liệu mẫu: `BRIEF.md`
 
@@ -10,11 +10,13 @@ Thư mục này KHÔNG được build hay deploy. Đây là bản nguồn HTML c
 
 1. Ảnh chụp giao diện thật của hệ thống làm cho khách, đã che tên: bị loại vì nhìn vẫn ra hệ thống của khách.
 2. Mockup tự vẽ v2: bị loại vì "giống màu sắc của AI". Lỗi của v2: mỗi bản một màu nhấn rực, nền tối, chip tô màu, hoạ tiết, bo góc lớn, câu thuyết minh tính năng nằm trong UI.
-3. **v3 (đang dùng)**: UI chân thật kiểu đội sản phẩm lâu năm. Đặc điểm:
-   - Nền trung tính, mỗi sản phẩm một màu trầm.
-   - Font hệ thống, bo 6–8px, viền 1px.
-   - Mật độ thông tin như app thật.
-   - Tính năng hiện qua chính giao diện, không chú thích.
+3. v3: UI chân thật nhưng toàn trung tính. Bị loại vì "âm bản nhìn xấu quá", cần một chút màu thương hiệu cho có sức sống.
+4. **v4 (đang dùng)**: giữ bố cục và độ thật của v3, thêm màu thương hiệu kiểu app thật có cá tính:
+   - khung điều hướng màu thương hiệu;
+   - nút chính và mục đang chọn theo màu nhấn;
+   - nhãn tint nhạt, biểu đồ 2-3 màu, avatar màu dịu.
+
+   Vẫn không gradient, không neon, không câu thuyết minh. Chi tiết trong `BRIEF.md`.
 
 ## Sửa và xuất lại ảnh
 

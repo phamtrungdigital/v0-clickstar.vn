@@ -7,7 +7,12 @@
 :root{
   --bg:#FFFFFF; --side:#F7F7F8; --line:#E4E4E7; --line2:#EEEEF0;
   --tx:#18181B; --tx2:#52525B; --tx3:#71717A; --tx4:#A1A1AA;
-  --brand:#18181B; --hover:#EDEDEF;
+  --brand:#8E4FB8; --hover:#EDEDEF;   /* logo + badge trên nền aubergine (cùng họ mận, sáng hơn để nổi) */
+  --aub:#3A1C4A;            /* sidebar thương hiệu */
+  --accent:#6B3A8E;         /* vạch tab, vạch chọn hàng (8,0:1) */
+  --accent-fill:#5E2F86;    /* nền có chữ trắng: nút Gửi, tin tư vấn viên (9,4:1) */
+  --accent-tx:#5E2F86;      /* chữ/link nhấn trên nền trắng */
+  --plum-50:#F7F2FA; --plum-100:#EFE5F5; --plum-200:#DFCDEA;
   --green:#1A7F37; --amber:#9A6700; --red:#CF222E;
 }
 *{box-sizing:border-box}
@@ -19,33 +24,42 @@ svg.s{width:14px;height:14px}
 .app{width:1280px;height:800px;overflow:hidden;display:flex}
 
 /* ---------- sidebar ---------- */
-.nav{width:224px;flex:none;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:10px 8px}
-.ws{display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:6px;font-weight:600;font-size:13.5px}
+.nav{width:224px;flex:none;background:var(--aub);color:#fff;display:flex;flex-direction:column;padding:10px 8px}
+.ws{display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border-radius:6px;font-weight:600;font-size:13.5px;color:#fff}
 .ws .mk{width:20px;height:20px;border-radius:5px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center}
-.ws .chev{margin-left:auto;color:var(--tx3)}
-.find{margin:8px 0 10px;height:30px;border:1px solid var(--line);background:#fff;border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 8px;color:var(--tx3);font-size:13px}
-.find kbd{margin-left:auto;font-family:inherit;font-size:11px;color:var(--tx3);border:1px solid var(--line);border-radius:4px;padding:0 4px;line-height:16px}
-.it{display:flex;align-items:center;gap:8px;height:30px;padding:0 8px;border-radius:6px;color:var(--tx2);font-size:13.5px;white-space:nowrap}
-.it svg{color:var(--tx3)}
-.it .n{margin-left:auto;font-size:12px;color:var(--tx3)}
-.it.on{background:var(--hover);color:var(--tx);font-weight:500}
-.it.on svg{color:var(--tx)}
-.it .n.due{color:var(--tx);font-weight:600}
+.ws .chev{margin-left:auto;color:rgba(255,255,255,.6)}
+.find{margin:8px 0 10px;height:30px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:6px;display:flex;align-items:center;gap:8px;padding:0 8px;color:rgba(255,255,255,.66);font-size:13px}
+.find kbd{margin-left:auto;font-family:inherit;font-size:11px;color:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:0 4px;line-height:16px}
+.it{display:flex;align-items:center;gap:8px;height:30px;padding:0 8px;border-radius:6px;color:rgba(255,255,255,.8);font-size:13.5px;white-space:nowrap}
+.it svg{color:rgba(255,255,255,.6)}
+.it .n{margin-left:auto;font-size:12px;color:rgba(255,255,255,.6)}
+.it.on{background:rgba(255,255,255,.14);color:#fff;font-weight:500}
+.it.on svg{color:#D9BFEA}
+.it.on .n{color:rgba(255,255,255,.85)}
+.it .n.due{min-width:20px;height:18px;padding:0 6px;border-radius:9px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center}
 .sub{padding-left:32px;height:28px;font-size:13px}
-.grp{margin:16px 8px 4px;font-size:12px;color:var(--tx3);font-weight:500}
-.ch{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;font-size:13px;color:var(--tx2)}
-.ch .d{width:6px;height:6px;border-radius:50%;background:var(--green);margin-left:auto}
-.ch .d.off{background:#D4D4D8}
+.grp{margin:16px 8px 4px;font-size:12px;color:rgba(255,255,255,.58);font-weight:500}
+.ch{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;font-size:13px;color:rgba(255,255,255,.8)}
+.ch .d{width:6px;height:6px;border-radius:50%;background:#4AC26B;margin-left:auto}
+.ch .d.off{background:transparent;border:1.5px solid rgba(255,255,255,.4);width:7px;height:7px}
 .nav .grow{flex:1}
-.me{display:flex;align-items:center;gap:8px;padding:8px;border-top:1px solid var(--line);margin:0 -8px -10px;padding:10px 16px}
+.me{display:flex;align-items:center;gap:8px;padding:8px;border-top:1px solid rgba(255,255,255,.12);margin:0 -8px -10px;padding:10px 16px}
 .me .av{width:26px;height:26px}
-.me .nm{font-size:13px;font-weight:500;line-height:1.2}
-.me .st{font-size:12px;color:var(--tx3);display:flex;align-items:center;gap:5px;line-height:1.2}
-.me .st i{width:6px;height:6px;border-radius:50%;background:var(--green)}
-.me svg{margin-left:auto;color:var(--tx3)}
+.me .nm{font-size:13px;font-weight:500;line-height:1.2;color:#fff}
+.me .st{font-size:12px;color:rgba(255,255,255,.66);display:flex;align-items:center;gap:5px;line-height:1.2}
+.me .st i{width:6px;height:6px;border-radius:50%;background:#4AC26B}
+.me svg{margin-left:auto;color:rgba(255,255,255,.6)}
 
 .av{width:28px;height:28px;border-radius:50%;background:#E4E4E7;color:#3F3F46;font-size:11px;font-weight:600;display:grid;place-items:center;flex:none;letter-spacing:.2px}
 .av.anon{background:#F1F1F3;color:var(--tx3)}
+.av.c-vi{background:#E4E9F7;color:#34497F}
+.av.c-pl{background:#F3E6F6;color:#6B2D7E}
+.av.c-am{background:#FBEFD8;color:#7D5200}
+.av.c-gr{background:#E2F3E7;color:#17692F}
+.av.c-pk{background:#FBE6EF;color:#9E2459}
+.av.c-te{background:#DDF1EF;color:#0E625D}
+.av.c-or{background:#FCE9DF;color:#9A3D17}
+.av.c-sl{background:#E6E9F2;color:#414B66}
 
 /* ---------- list ---------- */
 .list{width:316px;flex:none;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
@@ -63,11 +77,12 @@ svg.s{width:14px;height:14px}
 .tabs{display:flex;gap:14px;padding:0 16px;border-bottom:1px solid var(--line);flex:none}
 .tab{font-size:12.5px;color:var(--tx3);padding:6px 0 8px;border-bottom:1.5px solid transparent;margin-bottom:-1px;white-space:nowrap}
 .tab span{color:var(--tx4);margin-left:3px}
-.tab.on{color:var(--tx);border-color:var(--brand);font-weight:500}
-.tab.on span{color:var(--tx3)}
+.tab.on{color:var(--accent-tx);border-color:var(--accent);border-bottom-width:2px;font-weight:500}
+.tab.on span{color:#9A6FB8}
 .rows{flex:1;overflow:hidden}
 .row{display:flex;gap:10px;padding:10px 16px 10px 14px;border-bottom:1px solid var(--line2);border-left:2px solid transparent}
-.row.on{background:#F4F4F5;border-left-color:var(--brand)}
+.row.on{background:var(--plum-50);border-left-color:var(--accent)}
+.row.on .pv,.row.on .tm{color:#5F5566}
 .row .bd{flex:1;min-width:0}
 .row .l1{display:flex;align-items:baseline;gap:8px}
 .row .nm{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -77,13 +92,19 @@ svg.s{width:14px;height:14px}
 .row .pv{font-size:13px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0}
 .row.unread .pv{color:var(--tx2)}
 .row .ind{flex:none;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--tx3)}
+.pill{flex:none;display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 5px;border-radius:4px;font-size:11px;font-weight:500;line-height:1;white-space:nowrap}
+.pill.wait{background:#FFF3D6;color:#7D5200}
+.pill.bot{background:#EFEFF2;color:#3F3F46}
+.pill.crm{background:#E3F3E8;color:#17692F}
+.pill.done{background:transparent;color:var(--tx3);border:1px solid var(--line);height:18px}
+.pill.wait .dot{width:6px;height:6px;background:#C98A00}
 .dot{width:7px;height:7px;border-radius:50%;flex:none;background:#A1A1AA}
 .dot.amber{background:#BF8700}
 .dot.green{background:var(--green)}
 .dot.ring{background:transparent;border:1.5px solid #A1A1AA;width:7px;height:7px}
 .ind.wait{color:var(--amber)}
 .mini{width:18px;height:18px;font-size:9px}
-.unr{min-width:16px;height:16px;border-radius:8px;background:var(--brand);color:#fff;font-size:10.5px;font-weight:600;display:grid;place-items:center;padding:0 4px}
+.unr{min-width:16px;height:16px;border-radius:8px;background:var(--accent-fill);color:#fff;font-size:10.5px;font-weight:600;display:grid;place-items:center;padding:0 4px}
 
 /* ---------- thread ---------- */
 .thread{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -94,21 +115,22 @@ svg.s{width:14px;height:14px}
 .btn{height:28px;border:1px solid var(--line);border-radius:6px;background:#fff;display:inline-flex;align-items:center;gap:6px;padding:0 10px;font-size:13px;font-weight:500;color:var(--tx);white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .btn svg{color:var(--tx2)}
 .btn.sq{width:28px;padding:0;justify-content:center}
-.btn.pri{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.pri{background:var(--accent-fill);border-color:var(--accent-fill);color:#fff;padding:0 14px}
 .btn.pri svg{color:#fff}
 .msgs{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 20px 4px}
 .m{display:flex;flex-direction:column;max-width:84%;margin-top:7px}
 .m.out{align-self:flex-end;align-items:flex-end}
 .b{padding:8px 12px;border-radius:8px;font-size:13.5px;line-height:1.5;color:var(--tx)}
 .m.in .b{background:#F1F1F3}
-.m.bot .b{background:#fff;border:1px solid var(--line)}
-.m.agent .b{background:#F2F4F8;border:1px solid #DDE3EC}
+.m.bot .b{background:#FAFAFB;border:1px solid var(--line)}
+.m.agent .b{background:var(--accent-fill);border:1px solid var(--accent-fill);color:#fff}
 .meta{font-size:11.5px;color:var(--tx3);margin-top:4px;display:flex;align-items:center;gap:4px}
 .meta b{font-weight:500;color:var(--tx2)}
-.src{display:flex;align-items:center;gap:5px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line2);font-size:12px;color:var(--tx3)}
+.src{display:flex;align-items:center;gap:5px;margin-top:6px;padding-top:6px;border-top:1px solid var(--line2);font-size:12px;color:var(--tx2)}
+.src svg{color:var(--tx3)}
 .gap{display:flex;align-items:center;gap:8px;margin-top:7px;padding-top:7px;border-top:1px solid var(--line2);font-size:12px}
-.lbl{display:inline-flex;align-items:center;height:20px;padding:0 6px;border:1px solid #E6D3A3;background:#FBF8F0;color:var(--amber);border-radius:4px;font-size:11.5px;font-weight:500}
-.lnk{color:var(--tx);text-decoration:underline;text-decoration-color:#C4C4C8;text-underline-offset:2px;font-weight:500}
+.lbl{display:inline-flex;align-items:center;height:20px;padding:0 6px;border:1px solid #EFD9A0;background:#FFF6DF;color:#7D5200;border-radius:4px;font-size:11.5px;font-weight:500}
+.lnk{color:var(--accent-tx);text-decoration:underline;text-decoration-color:#C6A7DB;text-underline-offset:2px;font-weight:500}
 .sys{align-self:center;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--tx3);margin:7px 0 1px}
 .sys b{font-weight:500;color:var(--tx2)}
 .sys svg{color:var(--tx4)}
@@ -118,7 +140,7 @@ svg.s{width:14px;height:14px}
 .comp{flex:none;margin:0 16px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
 .comp .ct{display:flex;gap:14px;padding:0 12px;border-bottom:1px solid var(--line2)}
 .comp .ct div{font-size:12.5px;color:var(--tx3);padding:7px 0 6px;border-bottom:1.5px solid transparent;margin-bottom:-1px}
-.comp .ct div.on{color:var(--tx);border-color:var(--brand);font-weight:500}
+.comp .ct div.on{color:var(--accent-tx);border-color:var(--accent);border-bottom-width:2px;font-weight:500}
 .comp .ta{padding:9px 12px 2px;color:var(--tx4);font-size:13.5px;height:36px}
 .comp .cb{display:flex;align-items:center;gap:2px;padding:4px 8px 8px}
 .comp .cb .ib{width:28px;height:28px}
@@ -140,7 +162,8 @@ svg.s{width:14px;height:14px}
 .kv dd .mini{width:18px;height:18px}
 .kv dd.mut{color:var(--tx4)}
 .crm{display:flex;align-items:center;gap:6px;font-size:13px}
-.crm .ok{color:var(--green);font-weight:500}
+.crm .ok{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:4px;background:#E3F3E8;color:#17692F;font-weight:500;font-size:12.5px}
+.crm .ok svg{color:#1A7F37}
 .crm .tm{color:var(--tx3)}
 .crm2{display:flex;align-items:center;justify-content:space-between;margin-top:6px;font-size:12.5px;color:var(--tx3)}
 .pg{display:flex;align-items:center;gap:8px;font-size:12px;padding:3px 0}
@@ -148,7 +171,9 @@ svg.s{width:14px;height:14px}
 .pg .t{color:var(--tx3);flex:none}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{height:22px;display:inline-flex;align-items:center;padding:0 7px;border:1px solid var(--line);border-radius:5px;font-size:12px;color:var(--tx2);background:#fff}
-.tag.add{color:var(--tx3);border-style:dashed}
+.tag.vi{background:var(--plum-50);border-color:var(--plum-200);color:#5E2F86}
+.tag.te{background:#E9F6F4;border-color:#C6E6E2;color:#0E625D}
+.tag.add{color:var(--tx3);border-color:transparent;background:transparent;padding:0 4px}
 </style>
 </head>
 <body>
@@ -197,7 +222,7 @@ svg.s{width:14px;height:14px}
     <div class="ch">Messenger<span class="d off"></span></div>
     <div class="grow"></div>
     <div class="me">
-      <div class="av">TT</div>
+      <div class="av c-am">TT</div>
       <div><div class="nm">Thu Trang</div><div class="st"><i></i>Đang trực</div></div>
       <svg class="i s"><use href="#chevud"/></svg>
     </div>
@@ -225,73 +250,73 @@ svg.s{width:14px;height:14px}
     </div>
     <div class="rows">
       <div class="row on">
-        <div class="av">KL</div>
+        <div class="av c-vi">KL</div>
         <div class="bd">
           <div class="l1"><span class="nm">Khánh Linh</span><span class="tm">10:42</span></div>
-          <div class="l2"><span class="pv">Thu Trang: Chào chị Linh, mỗi khoá được học bù tối đa 4 buổi ở lớp song song</span><span class="ind"><span class="av mini">TT</span></span></div>
+          <div class="l2"><span class="pv">Thu Trang: Chào chị Linh, mỗi khoá được học bù tối đa 4 buổi ở lớp song song</span><span class="ind"><span class="av mini c-am">TT</span></span></div>
         </div>
       </div>
       <div class="row unread">
         <div class="av anon"><svg class="i s"><use href="#user"/></svg></div>
         <div class="bd">
           <div class="l1"><span class="nm">Khách #4821</span><span class="tm">10:40</span></div>
-          <div class="l2"><span class="pv">Lớp tiếng Anh tối thứ mấy?</span><span class="ind"><span class="dot ring"></span>Bot</span></div>
+          <div class="l2"><span class="pv">Lớp tiếng Anh tối thứ mấy?</span><span class="pill bot">Bot</span></div>
         </div>
       </div>
       <div class="row unread">
-        <div class="av">TK</div>
+        <div class="av c-am">TK</div>
         <div class="bd">
           <div class="l1"><span class="nm">Tuấn Kiệt</span><span class="tm">10:39</span></div>
-          <div class="l2"><span class="pv">Có trả góp học phí không?</span><span class="ind wait"><span class="dot amber"></span>3 phút</span></div>
+          <div class="l2"><span class="pv">Có trả góp học phí không?</span><span class="pill wait"><span class="dot"></span>3 phút</span></div>
         </div>
       </div>
       <div class="row">
         <div class="av anon"><svg class="i s"><use href="#user"/></svg></div>
         <div class="bd">
           <div class="l1"><span class="nm">Khách #4817</span><span class="tm">10:36</span></div>
-          <div class="l2"><span class="pv">Buổi học thử có mất phí không ạ?</span><span class="ind"><span class="dot ring"></span>Bot</span></div>
+          <div class="l2"><span class="pv">Buổi học thử có mất phí không ạ?</span><span class="pill bot">Bot</span></div>
         </div>
       </div>
       <div class="row">
-        <div class="av">NH</div>
+        <div class="av c-gr">NH</div>
         <div class="bd">
           <div class="l1"><span class="nm">Ngọc Hân</span><span class="tm">10:22</span></div>
-          <div class="l2"><span class="pv">Cảm ơn, em sẽ đến học thử thứ 7.</span><span class="ind"><span class="dot green"></span>CRM</span></div>
+          <div class="l2"><span class="pv">Cảm ơn, em sẽ đến học thử thứ 7.</span><span class="pill crm">CRM</span></div>
         </div>
       </div>
       <div class="row unread">
-        <div class="av">PT</div>
+        <div class="av c-pk">PT</div>
         <div class="bd">
           <div class="l1"><span class="nm">Phương Thảo</span><span class="tm">10:15</span></div>
-          <div class="l2"><span class="pv">Mình muốn đổi sang lớp cuối tuần được không, vì tối thứ 4 mình hay tăng ca</span><span class="ind wait"><span class="dot amber"></span>9 phút</span></div>
+          <div class="l2"><span class="pv">Mình muốn đổi sang lớp cuối tuần được không, vì tối thứ 4 mình hay tăng ca</span><span class="pill wait"><span class="dot"></span>9 phút</span></div>
         </div>
       </div>
       <div class="row">
-        <div class="av">TT</div>
+        <div class="av c-te">TT</div>
         <div class="bd">
           <div class="l1"><span class="nm">Thanh Tùng</span><span class="tm">09:58</span></div>
-          <div class="l2"><span class="pv">Đã để lại số, nhờ gọi lại sau 17h.</span><span class="ind"><span class="dot green"></span>CRM</span></div>
+          <div class="l2"><span class="pv">Đã để lại số, nhờ gọi lại sau 17h.</span><span class="pill crm">CRM</span></div>
         </div>
       </div>
       <div class="row">
-        <div class="av">GH</div>
+        <div class="av c-sl">GH</div>
         <div class="bd">
           <div class="l1"><span class="nm">Gia Huy</span><span class="tm">09:41</span></div>
-          <div class="l2"><span class="pv">Trợ lý: Lớp Thiết kế đồ hoạ cuối tuần còn 6 chỗ, khai giảng 17/10…</span><span class="ind"><span class="av mini">ĐA</span></span></div>
+          <div class="l2"><span class="pv">Trợ lý: Lớp Thiết kế đồ hoạ cuối tuần còn 6 chỗ, khai giảng 17/10…</span><span class="ind"><span class="av mini c-pl">ĐA</span></span></div>
         </div>
       </div>
       <div class="row">
         <div class="av anon"><svg class="i s"><use href="#user"/></svg></div>
         <div class="bd">
           <div class="l1"><span class="nm">Khách #4809</span><span class="tm">09:17</span></div>
-          <div class="l2"><span class="pv">ok</span><span class="ind"><span class="dot"></span>Đã đóng</span></div>
+          <div class="l2"><span class="pv">ok</span><span class="pill done">Đã đóng</span></div>
         </div>
       </div>
       <div class="row">
-        <div class="av">MP</div>
+        <div class="av c-or">MP</div>
         <div class="bd">
           <div class="l1"><span class="nm">Mai Phương</span><span class="tm">Hôm qua</span></div>
-          <div class="l2"><span class="pv">Bên mình có lớp online không ạ?</span><span class="ind"><span class="dot green"></span>CRM</span></div>
+          <div class="l2"><span class="pv">Bên mình có lớp online không ạ?</span><span class="pill crm">CRM</span></div>
         </div>
       </div>
     </div>
@@ -368,7 +393,7 @@ svg.s{width:14px;height:14px}
   <!-- DETAILS -->
   <aside class="det">
     <div class="dh">
-      <div class="av">KL</div>
+      <div class="av c-vi">KL</div>
       <div><div class="n">Khánh Linh</div><div class="s">Lead mới · lần truy cập thứ 3</div></div>
       <div class="ib" style="margin-left:auto"><svg class="i"><use href="#sidebar"/></svg></div>
     </div>
@@ -380,7 +405,7 @@ svg.s{width:14px;height:14px}
     <div class="sec">
       <h4>Hội thoại</h4>
       <dl class="kv">
-        <dt>Phụ trách</dt><dd><span class="av mini">TT</span>Thu Trang</dd>
+        <dt>Phụ trách</dt><dd><span class="av mini c-am">TT</span>Thu Trang</dd>
         <dt>Trạng thái</dt><dd>Đang mở</dd>
         <dt>Nguồn vào</dt><dd>Nút liên hệ</dd>
         <dt>Chi nhánh</dt><dd>Chi nhánh Trung tâm</dd>
@@ -400,7 +425,7 @@ svg.s{width:14px;height:14px}
 
     <div class="sec">
       <h4>CRM</h4>
-      <div class="crm"><span class="dot green"></span><span class="ok">Đã gửi CRM</span><span class="tm">· 10:42</span></div>
+      <div class="crm"><span class="ok"><svg class="i s"><use href="#check"/></svg>Đã gửi CRM</span><span class="tm">· 10:42</span></div>
       <div class="crm2"><span class="mono">LD-20417</span><span class="lnk" style="font-size:12.5px">Mở trong CRM</span></div>
     </div>
 
@@ -414,7 +439,7 @@ svg.s{width:14px;height:14px}
 
     <div class="sec">
       <h4>Thẻ</h4>
-      <div class="tags"><span class="tag">học bù</span><span class="tag">lớp tối</span><span class="tag add">+ Thêm</span></div>
+      <div class="tags"><span class="tag vi">học bù</span><span class="tag te">lớp tối</span><span class="tag add">+ Thêm</span></div>
     </div>
 
     <div class="sec">

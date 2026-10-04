@@ -169,7 +169,7 @@ export type WorkItem = {
   shots: WorkShot[]
 }
 
-const IMG = '/images/custom-software/v3'
+const IMG = '/images/custom-software/v4'
 const DESKTOP = { width: 2400, height: 1500 }
 
 export const WORK = {

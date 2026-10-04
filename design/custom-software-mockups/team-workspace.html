@@ -7,7 +7,8 @@
 :root{
   --bg:#FFFFFF; --side:#F7F7F8; --board:#FAFAFA; --line:#E4E4E7; --line2:#EDEDEF;
   --text:#18181B; --text2:#3F3F46; --muted:#71717A; --faint:#A1A1AA;
-  --brand:#A9452A; --brand-ink:#8E3A23; --brand-soft:#F6ECE8;
+  --brand:#F0605D; --brand-strong:#D8524A; --brand-ink:#B93A37; --brand-soft:#FDECEB;
+  --rail:#1F2023; --rail-hi:rgba(255,255,255,.12); --rail-text:rgba(255,255,255,.82); --rail-muted:rgba(255,255,255,.56); --rail-line:rgba(255,255,255,.10);
   --ok:#1A7F37; --warn:#9A6700; --bad:#CF222E;
 }
 *{box-sizing:border-box}
@@ -22,41 +23,53 @@ svg.s12{width:12px;height:12px}
 .app{display:flex;height:800px}
 
 /* ---------- Sidebar ---------- */
-.side{width:224px;flex:none;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:8px 8px 10px}
+.side{width:224px;flex:none;background:var(--rail);color:var(--rail-text);display:flex;flex-direction:column;padding:8px 8px 10px}
 .ws{display:flex;align-items:center;gap:8px;height:42px;padding:0 6px}
 .ws .wt{min-width:0;line-height:1.2}
-.ws .wt small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap}
+.ws .wt small{display:block;font-size:11.5px;color:var(--rail-muted);white-space:nowrap}
 .ws .logo{width:22px;height:22px;border-radius:5px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center;flex:none}
-.ws .nm{font-weight:600;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ws .cv{color:var(--faint)}
+.ws .nm{font-weight:600;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ws .cv{color:var(--rail-muted)}
 .ws .acts{margin-left:auto;display:flex;gap:2px}
 .ib{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
-.ws .acts .ib.pen{background:#fff;border:1px solid var(--line);box-shadow:0 1px 1px rgba(0,0,0,.03)}
+.side .ib{color:var(--rail-muted)}
+.ws .acts .ib.pen{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--rail-text)}
 .nav{margin-top:6px;display:flex;flex-direction:column;gap:1px}
-.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;color:var(--text2);font-size:13.5px;white-space:nowrap}
-.ni svg{color:var(--muted)}
-.ni .ct{margin-left:auto;font-size:12px;color:var(--muted)}
-.ni.on{background:#ECECEE;color:var(--text);font-weight:500}
-.ni.on svg.pj{color:var(--brand)}
-.grp{margin-top:16px;padding:0 8px;height:24px;display:flex;align-items:center;gap:4px;font-size:12px;color:var(--muted);font-weight:500}
-.team{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;color:var(--text2);font-weight:500}
-.team .tl{width:18px;height:18px;border-radius:4px;background:#E7E7EA;color:#52525B;font-size:10.5px;font-weight:600;display:grid;place-items:center;flex:none}
-.team .car{margin-left:auto;color:var(--faint)}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;color:var(--rail-text);font-size:13.5px;white-space:nowrap}
+.ni svg{color:var(--rail-muted)}
+.ni .ct{margin-left:auto;font-size:12px;color:var(--rail-muted)}
+.ni .ct.new{min-width:18px;height:16px;padding:0 5px;border-radius:8px;background:var(--brand-strong);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center;line-height:1}
+.ni.on{position:relative;background:var(--rail-hi);color:#fff;font-weight:500}
+.ni.on:before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:3px;border-radius:0 2px 2px 0;background:var(--brand)}
+.ni svg.pj{color:var(--brand)}
+.ni svg.pj-teal{color:#5DBFAE}
+.ni svg.pj-violet{color:#A48BE8}
+.grp{margin-top:16px;padding:0 8px;height:24px;display:flex;align-items:center;gap:4px;font-size:12px;color:var(--rail-muted);font-weight:500}
+.team{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;color:var(--rail-text);font-weight:500}
+.team .tl{width:18px;height:18px;border-radius:4px;background:rgba(255,255,255,.10);color:#fff;font-size:10.5px;font-weight:600;display:grid;place-items:center;flex:none}
+.team .tl.t-coral{color:#F58A87}.team .tl.t-teal{color:#6FCBBB}.team .tl.t-amber{color:#E9B95A}
+.team .car{margin-left:auto;color:var(--rail-muted)}
 .sub1{padding-left:18px}
 .sub2{padding-left:34px}
 .side .sp{flex:1}
-.me{display:flex;align-items:center;gap:8px;padding:8px 6px 0;border-top:1px solid var(--line);margin-top:8px}
+.me{display:flex;align-items:center;gap:8px;padding:8px 6px 0;border-top:1px solid var(--rail-line);margin-top:8px}
 .me .t{line-height:1.25;min-width:0}
-.me .t b{display:block;font-size:13px;font-weight:500}
-.me .t span{font-size:12px;color:var(--muted)}
+.me .t b{display:block;font-size:13px;font-weight:500;color:#fff}
+.me .t span{font-size:12px;color:var(--rail-muted)}
 
 /* ---------- Avatars ---------- */
 .av{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:9.5px;font-weight:600;flex:none;letter-spacing:.01em}
 .av.md{width:24px;height:24px;font-size:10px}
 .av.lg{width:28px;height:28px;font-size:11px}
 .av.xs{width:16px;height:16px;font-size:8px}
-.a1,.a2,.a3,.a4,.a5,.a6,.a7{background:#F1F1F3;color:#52525B}
-.a1{box-shadow:inset 0 0 0 1px #E4E4E7}.a8{background:#E9E9EC;color:#3F3F46}
+.a1{background:#FCE3E2;color:#A3302D}
+.a2{background:#DDEAF7;color:#1F5185}
+.a3{background:#ECE6FA;color:#5A3EA6}
+.a4{background:#FAEBCB;color:#7D5200}
+.a5{background:#DCF0E2;color:#1D6637}
+.a6{background:#D8EFEC;color:#15625A}
+.a7{background:#FAE3EE;color:#952C60}
+.a8{background:#E4E8EE;color:#3A4859}
 .av.none{background:transparent;border:1px dashed #C4C4CC;color:var(--faint)}
 
 /* ---------- Main ---------- */
@@ -68,7 +81,7 @@ svg.s12{width:12px;height:12px}
 .ttl{display:flex;align-items:center;gap:8px;margin-top:3px}
 .ttl h1{margin:0;font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
 .ttl .st{color:var(--faint)}
-.status{display:flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid var(--line);border-radius:6px;font-size:12px;color:var(--text2)}
+.status{display:flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #F1DFB4;background:#FDF6E5;border-radius:6px;font-size:12px;font-weight:500;color:#734A00}
 .ttl .dt{font-size:12.5px;color:var(--muted)}
 .hd .r{margin-left:auto;display:flex;align-items:center;gap:8px}
 .stack{display:flex;align-items:center;margin-right:2px}
@@ -80,13 +93,13 @@ svg.s12{width:12px;height:12px}
 .btn{height:30px;display:flex;align-items:center;gap:6px;padding:0 10px;border-radius:6px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;color:var(--text2);white-space:nowrap;box-shadow:0 1px 1px rgba(0,0,0,.03)}
 .btn svg{color:var(--muted)}
 .btn.pressed{background:#F4F4F5;border-color:#D4D4D8}
-.btn.pri{background:var(--brand);border-color:#97391F;color:#fff;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.btn.pri{background:var(--brand-strong);border-color:#C4463F;color:#fff;font-weight:600;box-shadow:0 1px 1px rgba(0,0,0,.08)}
 .btn.pri svg{color:#fff}
 .btn .kb{font-size:11px;color:#F2D9D1;margin-left:2px}
 
 .tabs{height:38px;display:flex;align-items:stretch;gap:2px;padding:0 12px;border-bottom:1px solid var(--line)}
 .tab{display:flex;align-items:center;gap:6px;padding:0 8px;color:var(--muted);font-weight:500;font-size:13px;position:relative}
-.tab.on{color:var(--text)}
+.tab.on{color:var(--text);font-weight:600}
 .tab.on svg{color:var(--brand)}
 .tab.on:after{content:"";position:absolute;left:6px;right:6px;bottom:-1px;height:2px;background:var(--brand);border-radius:1px}
 .tabs .sp{flex:1}
@@ -120,8 +133,14 @@ svg.s12{width:12px;height:12px}
 .c-rec{margin-top:5px;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
 .c-rec svg{color:var(--muted)}
 .c-meta{margin-top:8px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);white-space:nowrap}
-.lbl{height:20px;display:inline-flex;align-items:center;gap:5px;padding:0 6px;border:1px solid var(--line);border-radius:10px;color:var(--text2);font-size:11.5px}
-.lbl i{width:6px;height:6px;border-radius:50%;display:block}
+.lbl{height:20px;display:inline-flex;align-items:center;padding:0 7px;border-radius:4px;font-size:11.5px;font-weight:500}
+.l-rep{background:#E2F0FA;color:#1A5A86}
+.l-con{background:#EEE8FB;color:#5A3EA6}
+.l-ads{background:#FCEFD3;color:#7E4E00}
+.l-web{background:#E1F3E6;color:#1D6637}
+.l-dat{background:#DCF1EE;color:#15625A}
+.l-mail{background:#FBE5EE;color:#952C60}
+.l-des{background:#FDE9DA;color:#93450F}
 .due{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 2px;color:var(--text2);font-size:11.5px}
 .due svg{color:var(--faint)}
 .due.late{color:var(--bad)}
@@ -138,9 +157,9 @@ svg.s12{width:12px;height:12px}
 .prio{display:inline-flex;align-items:flex-end;gap:1.5px;height:12px;width:14px;padding-bottom:1px}
 .prio i{width:3px;background:#D4D4D8;border-radius:.5px;display:block}
 .prio i:nth-child(1){height:5px}.prio i:nth-child(2){height:8px}.prio i:nth-child(3){height:11px}
-.prio.p2 i:nth-child(-n+2){background:#71717A}
-.prio.p3 i{background:#71717A}
-.prio.urg{width:14px;height:14px;border-radius:3px;background:#B4402B;color:#fff;font-size:10px;font-weight:700;display:inline-grid;place-items:center;padding:0;line-height:1}
+.prio.p2 i:nth-child(-n+2){background:#D18B0B}
+.prio.p3 i{background:#E5574F}
+.prio.urg{width:14px;height:14px;border-radius:3px;background:var(--bad);color:#fff;font-size:10px;font-weight:700;display:inline-grid;place-items:center;padding:0;line-height:1}
 .addrow{height:30px;display:flex;align-items:center;gap:6px;padding:0 6px;color:var(--faint);font-size:12.5px;border-radius:6px}
 
 /* ---------- Popover ---------- */
@@ -175,15 +194,15 @@ svg.s12{width:12px;height:12px}
 .acc .t b svg{color:var(--faint)}
 .acc .t span{font-size:12px;color:var(--muted)}
 .pop-f{border-top:1px solid var(--line2);height:44px;display:flex;align-items:center;padding:0 10px 0 14px}
-.lnk{display:flex;align-items:center;gap:6px;color:var(--brand-ink);font-size:13px;font-weight:500}
-.lnk svg{color:var(--brand)}
+.lnk{display:flex;align-items:center;gap:6px;color:var(--text);font-size:13px;font-weight:600}
+.lnk svg{color:var(--text2)}
 .pop-f .btn{margin-left:auto;height:28px}
 
 /* role menu */
 .menu{position:absolute;z-index:20;width:276px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px;
   box-shadow:0 1px 2px rgba(0,0,0,.05),0 10px 22px -6px rgba(24,24,27,.20)}
 .mi{display:flex;gap:8px;padding:7px 8px 8px;border-radius:5px}
-.mi .ck{width:16px;flex:none;color:var(--brand);padding-top:1px}
+.mi .ck{width:16px;flex:none;color:var(--text);padding-top:1px}
 .mi b{display:block;font-size:13px;font-weight:500;line-height:1.3}
 .mi span{display:block;font-size:12px;color:var(--muted);line-height:1.35;margin-top:1px}
 .mi.hl{background:#F4F4F5}
@@ -239,21 +258,21 @@ svg.s12{width:12px;height:12px}
       </div>
     </div>
     <nav class="nav">
-      <div class="ni"><svg class="i"><use href="#i-inbox"/></svg>Hộp thư<span class="ct">3</span></div>
+      <div class="ni"><svg class="i"><use href="#i-inbox"/></svg>Hộp thư<span class="ct new">3</span></div>
       <div class="ni"><svg class="i"><use href="#i-me"/></svg>Việc của tôi<span class="ct">7</span></div>
     </nav>
 
     <div class="grp">Nhóm của bạn<svg class="i s12"><use href="#i-down"/></svg></div>
     <nav class="nav" style="margin-top:2px">
-      <div class="team"><span class="tl">M</span>Marketing<svg class="i s12 car"><use href="#i-down"/></svg></div>
+      <div class="team"><span class="tl t-coral">M</span>Marketing<svg class="i s12 car"><use href="#i-down"/></svg></div>
       <div class="ni sub1"><svg class="i"><use href="#i-sub"/></svg>Việc</div>
       <div class="ni sub1"><svg class="i"><use href="#i-group"/></svg>Dự án</div>
       <div class="ni sub2 on"><svg class="i s14 pj" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 8V2a6 6 0 0 1 5.2 9z" fill="currentColor" stroke="none"/></svg>Chiến dịch học kỳ mới</div>
-      <div class="ni sub2"><svg class="i s14" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 8V2a6 6 0 0 1 6 6z" fill="currentColor" stroke="none"/></svg>Website khoá học</div>
-      <div class="ni sub2"><svg class="i s14" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke-dasharray="2 2"/></svg>Nội dung tháng 11</div>
+      <div class="ni sub2"><svg class="i s14 pj-teal" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 8V2a6 6 0 0 1 6 6z" fill="currentColor" stroke="none"/></svg>Website khoá học</div>
+      <div class="ni sub2"><svg class="i s14 pj-violet" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke-dasharray="2 2"/></svg>Nội dung tháng 11</div>
       <div class="ni sub1"><svg class="i"><use href="#i-repeat"/></svg>Việc định kỳ<span class="ct">4</span></div>
-      <div class="team" style="margin-top:6px"><span class="tl">T</span>Tư vấn<svg class="i s12 car"><use href="#i-right"/></svg></div>
-      <div class="team"><span class="tl">Đ</span>Đào tạo<svg class="i s12 car"><use href="#i-right"/></svg></div>
+      <div class="team" style="margin-top:6px"><span class="tl t-teal">T</span>Tư vấn<svg class="i s12 car"><use href="#i-right"/></svg></div>
+      <div class="team"><span class="tl t-amber">Đ</span>Đào tạo<svg class="i s12 car"><use href="#i-right"/></svg></div>
     </nav>
 
     <div class="sp"></div>
@@ -311,7 +330,7 @@ svg.s12{width:12px;height:12px}
       <!-- Cần làm -->
       <div class="col">
         <div class="ch">
-          <svg class="i s14" viewBox="0 0 16 16" style="color:#8B8B94"><circle cx="8" cy="8" r="6"/></svg>
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#9A9AA3"><circle cx="8" cy="8" r="6"/></svg>
           <b>Cần làm</b><span class="n">5</span>
           <span class="r"><span class="ib"><svg class="i s14"><use href="#i-plus"/></svg></span><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
         </div>
@@ -320,7 +339,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-title">Báo cáo chỉ số quảng cáo tuần 41</div>
           <div class="c-rec"><svg class="i s12"><use href="#i-repeat"/></svg>Hằng tuần · T2 09:00</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#6B7A8F"></i>Báo cáo</span>
+            <span class="lbl l-rep">Báo cáo</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>09/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>0/3</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>1</span></span>
           </div>
@@ -330,7 +349,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio p3"><i></i><i></i><i></i></span><span class="c-id mono">MKT-139</span></span><span class="av a3">TT</span></div>
           <div class="c-title">Viết kịch bản video giới thiệu khoá học mới</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#8A6FB3"></i>Nội dung</span>
+            <span class="lbl l-con">Nội dung</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>12/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>1/4</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>2</span></span>
           </div>
@@ -339,7 +358,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-151</span></span><span class="av a5">KL</span></div>
           <div class="c-title">Bộ ảnh quảng cáo buổi học thử tháng 11</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#B98A3E"></i>Thiết kế</span>
+            <span class="lbl l-des">Thiết kế</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>14/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>1/5</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>4</span></span>
           </div>
@@ -348,14 +367,14 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio"><i></i><i></i><i></i></span><span class="c-id mono">MKT-154</span></span><span class="av none"><svg class="i s12"><use href="#i-user"/></svg></span></div>
           <div class="c-title">Lên lịch đăng bài Zalo OA tuần 42</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#8A6FB3"></i>Nội dung</span>
+            <span class="lbl l-con">Nội dung</span>
           </div>
         </div>
         <div class="card">
           <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-155</span></span><span class="av a7">PT</span></div>
           <div class="c-title">Kiểm tra mã theo dõi trên trang đăng ký học</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#4F7FA8"></i>Website</span>
+            <span class="lbl l-web">Website</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>16/10</span>
           </div>
         </div>
@@ -364,7 +383,7 @@ svg.s12{width:12px;height:12px}
       <!-- Đang làm -->
       <div class="col">
         <div class="ch">
-          <svg class="i s14" viewBox="0 0 16 16" style="color:#9A6700"><circle cx="8" cy="8" r="6"/><path d="M8 4.5a3.5 3.5 0 0 1 0 7z" fill="currentColor" stroke="none"/></svg>
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#D18B0B"><circle cx="8" cy="8" r="6"/><path d="M8 4.5a3.5 3.5 0 0 1 0 7z" fill="currentColor" stroke="none"/></svg>
           <b>Đang làm</b><span class="n">4</span>
           <span class="r"><span class="ib"><svg class="i s14"><use href="#i-plus"/></svg></span><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
         </div>
@@ -372,7 +391,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio urg">!</span><span class="c-id mono">MKT-131</span></span><span class="av a2">HN</span></div>
           <div class="c-title">Chạy thử 3 mẫu quảng cáo trên Meta</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#5C7FB0"></i>Quảng cáo</span>
+            <span class="lbl l-ads">Quảng cáo</span>
             <span class="due late"><svg class="i s12"><use href="#i-cal"/></svg>07/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>3/5</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>6</span></span>
           </div>
@@ -382,7 +401,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-title">Cập nhật danh sách đăng ký buổi học thử</div>
           <div class="c-rec"><svg class="i s12"><use href="#i-repeat"/></svg>Hằng tuần · T2 09:00</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#4E8A72"></i>Dữ liệu</span>
+            <span class="lbl l-dat">Dữ liệu</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>09/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>2/4</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>3</span></span>
           </div>
@@ -391,7 +410,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio p3"><i></i><i></i><i></i></span><span class="c-id mono">MKT-127</span></span><span class="av a7">PT</span></div>
           <div class="c-title">Trang đăng ký học cho khoá học kỳ mới</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#4F7FA8"></i>Website</span>
+            <span class="lbl l-web">Website</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>15/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>4/7</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>5</span></span>
           </div>
@@ -400,7 +419,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-145</span></span><span class="av a2">HN</span></div>
           <div class="c-title">Tách ngân sách Google theo từng khoá học</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#5C7FB0"></i>Quảng cáo</span>
+            <span class="lbl l-ads">Quảng cáo</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>13/10</span>
             <span class="push"><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>1</span></span>
           </div>
@@ -411,7 +430,7 @@ svg.s12{width:12px;height:12px}
       <!-- Chờ duyệt -->
       <div class="col">
         <div class="ch">
-          <svg class="i s14" viewBox="0 0 16 16" style="color:#3B6FB6"><circle cx="8" cy="8" r="6"/><path d="M8 4.5a3.5 3.5 0 1 1-3.5 3.5H8z" fill="currentColor" stroke="none"/></svg>
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#8467D7"><circle cx="8" cy="8" r="6"/><path d="M8 4.5a3.5 3.5 0 1 1-3.5 3.5H8z" fill="currentColor" stroke="none"/></svg>
           <b>Chờ duyệt</b><span class="n">2</span>
           <span class="r"><span class="ib"><svg class="i s14"><use href="#i-plus"/></svg></span><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
         </div>
@@ -419,7 +438,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-136</span></span><span class="av a3">TT</span></div>
           <div class="c-title">Bài viết: 5 lý do chọn lớp buổi tối</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#8A6FB3"></i>Nội dung</span>
+            <span class="lbl l-con">Nội dung</span>
             <span class="due today"><svg class="i s12"><use href="#i-cal"/></svg>Hôm nay</span>
             <span class="push"><span class="ic full"><svg class="i s12"><use href="#i-sub"/></svg>3/3</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>8</span></span>
           </div>
@@ -429,7 +448,7 @@ svg.s12{width:12px;height:12px}
           <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-134</span></span><span class="av a5">KL</span></div>
           <div class="c-title">Chuỗi email nhắc lịch buổi học thử</div>
           <div class="c-meta">
-            <span class="lbl"><i style="background:#A96A86"></i>Email</span>
+            <span class="lbl l-mail">Email</span>
             <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>09/10</span>
             <span class="push"><span class="ic full"><svg class="i s12"><use href="#i-sub"/></svg>4/4</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>2</span></span>
           </div>
@@ -440,35 +459,35 @@ svg.s12{width:12px;height:12px}
       <!-- Hoàn thành -->
       <div class="col">
         <div class="ch">
-          <svg class="i s14" viewBox="0 0 16 16" style="color:#1A7F37"><circle cx="8" cy="8" r="6.5" fill="currentColor" stroke="none"/><path d="m5.3 8.2 1.8 1.8 3.6-3.7" stroke="#fff" stroke-width="1.6"/></svg>
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#2DA44E"><circle cx="8" cy="8" r="6.5" fill="currentColor" stroke="none"/><path d="m5.3 8.2 1.8 1.8 3.6-3.7" stroke="#fff" stroke-width="1.6"/></svg>
           <b>Hoàn thành</b><span class="n">12</span>
           <span class="r"><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
         </div>
         <div class="card done">
           <div class="c-top"><span class="c-id mono">MKT-118</span><span class="av a5">KL</span></div>
           <div class="c-title">Banner trang chủ cho học kỳ mới</div>
-          <div class="c-meta"><span class="lbl"><i style="background:#B98A3E"></i>Thiết kế</span><span>Xong 05/10</span></div>
+          <div class="c-meta"><span class="lbl l-des">Thiết kế</span><span>Xong 05/10</span></div>
         </div>
         <div class="card done">
           <div class="c-top"><span class="c-id mono">MKT-121</span><span class="av a2">HN</span></div>
           <div class="c-title">Thiết lập tệp đối tượng cho Google</div>
-          <div class="c-meta"><span class="lbl"><i style="background:#5C7FB0"></i>Quảng cáo</span><span>Xong 07/10</span></div>
+          <div class="c-meta"><span class="lbl l-ads">Quảng cáo</span><span>Xong 07/10</span></div>
         </div>
         <div class="card done">
           <div class="c-top"><span class="c-id mono">MKT-140</span><span class="av a4">GH</span></div>
           <div class="c-title">Tổng hợp phản hồi học viên tuần 40</div>
           <div class="c-rec"><svg class="i s12"><use href="#i-repeat"/></svg>Hằng tuần · T2 09:00</div>
-          <div class="c-meta"><span class="lbl"><i style="background:#6B7A8F"></i>Báo cáo</span><span>Xong 06/10</span><span class="push"><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>3</span></span></div>
+          <div class="c-meta"><span class="lbl l-rep">Báo cáo</span><span>Xong 06/10</span><span class="push"><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>3</span></span></div>
         </div>
         <div class="card done">
           <div class="c-top"><span class="c-id mono">MKT-117</span><span class="av a1">LA</span></div>
           <div class="c-title">Kịch bản tư vấn viên cho buổi học thử</div>
-          <div class="c-meta"><span class="lbl"><i style="background:#8A6FB3"></i>Nội dung</span><span>Xong 05/10</span></div>
+          <div class="c-meta"><span class="lbl l-con">Nội dung</span><span>Xong 05/10</span></div>
         </div>
         <div class="card done">
           <div class="c-top"><span class="c-id mono">MKT-124</span><span class="av a6">TK</span></div>
           <div class="c-title">Gộp danh sách học viên cũ từ Gmail</div>
-          <div class="c-meta"><span class="lbl"><i style="background:#4E8A72"></i>Dữ liệu</span><span>Xong 06/10</span></div>
+          <div class="c-meta"><span class="lbl l-dat">Dữ liệu</span><span>Xong 06/10</span></div>
         </div>
       </div>
     </section>

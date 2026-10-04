@@ -5,11 +5,22 @@
 <title>Tổng quan · Điều hành quảng cáo</title>
 <style>
   :root{
-    --brand:#2D4B7C;
-    --bg:#FFFFFF; --side:#F7F7F8; --sub:#FAFAFA;
+    /* thương hiệu: navy + cam, bổ trợ xanh mòng két */
+    --navy:#1B2A4E; --navy-50:#EEF1F6; --navy-100:#E1E6EF;
+    --or:#F26B1D;              /* logo, vạch chọn, đường biểu đồ */
+    --or-600:#C2410C;          /* nền nút chính (chữ trắng 5,2:1) */
+    --or-700:#C2410C;          /* chữ link trên nền trắng (5,2:1) */
+    --or-800:#9A3412; --or-100:#FFEDD5; /* huy hiệu đếm cảnh báo: tint cam, chữ cam đậm (6,4:1) */
+    --or-50:#FEF1E8;
+    --teal:#1A9E9A; --teal-700:#0F6B68;
+    --brand:var(--navy);
+    --bg:#FFFFFF; --side:var(--navy); --sub:#FAFAFB;
     --line:#E4E4E7; --line2:#EFEFF1;
     --tx:#18181B; --tx2:#52525B; --tx3:#71717A; --tx4:#A1A1AA;
     --ok:#1A7F37; --wn:#9A6700; --er:#CF222E;
+    --ok-bg:#DAFBE1; --ok-tx:#116329;
+    --wn-bg:#FFF4D0; --wn-tx:#7D4E00;
+    --er-bg:#FFEBE9; --er-tx:#A40E26;
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:#fff}
@@ -20,28 +31,29 @@
   .app{width:1280px;height:800px;overflow:hidden;display:flex}
 
   /* sidebar */
-  .side{width:224px;flex:none;background:var(--side);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:10px 8px}
-  .ws{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;height:36px}
-  .ws .lg{width:20px;height:20px;border-radius:5px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center}
-  .ws .nm{font-weight:600;font-size:13.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ws .i{color:var(--tx4);width:14px;height:14px}
-  .srch{margin:6px 0 10px;display:flex;align-items:center;gap:8px;height:30px;padding:0 8px;border:1px solid var(--line);background:#fff;border-radius:6px;color:var(--tx3);font-size:13px}
-  .srch .k{margin-left:auto;font-size:11.5px;color:var(--tx4);border:1px solid var(--line);border-radius:4px;padding:0 4px;line-height:16px}
-  .nav a{display:flex;align-items:center;gap:9px;height:30px;padding:0 8px;border-radius:6px;color:var(--tx2);text-decoration:none;font-size:13.5px}
-  .nav a .i{color:#8A8A93}
-  .nav a.on{background:#E9EAEE;color:var(--tx);font-weight:500}
-  .nav a.on .i{color:var(--brand)}
-  .nav a .ct{margin-left:auto;font-size:12px;color:var(--tx2);background:#E9E9EC;border-radius:9px;padding:0 6px;line-height:18px;min-width:20px;text-align:center}
-  .grp{margin-top:18px;padding:0 8px 4px;font-size:12px;color:var(--tx3);font-weight:500;display:flex;align-items:center}
-  .grp .i{margin-left:auto;width:14px;height:14px;color:var(--tx4)}
+  .side{width:224px;flex:none;background:var(--side);display:flex;flex-direction:column;padding:10px 8px;color:rgba(255,255,255,.85)}
+  .ws{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;height:36px}
+  .ws .lg{width:22px;height:22px;border-radius:5px;background:var(--or);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;letter-spacing:-.02em}
+  .ws .nm{font-weight:600;font-size:13.5px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#fff}
+  .ws .i{color:rgba(255,255,255,.5);width:14px;height:14px}
+  .srch{margin:6px 0 10px;display:flex;align-items:center;gap:8px;height:30px;padding:0 8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);border-radius:6px;color:rgba(255,255,255,.62);font-size:13px}
+  .srch .k{margin-left:auto;font-size:11.5px;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:0 4px;line-height:16px}
+  .nav a{position:relative;display:flex;align-items:center;gap:9px;height:30px;padding:0 8px;border-radius:6px;color:rgba(255,255,255,.85);text-decoration:none;font-size:13.5px}
+  .nav a .i{color:rgba(255,255,255,.55)}
+  .nav a.on{background:rgba(255,255,255,.12);color:#fff;font-weight:500}
+  .nav a.on::before{content:"";position:absolute;left:-8px;top:5px;bottom:5px;width:3px;border-radius:0 2px 2px 0;background:var(--or)}
+  .nav a.on .i{color:var(--or)}
+  .nav a .ct{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--or-800);background:var(--or-100);border-radius:9px;padding:0 6px;line-height:18px;min-width:20px;text-align:center}
+  .grp{margin-top:18px;padding:0 8px 4px;font-size:12px;color:rgba(255,255,255,.6);font-weight:500;display:flex;align-items:center}
+  .grp .i{margin-left:auto;width:14px;height:14px;color:rgba(255,255,255,.5)}
   .nav a .dt{width:6px;height:6px;border-radius:50%;flex:none;margin:0 5px 0 5px}
-  .me{margin-top:auto;display:flex;align-items:center;gap:9px;padding:8px;border-top:1px solid var(--line);margin-left:-8px;margin-right:-8px;padding-left:16px;padding-right:12px}
+  .me{margin-top:auto;display:flex;align-items:center;gap:9px;padding:8px;border-top:1px solid rgba(255,255,255,.1);margin-left:-8px;margin-right:-8px;padding-left:16px;padding-right:12px}
   .av{border-radius:50%;display:grid;place-items:center;font-weight:600;color:#3F3F46;flex:none}
-  .me .av{width:28px;height:28px;font-size:11px;background:#DCE1EA;color:#2D4B7C}
+  .me .av{width:28px;height:28px;font-size:11px;background:#FDE3D2;color:#9A3B0B}
   .me .t{flex:1;min-width:0}
-  .me .t b{display:block;font-weight:500;font-size:13px}
-  .me .t span{display:block;font-size:12px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .me .i{color:var(--tx4);width:14px;height:14px}
+  .me .t b{display:block;font-weight:500;font-size:13px;color:#fff}
+  .me .t span{display:block;font-size:12px;color:rgba(255,255,255,.62);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .me .i{color:rgba(255,255,255,.5);width:14px;height:14px}
 
   /* main */
   .main{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -64,6 +76,8 @@
   .btn .i{color:var(--tx3)}
   .btn .cv{width:14px;height:14px;color:var(--tx4);margin-left:1px}
   .btn .mut{color:var(--tx3)}
+  .btn.pri{background:var(--or-600);border-color:var(--or-600);color:#fff;font-weight:500;box-shadow:0 1px 2px rgba(27,42,78,.12)}
+  .btn.pri .i{color:#fff}
 
   .card{border:1px solid var(--line);border-radius:8px;background:#fff}
   /* KPI + chart */
@@ -76,8 +90,8 @@
   .kpi .v{font-size:24px;font-weight:600;letter-spacing:-.015em;margin-top:4px;line-height:30px}
   .kpi .v small{line-height:1;font-size:14px;color:var(--tx3);font-weight:500;letter-spacing:0;margin-left:3px}
   .kpi .d{font-size:12px;color:var(--tx3);margin-top:2px}
-  .kpi .d b{font-weight:500;margin-right:4px}
-  .up{color:var(--ok)} .bad{color:var(--er)} .neu{color:var(--tx2)}
+  .kpi .d b{font-weight:600;margin-right:6px;display:inline-block;padding:0 5px;border-radius:4px;line-height:18px;font-size:11.5px}
+  .up{color:var(--ok-tx);background:var(--ok-bg)} .bad{color:var(--er-tx);background:var(--er-bg)} .neu{color:var(--tx2);background:#F1F1F3}
   .ch-h{display:flex;align-items:center;padding:12px 20px 0;gap:16px}
   .ch-h .t{font-size:13px;font-weight:500}
   .lg{display:flex;gap:14px;font-size:12px;color:var(--tx3);margin-left:auto}
@@ -87,7 +101,7 @@
   .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;font-size:12px}
   .seg span{padding:0 9px;line-height:22px;color:var(--tx3);border-left:1px solid var(--line)}
   .seg span:first-child{border-left:0}
-  .seg span.on{background:#F4F4F5;color:var(--tx);font-weight:500}
+  .seg span.on{background:var(--navy-50);color:var(--navy);font-weight:600}
   #chart{display:block;width:100%;height:178px}
 
   /* bottom */
@@ -95,22 +109,27 @@
   .cd-h{display:flex;align-items:center;gap:8px;height:44px;padding:0 16px;border-bottom:1px solid var(--line2)}
   .cd-h .t{font-weight:600;font-size:13.5px}
   .cd-h .c{font-size:12px;color:var(--tx2);background:#F1F1F3;border-radius:9px;padding:0 6px;line-height:18px}
+  .cd-h .c.hot{color:var(--or-800);background:var(--or-100);font-weight:600;min-width:20px;text-align:center}
   .cd-h .r{margin-left:auto;font-size:12.5px;color:var(--tx3);display:flex;align-items:center;gap:4px}
   .cd-h .r .i{width:14px;height:14px}
-  .lnk{color:var(--brand)!important;font-weight:500}
+  .lnk{color:var(--or-700)!important;font-weight:500}
 
   table{width:100%;border-collapse:collapse;table-layout:fixed}
   th{font-size:12px;font-weight:500;color:var(--tx3);text-align:left;background:var(--sub);height:32px;padding:0 10px;border-bottom:1px solid var(--line2);white-space:nowrap}
   th.n,td.n{text-align:right}
-  th .i{width:12px;height:12px;vertical-align:-2px;margin-left:2px;color:var(--tx2)}
+  th .i{width:12px;height:12px;vertical-align:-2px;margin-left:2px;color:var(--navy)}
   td{height:38px;padding:0 10px;border-bottom:1px solid var(--line2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   td:first-child,th:first-child{padding-left:16px}
   td:last-child,th:last-child{padding-right:16px}
   tr.tot td{color:var(--tx);font-weight:500;border-bottom:0;background:var(--sub)}
-  .st{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--tx2)}
-  .st i{width:7px;height:7px;border-radius:50%;display:inline-block}
-  .st .na{color:var(--tx3);font-size:12px}
-  .st.ok i{background:var(--ok)} .st.wn i{background:var(--wn)} .st.er i{background:var(--er)}
+  .st{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;line-height:20px;padding:0 7px;border-radius:5px}
+  .st i{width:6px;height:6px;border-radius:50%;display:inline-block}
+  .stw{display:inline-flex;align-items:center;gap:6px}
+  .stw .na{color:var(--tx3);font-size:12px;display:inline-flex;align-items:center;gap:3px}
+  .stw .na .i{width:12px;height:12px}
+  .st.ok{background:var(--ok-bg);color:var(--ok-tx)} .st.ok i{background:var(--ok)}
+  .st.wn{background:var(--wn-bg);color:var(--wn-tx)} .st.wn i{background:#BF8700}
+  .st.er{background:var(--er-bg);color:var(--er-tx)} .st.er i{background:var(--er)}
   td .hl{color:var(--er);font-weight:500}
 
   .al{display:flex;gap:10px;padding:9px 16px 9px 14px;border-bottom:1px solid var(--line2)}
@@ -127,7 +146,7 @@
   .al .due.nodue{color:var(--tx4)}
   .al .ms{font-size:12.5px;color:var(--tx3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
   .al .ow{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--tx2);flex:none}
-  .al .ow .av{width:18px;height:18px;font-size:9px}
+  .al .ow .av{width:20px;height:20px;font-size:9px}
   .al .ow.na{color:var(--tx4)}
   .al .ow.na .av{background:transparent!important;border:1px dashed #C4C4CC}
 </style>
@@ -158,9 +177,9 @@
 
     <div class="grp">Đang theo dõi<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div>
     <nav class="nav">
-      <a><span class="dt" style="background:var(--er)"></span>Chi nhánh Nam</a>
-      <a><span class="dt" style="background:var(--wn)"></span>Chi nhánh Tây</a>
-      <a><span class="dt" style="background:var(--wn)"></span>Chi nhánh Ven Hồ</a>
+      <a><span class="dt" style="background:#FF8182"></span>Chi nhánh Nam</a>
+      <a><span class="dt" style="background:#E3B341"></span>Chi nhánh Tây</a>
+      <a><span class="dt" style="background:#E3B341"></span>Chi nhánh Ven Hồ</a>
     </nav>
 
     <div class="me">
@@ -191,6 +210,7 @@
           <span class="btn"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span class="mut">Phạm vi:</span>Tất cả chi nhánh <span class="mut num">(6)</span><svg class="i cv" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
           <span class="btn num"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>05/09 - 04/10/2026<svg class="i cv" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></span>
           <span class="btn"><svg class="i" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>Xuất</span>
+          <span class="btn pri"><svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>Gửi báo cáo tuần</span>
         </div>
       </div>
 
@@ -220,8 +240,8 @@
         <div class="ch-h">
           <span class="t">Chi phí và đăng ký học</span>
           <div class="lg">
-            <span><i style="background:var(--brand)"></i>Chi phí (tr)</span>
-            <span><i style="background:#A1A1AA"></i>Đăng ký học</span>
+            <span><i style="background:var(--or)"></i>Chi phí (tr)</span>
+            <span><i style="background:var(--teal)"></i>Đăng ký học</span>
             <span><i class="pt"></i>04/10 tạm tính đến 06:00</span>
           </div>
           <div class="seg"><span class="on">Ngày</span><span>Tuần</span></div>
@@ -236,7 +256,7 @@
             <span class="r">Ngưỡng chi phí/đăng ký 2,16 tr</span>
           </div>
           <table>
-            <colgroup><col style="width:27%"><col style="width:13%"><col style="width:11%"><col style="width:12%"><col style="width:13%"><col style="width:24%"></colgroup>
+            <colgroup><col style="width:26.8%"><col style="width:13%"><col style="width:10.5%"><col style="width:11.7%"><col style="width:11.5%"><col style="width:26.5%"></colgroup>
             <thead><tr>
               <th>Chi nhánh</th>
               <th class="n">Chi phí<svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></th>
@@ -252,7 +272,7 @@
         <section class="card">
           <div class="cd-h">
             <span class="t">Cảnh báo đang mở</span>
-            <span class="c num">5</span>
+            <span class="c hot num">5</span>
             <span class="r lnk">Bộ quy tắc (12)</span>
           </div>
           <div id="alerts"></div>
@@ -279,10 +299,10 @@ const sum = k => branches.reduce((a,b)=>a+b[k],0)
 if (!(sum('cost')===1260 && sum('lead')===9840 && sum('reg')===712)) throw new Error('tổng không khớp')
 // ---------- cảnh báo theo quy tắc ----------
 const alerts = [
-  { sv:'er', rule:'Chi phí/đăng ký > 1,2× mục tiêu', br:'Chi nhánh Nam', m:'2,24 tr · ngưỡng 2,16 tr', who:'Thu Trang', ini:'TT', bg:'#E7E2DA', due:'Hôm nay 17:00', today:true },
-  { sv:'wn', rule:'CPL tăng 7 ngày liên tiếp', br:'Chi nhánh Tây', m:'118.400đ → 141.700đ', who:'Gia Huy', ini:'GH', bg:'#DCE3EA', due:'T2 05/10 12:00' },
-  { sv:'wn', rule:'Vắng buổi học thử > 25%', br:'Chi nhánh Ven Hồ', m:'31% · 18/58 buổi', who:'Khánh Linh', ini:'KL', bg:'#E5E0E8', due:'T3 06/10 09:00' },
-  { sv:'wn', rule:'Chi tiêu tuần > 110% kế hoạch', br:'Chi nhánh Bắc', m:'63,4 / 57,0 tr · 111%', who:'Mai Phương', ini:'MP', bg:'#DFE6DF', due:'T4 07/10 17:00' },
+  { sv:'er', rule:'Chi phí/đăng ký > 1,2× mục tiêu', br:'Chi nhánh Nam', m:'2,24 tr · ngưỡng 2,16 tr', who:'Thu Trang', ini:'TT', bg:'#FDE3D2', fg:'#9A3B0B', due:'Hôm nay 17:00', today:true },
+  { sv:'wn', rule:'CPL tăng 7 ngày liên tiếp', br:'Chi nhánh Tây', m:'118.400đ → 141.700đ', who:'Gia Huy', ini:'GH', bg:'#D5EFEE', fg:'#0F6B68', due:'T2 05/10 12:00' },
+  { sv:'wn', rule:'Vắng buổi học thử > 25%', br:'Chi nhánh Ven Hồ', m:'31% · 18/58 buổi', who:'Khánh Linh', ini:'KL', bg:'#E9E4F5', fg:'#5B3E96', due:'T3 06/10 09:00' },
+  { sv:'wn', rule:'Chi tiêu tuần > 110% kế hoạch', br:'Chi nhánh Bắc', m:'63,4 / 57,0 tr · 111%', who:'Mai Phương', ini:'MP', bg:'#DDEAF8', fg:'#1F4F82', due:'T4 07/10 17:00' },
   { sv:'lo', rule:'Lead chưa liên hệ quá 24 giờ', br:'Chi nhánh Ven Hồ', m:'14 lead · mở 2 giờ', who:'Chưa giao', ini:'', bg:'', due:'Chưa đặt hạn', nodue:true, na:true },
 ]
 const openCount = n => alerts.filter(a=>a.br===n).length
@@ -295,7 +315,7 @@ document.getElementById('rows').innerHTML = branches.map(b=>{
     <td class="n num">${vn(b.lead)}</td>
     <td class="n num">${vn(b.reg)}</td>
     <td class="n num"><span class="${cpa>2.16?'hl':''}">${vn(cpa,2)} tr</span></td>
-    <td><span class="st ${b.st}"><i></i>${stLabel[b.st]}${openCount(b.name)?`<span class="na num">· ${openCount(b.name)}</span>`:''}</span></td>
+    <td><span class="stw"><span class="st ${b.st}"><i></i>${stLabel[b.st]}</span>${openCount(b.name)?`<span class="na num" title="Cảnh báo đang mở"><svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>${openCount(b.name)}</span>`:''}</span></td>
   </tr>`
 }).join('') + `<tr class="tot">
     <td>Tổng</td>
@@ -306,13 +326,13 @@ document.getElementById('rows').innerHTML = branches.map(b=>{
     <td></td>
   </tr>`
 
-const svc = {er:'var(--er)', wn:'var(--wn)', lo:'#A1A1AA'}
+const svc = {er:'var(--er)', wn:'#BF8700', lo:'#A1A1AA'}
 document.getElementById('alerts').innerHTML = alerts.map(a=>`
   <div class="al">
     <div class="sv"><i style="background:${svc[a.sv]}"></i></div>
     <div class="bd">
       <div class="ln"><span class="rn">${a.rule}</span><span class="due num ${a.today?'today':''} ${a.nodue?'nodue':''}">${a.due}</span></div>
-      <div class="ln"><span class="ms num">${a.br} · ${a.m}</span><span class="ow ${a.na?'na':''}"><span class="av" style="background:${a.bg}">${a.ini}</span>${a.who}</span></div>
+      <div class="ln"><span class="ms num">${a.br} · ${a.m}</span><span class="ow ${a.na?'na':''}"><span class="av" style="background:${a.bg};color:${a.fg||'#3F3F46'}">${a.ini}</span>${a.who}</span></div>
     </div>
   </div>`).join('')
 
@@ -355,16 +375,16 @@ for(let k=0;k<=4;k++){
   g += `<text x="${W-pr+10}" y="${y+4}" fill="#A1A1AA" font-size="11" class="num">${vn(rMax*(4-k)/4)}</text>`
 }
 const path = (arr,f,o=0) => arr.map((v,i)=>(i?'L':'M')+x(i+o).toFixed(1)+' '+f(v).toFixed(1)).join(' ')
-g += `<path d="${path(reg.slice(0,NF),ry)}" fill="none" stroke="#A1A1AA" stroke-width="1.5" stroke-linejoin="round"/>`
-g += `<path d="${path(cost.slice(0,NF),cy)}" fill="none" stroke="#2D4B7C" stroke-width="1.75" stroke-linejoin="round"/>`
+g += `<path d="${path(reg.slice(0,NF),ry)}" fill="none" stroke="#1A9E9A" stroke-width="1.75" stroke-linejoin="round"/>`
+g += `<path d="${path(cost.slice(0,NF),cy)}" fill="none" stroke="#F26B1D" stroke-width="2" stroke-linejoin="round"/>`
 // 04/10 chưa trọn ngày: chỉ chấm rỗng, không nối vào đường
-g += `<circle cx="${x(N-1)}" cy="${cy(cost[N-1])}" r="2.75" fill="#fff" stroke="#2D4B7C" stroke-width="1.5"/>`
-g += `<circle cx="${x(N-1)}" cy="${ry(reg[N-1])}" r="2.75" fill="#fff" stroke="#A1A1AA" stroke-width="1.5"/>`
+g += `<circle cx="${x(N-1)}" cy="${cy(cost[N-1])}" r="2.75" fill="#fff" stroke="#F26B1D" stroke-width="1.75"/>`
+g += `<circle cx="${x(N-1)}" cy="${ry(reg[N-1])}" r="2.75" fill="#fff" stroke="#1A9E9A" stroke-width="1.5"/>`
 // ngày đang di chuột: 25/09
 const hv = 20
 g += `<line x1="${x(hv)}" x2="${x(hv)}" y1="${pt}" y2="${pt+ih}" stroke="#D4D4D8"/>`
-g += `<circle cx="${x(hv)}" cy="${cy(cost[hv])}" r="3" fill="#fff" stroke="#2D4B7C" stroke-width="1.5"/>`
-g += `<circle cx="${x(hv)}" cy="${ry(reg[hv])}" r="3" fill="#fff" stroke="#A1A1AA" stroke-width="1.5"/>`
+g += `<circle cx="${x(hv)}" cy="${cy(cost[hv])}" r="3" fill="#fff" stroke="#F26B1D" stroke-width="1.75"/>`
+g += `<circle cx="${x(hv)}" cy="${ry(reg[hv])}" r="3" fill="#fff" stroke="#1A9E9A" stroke-width="1.5"/>`
 days.forEach((s,i)=>{ if((i%7===0 && i<N-3) || i===N-1) g += `<text x="${x(i)}" y="${H-7}" fill="#A1A1AA" font-size="11" text-anchor="${i===0?'start':i===N-1?'end':'middle'}" class="num">${s}</text>` })
 svg.innerHTML = g
 
@@ -374,8 +394,8 @@ card.style.position='relative'
 const tip = document.createElement('div')
 tip.style.cssText = 'position:absolute;background:#fff;border:1px solid #E4E4E7;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.08);padding:7px 10px;font-size:12px;line-height:18px;min-width:150px'
 tip.innerHTML = `<div style="color:#71717A;margin-bottom:2px" class="num">T6, 25/09/2026</div>
-  <div style="display:flex;align-items:center;gap:6px"><i style="width:8px;height:2px;background:#2D4B7C;display:inline-block"></i>Chi phí<b class="num" style="margin-left:auto;font-weight:500">${vn(cost[hv],1)} tr</b></div>
-  <div style="display:flex;align-items:center;gap:6px"><i style="width:8px;height:2px;background:#A1A1AA;display:inline-block"></i>Đăng ký học<b class="num" style="margin-left:auto;font-weight:500">${reg[hv]}</b></div>`
+  <div style="display:flex;align-items:center;gap:6px"><i style="width:8px;height:2px;background:#F26B1D;display:inline-block"></i>Chi phí<b class="num" style="margin-left:auto;font-weight:500">${vn(cost[hv],1)} tr</b></div>
+  <div style="display:flex;align-items:center;gap:6px"><i style="width:8px;height:2px;background:#1A9E9A;display:inline-block"></i>Đăng ký học<b class="num" style="margin-left:auto;font-weight:500">${reg[hv]}</b></div>`
 card.appendChild(tip)
 const top0 = svg.getBoundingClientRect().top - card.getBoundingClientRect().top
 tip.style.left = (x(hv) + 10) + 'px'

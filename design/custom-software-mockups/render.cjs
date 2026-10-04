@@ -80,12 +80,18 @@ if (fs.existsSync(LOCAL)) {
       }
       if ((cs.filter && cs.filter.includes('blur')) || (cs.backdropFilter && cs.backdropFilter !== 'none')) ai.blur.push(label(el))
       if (cs.textShadow && cs.textShadow !== 'none') ai.textShadow.push(label(el))
-      // Màu nền bão hoà cao trên diện tích lớn (> 1600 px²) — màu nhấn rực kiểu AI
-      if (r.width * r.height > 1600) {
-        const s = sat(cs.backgroundColor)
-        if (s > 0.62) {
-          const k = cs.backgroundColor
-          ai.saturated.set(k, (ai.saturated.get(k) || 0) + Math.round(r.width * r.height))
+      // Màu NEON: bão hoà rất cao VÀ sáng vừa (kiểu xanh chanh, hồng rực) trên diện tích lớn. Nền thương hiệu
+      // đậm (navy, xanh rừng, aubergine…) hoặc nhạt (tint 50) không bị tính.
+      if (r.width * r.height > 12000) {
+        const m = cs.backgroundColor.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?/)
+        if (m && (m[4] === undefined || Number(m[4]) >= 0.5)) {
+          const [rr, gg, bb] = [m[1], m[2], m[3]].map((x) => Number(x) / 255)
+          const mx = Math.max(rr, gg, bb), mn = Math.min(rr, gg, bb), l = (mx + mn) / 2
+          const s = mx === mn ? 0 : (mx - mn) / (1 - Math.abs(2 * l - 1))
+          if (s > 0.8 && l > 0.42 && l < 0.68) {
+            const k = cs.backgroundColor
+            ai.saturated.set(k, (ai.saturated.get(k) || 0) + Math.round(r.width * r.height))
+          }
         }
       }
     }
@@ -122,7 +128,7 @@ if (fs.existsSync(LOCAL)) {
   if (a.heavyShadow.length) aiWarn.push('bóng đổ nặng (blur > 24px): ' + a.heavyShadow.join(', '))
   if (a.blur.length) aiWarn.push('blur/backdrop-filter: ' + a.blur.join(', '))
   if (a.textShadow.length) aiWarn.push('text-shadow: ' + a.textShadow.join(', '))
-  if (a.saturated.length) aiWarn.push('nền màu bão hoà cao (màu: px²): ' + a.saturated.map(([c, n]) => `${c}: ${n}`).join(' · '))
+  if (a.saturated.length) aiWarn.push('mảng màu NEON lớn (màu: px²): ' + a.saturated.map(([c, n]) => `${c}: ${n}`).join(' · '))
   console.log('dấu hiệu AI:', aiWarn.length ? '\n  - ' + aiWarn.join('\n  - ') : 'KHÔNG CÓ')
   if (!opt.selector && info.docW > W) console.log(`CẢNH BÁO tràn ngang: trang rộng ${info.docW}px > ${W}px`)
   if (info.clipped.length) console.log('CẢNH BÁO chữ bị cắt cứng (không có …):', info.clipped.join(' | '))
