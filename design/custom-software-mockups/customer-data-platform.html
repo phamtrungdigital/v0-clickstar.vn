@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Dữ liệu khách hàng · Hồ sơ 360</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+:root{
+  --bg:#F4F4F1; --card:#FFFFFF; --ink:#14171C; --mute:#6B7280; --line:#E7E6E1; --soft:#F8F7F4;
+  --p:#7C3AED; --p2:#6D28D9; --p-50:#F5F0FF; --p-100:#EDE4FE; --p-200:#DCCBFC;
+  --red:#DC2650; --red-50:#FDEEF1; --red-100:#FAD5DD;
+  --green:#15905A; --green-50:#E9F7EF;
+  --amber:#B4690E; --amber-50:#FDF4E6;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--bg);color:var(--ink);
+  font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:15px;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+svg.lucide{width:18px;height:18px;flex:none}
+
+/* ---------- Top bar ---------- */
+.top{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:17px;letter-spacing:-.01em;white-space:nowrap}
+.mark{width:32px;height:32px;position:relative}
+.mark svg{width:32px;height:32px;display:block}
+.tabs{display:flex;gap:4px;height:64px;margin-left:8px}
+.tab{display:flex;align-items:center;gap:8px;padding:0 12px;white-space:nowrap;color:var(--mute);font-weight:500;font-size:15px;position:relative}
+.tab svg.lucide{width:17px;height:17px}
+.tab.on{color:var(--p2);font-weight:600}
+.tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;border-radius:3px 3px 0 0;background:var(--p)}
+.top-r{margin-left:auto;display:flex;align-items:center;gap:12px}
+.search{width:270px;white-space:nowrap;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--soft);display:flex;align-items:center;gap:9px;padding:0 12px;color:#8B909A;font-size:14px}
+.kbd{margin-left:auto;font-size:12px;border:1px solid var(--line);border-radius:6px;padding:1px 6px;background:#fff;color:var(--mute)}
+.ibtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;color:#4B5160;background:#fff}
+.av{border-radius:50%;display:grid;place-items:center;font-weight:600;color:#fff;flex:none}
+
+/* ---------- Layout ---------- */
+.wrap{padding:20px 28px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(20,23,28,.04)}
+.ch{display:flex;align-items:center;gap:10px;padding:16px 20px 0}
+.ch h3{white-space:nowrap;margin:0;font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+.ch .ico{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--p-50);color:var(--p)}
+.ch .ico svg.lucide{width:17px;height:17px}
+.ch .r{margin-left:auto}
+.sub{color:var(--mute);font-size:13px;white-space:nowrap}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;overflow:hidden;display:flex;align-items:center;gap:22px;padding:20px 24px;height:124px}
+.hero::before{content:"";position:absolute;right:-120px;top:-160px;width:620px;height:420px;
+  background:radial-gradient(closest-side,rgba(124,58,237,.12),rgba(124,58,237,0));pointer-events:none}
+.hero-av{width:80px;height:80px;border-radius:50%;padding:3px;background:conic-gradient(from 200deg,#7C3AED,#C084FC,#F0ABFC,#7C3AED)}
+.hero-av div{width:100%;height:100%;border-radius:50%;border:3px solid #fff;background:linear-gradient(135deg,#8B5CF6,#6D28D9);display:grid;place-items:center;color:#fff;font-size:26px;font-weight:700;letter-spacing:.02em}
+.hname{display:flex;align-items:center;gap:12px}
+.hname h1{margin:0;font-size:27px;font-weight:700;letter-spacing:-.02em}
+.pill{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:99px;font-size:13px;font-weight:600;white-space:nowrap}
+.pill svg.lucide{width:14px;height:14px}
+.meta{white-space:nowrap;display:flex;align-items:center;gap:10px;color:var(--mute);font-size:14.5px;margin-top:5px}
+.meta .dot{width:4px;height:4px;border-radius:50%;background:#C9CBD0}
+.meta b{color:var(--ink);font-weight:600}
+.chips{display:flex;gap:8px;margin-top:12px}
+.chip{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:8px;font-size:13px;font-weight:500;background:var(--p-50);color:var(--p2);border:1px solid var(--p-100)}
+.chip svg.lucide{width:14px;height:14px}
+.chip.g{background:#fff;color:#4B5160;border-color:var(--line)}
+.facts{margin-left:auto;display:flex;gap:0;position:relative}
+.fact{padding:0 18px;border-left:1px solid var(--line)}
+.fact:first-child{border-left:0}
+.fact .k{font-size:13px;color:var(--mute);white-space:nowrap}
+.fact .v{font-size:16px;font-weight:600;margin-top:5px;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.role{white-space:nowrap;position:relative;margin-left:4px;align-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 18px;border-radius:12px;background:var(--amber-50);border:1px solid #F4DDB8;min-width:0}
+.role .k{font-size:13px;color:var(--amber);font-weight:600;display:flex;align-items:center;gap:6px}
+.role .k svg.lucide{width:14px;height:14px}
+.role .v{font-size:15px;font-weight:600;color:#5B3A0A}
+.role .s{font-size:13px;color:#8A5A17;display:flex;align-items:center;gap:6px}
+.role .s svg.lucide{width:14px;height:14px}
+
+/* ---------- Grid ---------- */
+.grid{display:grid;grid-template-columns:412px 1fr 364px;gap:18px;margin-top:18px;height:654px}
+.col{display:flex;flex-direction:column;gap:18px;min-height:0}
+
+/* Identity */
+.merge-badge{margin:14px 20px 4px;display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:linear-gradient(90deg,var(--p-50),#FBF8FF);border:1px solid var(--p-100)}
+.stack{display:flex}
+.stack span{width:28px;height:28px;border-radius:8px;border:2px solid #fff;margin-left:-7px;display:grid;place-items:center;color:#fff}
+.stack span:first-child{margin-left:0}
+.stack svg.lucide{width:13px;height:13px}
+.merge-badge .t{font-weight:600;font-size:14.5px;color:var(--p2)}
+.merge-badge .d{font-size:13px;white-space:nowrap;color:var(--mute);margin-top:1px}
+.ids{padding:6px 20px 0}
+.idr{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #F0EFEB}
+.idr:last-child{border-bottom:0}
+.idr .ii{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--soft);border:1px solid var(--line);color:#4B5160}
+.idr .ii svg.lucide{width:16px;height:16px}
+.idr .l{font-size:13.5px;line-height:1.3;color:var(--mute)}
+.idr .v{font-size:15px;font-weight:500;margin-top:1px}
+.idr .v.mono{font-size:14px}
+.tag{font-size:13.5px;font-weight:500;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.tag.key{background:var(--p-50);color:var(--p2);display:inline-flex;align-items:center;gap:4px}
+.tag.key svg.lucide{width:12px;height:12px}
+.tag.src{background:var(--soft);color:var(--mute);border:1px solid var(--line)}
+
+/* Suppression */
+.chan{padding:12px 20px 0}
+.cr{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #F0EFEB}
+.cr:last-child{border-bottom:0}
+.cr .ii{width:34px;height:34px;border-radius:10px;display:grid;place-items:center}
+.cr .ii svg.lucide{width:16px;height:16px}
+.cr .n{font-weight:600;font-size:15px}
+.cr .d{font-size:13.5px;color:var(--mute);margin-top:1px}
+.cr.block{margin:0 -12px;padding:10px 12px;border-radius:12px;background:var(--red-50);border:1px solid var(--red-100)}
+.cr.block .d{color:#A3324D}
+
+/* Journey */
+.jr{padding:6px 16px 0}
+.steps{position:relative;display:grid;grid-template-columns:repeat(5,1fr);column-gap:8px;margin-top:14px}
+.steps .rail{position:absolute;top:17px;left:10%;right:10%;height:3px;border-radius:3px;background:#ECEAF2}
+.steps .rail i{position:absolute;left:0;top:0;bottom:0;width:75%;border-radius:3px;background:linear-gradient(90deg,#A78BFA,var(--p))}
+.st{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center}
+.st .n{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:14px;background:#fff;border:2px solid #E2E0EA;color:#9CA0AA;position:relative;z-index:1}
+.st.done .n{background:var(--p);border-color:var(--p);color:#fff}
+.st.done .n svg.lucide{width:17px;height:17px;stroke-width:2.5}
+.st.now .n{background:#fff;border:3px solid var(--p);color:var(--p);box-shadow:0 0 0 6px rgba(124,58,237,.14)}
+.st .t{font-size:13.5px;font-weight:600;margin-top:10px;line-height:1.3;padding:0 2px;white-space:nowrap}
+.st .w{font-size:13.5px;color:var(--mute);margin-top:3px}
+.st.now .box{margin-top:8px;padding:6px 2px 7px;border-radius:10px;background:var(--p-50);border:1px solid var(--p-200);width:100%}
+.st.now .box .t{margin-top:0;color:var(--p2)}
+.st.pend .t{color:#6B7280}
+.jnote{margin:12px 22px 0;display:flex;align-items:center;gap:8px;font-size:13px;color:#8A3A50;background:var(--red-50);border-radius:9px;padding:7px 11px}
+.jnote svg.lucide{width:14px;height:14px;color:var(--red)}
+
+/* Timeline */
+.tl{position:relative;padding:8px 22px 0;flex:1;min-height:0;overflow:hidden}
+.tl-off::after{content:"";position:absolute;left:0;right:0;bottom:0;height:56px;background:linear-gradient(rgba(255,255,255,0),#fff);border-radius:0 0 16px 16px}
+.ev{display:grid;grid-template-columns:76px 36px 1fr;gap:12px;position:relative;padding-bottom:20px}
+.ev .tm{text-align:right;padding-top:2px}
+.ev .tm .h{font-size:13.5px;font-weight:500;color:var(--ink)}
+.ev .tm .dd{font-size:13.5px;color:var(--mute);margin-top:2px}
+.ev .dotc{position:relative;display:flex;justify-content:center}
+.ev .dotc::before{content:"";position:absolute;top:36px;bottom:-20px;width:2px;background:#EEEDF1}
+.ev:last-child .dotc::before{display:none}
+.ev .ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;position:relative;z-index:1}
+.ev .ic svg.lucide{width:17px;height:17px}
+.ev .tt{font-size:15px;font-weight:600;line-height:1.35}
+.ev .ds{font-size:13.5px;color:var(--mute);margin-top:3px;display:flex;align-items:center;gap:8px}
+.ev .ds .k{padding:1px 7px;border-radius:6px;background:var(--soft);border:1px solid var(--line);font-size:13.5px;color:#4B5160}
+
+/* Score */
+.score{display:flex;align-items:center;gap:20px;padding:8px 20px 0}
+.ring{position:relative;width:124px;height:124px;flex:none}
+.ring svg{width:124px;height:124px;transform:rotate(-90deg)}
+.ring .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .c b{font-size:38px;font-weight:700;letter-spacing:-.03em;line-height:1}
+.ring .c span{font-size:13px;color:var(--mute);margin-top:3px}
+.sc-side .lv{display:inline-flex}
+.sc-side .ttl{font-size:15px;font-weight:600;margin-top:10px;line-height:1.4}
+.sc-side .th{font-size:13.5px;color:var(--mute);margin-top:4px;line-height:1.45}
+.reasons{padding:6px 20px 0}
+.rs{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:14.5px}
+.rs .pt{width:34px;flex:none;text-align:right;font-weight:700;font-size:14.5px;font-variant-numeric:tabular-nums;margin-right:6px}
+.rs .pt.up{color:var(--green)}
+.rs .pt.dn{color:var(--red)}
+.rs .pt.base-pt{color:var(--ink)}
+.rs .bar{margin-left:auto;width:64px;height:6px;border-radius:6px;background:#F0EFEB;overflow:hidden}
+.rs .bar i{display:block;height:100%;border-radius:6px}
+.base{display:flex;justify-content:space-between;margin:6px 20px 0;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:var(--mute)}
+.base b{color:var(--ink)}
+
+/* Audit */
+.log{padding:8px 20px 0}
+.lg{display:grid;grid-template-columns:32px 1fr;gap:11px;align-items:start;padding:8px 0;border-bottom:1px solid #F0EFEB}
+.lg:last-child{border-bottom:0}
+.lg .tx{font-size:14px;line-height:1.4}
+.lg .tx b{font-weight:600}
+.lg .ro{font-size:13.5px;color:var(--mute);margin-top:2px}
+.lg .ro .mono{font-size:14px}
+.lg .tm{font-size:13.5px;color:var(--mute);padding-top:2px}
+.act{font-weight:600;padding:0 5px;border-radius:5px;font-size:13px}
+.perm{margin:6px 20px 0;padding:10px 14px;border-radius:12px;background:var(--soft);border:1px solid var(--line)}
+.perm .h{font-size:13.5px;color:var(--mute);display:flex;align-items:center;gap:6px}
+.perm .h svg.lucide{width:14px;height:14px}
+.pg{display:flex;gap:14px;margin-top:7px}
+.pi{display:flex;align-items:center;gap:6px;font-size:13.5px;white-space:nowrap}
+.pi svg.lucide{width:15px;height:15px}
+.pi.y svg{color:var(--green)}
+.pi.n{color:#8B909A}
+.pi.n svg{color:#C0C3CA}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<header class="top">
+  <div class="brand">
+    <div class="mark">
+      <svg viewBox="0 0 32 32"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9F67FF"/><stop offset="1" stop-color="#6D28D9"/></linearGradient></defs>
+        <path d="M16 2.5l11.7 6.75v13.5L16 29.5 4.3 22.75V9.25z" fill="url(#lg)"/>
+        <circle cx="16" cy="13" r="3.6" fill="#fff"/><path d="M9.8 22.2c1.3-3 3.6-4.5 6.2-4.5s4.9 1.5 6.2 4.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>
+    </div>
+    Dữ liệu khách hàng
+  </div>
+  <nav class="tabs">
+    <div class="tab"><i data-lucide="layout-grid"></i>Tổng quan</div>
+    <div class="tab on"><i data-lucide="contact"></i>Hồ sơ</div>
+    <div class="tab"><i data-lucide="shapes"></i>Phân nhóm</div>
+    <div class="tab"><i data-lucide="send"></i>Chiến dịch</div>
+    <div class="tab"><i data-lucide="route"></i>Hành trình</div>
+    <div class="tab"><i data-lucide="chart-no-axes-column"></i>Báo cáo</div>
+  </nav>
+  <div class="top-r">
+    <div class="search"><i data-lucide="search"></i>Tìm tên, email, số điện thoại<span class="kbd">/</span></div>
+    <div class="ibtn"><i data-lucide="bell"></i></div>
+    <div class="av" style="width:38px;height:38px;background:#0F9488;font-size:14px">TT</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Hero -->
+  <section class="card hero">
+    <div class="hero-av"><div>KL</div></div>
+    <div style="position:relative">
+      <div class="hname">
+        <h1>Khánh Linh</h1>
+        <span class="pill" style="background:#FFF1E6;color:#C2410C"><i data-lucide="flame"></i>Lead nóng</span>
+      </div>
+      <div class="meta">
+        <span class="mono" style="font-size:13.5px;color:#4B5160">KH-2609-0412</span><span class="dot"></span>
+        <span>Học viên tiềm năng</span><span class="dot"></span>
+        <span>Chi nhánh Trung tâm</span><span class="dot"></span>
+        <span>Ghi nhận từ <b class="num">02/09/2026</b></span>
+      </div>
+      <div class="chips">
+        <span class="chip"><i data-lucide="sparkles"></i>Quan tâm Phân tích dữ liệu</span>
+        <span class="chip"><i data-lucide="presentation"></i>Đã học thử</span>
+        <span class="chip"><i data-lucide="mouse-pointer-click"></i>Đến từ form web</span>
+        <span class="chip g">+2 nhóm</span>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="k">Hoạt động gần nhất</div><div class="v num">04/10 · 09:12</div></div>
+      <div class="fact"><div class="k">Tư vấn viên</div><div class="v"><span class="av" style="width:24px;height:24px;background:#E0793C;font-size:11px">GH</span>Gia Huy</div></div>
+    </div>
+    <div class="role">
+      <div class="k"><i data-lucide="shield-check"></i>Vai trò của bạn</div>
+      <div class="v">Chuyên viên CRM · chỉ xem</div>
+      <div class="s"><i data-lucide="eye-off"></i>Thông tin liên hệ đang được che</div>
+    </div>
+  </section>
+
+  <section class="grid">
+    <!-- Col 1 -->
+    <div class="col">
+      <div class="card" style="height:404px">
+        <div class="ch"><div class="ico"><i data-lucide="fingerprint"></i></div><h3>Danh tính đã gộp</h3><span class="r sub">5 định danh</span></div>
+        <div class="merge-badge">
+          <div class="stack">
+            <span style="background:#7C3AED"><i data-lucide="file-text"></i></span>
+            <span style="background:#A855F7"><i data-lucide="message-circle"></i></span>
+            <span style="background:#C084FC"><i data-lucide="mail"></i></span>
+            <span style="background:#E879F9"><i data-lucide="ticket"></i></span>
+          </div>
+          <div><div class="t">Đã gộp 4 hồ sơ trùng</div><div class="d">Khớp theo email và số điện thoại</div></div>
+          <i data-lucide="git-merge" style="margin-left:auto;color:var(--p)"></i>
+        </div>
+        <div class="ids">
+          <div class="idr"><div class="ii"><i data-lucide="mail"></i></div><div><div class="l">Email</div><div class="v">k***@gmail.com</div></div><span class="tag key"><i data-lucide="key-round"></i>Dùng để khớp</span></div>
+          <div class="idr"><div class="ii"><i data-lucide="phone"></i></div><div><div class="l">Số điện thoại</div><div class="v num">09xx xxx 321</div></div><span class="tag key"><i data-lucide="key-round"></i>Dùng để khớp</span></div>
+          <div class="idr"><div class="ii"><i data-lucide="message-circle"></i></div><div><div class="l">Zalo</div><div class="v">Khánh Linh · đã quan tâm OA</div></div><span class="tag src">05/09</span></div>
+          <div class="idr"><div class="ii"><i data-lucide="cookie"></i></div><div><div class="l">Mã cookie web</div><div class="v mono">cs_7f3a9c2e41b8</div></div><span class="tag src">02/09</span></div>
+          <div class="idr"><div class="ii"><i data-lucide="ticket"></i></div><div><div class="l">Form sự kiện</div><div class="v">Đăng ký buổi học thử</div></div><span class="tag src">14/09</span></div>
+        </div>
+      </div>
+
+      <div class="card" style="flex:1">
+        <div class="ch"><div class="ico" style="background:var(--red-50);color:var(--red)"><i data-lucide="ban"></i></div><h3>Chặn gửi và huỷ đăng ký</h3></div>
+        <div class="chan">
+          <div class="cr block"><div class="ii" style="background:#fff;color:var(--red)"><i data-lucide="mail-x"></i></div>
+            <div><div class="n">Email</div><div class="d">Đã huỷ đăng ký 12/09/2026</div></div>
+            <span class="pill" style="background:var(--red);color:#fff;height:24px;font-size:12.5px"><i data-lucide="ban"></i>Không gửi</span></div>
+          <div class="cr"><div class="ii" style="background:var(--green-50);color:var(--green)"><i data-lucide="message-square-text"></i></div>
+            <div><div class="n">Zalo ZNS</div><div class="d">Đồng ý nhận từ 05/09/2026</div></div>
+            <span class="pill" style="background:var(--green-50);color:var(--green);height:24px;font-size:12.5px"><i data-lucide="check"></i>Cho phép</span></div>
+          <div class="cr"><div class="ii" style="background:var(--green-50);color:var(--green)"><i data-lucide="bell-ring"></i></div>
+            <div><div class="n">Web Push</div><div class="d">Bật từ 02/09/2026</div></div>
+            <span class="pill" style="background:var(--green-50);color:var(--green);height:24px;font-size:12.5px"><i data-lucide="check"></i>Cho phép</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 2 -->
+    <div class="col">
+      <div class="card" style="height:230px">
+        <div class="ch"><div class="ico"><i data-lucide="route"></i></div><h3>Hành trình đang chạy</h3>
+          <span class="sub" style="margin-left:2px">· Chăm sóc sau học thử</span>
+          <span class="r pill" style="background:var(--p-50);color:var(--p2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--p)"></span>Bước 4/5</span></div>
+        <div class="jr">
+          <div class="steps">
+            <div class="rail"><i></i></div>
+            <div class="st done"><div class="n"><i data-lucide="check"></i></div><div class="t">Lời cảm ơn</div><div class="w num">ZNS · 28/09</div></div>
+            <div class="st done"><div class="n"><i data-lucide="check"></i></div><div class="t">Gửi tài liệu</div><div class="w num">Zalo · 30/09</div></div>
+            <div class="st done"><div class="n"><i data-lucide="check"></i></div><div class="t">Chat tư vấn</div><div class="w num">Chat · 03/10</div></div>
+            <div class="st now"><div class="n">4</div><div class="box"><div class="t">Nhắc lịch 1-1</div><div class="w num">ZNS · hôm nay</div></div></div>
+            <div class="st pend"><div class="n">5</div><div class="t">Ưu đãi học phí</div><div class="w num">Dự kiến 07/10</div></div>
+          </div>
+        </div>
+        <div class="jnote"><i data-lucide="info"></i>Bước 2 tự chuyển sang Zalo vì khách đã huỷ đăng ký email</div>
+      </div>
+
+      <div class="card" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="ch"><div class="ico"><i data-lucide="activity"></i></div><h3>Dòng thời gian hoạt động</h3><span class="r sub">Hoạt động nổi bật · 32 ngày</span></div>
+        <div class="tl" style="margin-top:16px">
+          <div class="ev"><div class="tm"><div class="h mono">09:12</div><div class="dd">04/10</div></div><div class="dotc"><div class="ic" style="background:#E8F6EE;color:#15905A"><i data-lucide="message-square-text"></i></div></div>
+            <div><div class="tt">Nhận ZNS nhắc lịch tư vấn 1-1</div><div class="ds"><span class="k">Zalo ZNS</span>Đã xem lúc 09:15</div></div></div>
+          <div class="ev"><div class="tm"><div class="h mono">20:41</div><div class="dd">03/10</div></div><div class="dotc"><div class="ic" style="background:var(--p-50);color:var(--p)"><i data-lucide="messages-square"></i></div></div>
+            <div><div class="tt">Chat với tư vấn viên Gia Huy</div><div class="ds"><span class="k">Chat web</span>12 tin nhắn · hỏi lịch học tối</div></div></div>
+          <div class="ev"><div class="tm"><div class="h mono">19:30</div><div class="dd">28/09</div></div><div class="dotc"><div class="ic" style="background:#FFF1E6;color:#C2410C"><i data-lucide="presentation"></i></div></div>
+            <div><div class="tt">Tham gia buổi học thử "Từ Excel đến SQL"</div><div class="ds"><span class="k">Tại lớp</span>Chi nhánh Trung tâm · có mặt 90 phút</div></div></div>
+          <div class="ev"><div class="tm"><div class="h mono">21:15</div><div class="dd">10/09</div></div><div class="dotc"><div class="ic" style="background:#EEF0F4;color:#4B5160"><i data-lucide="mail-open"></i></div></div>
+            <div><div class="tt">Mở email "Lộ trình Phân tích dữ liệu 12 tuần"</div><div class="ds"><span class="k">Email</span>Bấm xem học phí</div></div></div>
+          <div class="ev"><div class="tm"><div class="h mono">14:22</div><div class="dd">02/09</div></div><div class="dotc"><div class="ic" style="background:#EEF0F4;color:#4B5160"><i data-lucide="file-text"></i></div></div>
+            <div><div class="tt">Điền form tư vấn trên web</div><div class="ds"><span class="k">Web</span>example.com/phan-tich-du-lieu</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Col 3 -->
+    <div class="col">
+      <div class="card" style="height:330px">
+        <div class="ch"><div class="ico"><i data-lucide="gauge"></i></div><h3>Điểm lead</h3><span class="r sub num">+35 trong 7 ngày</span></div>
+        <div class="score">
+          <div class="ring">
+            <svg viewBox="0 0 124 124"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C084FC"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>
+              <circle cx="62" cy="62" r="52" fill="none" stroke="#F0ECF8" stroke-width="12"/>
+              <circle cx="62" cy="62" r="52" fill="none" stroke="url(#rg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="235.2 326.7"/>
+            </svg>
+            <div class="c"><b class="num">72</b><span>/ 100</span></div>
+          </div>
+          <div class="sc-side">
+            <span class="pill lv" style="background:#FFF1E6;color:#C2410C">Nóng</span>
+            <div class="ttl">Sẵn sàng tư vấn</div>
+            <div class="th">Ngưỡng chuyển: 70 điểm</div>
+          </div>
+        </div>
+        <div class="reasons">
+          <div class="rs"><span class="pt base-pt num">30</span>Điểm nền hồ sơ<span class="bar"><i style="width:100%;background:#C9CCD3"></i></span></div>
+          <div class="rs"><span class="pt up num">+20</span>Tham gia buổi học thử<span class="bar"><i style="width:67%;background:#8B5CF6"></i></span></div>
+          <div class="rs"><span class="pt up num">+15</span>Chat với tư vấn viên<span class="bar"><i style="width:50%;background:#A78BFA"></i></span></div>
+          <div class="rs"><span class="pt up num">+12</span>Xem trang học phí 3 lần<span class="bar"><i style="width:40%;background:#C4B5FD"></i></span></div>
+          <div class="rs"><span class="pt dn num">−5</span>Huỷ đăng ký email<span class="bar"><i style="width:17%;background:#F49BB0"></i></span></div>
+        </div>
+      </div>
+
+      <div class="card" style="flex:1">
+        <div class="ch"><div class="ico"><i data-lucide="history"></i></div><h3>Nhật ký thao tác</h3><span class="r sub">Lưu 365 ngày</span></div>
+        <div class="log">
+          <div class="lg"><span class="av" style="width:32px;height:32px;background:#0F9488;font-size:12px">TT</span>
+            <div><div class="tx"><b>Thanh Tùng</b> <span class="act" style="background:#EEF0F4;color:#4B5160">xem</span> hồ sơ</div><div class="ro">Chuyên viên CRM · <span class="mono">04/10 09:20</span></div></div></div>
+          <div class="lg"><span class="av" style="width:32px;height:32px;background:#E0793C;font-size:12px">GH</span>
+            <div><div class="tx"><b>Gia Huy</b> <span class="act" style="background:var(--amber-50);color:var(--amber)">sửa</span> ghi chú tư vấn</div><div class="ro">Tư vấn viên · <span class="mono">03/10 21:02</span></div></div></div>
+          <div class="lg"><span class="av" style="width:32px;height:32px;background:#7C3AED;font-size:12px">BC</span>
+            <div><div class="tx"><b>Bảo Châu</b> <span class="act" style="background:var(--p-50);color:var(--p2)">gộp</span> 4 hồ sơ trùng</div><div class="ro">Quản trị dữ liệu · <span class="mono">03/10 16:40</span></div></div></div>
+        </div>
+        <div class="perm">
+          <div class="h"><i data-lucide="lock-keyhole"></i>Quyền của bạn trên hồ sơ này</div>
+          <div class="pg">
+            <span class="pi y"><i data-lucide="circle-check"></i>Xem</span>
+            <span class="pi n"><i data-lucide="circle-minus"></i>Sửa</span>
+            <span class="pi n"><i data-lucide="circle-minus"></i>Xuất dữ liệu</span>
+            <span class="pi n"><i data-lucide="circle-minus"></i>Gộp</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>lucide.createIcons({attrs:{'stroke-width':1.75}});</script>
+</body>
+</html>

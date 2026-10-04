@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Điều hành quảng cáo</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E1116; --rail:#0A0C10; --card:#161A21; --card2:#1B2029; --line:#252B35; --line2:#2E3541;
+    --text:#ECEEF2; --muted:#8B93A1; --dim:#636B79;
+    --amber:#F5A524; --amberSoft:rgba(245,165,36,.14);
+    --coral:#FB7185; --coralSoft:rgba(251,113,133,.14);
+    --teal:#2DD4BF; --tealSoft:rgba(45,212,191,.13);
+  }
+  html,body{margin:0;background:var(--bg)}
+  *{box-sizing:border-box}
+  body{font-family:"Be Vietnam Pro",system-ui,sans-serif;color:var(--text);-webkit-font-smoothing:antialiased}
+  .num{font-variant-numeric:tabular-nums}
+  .mono{font-family:"JetBrains Mono",monospace}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  .app{width:1440px;height:900px;overflow:hidden;display:flex;position:relative}
+
+  /* rail */
+  .rail{width:68px;background:var(--rail);border-right:1px solid #1A1F27;display:flex;flex-direction:column;align-items:center;padding:16px 0 18px;gap:6px}
+  .logo{width:38px;height:38px;margin-bottom:18px;display:grid;place-items:center}
+  .rail a{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#6E7684;position:relative}
+  .rail a.on{background:var(--amberSoft);color:var(--amber)}
+  .rail a.on::before{content:"";position:absolute;left:-12px;top:11px;width:3px;height:22px;border-radius:0 3px 3px 0;background:var(--amber)}
+  .rail .badge{position:absolute;top:6px;right:5px;min-width:17px;height:17px;padding:0 4px;border-radius:9px;background:var(--coral);color:#1A0A0D;font-size:11px;font-weight:700;display:grid;place-items:center;border:2px solid var(--rail)}
+  .rail .sp{flex:1}
+
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+
+  /* top bar */
+  .top{height:64px;border-bottom:1px solid #1C212A;display:flex;align-items:center;padding:0 28px 0 24px;gap:18px}
+  .brand{font-weight:700;font-size:16px;letter-spacing:-.01em}
+  .crumb{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14.5px}
+  .crumb b{color:var(--text);font-weight:500}
+  .crumb .sl{color:#3C4350}
+  .search{margin-left:auto;width:300px;height:40px;border-radius:10px;background:#141820;border:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 12px;color:var(--dim);font-size:14px}
+  .search kbd{margin-left:auto;font-family:"JetBrains Mono";font-size:11.5px;color:var(--dim);border:1px solid var(--line2);border-radius:6px;padding:1px 6px}
+  .iconbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);position:relative}
+  .iconbtn .dot{position:absolute;top:9px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--amber);border:1.5px solid var(--bg)}
+  .me{display:flex;align-items:center;gap:10px}
+  .av{border-radius:50%;display:grid;place-items:center;font-weight:600;flex:none}
+  .me .av{width:36px;height:36px;font-size:13.5px;background:#3B2F4F;color:#D8C6F5}
+  .me .who{line-height:1.25}
+  .me .who b{display:block;font-size:14px;font-weight:600}
+  .me .who span{font-size:12.5px;color:var(--muted)}
+
+  /* page head */
+  .head{display:flex;align-items:center;gap:14px;padding:20px 28px 18px 24px}
+  .head h1{margin:0;font-size:26px;font-weight:700;letter-spacing:-.02em}
+  .head .sub{margin-top:4px;color:var(--muted);font-size:14px}
+  .head .sub .dt{color:#B5BCC8;font-variant-numeric:tabular-nums}
+  .pill2{display:flex;align-items:center;gap:12px;padding:9px 16px 9px 13px;border-radius:12px;background:var(--card);border:1px solid var(--line);line-height:1.3}
+  .pill2 .t{font-size:14px;font-weight:500}
+  .pill2 .s{font-size:12.5px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px}
+  .pill2 .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+  .live{position:relative;width:9px;height:9px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(45,212,191,.18);display:inline-block;margin-right:2px}
+  .lnk{color:var(--amber);font-weight:500}
+
+  /* grid */
+  .grid{flex:1;display:grid;grid-template-columns:1fr 440px;gap:20px;padding:0 28px 24px 24px;min-height:0}
+  .col{display:flex;flex-direction:column;gap:20px;min-height:0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px}
+
+  /* chart card */
+  .chart{padding:20px 22px 14px}
+  .kpis{display:grid;grid-template-columns:1.05fr .95fr .9fr 1.4fr;border-bottom:1px solid var(--line);padding-bottom:15px}
+  .kpi{padding:0 18px;border-left:1px solid var(--line)}
+  .kpi:first-child{padding-left:0;border-left:0}
+  .kpi .l{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:7px;white-space:nowrap;height:20px}
+  .kpi .sw{width:10px;height:10px;border-radius:3px}
+  .kpi .v{font-size:33px;font-weight:700;letter-spacing:-.025em;margin-top:6px;line-height:1.05}
+  .kpi .v small{font-size:18px;font-weight:600;color:#C5CBD5;margin-left:3px;letter-spacing:0}
+  .kpi .d{margin-top:7px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}
+  .chg{font-weight:600;border-radius:6px;padding:1px 6px;font-size:12.5px}
+  .chg.up{color:var(--teal);background:var(--tealSoft)}
+  .chg.bad{color:var(--coral);background:var(--coralSoft)}
+  .chg.neu{color:#C5CBD5;background:#232934}
+  .tgt{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:var(--teal);background:var(--tealSoft);border-radius:6px;padding:0 7px 0 5px;line-height:20px;white-space:nowrap}
+  .tgt svg.i{width:13px;height:13px;stroke-width:2.4}
+  .plot{position:relative;margin-top:14px}
+  .legend{position:absolute;left:0;top:-1px;display:flex;gap:16px;font-size:12.5px;color:var(--muted)}
+  .legend span{display:flex;align-items:center;gap:6px}
+  .tip{position:absolute;background:rgba(30,35,44,.9);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid #343C49;border-radius:10px;padding:6px 11px 7px;font-size:13px;box-shadow:0 10px 24px rgba(0,0,0,.4);line-height:1.45;white-space:nowrap}
+  .tip .h{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
+  .tip .h .fl{color:var(--coral);font-weight:600;display:flex;align-items:center;gap:4px}
+  .tip .rr{display:flex;align-items:center;gap:7px;margin-top:2px}
+  .tip .rr b{font-weight:600}
+  .tip .rr .sep{width:1px;height:12px;background:#3A4250;margin:0 4px}
+  .tip .r{display:flex;align-items:center;gap:8px}
+  .tip .r b{margin-left:auto;padding-left:16px;font-weight:600}
+  .tip .flag{margin-top:7px;padding-top:7px;border-top:1px solid #343C49;color:var(--coral);font-size:12.5px;display:flex;align-items:center;gap:6px}
+
+  /* table */
+  .tbl{flex:1;padding:16px 22px 10px;display:flex;flex-direction:column;min-height:0}
+  .ttl{display:flex;align-items:center;gap:10px}
+  .ttl h2{margin:0;font-size:16.5px;font-weight:600}
+  .ttl .meta{margin-left:auto;font-size:13px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin-top:8px}
+  th{white-space:nowrap;font-size:12.5px;font-weight:500;color:var(--dim);text-align:right;padding:8px 10px;border-bottom:1px solid var(--line)}
+  td{white-space:nowrap;font-size:14.5px;text-align:right;padding:0 10px;height:40px;border-bottom:1px solid #1F242D}
+  tr:last-child td{border-bottom:0}
+  th:first-child,td:first-child{text-align:left;padding-left:0}
+  th:last-child,td:last-child{padding-right:0}
+  td.b{font-weight:500}
+  td.b .bw{display:flex;align-items:center;gap:11px}
+  .rk{width:22px;height:22px;border-radius:7px;background:#20252E;color:var(--muted);font-size:12px;font-weight:600;display:grid;place-items:center}
+  .st{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:999px}
+  .st i{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .ok{color:var(--teal);background:var(--tealSoft)}
+  .wn{color:var(--amber);background:var(--amberSoft)}
+  .er{color:var(--coral);background:var(--coralSoft)}
+  td .hl{color:var(--coral);font-weight:600}
+  td .wl{color:var(--amber);font-weight:600}
+
+  /* tasks */
+  .tasks{height:100%;display:flex;flex-direction:column;overflow:hidden}
+  .tasks .th{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+  .tasks .th .row{display:flex;align-items:center;gap:10px}
+  .tasks .th h2{margin:0;font-size:17px;font-weight:600}
+  .cnt{font-size:12.5px;font-weight:700;background:var(--coral);color:#1A0A0D;border-radius:999px;padding:1px 8px}
+  .tasks .th .s{margin-top:5px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .seg{margin-left:auto;display:flex;background:#11141A;border:1px solid var(--line);border-radius:9px;padding:2px;font-size:12.5px}
+  .seg span{padding:4px 10px;border-radius:7px;color:var(--muted)}
+  .seg span.on{background:#252B35;color:var(--text);font-weight:500}
+  .list{padding:14px 14px 0;display:flex;flex-direction:column;gap:10px;flex:1;min-height:0}
+  .task{border:1px solid var(--line);border-radius:14px;padding:13px 14px 13px 15px;background:var(--card2);position:relative}
+  .task.lead{border-color:rgba(251,113,133,.42);background:linear-gradient(180deg,rgba(251,113,133,.08),rgba(251,113,133,0) 75%),var(--card2)}
+  .task.lead::before{content:"Ưu tiên 1";position:absolute;top:-1px;right:16px;font-size:12.5px;font-weight:700;color:#1A0A0D;background:var(--coral);padding:2px 8px;border-radius:0 0 7px 7px}
+  .task h3{margin:0;font-size:15px;font-weight:500;line-height:1.42;color:#D5DAE2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .task.lead h3{white-space:normal;font-size:15.5px;padding-right:74px}
+  .task h3 .brn{color:var(--text);font-weight:600}
+  .rule{margin-top:8px;display:inline-block;line-height:1.45;font-size:13px;font-weight:500;color:#EAD7AE;background:rgba(245,165,36,.09);border:1px solid rgba(245,165,36,.24);padding:3px 9px 3px 8px;border-radius:7px;white-space:nowrap}
+  .rule .k{color:var(--amber);font-weight:600}
+  .rule .x{font-variant-numeric:tabular-nums;color:#F6E3BA;font-weight:600}
+  .rule svg.i{width:14px;height:14px;color:var(--amber);vertical-align:-2px;margin-right:5px}
+  .task .r3{margin-top:10px;display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted)}
+  .task .r3 .av{width:26px;height:26px;font-size:12px}
+  .task .r3 .nm{color:var(--text);font-weight:500;white-space:nowrap}
+  .task .r3 .due{white-space:nowrap;display:flex;align-items:center;gap:5px;padding-left:9px;border-left:1px solid var(--line2)}
+  .task .r3 .due svg.i{width:15px;height:15px}
+  .task .r3 .due.hot{color:var(--coral);font-weight:600}
+  .sev{margin-left:auto;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .acts{margin-top:13px;display:flex;gap:8px}
+  .btn{white-space:nowrap;height:34px;border-radius:10px;padding:0 13px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:7px;border:1px solid var(--line2);color:var(--text);background:#20252E}
+  .btn.pri{background:var(--amber);border-color:var(--amber);color:#1B1305}
+  .btn.ghost{background:none;border-color:transparent;color:var(--muted);padding:0 6px}
+  .btn svg.i{width:16px;height:16px}
+  .foot{padding:11px 20px 13px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .foot .lnk{margin-left:auto;display:flex;align-items:center;gap:4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- RAIL -->
+  <nav class="rail">
+    <div class="logo">
+      <svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 2.5 29.6 9.75v14.5L17 31.5 4.4 24.25V9.75Z" fill="#F5A524"/><path d="M17 10.5 23.1 14v7L17 24.5 10.9 21v-7Z" fill="#0A0C10"/></svg>
+    </div>
+    <a class="on"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg></a>
+    <a><svg class="i" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 16v-5M12 16V8M17 16v-3"/></svg></a>
+    <a><svg class="i" viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg><span class="badge num">5</span></a>
+    <a><svg class="i" viewBox="0 0 24 24"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6"/></svg></a>
+    <a><svg class="i" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></a>
+    <a><svg class="i" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18.5 14.5a6.5 6.5 0 0 1 3 5.5"/></svg></a>
+    <div class="sp"></div>
+    <a><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.2.6.76 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></a>
+  </nav>
+
+  <div class="main">
+    <!-- TOP BAR -->
+    <header class="top">
+      <div class="brand">Điều hành quảng cáo</div>
+      <div class="crumb"><span class="sl">/</span><span>Tổng quan</span><span class="sl">/</span><b>30 ngày</b></div>
+      <div class="search">
+        <svg class="i" viewBox="0 0 24 24" style="width:18px;height:18px"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        Tìm chi nhánh, chiến dịch, việc
+        <kbd>/</kbd>
+      </div>
+      <div class="iconbtn"><svg class="i" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="dot"></span></div>
+      <div class="me">
+        <div class="av">PT</div>
+        <div class="who"><b>Phương Thảo</b><span>Giám đốc vận hành</span></div>
+      </div>
+    </header>
+
+    <!-- PAGE HEAD -->
+    <section class="head">
+      <div>
+        <h1>Tổng quan 30 ngày</h1>
+        <div class="sub num"><span class="dt">05/09 - 04/10/2026</span> · so với 30 ngày trước đó</div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="pill2">
+        <div class="ic" style="background:var(--tealSoft);color:var(--teal)">
+          <svg class="i" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 1-15.3 6.4L3 16"/><path d="M3 12a9 9 0 0 1 15.3-6.4L21 8"/><path d="M21 3v5h-5M3 21v-5h5"/></svg>
+        </div>
+        <div>
+          <div class="t"><span class="live"></span> Meta Ads · đồng bộ tự động <span class="num">06:00</span> hôm nay</div>
+          <div class="s">30/30 ngày đủ dữ liệu · <span class="lnk">Lịch sử đồng bộ</span></div>
+        </div>
+      </div>
+      <div class="pill2">
+        <div class="ic" style="background:var(--amberSoft);color:var(--amber)">
+          <svg class="i" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><rect x="9" y="10.5" width="6" height="5" rx="1"/><path d="M10.5 10.5V9a1.5 1.5 0 0 1 3 0v1.5"/></svg>
+        </div>
+        <div>
+          <div class="t">Đang xem <b class="num">6/6</b> chi nhánh · Vai trò: Giám đốc vận hành</div>
+          <div class="s">Quyền truy cập kiểm soát ở cơ sở dữ liệu</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRID -->
+    <section class="grid">
+      <div class="col">
+        <!-- CHART -->
+        <div class="card chart">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="l"><span class="sw" style="background:var(--amber)"></span>Chi phí quảng cáo</div>
+              <div class="v num">1,26<small>tỷ</small></div>
+              <div class="d"><span class="chg neu num">+6,4%</span>kỳ trước</div>
+            </div>
+            <div class="kpi">
+              <div class="l">Lead</div>
+              <div class="v num">9.840</div>
+              <div class="d"><span class="chg up num">+8,1%</span>kỳ trước</div>
+            </div>
+            <div class="kpi">
+              <div class="l"><span class="sw" style="background:var(--teal);border-radius:50%"></span>Đăng ký học</div>
+              <div class="v num">712</div>
+              <div class="d"><span class="chg up num">+3,2%</span>kỳ trước</div>
+            </div>
+            <div class="kpi">
+              <div class="l">Chi phí / đăng ký<span class="tgt num"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>đạt mục tiêu 1,8 tr</span></div>
+              <div class="v num">1,77<small>tr</small></div>
+              <div class="d"><span class="chg bad num">+3,1%</span>kỳ trước</div>
+            </div>
+          </div>
+          <div class="plot" id="plot">
+            <div class="legend">
+              <span><i style="width:10px;height:10px;border-radius:3px;background:rgba(255,201,112,.6);display:inline-block"></i>Chi phí theo ngày (tr)</span>
+              <span><i style="width:16px;height:2.5px;border-radius:2px;background:var(--teal);display:inline-block"></i>Đăng ký học (trục phải)</span><span><i style="width:10px;height:10px;border-radius:3px;background:rgba(251,113,133,.16);display:inline-block"></i>Vùng quy tắc kích hoạt</span>
+            </div>
+            <svg id="chart" width="100%" height="212"></svg>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card tbl">
+          <div class="ttl">
+            <h2>Xếp hạng chi nhánh</h2>
+            <div class="meta">Theo chi phí · ngưỡng vượt: chi phí/đăng ký &gt; <span class="num">2,16 tr</span></div>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Chi nhánh</th><th>Chi phí</th><th>Lead</th><th>Đăng ký học</th><th>Chi phí/ĐK</th><th style="text-align:center">14 ngày</th><th>Trạng thái</th>
+            </tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TASKS -->
+      <div class="card tasks">
+        <div class="th">
+          <div class="row">
+            <h2>Việc cần quyết định</h2><span class="cnt num">5</span>
+            <div class="seg"><span class="on">Tất cả</span><span>Của tôi</span></div>
+          </div>
+          <div class="s">Tạo tự động từ bộ luật · xếp theo ảnh hưởng ước tính/tháng</div>
+        </div>
+        <div class="list">
+          <div class="task lead">
+            <h3><span class="brn">Chi nhánh Nam</span> · chi phí/đăng ký <span class="num">2,24 tr</span></h3>
+            <div class="rule"><svg class="i" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><span class="k">Quy tắc:</span> Chi phí/đăng ký <span class="x">&gt; 1,2×</span> mục tiêu (<span class="num">2,16 tr</span>)</div>
+            <div class="r3">
+              <div class="av" style="background:#4A2F3A;color:#F9C6D2">TT</div><span class="nm">Thu Trang</span>
+              <span class="due hot"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="num">Hôm nay 17:00</span></span>
+              <span class="sev er">Cao · <span class="num">~38 tr</span></span>
+            </div>
+            <div class="acts">
+              <span class="btn pri"><svg class="i" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Duyệt giảm ngân sách 15%</span>
+              <span class="btn">Giao lại</span>
+            </div>
+          </div>
+          <div class="task">
+            <h3><span class="brn">Chi nhánh Tây</span> · CPL tăng 7 ngày liên tiếp</h3>
+            <div class="rule"><svg class="i" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><span class="k">Quy tắc:</span> CPL <span class="x">&gt; 1,3×</span> trung bình <span class="num">4</span> tuần</div>
+            <div class="r3">
+              <div class="av" style="background:#23404A;color:#BDEBF5">GH</div><span class="nm">Gia Huy</span>
+              <span class="due"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="num">05/10 12:00</span></span>
+              <span class="sev er">Cao · <span class="num">~24 tr</span></span>
+            </div>
+          </div>
+          <div class="task">
+            <h3><span class="brn">Chi nhánh Ven Hồ</span> · tỷ lệ vắng buổi học thử <span class="num">31%</span></h3>
+            <div class="rule"><svg class="i" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><span class="k">Quy tắc:</span> Vắng buổi học thử <span class="x">&gt; 25%</span></div>
+            <div class="r3">
+              <div class="av" style="background:#3D3A24;color:#EFE3A8">KL</div><span class="nm">Khánh Linh</span>
+              <span class="due"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="num">06/10 09:00</span></span>
+              <span class="sev wn">Trung bình · <span class="num">~15 tr</span></span>
+            </div>
+          </div>
+          <div class="task">
+            <h3><span class="brn">Chi nhánh Bắc</span> · chi tiêu tuần vượt kế hoạch</h3>
+            <div class="rule"><svg class="i" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg><span class="k">Quy tắc:</span> Chi tiêu tuần <span class="x">&gt; 110%</span> kế hoạch</div>
+            <div class="r3">
+              <div class="av" style="background:#2C3A2A;color:#C8EBBF">MP</div><span class="nm">Mai Phương</span>
+              <span class="due"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span class="num">07/10 17:00</span></span>
+              <span class="sev wn">Trung bình · <span class="num">~9 tr</span></span>
+            </div>
+          </div>
+          </div>
+        <div class="foot">
+          <span>+1 việc mức thấp · Chi nhánh Ven Hồ</span>
+          <span class="lnk">Xem tất cả <svg class="i" viewBox="0 0 24 24" style="width:15px;height:15px"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+// ---------- dữ liệu chi nhánh (khớp với số tổng ở header) ----------
+const branches = [
+  { name:'Chi nhánh Trung tâm', cost:312, lead:2410, reg:196, st:'ok', trend:0.00, seed:1 },
+  { name:'Chi nhánh Bắc',       cost:248, lead:1980, reg:151, st:'wn', trend:0.01, seed:2 },
+  { name:'Chi nhánh Nam',       cost:226, lead:1760, reg:101, st:'er', trend:0.09, seed:3 },
+  { name:'Chi nhánh Đông',      cost:184, lead:1420, reg:112, st:'ok', trend:-0.01, seed:4 },
+  { name:'Chi nhánh Tây',       cost:168, lead:1290, reg:82,  st:'wn', trend:0.05, seed:5 },
+  { name:'Chi nhánh Ven Hồ',    cost:122, lead:980,  reg:70,  st:'wn', trend:0.02, seed:6 },
+]
+const sum = k => branches.reduce((a,b)=>a+b[k],0)
+console.assert(sum('cost')===1260 && sum('lead')===9840 && sum('reg')===712, 'tổng không khớp')
+
+const vn = (x,d=0) => x.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d})
+const stLabel = {ok:'Ổn định', wn:'Cần xem', er:'Vượt ngưỡng'}
+const stColor = {ok:'#2DD4BF', wn:'#F5A524', er:'#FB7185'}
+
+function rand(seed){ let s = seed*9301+49297; return () => (s = (s*9301+49297)%233280)/233280 }
+
+function spark(b){
+  const r = rand(b.seed*7), cpa = b.cost/b.reg, n=14, pts=[]
+  for(let i=0;i<n;i++){
+    const t = i-(n-1)
+    pts.push(cpa*(1 + b.trend*t/6) + (r()-.5)*0.05 + Math.sin(i*0.9+b.seed)*0.025)
+  }
+  const W=84,H=26, c0=(Math.min(...pts)+Math.max(...pts))/2, half=Math.max((Math.max(...pts)-Math.min(...pts))/2,0.22), mn=c0-half, mx=c0+half
+  const xy = pts.map((v,i)=>[i*W/(n-1), 3+(H-6)*(1-(v-mn)/(mx-mn||1))])
+  const d = xy.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ')
+  const last = xy[n-1], c = stColor[b.st]
+  return `<svg width="${W+6}" height="${H}" style="vertical-align:middle;overflow:visible"><path d="${d}" fill="none" stroke="${c}" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" opacity=".9"/><circle cx="${last[0]}" cy="${last[1]}" r="2.8" fill="${c}"/></svg>`
+}
+
+document.getElementById('rows').innerHTML = branches.map((b,i)=>{
+  const cpa = b.cost/b.reg
+  // tô màu theo chính giá trị: > ngưỡng 2,16 tr = san hô, > 1,1× mục tiêu (1,98 tr) = hổ phách
+  const cls = cpa>2.16?'hl':(cpa>1.98?'wl':'')
+  return `<tr>
+    <td class="b"><div class="bw"><span class="rk num">${i+1}</span>${b.name}</div></td>
+    <td class="num">${vn(b.cost)} tr</td>
+    <td class="num">${vn(b.lead)}</td>
+    <td class="num">${vn(b.reg)}</td>
+    <td class="num"><span class="${cls}">${vn(cpa,2)} tr</span></td>
+    <td style="text-align:center">${spark(b)}</td>
+    <td><span class="st ${b.st}"><i></i>${stLabel[b.st]}</span></td>
+  </tr>`
+}).join('')
+
+// ---------- chuỗi theo ngày: tổng chi phí = 1.260 tr, tổng đăng ký = 712 ----------
+const N = 30
+const start = new Date(Date.UTC(2026,8,5))
+const days = Array.from({length:N},(_,i)=>{ const d=new Date(start.getTime()+i*864e5); return String(d.getUTCDate()).padStart(2,'0')+'/'+String(d.getUTCMonth()+1).padStart(2,'0') })
+const wk = [1.0,1.5,1.2,0.6,-0.6,-2.6,-1.9]
+const r1 = rand(11), r2 = rand(23)
+let costRaw = Array.from({length:N},(_,i)=> 36 + i*0.22 + wk[i%7]*2.1 + (r1()-.5)*3 + (i>=26?5.5:0) + (i===27?3:0))
+let regRaw  = Array.from({length:N},(_,i)=> 22 + i*0.12 + wk[i%7]*1.9 + (r2()-.5)*3.2 - (i>=26?3.2:0))
+function fitTotal(arr,total,step){
+  const s = arr.reduce((a,b)=>a+b,0)
+  const scaled = arr.map(v=>v*total/s)
+  const fl = scaled.map(v=>Math.floor(v/step)*step)
+  let rem = Math.round((total - fl.reduce((a,b)=>a+b,0))/step)
+  scaled.map((v,i)=>[v-fl[i],i]).sort((a,b)=>b[0]-a[0]).slice(0,rem).forEach(([,i])=>fl[i]+=step)
+  return fl.map(v=>Math.round(v/step)*step)
+}
+const cost = fitTotal(costRaw.map(v=>v*10),12600,1).map(v=>v/10) // 0,1 tr
+const reg  = fitTotal(regRaw,712,1)
+console.assert(Math.round(cost.reduce((a,b)=>a+b,0)*10)===12600 && reg.reduce((a,b)=>a+b,0)===712, 'chuỗi ngày không khớp')
+
+// ---------- vẽ biểu đồ ----------
+const svg = document.getElementById('chart')
+const W = svg.getBoundingClientRect().width, H = 212
+const pl=34, pr=34, pt=30, pb=26
+const iw=W-pl-pr, ih=H-pt-pb
+const cMax=75, rMax=45
+const bx = i => pl + (i+.5)*iw/N
+const cy = v => pt + ih*(1-v/cMax)
+const ry = v => pt + ih*(1-v/rMax)
+const bw = iw/N*0.42
+let g = ''
+// lưới + trục
+for(let k=0;k<=3;k++){
+  const y = pt + ih*k/3
+  g += `<line x1="${pl}" x2="${W-pr}" y1="${y}" y2="${y}" stroke="${k===3?'#2E3541':'#222833'}" stroke-dasharray="${k===3?'':'3 5'}"/>`
+  g += `<text x="${pl-10}" y="${y+4}" fill="#8B93A1" font-size="12" text-anchor="end" class="num">${vn(cMax*(3-k)/3)}</text>`
+  g += `<text x="${W-pr+10}" y="${y+4}" fill="#2DD4BF" fill-opacity=".8" font-size="12" class="num">${vn(rMax*(3-k)/3,0)}</text>`
+}
+// vùng cảnh báo 3 ngày cuối từ 02/10
+const hi = 27
+g += `<rect x="${pl+hi*iw/N}" y="${pt}" width="${iw/N*3}" height="${ih}" fill="#FB7185" fill-opacity=".11"/>`
+// cột chi phí
+cost.forEach((v,i)=>{
+  const x=bx(i)-bw/2, y=cy(v), h=pt+ih-y, r=3
+  const on = i===hi
+  const fill = i>=hi ? '#F5A524' : 'url(#gb)'
+  g += `<path d="M${x} ${y+h} V${y+r} Q${x} ${y} ${x+r} ${y} H${x+bw-r} Q${x+bw} ${y} ${x+bw} ${y+r} V${y+h} Z" fill="${fill}"/>`
+})
+// đường đăng ký (mượt)
+const P = reg.map((v,i)=>[bx(i),ry(v)])
+let d = `M${P[0][0]} ${P[0][1]}`
+for(let i=0;i<P.length-1;i++){
+  const p0=P[i-1]||P[i], p1=P[i], p2=P[i+1], p3=P[i+2]||p2
+  const c1=[p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6], c2=[p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6]
+  d += ` C${c1[0].toFixed(1)} ${c1[1].toFixed(1)} ${c2[0].toFixed(1)} ${c2[1].toFixed(1)} ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`
+}
+g = `<defs><linearGradient id="ga" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2DD4BF" stop-opacity=".06"/><stop offset="1" stop-color="#2DD4BF" stop-opacity="0"/></linearGradient><linearGradient id="gb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC970" stop-opacity=".64"/><stop offset="1" stop-color="#FFC970" stop-opacity=".54"/></linearGradient></defs>` + g
+g += `<path d="${d}" fill="none" stroke="#2DD4BF" stroke-width="2.4" stroke-linecap="round"/>`
+// marker
+g += `<line x1="${bx(hi)}" x2="${bx(hi)}" y1="${pt-4}" y2="${pt+ih}" stroke="#FB7185" stroke-width="1.2" stroke-dasharray="3 4"/>`
+g += `<circle cx="${bx(hi)}" cy="${ry(reg[hi])}" r="5" fill="#161A21" stroke="#2DD4BF" stroke-width="2.4"/>`
+g += `<circle cx="${bx(N-1)}" cy="${ry(reg[N-1])}" r="3.5" fill="#2DD4BF"/>`
+// nhãn ngày
+days.forEach((s,i)=>{ if(i%5===0 || i===N-1) g += `<text x="${bx(i)}" y="${H-6}" fill="${i===hi?'#ECEEF2':'#8B93A1'}" font-size="12" text-anchor="middle" class="num">${s}</text>` })
+g += `<text x="${bx(hi)}" y="${H-6}" fill="#FB7185" font-size="12" font-weight="600" text-anchor="middle" class="num">${days[hi]}</text>`
+svg.innerHTML = g
+
+// tooltip
+const tip = document.createElement('div')
+tip.className='tip'
+tip.innerHTML = `<div class="h"><span class="num">${days[hi]}/2026</span><span class="fl"><svg class="i" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>2 quy tắc · 2 việc</span></div>
+  <div class="rr"><i style="width:9px;height:9px;border-radius:3px;background:#F5A524;display:inline-block"></i>Chi phí <b class="num">${vn(cost[hi],1)} tr</b><span class="sep"></span><i style="width:9px;height:9px;border-radius:50%;background:#2DD4BF;display:inline-block"></i>Đăng ký <b class="num">${reg[hi]}</b></div>`
+document.getElementById('plot').appendChild(tip)
+const tw = tip.offsetWidth
+tip.style.left = (bx(hi) - tw - 12) + 'px'
+tip.style.top = (pt - 2) + 'px'
+</script>
+</body>
+</html>

@@ -150,9 +150,10 @@ export const SCOPE = {
 
 /**
  * Dự án đã làm (anh Trung chốt 4/10/2026: hệ thống làm cho khách, ẨN TÊN; ảnh + mô tả).
- * Ảnh chụp từ bản chạy thử/bản thiết kế với dữ liệu mẫu, đã che tên khách, cơ sở, nhân sự,
- * tên miền và logo trước khi chụp. Mỗi ý trong `points` đã đối chiếu có trong mã nguồn thật,
- * thêm ý mới thì kiểm tra trước, không viết tính năng hệ thống chưa có.
+ * Ảnh là MOCKUP TỰ THIẾT KẾ (nguồn HTML: design/custom-software-mockups/), KHÔNG chụp giao
+ * diện app của khách: lần đầu dùng ảnh chụp (đã che tên) bị anh Trung loại vì nhìn vẫn ra hệ
+ * thống của khách. Mỗi ý trong `points` đã đối chiếu có trong mã nguồn thật, thêm ý mới thì
+ * kiểm tra trước, không viết tính năng hệ thống chưa có.
  */
 export type WorkShot = { src: string; width: number; height: number; alt: I18n }
 export type WorkItem = {
@@ -168,15 +169,15 @@ export type WorkItem = {
   shots: WorkShot[]
 }
 
-const IMG = '/images/custom-software'
+const IMG = '/images/custom-software/v2'
 const DESKTOP = { width: 2400, height: 1500 }
 
 export const WORK = {
   kicker: { vi: 'Dự án đã thực hiện', en: 'Selected work' },
   title: { vi: 'Một số hệ thống chúng tôi đã xây dựng', en: 'Some of the systems we have built' },
   lede: {
-    vi: 'Tên khách hàng được ẩn để bảo mật. Ảnh chụp từ bản chạy thử với dữ liệu mẫu, không chứa dữ liệu thật của khách hàng.',
-    en: 'Client names are withheld for confidentiality. Screenshots come from test builds with sample data and contain no real client data.',
+    vi: 'Tên khách hàng được ẩn để bảo mật. Hình minh hoạ được dựng lại với dữ liệu mẫu, không phải ảnh chụp hệ thống của khách hàng.',
+    en: 'Client names are withheld for confidentiality. The images are redrawn illustrations with sample data, not screenshots of client systems.',
   },
   labels: {
     problem: { vi: 'Vấn đề', en: 'Problem' },
@@ -207,7 +208,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Meta Marketing API',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/ads-command-center.webp`, ...DESKTOP, alt: { vi: 'Màn hình tổng quan hiệu quả quảng cáo theo cơ sở', en: 'Ad performance overview by campus' } },
+        { src: `${IMG}/ads-command-center.webp`, ...DESKTOP, alt: { vi: 'Tổng quan chi phí, đăng ký học và việc cần quyết định theo chi nhánh', en: 'Spend, enrolments and decision queue by branch' } },
       ],
     },
     {
@@ -230,7 +231,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Web Push · Zalo ZNS',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/customer-data-platform.webp`, ...DESKTOP, alt: { vi: 'Trang chủ nền tảng dữ liệu khách hàng', en: 'Customer data platform home screen' } },
+        { src: `${IMG}/customer-data-platform.webp`, ...DESKTOP, alt: { vi: 'Hồ sơ 360 của một khách hàng sau khi gộp danh tính', en: '360 customer profile after identity merge' } },
       ],
     },
     {
@@ -253,7 +254,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Realtime',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/team-workspace.webp`, ...DESKTOP, alt: { vi: 'Bảng điều khiển công việc của đội', en: 'Team work dashboard' } },
+        { src: `${IMG}/team-workspace.webp`, ...DESKTOP, alt: { vi: 'Bảng Kanban của nhóm với việc lặp theo lịch', en: 'Team Kanban board with recurring tasks' } },
       ],
     },
     {
@@ -276,8 +277,8 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Google Consent Mode',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/consent-overview.webp`, ...DESKTOP, alt: { vi: 'Tổng quan tỷ lệ đồng ý cookie', en: 'Cookie consent overview' } },
-        { src: `${IMG}/consent-setup.webp`, ...DESKTOP, alt: { vi: 'Trang cấu hình hộp xin đồng ý', en: 'Consent banner configuration' } },
+        { src: `${IMG}/consent-overview.webp`, ...DESKTOP, alt: { vi: 'Tỷ lệ đồng ý và sổ bằng chứng nối chuỗi hash', en: 'Consent rates and hash-chained evidence log' } },
+        { src: `${IMG}/consent-setup.webp`, ...DESKTOP, alt: { vi: 'Cấu hình hộp xin đồng ý kèm bản xem trước', en: 'Consent banner settings with live preview' } },
       ],
     },
     {
@@ -300,7 +301,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Claude API · CRM API',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/ai-chat-assistant.webp`, ...DESKTOP, alt: { vi: 'Bảng theo dõi hiệu quả chatbot', en: 'Chatbot performance dashboard' } },
+        { src: `${IMG}/ai-chat-assistant.webp`, ...DESKTOP, alt: { vi: 'Hộp thư hội thoại, tư vấn viên nhận lại từ trợ lý AI', en: 'Conversation inbox with staff taking over from the AI assistant' } },
       ],
     },
     {
@@ -323,8 +324,8 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Email',
       frame: 'phone',
       shots: [
-        { src: `${IMG}/event-registration.webp`, width: 760, height: 1748, alt: { vi: 'Form đăng ký nhận vé trên điện thoại', en: 'Ticket registration form on a phone' } },
-        { src: `${IMG}/event-checkin.webp`, width: 760, height: 1486, alt: { vi: 'Màn hình quét mã QR tại quầy', en: 'QR scanning screen at the desk' } },
+        { src: `${IMG}/event-registration.webp`, width: 840, height: 1736, alt: { vi: 'Form đăng ký sự kiện trên điện thoại', en: 'Event registration form on a phone' } },
+        { src: `${IMG}/event-checkin.webp`, width: 840, height: 1736, alt: { vi: 'Màn hình quét mã QR tại quầy check-in', en: 'QR scanner at the check-in desk' } },
       ],
     },
   ] satisfies WorkItem[],

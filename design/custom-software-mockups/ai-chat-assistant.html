@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Trợ lý tư vấn</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F2EC; --surface:#FFFFFF; --ink:#14171C; --muted:#6B7280; --line:#E7E6E1;
+  --teal:#0F766E; --teal-d:#0B3D39; --teal-dd:#082E2B; --teal-50:#E8F3F1; --teal-100:#D3EAE6;
+  --amber:#C2560E; --amber-50:#FDF0E1; --amber-100:#F9DFC2;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{width:1440px;height:900px;overflow:hidden;background:var(--bg);color:var(--ink);
+  font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:15px;line-height:1.45;
+  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.app{display:flex;height:900px}
+
+/* rail */
+.rail{width:68px;flex:none;background:var(--teal-d);display:flex;flex-direction:column;align-items:center;padding:16px 0 18px;gap:6px}
+.logo{width:38px;height:38px;border-radius:12px;background:#2DD4BF;position:relative;margin-bottom:18px}
+.logo::after{content:"";position:absolute;left:9px;top:9px;width:20px;height:20px;border-radius:50% 50% 50% 4px;background:var(--teal-d)}
+.rbtn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#9CC9C2;position:relative}
+.rbtn.on{background:rgba(255,255,255,.12);color:#fff}
+.rbtn .dot{position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:50%;background:#FDBA74;box-shadow:0 0 0 2px var(--teal-d)}
+.rail .sp{flex:1}
+.rail .me{width:36px;height:36px;border-radius:50%;background:#FDE7C8;color:#8A3B0A;display:grid;place-items:center;font-size:13px;font-weight:600}
+
+/* main */
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.top{height:64px;flex:none;display:flex;align-items:center;gap:18px;padding:0 24px;border-bottom:1px solid var(--line)}
+.brand{font-weight:700;font-size:17px;letter-spacing:-.01em}
+.crumb{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:15px}
+.crumb b{color:var(--ink);font-weight:500}
+.search{margin-left:auto;width:340px;white-space:nowrap;height:40px;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;gap:10px;padding:0 14px;color:#9AA0A8;font-size:14.5px}
+.search kbd{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.live{white-space:nowrap;display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:10px;background:var(--teal-50);color:var(--teal);font-weight:500;font-size:14.5px}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(15,118,110,.18)}
+.bell{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;color:#3F4650}
+
+.cols{flex:1;display:flex;gap:16px;padding:18px 20px 20px;min-height:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(20,23,28,.04)}
+
+/* list */
+.list{width:328px;flex:none;display:flex;flex-direction:column;overflow:hidden}
+.lhead{padding:18px 18px 12px}
+.lhead h2{margin:0;font-size:20px;font-weight:700;letter-spacing:-.01em;display:flex;align-items:center;justify-content:space-between}
+.lhead h2 span{font-size:13px;font-weight:500;color:var(--muted)}
+.tabs{display:flex;gap:6px;margin-top:12px}
+.tab{white-space:nowrap;height:32px;padding:0 9px;border-radius:9px;display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;color:#4B5260;background:#F4F3EF}
+.tab.on{background:var(--ink);color:#fff}
+.tab em{font-style:normal;font-size:12.5px;opacity:.7}
+.tab.wait{background:var(--amber-50);color:var(--amber)}
+.conv{padding:12px 18px 12px 15px;border-top:1px solid #F0EFEA;border-left:3px solid transparent;display:grid;grid-template-columns:36px minmax(0,1fr);column-gap:12px}
+.conv.on{background:#F3F8F7;border-left-color:var(--teal)}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:600}
+.r1{display:flex;align-items:baseline;justify-content:space-between}
+.nm{font-weight:600;font-size:15px}
+.tm{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.pv{font-size:14px;color:#4B5260;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pv.two{white-space:normal;line-height:1.4}
+.r3{display:flex;align-items:center;gap:8px;margin-top:7px;min-width:0}
+.st{height:22px;padding:0 8px;border-radius:6px;display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:500;white-space:nowrap}
+.st::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st.bot{background:var(--teal-50);color:var(--teal)}
+.st.wait{background:var(--amber-50);color:var(--amber)}
+.st.sent{background:#EEF0EC;color:#4A5547}
+.src{font-family:var(--mono);font-size:12.5px;color:#8A9099;white-space:nowrap;min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+/* thread */
+.thread{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.thead{height:74px;flex:none;display:flex;align-items:center;gap:12px;padding:0 20px;border-bottom:1px solid var(--line)}
+.thead .av{width:42px;height:42px;font-size:14px}
+.thead .t1{font-weight:600;font-size:17px}
+.thead .t2{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.thead .t2 .src{color:var(--muted)}
+.owner{white-space:nowrap;flex:none;margin-left:auto;display:flex;align-items:center;gap:8px;height:36px;padding:0 12px 0 6px;border-radius:999px;background:var(--teal-50);color:var(--teal);font-size:13.5px;font-weight:500}
+.owner .av{width:26px;height:26px;font-size:12px}
+.btn-o{white-space:nowrap;flex:none;height:36px;padding:0 12px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;gap:6px;font-size:13.5px;font-weight:500;color:#3F4650;background:#fff}
+.msgs{flex:1;padding:16px 22px 8px;display:flex;flex-direction:column;gap:10px;background:linear-gradient(#FBFAF7,#FBFAF7)}
+.day{align-self:center;font-size:12.5px;color:var(--muted);font-weight:500}
+.m{max-width:500px;display:flex;flex-direction:column;gap:5px}
+.m .who{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.m .who b{color:#3F4650;font-weight:600}
+.m .who .tm{font-size:12.5px}
+.b{padding:10px 15px;border-radius:16px;font-size:15px;line-height:1.5}
+.m.in .b{background:#fff;border:1px solid var(--line);border-top-left-radius:6px}
+.m.bot{align-self:flex-end}
+.m.bot .who{justify-content:flex-end}
+.m.bot .b{background:var(--teal-50);border:1px solid var(--teal-100);border-top-right-radius:6px}
+.m.agent{align-self:flex-end;max-width:572px}
+.m.agent .who{justify-content:flex-end}
+.m.agent .b{background:var(--teal);color:#fff;border-top-right-radius:6px;box-shadow:0 6px 16px -8px rgba(15,118,110,.6)}
+.botmark{width:18px;height:18px;border-radius:6px;background:var(--teal);display:grid;place-items:center}
+.botmark::after{content:"";width:8px;height:8px;border-radius:50% 50% 50% 2px;background:#fff}
+.cite{margin-top:9px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--teal);font-weight:500;background:#fff;border:1px solid var(--teal-100);border-radius:8px;padding:3px 9px}
+.cite svg.i{width:14px;height:14px}
+.gap{margin-top:9px;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--amber);font-weight:500;background:var(--amber-50);border:1px solid var(--amber-100);border-radius:8px;padding:3px 9px}
+.gap svg.i{width:14px;height:14px}
+.sys{display:flex;align-items:center;gap:12px;color:var(--teal);font-size:13px;font-weight:600;margin:2px 0}
+.sys::before,.sys::after{content:"";flex:1;height:1px;background:var(--teal-100)}
+.sys span{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--teal-100);border-radius:999px;padding:4px 12px 4px 4px}
+.sys .av{width:26px;height:26px;font-size:12px}
+.sys .tm{color:var(--muted);font-size:12.5px;font-weight:500;margin-left:2px}
+.typing{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}.typing span{display:flex;gap:3px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 9px}.typing i{width:5px;height:5px;border-radius:50%;background:#A3A9B1}.typing i:nth-child(2){background:#C2C7CD}.typing i:nth-child(3){background:#DADDE1}
+.composer{flex:none;margin:0 16px 14px;border:1px solid var(--line);border-radius:14px;padding:9px 9px 9px 16px;display:flex;align-items:center;gap:10px;background:#fff}
+.composer .ph{flex:1;color:#9AA0A8;font-size:15px}
+.chip-s{height:32px;padding:0 10px;border-radius:9px;background:var(--teal-50);color:var(--teal);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px}
+.chip-s svg.i{width:16px;height:16px}
+.send{width:38px;height:38px;border-radius:10px;background:var(--teal);color:#fff;display:grid;place-items:center}
+.send svg.i{width:18px;height:18px}
+
+/* side */
+.side{width:364px;flex:none;display:flex;flex-direction:column;gap:14px}
+.pad{padding:16px 18px}
+.lead-top{display:flex;align-items:center;gap:12px}
+.lead-top .av{width:44px;height:44px;font-size:15px}
+.lead-top .n{font-weight:700;font-size:17px}
+.lead-top .s{font-size:13px;color:var(--muted)}
+.crm{margin-left:auto;display:flex;align-items:center;gap:5px;height:28px;padding:0 10px;border-radius:8px;background:var(--teal);color:#fff;font-size:12.5px;font-weight:600;white-space:nowrap}
+.crm svg.i{width:14px;height:14px;stroke-width:2.25}
+.kv{display:grid;grid-template-columns:96px 1fr;row-gap:7px;margin:14px 0 0;font-size:14.5px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-weight:500}
+.kv .mono{font-family:var(--mono);font-size:13.5px;font-weight:400}
+.h3{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.h3 h3{margin:0;font-size:16px;font-weight:700;letter-spacing:-.005em}
+.h3 span{font-size:12.5px;color:var(--muted)}
+.q{display:grid;grid-template-columns:46px 1fr;column-gap:12px;padding:9px 0;border-top:1px solid #F0EFEA}
+.q:first-of-type{border-top:0}
+.cnt{width:46px;height:46px;border-radius:10px;background:var(--amber-50);color:var(--amber);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+.cnt b{font-size:16px}
+.cnt small{font-size:12.5px;font-weight:500;margin-top:3px}
+.q .qt{font-size:14.5px;font-weight:500}
+.add{margin-top:2px;display:inline-flex;align-items:center;gap:5px;color:var(--teal);font-size:13px;font-weight:600}
+.add svg.i{width:15px;height:15px;stroke-width:2.2}
+
+.conv-card{background:var(--teal-d);color:#fff;border:0;border-radius:16px;padding:16px 18px 16px;flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.conv-card .h3 h3{color:#fff}
+.conv-card .h3 span{color:#8FC3BB}
+.big{display:flex;align-items:baseline;gap:12px;margin-top:2px}
+.big b{font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.big .up{font-size:13px;color:#5EEAD4;font-weight:600}
+.subn{font-size:13.5px;color:#A9D3CC;margin-top:2px}
+.bars{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto;align-items:end}
+.bar{display:flex;flex-direction:column;align-items:center;gap:6px}
+.bar .pct{font-size:17px;font-weight:700;white-space:nowrap;display:flex;flex-direction:column;align-items:center;line-height:1.2}.bar .pct small{font-family:var(--mono);font-size:14px;font-weight:400;color:#A9D3CC;margin-top:1px}
+.col{width:74px;border-radius:12px;background:rgba(255,255,255,.17);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22);position:relative;overflow:hidden}
+.col i{position:absolute;left:0;right:0;bottom:0;background:#2DD4BF;border-radius:0 0 12px 12px}
+
+.bar .lb{font-size:14px;color:#CFE7E3;text-align:center;line-height:1.3;white-space:nowrap;margin-top:2px}
+.bar .nn{font-family:var(--mono);font-size:12.5px;color:#8FC3BB}
+.legend{display:flex;gap:16px;font-size:13px;color:#CFE7E3;margin-top:10px}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend i{width:11px;height:11px;border-radius:3px;background:rgba(255,255,255,.17);box-shadow:inset 0 0 0 1px rgba(255,255,255,.22)}
+.legend i.f{background:#2DD4BF}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="inbox" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="book" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></symbol>
+    <symbol id="chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M8 16v-5"/><path d="M13 16V8"/><path d="M18 16v-3"/></symbol>
+    <symbol id="users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="widget" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M15 15h3v3h-3z"/></symbol>
+    <symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></symbol>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="chev" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6"/><path d="M9 17h4"/></symbol>
+    <symbol id="alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></symbol>
+    <symbol id="send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="clip" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+    <symbol id="spark" viewBox="0 0 24 24"><path d="M12 3v4"/><path d="M12 17v4"/><path d="M3 12h4"/><path d="M17 12h4"/><path d="m6 6 2 2"/><path d="m16 16 2 2"/><path d="m6 18 2-2"/><path d="m16 8 2-2"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></symbol>
+    <symbol id="undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+    <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <nav class="rail">
+    <div class="logo"></div>
+    <div class="rbtn on"><svg class="i"><use href="#inbox"/></svg><span class="dot"></span></div>
+    <div class="rbtn"><svg class="i"><use href="#book"/></svg></div>
+    <div class="rbtn"><svg class="i"><use href="#users"/></svg></div>
+    <div class="rbtn"><svg class="i"><use href="#chart"/></svg></div>
+    <div class="rbtn"><svg class="i"><use href="#widget"/></svg></div>
+    <div class="sp"></div>
+    <div class="rbtn"><svg class="i"><use href="#cog"/></svg></div>
+    <div class="me">TT</div>
+  </nav>
+
+  <div class="main">
+    <header class="top">
+      <div class="brand">Trợ lý tư vấn</div>
+      <div class="crumb"><svg class="i" style="width:16px;height:16px;color:#B5B9BF"><use href="#chev"/></svg><b>Hộp thư hội thoại</b></div>
+      <div class="search"><svg class="i" style="width:18px;height:18px"><use href="#search"/></svg>Tìm khách, số điện thoại, nội dung<kbd>/</kbd></div>
+      <div class="live"><i></i>Bot đang trực · 5 hội thoại</div>
+      <div class="bell"><svg class="i"><use href="#bell"/></svg></div>
+    </header>
+
+    <div class="cols">
+      <!-- LIST -->
+      <section class="card list">
+        <div class="lhead">
+          <h2>Hội thoại <span>Hôm nay · 24</span></h2>
+          <div class="tabs">
+            <div class="tab on">Tất cả <em>24</em></div>
+            <div class="tab wait">Chờ tư vấn viên <em>2</em></div>
+            <div class="tab">Bot <em>5</em></div>
+          </div>
+        </div>
+
+        <div class="conv on">
+          <div class="av" style="background:#D3EAE6;color:#0B5A53">KL</div>
+          <div>
+            <div class="r1"><span class="nm">Khánh Linh</span><span class="tm">10:42</span></div>
+            <div class="pv two">Chị gửi lịch công tác qua Zalo giúp em nhé.</div>
+            <div class="r3"><span class="st sent">Đã gửi CRM</span><span class="src">/lap-trinh-co-ban</span></div>
+          </div>
+        </div>
+        <div class="conv">
+          <div class="av" style="background:#E6E2F3;color:#4B3E8C">K</div>
+          <div>
+            <div class="r1"><span class="nm">Khách #4821</span><span class="tm">10:40</span></div>
+            <div class="pv">Lớp tiếng Anh tối thứ mấy?</div>
+            <div class="r3"><span class="st bot">Bot đang trả lời</span><span class="src">/tieng-anh</span></div>
+          </div>
+        </div>
+        <div class="conv">
+          <div class="av" style="background:#FBE3CF;color:#8A3B0A">TK</div>
+          <div>
+            <div class="r1"><span class="nm">Tuấn Kiệt</span><span class="tm">10:39</span></div>
+            <div class="pv">Có trả góp học phí không?</div>
+            <div class="r3"><span class="st wait">Chờ tư vấn viên · 3 phút</span><span class="src">/hoc-phi</span></div>
+          </div>
+        </div>
+        <div class="conv">
+          <div class="av" style="background:#E4ECDD;color:#3E5A2C">K</div>
+          <div>
+            <div class="r1"><span class="nm">Khách #4817</span><span class="tm">10:36</span></div>
+            <div class="pv">Buổi học thử có mất phí không ạ?</div>
+            <div class="r3"><span class="st bot">Bot đang trả lời</span><span class="src">/buoi-hoc-thu</span></div>
+          </div>
+        </div>
+        <div class="conv">
+          <div class="av" style="background:#F6DDE3;color:#8C2F47">NH</div>
+          <div>
+            <div class="r1"><span class="nm">Ngọc Hân</span><span class="tm">10:22</span></div>
+            <div class="pv">Cảm ơn, em sẽ đến học thử thứ 7.</div>
+            <div class="r3"><span class="st sent">Đã gửi CRM</span><span class="src">/thiet-ke-do-hoa</span></div>
+          </div>
+        </div>
+        <div class="conv">
+          <div class="av" style="background:#DDE7F0;color:#2F4F6B">PT</div>
+          <div>
+            <div class="r1"><span class="nm">Phương Thảo</span><span class="tm">10:15</span></div>
+            <div class="pv">Mình muốn đổi sang lớp cuối tuần.</div>
+            <div class="r3"><span class="st wait">Chờ tư vấn viên · 9 phút</span><span class="src">/lich</span></div>
+          </div>
+        </div>
+        <div class="conv">
+          <div class="av" style="background:#EFE6D6;color:#6B4E1F">TT</div>
+          <div>
+            <div class="r1"><span class="nm">Thanh Tùng</span><span class="tm">09:58</span></div>
+            <div class="pv">Đã để lại số, nhờ gọi lại sau 17h.</div>
+            <div class="r3"><span class="st sent">Đã gửi CRM</span><span class="src">/trang-chu</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- THREAD -->
+      <section class="card thread">
+        <div class="thead">
+          <div class="av" style="background:#D3EAE6;color:#0B5A53">KL</div>
+          <div>
+            <div class="t1">Khánh Linh</div>
+            <div class="t2"><svg class="i" style="width:14px;height:14px"><use href="#globe"/></svg><span class="src">/khoa-hoc/lap-trinh-co-ban</span></div>
+          </div>
+          <div class="owner"><span class="av" style="background:#FDE7C8;color:#8A3B0A">TT</span>Thu Trang</div>
+          <div class="btn-o"><svg class="i" style="width:16px;height:16px"><use href="#undo"/></svg>Trả lại cho bot</div>
+        </div>
+
+        <div class="msgs">
+          
+          <div class="m in">
+            <div class="who"><b>Khánh Linh</b><span class="tm">10:36</span></div>
+            <div class="b">Học phí khoá Lập trình cơ bản bao nhiêu, khi nào khai giảng ạ?</div>
+          </div>
+
+          <div class="m bot">
+            <div class="who"><span class="tm">10:36</span><b>Trợ lý</b><span class="botmark"></span></div>
+            <div class="b">Khoá Lập trình cơ bản gồm 24 buổi, học phí 6,9 tr, chia được 2 đợt. Lớp gần nhất khai giảng 14/10 (tối thứ 2-4-6), lớp sau 17/10 (sáng thứ 7).
+              <div><span class="cite"><svg class="i"><use href="#file"/></svg>Nguồn: Bảng học phí · đã duyệt 28/09</span></div>
+            </div>
+          </div>
+
+          <div class="m in">
+            <div class="who"><b>Khánh Linh</b><span class="tm">10:38</span></div>
+            <div class="b">Em hay đi công tác, nghỉ buổi nào có được học bù không ạ?</div>
+          </div>
+
+          <div class="m bot">
+            <div class="who"><span class="tm">10:38</span><b>Trợ lý</b><span class="botmark"></span></div>
+            <div class="b">Câu này em chưa có thông tin chính xác. Em chuyển chị sang tư vấn viên để trả lời cụ thể nhé.
+              <div><span class="gap"><svg class="i"><use href="#alert"/></svg>Chưa có trong kiến thức · đã chuyển tư vấn viên</span></div>
+            </div>
+          </div>
+
+          <div class="sys"><span><span class="av" style="background:#FDE7C8;color:#8A3B0A">TT</span>Thu Trang đã nhận hội thoại<span class="tm">10:41</span></span></div>
+
+          <div class="m agent">
+            <div class="who"><span class="tm">10:42</span><b>Thu Trang</b><span>· Tư vấn viên</span></div>
+            <div class="b">Chào chị Linh, mỗi khoá được học bù tối đa 4 buổi ở lớp song song, chỉ cần báo trước 1 ngày. Chị gửi lịch công tác qua Zalo giúp em nhé.</div>
+          </div>
+
+          <div class="typing"><span><i></i><i></i><i></i></span>Khánh Linh đang nhập</div>
+        </div>
+
+        <div class="composer">
+          <svg class="i" style="color:#9AA0A8"><use href="#clip"/></svg>
+          <div class="ph">Trả lời Khánh Linh…</div>
+          <div class="chip-s"><svg class="i"><use href="#spark"/></svg>Gợi ý trả lời</div>
+          <div class="send"><svg class="i"><use href="#send"/></svg></div>
+        </div>
+      </section>
+
+      <!-- SIDE -->
+      <aside class="side">
+        <div class="card pad">
+          <div class="lead-top">
+            <div class="av" style="background:#D3EAE6;color:#0B5A53">KL</div>
+            <div><div class="n">Khánh Linh</div><div class="s">Lead mới</div></div>
+            <div class="crm"><svg class="i"><use href="#check"/></svg>Đã gửi CRM · 10:42</div>
+          </div>
+          <dl class="kv">
+            <dt>Điện thoại</dt><dd class="mono">09xx xxx 321</dd>
+            <dt>Nhu cầu</dt><dd>Lập trình cơ bản · lớp tối</dd>
+            <dt>Trang nguồn</dt><dd class="mono">/lap-trinh-co-ban</dd>
+          </dl>
+        </div>
+
+        <div class="card pad">
+          <div class="h3"><h3>Câu hỏi chưa có câu trả lời</h3><span>7 ngày</span></div>
+          <div class="q">
+            <div class="cnt"><b>9</b><small>lần</small></div>
+            <div><div class="qt">Đi công tác có được học bù không?</div><div class="add"><svg class="i"><use href="#plus"/></svg>Thêm vào kiến thức</div></div>
+          </div>
+          <div class="q">
+            <div class="cnt"><b>6</b><small>lần</small></div>
+            <div><div class="qt">Có lớp tối thứ 7 cho người đi làm?</div><div class="add"><svg class="i"><use href="#plus"/></svg>Thêm vào kiến thức</div></div>
+          </div>
+          <div class="q">
+            <div class="cnt"><b>4</b><small>lần</small></div>
+            <div><div class="qt">Học phí có xuất hoá đơn công ty?</div><div class="add"><svg class="i"><use href="#plus"/></svg>Thêm vào kiến thức</div></div>
+          </div>
+        </div>
+
+        <div class="conv-card">
+          <div class="h3"><h3>Chat thành lead · 7 ngày</h3><span>27/09 - 03/10</span></div>
+          <div class="big"><b>38,4%</b><span class="up">+4,1 điểm</span></div>
+          <div class="subn">73 lead / 190 hội thoại · tuần trước 34,3%</div>
+          <div class="legend"><span><i></i>Hội thoại</span><span><i class="f"></i>Thành lead</span></div>
+          <div class="bars">
+            <div class="bar">
+              <span class="pct">45,2%<small>38/84</small></span>
+              <div class="col" style="height:109.2px"><i style="height:49.4px"></i></div>
+              <span class="lb">Nút liên hệ</span>
+            </div>
+            <div class="bar">
+              <span class="pct">25,8%<small>17/66</small></span>
+              <div class="col" style="height:85.8px"><i style="height:22.1px"></i></div>
+              <span class="lb">Bot chủ động</span>
+            </div>
+            <div class="bar">
+              <span class="pct">45,0%<small>18/40</small></span>
+              <div class="col" style="height:52px"><i style="height:23.4px"></i></div>
+              <span class="lb">Trang khoá học</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Check-in sự kiện</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --lime:#84CC16; --lime-d:#4D7C0F; --lime-l:#ECFCCB; --lime-xl:#F7FEE7;
+    --ink:#111827; --ink2:#1A2231; --ink3:#243044;
+    --bg:#F5F6F1; --card:#FFFFFF; --text:#14171C; --muted:#6B7280; --muted2:#4B5563; --line:#E5E6DF;
+  }
+  html,body{margin:0;background:transparent}
+  body{font-family:"Be Vietnam Pro",system-ui,sans-serif;color:var(--text);
+    display:flex;gap:48px;padding:16px;align-items:flex-start;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-weight:500}
+  b.mono{font-weight:600}
+  .num{font-variant-numeric:tabular-nums}
+  svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* ---------- khung máy chung ---------- */
+  .device{position:relative;width:420px;height:868px;background:transparent}
+  .body{position:absolute;left:3px;top:0;width:414px;height:868px;border-radius:58px;
+    background:linear-gradient(145deg,#2B2D31 0%,#0A0A0B 35%,#0A0A0B 70%,#26282C 100%);
+    box-sizing:border-box;padding:12px}
+  .body::before{content:"";position:absolute;inset:1.5px;border-radius:56px;border:1px solid rgba(255,255,255,.07);pointer-events:none}
+  .btn-side{position:absolute;width:3px;background:#1C1D20;border-radius:2px}
+  .btn-side.r1{right:0;top:186px;height:72px}
+  .btn-side.l1{left:0;top:160px;height:44px}
+  .btn-side.l2{left:0;top:220px;height:44px}
+  .screen{position:relative;width:390px;height:844px;border-radius:46px;overflow:hidden}
+  .cam{position:absolute;left:50%;top:13px;width:13px;height:13px;margin-left:-6.5px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,#2F3B52 0 22%,#07080A 48%);box-shadow:0 0 0 2px #050506;z-index:20}
+  .status{position:absolute;left:0;right:0;top:0;height:40px;display:flex;align-items:center;justify-content:space-between;
+    padding:4px 30px 0;box-sizing:border-box;font-size:14px;font-weight:600;z-index:19}
+  .batt{display:flex;align-items:center;gap:6px}
+  .batt .cell{width:24px;height:12px;border-radius:3.5px;border:1.5px solid currentColor;box-sizing:border-box;padding:1.5px;opacity:.9}
+  .batt .cell i{display:block;height:100%;width:72%;border-radius:1.5px;background:currentColor}
+  .batt .sig{display:flex;gap:2px;align-items:flex-end;height:12px}
+  .batt .sig b{width:3px;border-radius:1px;background:currentColor}
+
+  /* ---------- MÁY 1: đăng ký ---------- */
+  #registration .screen{background:var(--bg)}
+  #registration .status{color:var(--ink)}
+  .band{position:absolute;left:0;right:0;top:40px;height:112px;display:grid;
+    grid-template-columns:repeat(7,1fr);grid-template-rows:56px 56px;overflow:hidden}
+  .t{position:relative;overflow:hidden}
+  .t.ink{background:var(--ink)} .t.lime{background:var(--lime)} .t.pale{background:var(--lime-l)} .t.blank{background:transparent}
+  .t .circ{position:absolute;inset:7px;border-radius:50%}
+  .t .q{position:absolute;width:112px;height:112px;border-radius:50%}
+  .t .half{position:absolute;left:0;right:0;bottom:0;height:28px;border-radius:28px 28px 0 0}
+  .t.stripes{background:repeating-linear-gradient(135deg,var(--lime) 0 5px,transparent 5px 12px)}
+  .t.dots{background-image:radial-gradient(circle,var(--ink) 2.2px,transparent 2.6px);background-size:14px 14px;background-position:3px 3px}
+  .t .ring{position:absolute;inset:10px;border-radius:50%;border:6px solid var(--lime)}
+
+  .reg{position:absolute;left:0;right:0;top:152px;bottom:0;padding:18px 20px 0;box-sizing:border-box}
+  .tag{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--lime-d);
+    background:var(--lime-l);border-radius:999px;padding:5px 12px 5px 10px}
+  .tag::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--lime)}
+  h1{margin:10px 0 0;font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.4px;color:var(--ink)}
+  .stub{margin-top:16px;display:grid;grid-template-columns:auto auto auto;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;position:relative}
+  .stub > div{padding:10px 8px 10px 11px;position:relative}
+  .stub > div + div::before{content:"";position:absolute;left:0;top:10px;bottom:10px;border-left:1.5px dashed #D6D8CF}
+  .stub small{display:block;font-size:13.5px;color:var(--muted2);font-weight:500}
+  .stub b{display:block;margin-top:2px;font-size:14px;letter-spacing:-.1px;font-weight:600;color:var(--ink);white-space:nowrap}
+
+  .fields{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+  .f{background:var(--card);border:1px solid var(--line);border-radius:12px;height:60px;box-sizing:border-box;padding:8px 14px;
+    display:flex;align-items:center;gap:12px}
+  .f .ic{width:34px;height:34px;border-radius:10px;background:var(--bg);display:grid;place-items:center;color:var(--ink)}
+  .f .ic svg{width:18px;height:18px}
+  .f label{display:block;font-size:13.5px;color:var(--muted2);font-weight:500;line-height:1.2}
+  .f .v{font-size:16px;font-weight:500;color:var(--ink);line-height:1.35}
+  .f.focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(132,204,22,.35)}
+  .f .caret{display:inline-block;width:1.5px;height:18px;background:var(--ink);vertical-align:-3px;margin-left:1px}
+
+  .lbl{margin-top:20px;font-size:14px;font-weight:600;color:var(--ink);display:flex;justify-content:space-between}
+  .lbl span{font-weight:500;color:var(--muted2);font-size:13.5px}
+  .sess{margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .s{border-radius:14px;padding:10px 13px;box-sizing:border-box;height:80px;line-height:1.25;position:relative;background:var(--card);border:1px solid var(--line)}
+  .s small{font-size:12.5px;font-weight:600;color:var(--muted)}
+  .s b{display:block;font-size:16px;font-weight:700;color:var(--ink);margin-top:2px}
+  .s em{font-style:normal;display:block;font-size:13.5px;color:var(--muted);margin-top:2px}
+  .s.on{background:var(--ink);border-color:var(--ink)}
+  .s.on small{color:var(--lime)} .s.on b{color:#fff} .s.on em{color:#AEB6C4}
+  .s .rad{position:absolute;right:12px;top:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid #CDD0C6;box-sizing:border-box}
+  .s.on .rad{border:none;background:var(--lime);display:grid;place-items:center}
+  .s.on .rad::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--ink)}
+
+  .consent{margin-top:15px;display:flex;gap:11px;align-items:flex-start}
+  .chk{width:22px;height:22px;border-radius:7px;background:var(--lime);flex:none;display:grid;place-items:center;margin-top:1px}
+  .chk svg{width:15px;height:15px;stroke:var(--ink);stroke-width:2.6}
+  .consent p{margin:0;font-size:13.5px;line-height:1.45;color:#3F4652}
+
+  .cta{position:absolute;left:20px;right:20px;bottom:24px;height:56px;border-radius:16px;background:var(--lime);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;gap:10px;font-size:16.5px;font-weight:700;
+    box-shadow:0 8px 20px -8px rgba(77,124,15,.55), inset 0 -2px 0 rgba(0,0,0,.08)}
+  .cta .ar{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center}
+  .cta .ar svg{width:16px;height:16px;stroke-width:2.2}
+
+  /* ---------- MÁY 2: quét ---------- */
+  #scanner .screen{background:var(--ink);color:#fff}
+  #scanner .status{color:#E5E7EB}
+  .sc-head{position:absolute;left:18px;right:18px;top:46px;height:44px;display:flex;align-items:center;gap:12px}
+  .desk{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 14px 0 12px;border-radius:999px;background:var(--lime);
+    color:var(--ink);font-size:15px;font-weight:700}
+  .desk svg{width:17px;height:17px;stroke-width:2}
+  .ev{flex:1;min-width:0}
+  .ev small{display:block;font-size:12.5px;color:#9AA3B2;font-weight:500}
+  .ev b{display:block;font-size:14.5px;font-weight:600;color:#F3F4F6;white-space:nowrap}
+  .round{width:40px;height:40px;border-radius:50%;background:var(--ink3);display:grid;place-items:center;color:#E5E7EB}
+
+  .count{position:absolute;left:16px;right:16px;top:100px;height:138px;border-radius:20px;background:var(--ink2);
+    border:1px solid rgba(255,255,255,.06);padding:14px 16px;box-sizing:border-box}
+  .count .row{display:flex;justify-content:space-between;align-items:center}
+  .live{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;color:var(--lime)}
+  .live i{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px rgba(132,204,22,.2)}
+  .count .lab{font-size:13px;color:#9AA3B2;font-weight:500}
+  .big{display:flex;align-items:baseline;gap:8px;margin-top:4px}
+  .big b{font-size:36px;font-weight:700;letter-spacing:-1px;line-height:1.05;color:#fff}
+  .big span{font-size:16px;color:#C9CFD8;font-weight:500}
+  .big .pct{margin-left:auto;font-size:15px;font-weight:600;color:var(--lime)}
+  .bar{margin-top:10px;height:8px;border-radius:99px;background:#2C3648;position:relative;overflow:hidden}
+  .bar{display:flex;gap:2px}
+  .bar i{position:static;height:100%;flex:none}
+  .bar .a{width:36.25%;background:#84CC16;border-radius:99px 0 0 99px}
+  .bar .b{width:calc(28.75% - 2px);background:#BEF264;border-radius:0 99px 99px 0}
+
+  .camera{position:absolute;left:16px;right:16px;top:250px;height:440px;border-radius:24px;overflow:hidden;
+    background:
+      radial-gradient(120px 90px at 18% 22%,rgba(253,230,138,.28),transparent 70%),
+      radial-gradient(160px 110px at 85% 14%,rgba(253,224,171,.22),transparent 70%),
+      radial-gradient(220px 160px at 70% 78%,rgba(120,113,108,.55),transparent 70%),
+      radial-gradient(240px 200px at 20% 85%,rgba(87,83,78,.6),transparent 70%),
+      linear-gradient(180deg,#3B3732 0%,#2A2723 55%,#1E1C1A 100%)}
+  /* bàn tay + điện thoại khách cầm vé */
+  .held{position:absolute;left:50%;top:40px;width:178px;height:300px;margin-left:-89px;border-radius:26px;background:#0D0E10;
+    transform:rotate(-6deg);box-shadow:0 30px 50px rgba(0,0,0,.55);padding:9px;box-sizing:border-box}
+  .held .scr{width:100%;height:100%;border-radius:19px;background:#FAFAF7;overflow:hidden;position:relative}
+  .held .tk-top{height:56px;background:var(--ink);padding:10px 12px;box-sizing:border-box;color:#fff}
+  .held .tk-top small{display:block;font-size:8px;color:var(--lime);font-weight:600}
+  .held .tk-top b{display:block;font-size:10px;font-weight:600;line-height:1.25;margin-top:2px}
+  .held .qr{position:absolute;left:50%;top:76px;width:124px;height:124px;margin-left:-62px}
+  .held .tk-foot{position:absolute;left:12px;right:12px;bottom:14px;font-size:8.5px;color:#6B7280;display:flex;justify-content:space-between}
+  .thumb{position:absolute;left:50%;top:330px;width:120px;height:120px;margin-left:-10px;border-radius:50% 50% 40% 40%;
+    background:radial-gradient(circle at 40% 30%,#C69C7E,#8E6A52 70%);transform:rotate(-18deg);opacity:.85;filter:blur(1px)}
+  .dim{position:absolute;left:50%;top:115px;width:208px;height:208px;margin-left:-104px;border-radius:22px;
+    box-shadow:0 0 0 600px rgba(10,12,16,.58)}
+  .vf{position:absolute;left:50%;top:115px;width:208px;height:208px;margin-left:-104px}
+  .vf i{position:absolute;width:42px;height:42px;border:4px solid var(--lime)}
+  .vf i:nth-child(1){left:-4px;top:-4px;border-right:0;border-bottom:0;border-top-left-radius:22px}
+  .vf i:nth-child(2){right:-4px;top:-4px;border-left:0;border-bottom:0;border-top-right-radius:22px}
+  .vf i:nth-child(3){left:-4px;bottom:-4px;border-right:0;border-top:0;border-bottom-left-radius:22px}
+  .vf i:nth-child(4){right:-4px;bottom:-4px;border-left:0;border-top:0;border-bottom-right-radius:22px}
+  .scanline{position:absolute;left:14px;right:14px;top:96px;height:3px;border-radius:3px;background:var(--lime);
+    box-shadow:0 0 12px 2px rgba(132,204,22,.85)}
+  .scanglow{position:absolute;left:14px;right:14px;top:26px;height:72px;
+    background:linear-gradient(180deg,transparent,rgba(132,204,22,.22));border-radius:4px}
+  .cam-chip{position:absolute;left:14px;top:14px;display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;
+    background:rgba(17,24,39,.72);font-size:13px;font-weight:600;color:#F3F4F6;backdrop-filter:blur(6px)}
+  .cam-chip i{width:7px;height:7px;border-radius:50%;background:var(--lime)}
+  .cam-tools{position:absolute;right:14px;top:14px;display:flex;gap:8px}
+  .cam-tools span{width:30px;height:30px;border-radius:50%;background:rgba(17,24,39,.72);display:grid;place-items:center;color:#F3F4F6}
+  .cam-tools svg{width:16px;height:16px}
+  .hint{position:absolute;left:0;right:0;top:376px;text-align:center;font-size:13.5px;color:#E5E7EB;font-weight:500}
+
+  .sheet{position:absolute;left:12px;right:12px;top:604px;height:154px;border-radius:24px;background:#FFFFFF;color:var(--ink);
+    box-shadow:0 -18px 40px -10px rgba(0,0,0,.6);padding:10px 16px 14px;box-sizing:border-box}
+  .grab{width:40px;height:4px;border-radius:4px;background:#D9DBD3;margin:0 auto 12px}
+  .res{display:flex;gap:14px;align-items:center}
+  .ok{width:52px;height:52px;border-radius:16px;background:var(--lime);display:grid;place-items:center;flex:none}
+  .ok svg{width:28px;height:28px;stroke:var(--ink);stroke-width:2.6}
+  .res .tx{flex:1;min-width:0}
+  .res .st{font-size:13px;font-weight:700;color:var(--lime-d);display:flex;align-items:center;gap:6px}
+  .res .nm{font-size:22px;font-weight:700;letter-spacing:-.3px;line-height:1.2;margin-top:1px}
+  .res .mt{font-size:14px;color:#4B5563;margin-top:1px}
+  .seq{align-self:flex-start;font-size:12.5px;font-weight:500;color:var(--muted);background:var(--bg);border-radius:8px;padding:4px 8px}
+  .res-foot{margin-top:12px;padding-top:10px;border-top:1px dashed #E2E3DC;display:flex;justify-content:space-between;font-size:14px;color:var(--muted)}
+  .res-foot b{color:var(--ink);font-weight:600;font-size:15px}
+
+  .manual{position:absolute;left:16px;right:16px;bottom:22px;height:56px;border-radius:16px;background:var(--ink2);
+    border:1.5px solid #374357;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:0 14px 0 16px;color:#F9FAFB}
+  .manual .lt{flex:1}
+  .manual b{display:block;font-size:16px;font-weight:600}
+  .manual small{display:block;font-size:12.5px;color:#9AA3B2;margin-top:1px}
+  .manual .k{width:32px;height:32px;border-radius:10px;background:var(--ink3);display:grid;place-items:center;color:var(--lime)}
+  .manual .k svg{width:17px;height:17px}
+  .split{display:flex;gap:12px;margin-top:10px;font-size:14px;color:#9AA3B2;white-space:nowrap}
+  .split span{display:inline-flex;align-items:center;gap:6px}
+  .split i{width:10px;height:10px;border-radius:3px}
+  .split b{color:#F3F4F6;font-weight:700;font-size:15px}
+  .split .rest{margin-left:auto}
+  .bokeh{position:absolute;border-radius:50%;filter:blur(6px)}
+</style>
+</head>
+<body>
+
+<!-- ================= MÁY 1 · ĐĂNG KÝ ================= -->
+<div class="device" id="registration">
+  <span class="btn-side l1"></span><span class="btn-side l2"></span><span class="btn-side r1"></span>
+  <div class="body">
+    <div class="screen">
+      <div class="cam"></div>
+      <div class="status"><span class="num">08:12</span>
+        <span class="batt"><span class="sig"><b style="height:5px"></b><b style="height:8px"></b><b style="height:11px"></b></span><span class="cell"><i></i></span></span>
+      </div>
+
+      <div class="band">
+        <div class="t lime"><div class="q" style="background:var(--ink);left:-56px;top:-56px"></div></div>
+        <div class="t stripes"></div>
+        <div class="t ink"><div class="circ" style="background:var(--lime);inset:14px"></div></div>
+        <div class="t pale"><div class="half" style="background:var(--lime)"></div></div>
+        <div class="t ink"><div class="q" style="background:var(--lime);left:0;top:0"></div></div>
+        <div class="t dots"></div>
+        <div class="t lime"><div class="ring" style="border-color:var(--ink)"></div></div>
+
+        <div class="t dots"></div>
+        <div class="t ink"><div class="ring"></div></div>
+        <div class="t lime"><div class="half" style="background:var(--ink);top:0;bottom:auto;border-radius:0 0 28px 28px"></div></div>
+        <div class="t blank"><div class="circ" style="background:var(--ink);inset:16px"></div></div>
+        <div class="t stripes"></div>
+        <div class="t ink"><div class="q" style="background:var(--lime);left:-56px;top:0"></div></div>
+        <div class="t pale"><div class="circ" style="background:var(--lime);inset:12px"></div></div>
+      </div>
+
+      <div class="reg">
+        <span class="tag">Miễn phí · 480 chỗ</span>
+        <h1>Ngày hội Định hướng<br>nghề nghiệp 2026</h1>
+        <div class="stub">
+          <div><small>Ngày</small><b class="num">Thứ bảy, 17/10/2026</b></div>
+          <div><small>Bắt đầu</small><b class="mono num">08:30</b></div>
+          <div><small>Địa điểm</small><b>Hội trường A</b></div>
+        </div>
+
+        <div class="fields">
+          <div class="f"><span class="ic"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg></span>
+            <div><label>Họ và tên</label><div class="v">Khánh Linh</div></div></div>
+          <div class="f"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg></span>
+            <div><label>Số điện thoại</label><div class="v num">09xx xxx 321</div></div></div>
+          <div class="f focus"><span class="ic"><svg class="i" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/></svg></span>
+            <div><label>Email nhận vé</label><div class="v">k***@gmail.com<span class="caret"></span></div></div></div>
+        </div>
+
+        <div class="lbl">Chọn phiên <span>Chọn 1 phiên</span></div>
+        <div class="sess">
+          <div class="s on"><span class="rad"></span><small>Phiên A</small><b>Công nghệ</b><em>Còn 36 chỗ</em></div>
+          <div class="s"><span class="rad"></span><small>Phiên B</small><b>Thiết kế</b><em>Còn 52 chỗ</em></div>
+        </div>
+
+        <div class="consent">
+          <span class="chk"><svg class="i" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+          <p>Tôi đồng ý để ban tổ chức xử lý dữ liệu cá nhân nhằm gửi vé và liên hệ về sự kiện.</p>
+        </div>
+      </div>
+
+      <div class="cta">Nhận vé QR qua email <span class="ar"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MÁY 2 · QUÉT ================= -->
+<div class="device" id="scanner">
+  <span class="btn-side l1"></span><span class="btn-side l2"></span><span class="btn-side r1"></span>
+  <div class="body">
+    <div class="screen">
+      <div class="cam"></div>
+      <div class="status"><span class="num">08:42</span>
+        <span class="batt"><span class="sig"><b style="height:5px"></b><b style="height:8px"></b><b style="height:11px"></b></span><span class="cell"><i style="width:58%"></i></span></span>
+      </div>
+
+      <div class="sc-head">
+        <span class="desk"><svg class="i" viewBox="0 0 24 24"><path d="M3 10h18M5 10v10M19 10v10M8 6h8l1 4H7z"/></svg>Quầy 2</span>
+        <div class="ev"><small>Đang check-in cho</small><b>Định hướng nghề nghiệp</b></div>
+        <span class="round"><svg class="i" viewBox="0 0 24 24"><path d="M9 2h6l-1 7h4l-7 13 1-9H8z"/></svg></span>
+      </div>
+
+      <div class="count">
+        <div class="row"><span class="lab">Lượt check-in hôm nay</span><span class="live"><i></i>Trực tiếp</span></div>
+        <div class="big num"><b>312</b><span>/ 480 đã đến</span><span class="pct">65%</span></div>
+        <div class="bar"><i class="a"></i><i class="b"></i></div>
+        <div class="split num"><span><i style="background:#84CC16"></i>Phiên A <b>174</b></span><span><i style="background:#BEF264"></i>Phiên B <b>138</b></span><span class="rest">Chưa đến <b>168</b></span></div>
+      </div>
+
+      <div class="camera">
+        <span class="bokeh" style="left:30px;top:70px;width:34px;height:34px;background:rgba(254,240,138,.35)"></span>
+        <span class="bokeh" style="left:300px;top:40px;width:26px;height:26px;background:rgba(254,215,170,.4)"></span>
+        <span class="bokeh" style="left:270px;top:110px;width:16px;height:16px;background:rgba(255,255,255,.3)"></span>
+        <span class="bokeh" style="left:60px;top:300px;width:22px;height:22px;background:rgba(254,240,138,.22)"></span>
+        <div class="held"><div class="scr">
+          <div class="tk-top"><small>Vé tham dự · Phiên A</small><b>Ngày hội Định hướng<br>nghề nghiệp 2026</b></div>
+          <svg class="qr" id="qr" viewBox="0 0 25 25" shape-rendering="crispEdges"></svg>
+          <div class="tk-foot"><span>Gia Huy</span><span class="mono">EV26-0312</span></div>
+        </div></div>
+                <div class="dim"></div>
+        <div class="vf"><i></i><i></i><i></i><i></i><div class="scanglow"></div><div class="scanline"></div></div>
+        <span class="cam-chip"><i></i>Đang quét</span>
+        <span class="cam-tools">
+          <span><svg class="i" viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+        </span>
+      </div>
+
+      <div class="sheet">
+        <div class="grab"></div>
+        <div class="res">
+          <span class="ok"><svg class="i" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></span>
+          <div class="tx">
+            <div class="st">Đã check-in</div>
+            <div class="nm">Gia Huy</div>
+            <div class="mt">Phiên A · <span class="mono num">08:42</span></div>
+          </div>
+          <span class="seq mono num">#312</span>
+        </div>
+        <div class="res-foot"><span>Mã vé <b class="mono">EV26-0312</b></span><span>Đăng ký <b class="num">02/10</b></span></div>
+      </div>
+
+      <div class="manual">
+        <span class="k"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg></span>
+        <div class="lt"><b>Tra cứu thủ công</b><small>Cho khách không mang mã QR</small></div>
+        <svg class="i" viewBox="0 0 24 24" style="color:#9AA3B2"><path d="m9 6 6 6-6 6"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// QR giả lập 25×25, cố định (không phụ thuộc ngẫu nhiên)
+(function(){
+  const N=25, g=[];
+  for(let y=0;y<N;y++){g[y]=[];for(let x=0;x<N;x++){
+    let h=(x*73856093)^(y*19349663)^0x5bd1e995; h=(h^(h>>>13))*0x45d9f3b; h^=h>>>16;
+    g[y][x]=(h&7)<3?1:0;}}
+  function finder(ox,oy){for(let y=-1;y<8;y++)for(let x=-1;x<8;x++){const X=ox+x,Y=oy+y;if(X<0||Y<0||X>=N||Y>=N)continue;
+    const edge=(x===0||x===6||y===0||y===6)&&x>=0&&x<=6&&y>=0&&y<=6;const core=x>=2&&x<=4&&y>=2&&y<=4;g[Y][X]=(edge||core)?1:0;}}
+  finder(0,0);finder(N-7,0);finder(0,N-7);
+  for(let i=8;i<N-8;i++){g[6][i]=i%2?0:1;g[i][6]=i%2?0:1;}
+  for(let y=16;y<21;y++)for(let x=16;x<21;x++){const e=(x===16||x===20||y===16||y===20);g[y][x]=(e||(x===18&&y===18))?1:0;}
+  let s='';for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(g[y][x])s+=`<rect x="${x}" y="${y}" width="1" height="1"/>`;
+  document.getElementById('qr').innerHTML='<g fill="#111827">'+s+'</g>';
+})();
+</script>
+</body>
+</html>
