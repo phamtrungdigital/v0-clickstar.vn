@@ -2,22 +2,35 @@
 
 Thư mục này KHÔNG được build hay deploy. Đây là bản nguồn HTML của các hình minh hoạ, giữ lại để sửa về sau.
 
-- Ảnh đang dùng trên website: `public/images/custom-software/v2/*.webp`
+- Ảnh đang dùng trên website: `public/images/custom-software/v3/*.webp`
 - Nội dung chữ của từng dự án: `app/services/custom-software/_data/content.ts` (`WORK`)
 - Quy tắc thiết kế và dữ liệu mẫu: `BRIEF.md`
 
-## Vì sao là mockup tự vẽ
+## Lịch sử (anh Trung duyệt 4/10/2026)
 
-Lần đầu em dùng ảnh chụp giao diện thật của hệ thống làm cho khách (đã che tên). Anh Trung loại bộ ảnh đó ngày 4/10/2026 vì nhìn vẫn nhận ra hệ thống của khách. Từ đó ảnh dự án ẩn tên phải là mockup tự thiết kế: ngôn ngữ hình ảnh riêng, dữ liệu mẫu trung tính, không địa danh thật, không dùng từ vựng đặc trưng của khách.
+1. Ảnh chụp giao diện thật của hệ thống làm cho khách, đã che tên: bị loại vì nhìn vẫn ra hệ thống của khách.
+2. Mockup tự vẽ v2: bị loại vì "giống màu sắc của AI". Lỗi của v2: mỗi bản một màu nhấn rực, nền tối, chip tô màu, hoạ tiết, bo góc lớn, câu thuyết minh tính năng nằm trong UI.
+3. **v3 (đang dùng)**: UI chân thật kiểu đội sản phẩm lâu năm. Đặc điểm:
+   - Nền trung tính, mỗi sản phẩm một màu trầm.
+   - Font hệ thống, bo 6–8px, viền 1px.
+   - Mật độ thông tin như app thật.
+   - Tính năng hiện qua chính giao diện, không chú thích.
 
 ## Sửa và xuất lại ảnh
 
-1. Sửa file `.html` tương ứng. Tệp tự chứa, chỉ cần Google Fonts.
-2. Render @2x bằng Playwright:
+1. Sửa file `.html` tương ứng. Tệp tự chứa, không tải tài nguyên ngoài, font hệ thống: render trên macOS ra SF Pro.
+2. Render @2x bằng Playwright, desktop mặc định 1280×800:
    ```bash
    node render.cjs ads-command-center.html ads-command-center.png
    node render.cjs event-checkin.html event-registration.png --selector=#registration --transparent
    node render.cjs event-checkin.html event-checkin.png --selector=#scanner --transparent
    ```
-   `render.cjs` lấy Playwright từ `../admin-clickstar/node_modules` (đường dẫn tuyệt đối ở đầu file, đổi nếu máy khác). Script in ra cảnh báo chữ cấm, tràn khung và font chưa nạp.
-3. Chuyển sang webp: ảnh desktop 2400×1500, quality 88. Ảnh điện thoại giữ nền trong suốt. Nếu kích thước ảnh điện thoại đổi thì cập nhật `width/height` trong `content.ts`.
+   `render.cjs` lấy Playwright từ `../admin-clickstar/node_modules` (đường dẫn tuyệt đối ở đầu file, đổi nếu máy khác). Script in ra cảnh báo:
+   - chữ cấm;
+   - "dấu hiệu AI": gradient, bo góc > 12px, bóng nặng, blur, màu bão hoà;
+   - tràn khung, chữ bị cắt.
+
+   Từ cấm có tên khách nằm ở `forbidden.local.txt` (gitignore, vì repo public).
+3. Chuyển sang webp:
+   - Ảnh desktop: 2400×1500, quality 88.
+   - Ảnh điện thoại: giữ nền trong suốt. Nếu kích thước đổi thì cập nhật `width/height` trong `content.ts`.

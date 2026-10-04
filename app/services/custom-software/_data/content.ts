@@ -169,7 +169,7 @@ export type WorkItem = {
   shots: WorkShot[]
 }
 
-const IMG = '/images/custom-software/v2'
+const IMG = '/images/custom-software/v3'
 const DESKTOP = { width: 2400, height: 1500 }
 
 export const WORK = {
@@ -208,7 +208,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Meta Marketing API',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/ads-command-center.webp`, ...DESKTOP, alt: { vi: 'Tổng quan chi phí, đăng ký học và việc cần quyết định theo chi nhánh', en: 'Spend, enrolments and decision queue by branch' } },
+        { src: `${IMG}/ads-command-center.webp`, ...DESKTOP, alt: { vi: 'Tổng quan chi phí, đăng ký học và cảnh báo theo chi nhánh', en: 'Spend, enrolments and open alerts by branch' } },
       ],
     },
     {
@@ -231,7 +231,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Web Push · Zalo ZNS',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/customer-data-platform.webp`, ...DESKTOP, alt: { vi: 'Hồ sơ 360 của một khách hàng sau khi gộp danh tính', en: '360 customer profile after identity merge' } },
+        { src: `${IMG}/customer-data-platform.webp`, ...DESKTOP, alt: { vi: 'Hồ sơ khách hàng sau khi gộp danh tính', en: 'Customer profile after identity merge' } },
       ],
     },
     {
@@ -254,7 +254,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Realtime',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/team-workspace.webp`, ...DESKTOP, alt: { vi: 'Bảng Kanban của nhóm với việc lặp theo lịch', en: 'Team Kanban board with recurring tasks' } },
+        { src: `${IMG}/team-workspace.webp`, ...DESKTOP, alt: { vi: 'Bảng Kanban của nhóm, đang mở hộp chia sẻ và phân quyền', en: 'Team Kanban board with the sharing and roles dialog open' } },
       ],
     },
     {
@@ -277,7 +277,7 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Google Consent Mode',
       frame: 'desktop',
       shots: [
-        { src: `${IMG}/consent-overview.webp`, ...DESKTOP, alt: { vi: 'Tỷ lệ đồng ý và sổ bằng chứng nối chuỗi hash', en: 'Consent rates and hash-chained evidence log' } },
+        { src: `${IMG}/consent-overview.webp`, ...DESKTOP, alt: { vi: 'Tổng quan lượt đồng ý, sổ bằng chứng và thời hạn lưu', en: 'Consent overview with evidence ledger and retention' } },
         { src: `${IMG}/consent-setup.webp`, ...DESKTOP, alt: { vi: 'Cấu hình hộp xin đồng ý kèm bản xem trước', en: 'Consent banner settings with live preview' } },
       ],
     },
@@ -324,8 +324,8 @@ export const WORK = {
       stack: 'Next.js · PostgreSQL · Email',
       frame: 'phone',
       shots: [
-        { src: `${IMG}/event-registration.webp`, width: 840, height: 1736, alt: { vi: 'Form đăng ký sự kiện trên điện thoại', en: 'Event registration form on a phone' } },
-        { src: `${IMG}/event-checkin.webp`, width: 840, height: 1736, alt: { vi: 'Màn hình quét mã QR tại quầy check-in', en: 'QR scanner at the check-in desk' } },
+        { src: `${IMG}/event-registration.webp`, width: 780, height: 1688, alt: { vi: 'Form đăng ký sự kiện trên điện thoại', en: 'Event registration form on a phone' } },
+        { src: `${IMG}/event-checkin.webp`, width: 780, height: 1688, alt: { vi: 'Màn hình quét mã QR tại quầy check-in', en: 'QR scanner at the check-in desk' } },
       ],
     },
   ] satisfies WorkItem[],

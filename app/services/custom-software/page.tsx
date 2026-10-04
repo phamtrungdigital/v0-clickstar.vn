@@ -746,7 +746,7 @@ function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoo
               height={s.height}
               sizes="(min-width: 1024px) 240px, 40vw"
               quality={90}
-              className="h-full w-auto drop-shadow-[0_14px_24px_rgba(11,18,32,0.18)]"
+              className="h-full w-auto drop-shadow-[0_6px_14px_rgba(11,18,32,0.08)]"
             />
           </button>
         ))}
