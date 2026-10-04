@@ -259,9 +259,7 @@ async function build(): Promise<SiteKnowledge> {
       // client_name "Bảo mật" = khách yêu cầu ẩn tên — giữ nguyên để bot không tự đoán tên
       return `- ${c.title_vi} (khách: ${c.client_name}${c.industry_vi ? ', ngành ' + c.industry_vi : ''}) → /projects/${c.slug}\n  ${clean(c.summary_vi ?? '')}${metrics ? `\n  Kết quả: ${metrics}` : ''}`
     })
-    // Đặt khối DỰ ÁN lên ĐẦU: để cuối thì khách hỏi "từng làm hệ thống nào" bot hay bám vào mục
-    // "Các loại hệ thống…" (phạm vi) gặp trước trong khối trang dịch vụ (đo prod: sai 2-3/4 lần).
-    blocks.unshift(
+    blocks.push(
       `### DỰ ÁN ĐÃ TRIỂN KHAI (${lines.length} dự án ở trang /projects + ${codeCases.length} hệ thống phần mềm ẩn tên khách ở mục "Dự án đã thực hiện" của trang dịch vụ)\n${[...lines, ...codeCases].join('\n')}`,
     )
   }
