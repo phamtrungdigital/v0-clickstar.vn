@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Đăng ký và check-in sự kiện</title>
+<style>
+  html,body{margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:transparent;color:#18181B;
+    -webkit-font-smoothing:antialiased;
+    display:flex;gap:48px;padding:24px;align-items:flex-start;
+  }
+  *{box-sizing:border-box}
+  :root{
+    --brand:#0E7490; --brand-600:#0B6380; --brand-50:#ECFEFF; --brand-100:#CFFAFE; --brand-track:#D5EEF3;
+    --ok-50:#F0FDF4; --ok-100:#DCFCE7; --ok-700:#15803D; --ok-800:#166534;
+  }
+  .num{font-variant-numeric:tabular-nums}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace}
+  svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  .screen{position:relative;width:390px;height:844px;border-radius:28px;border:1px solid #D4D4D8;overflow:hidden;background:#FFFFFF}
+
+  /* status bar */
+  .sb{height:47px;display:flex;align-items:center;justify-content:space-between;padding:4px 26px 0 34px;
+      font-size:16px;font-weight:600;letter-spacing:-.2px;color:#000}
+  .sb .r{display:flex;align-items:center;gap:6px}
+  .sb svg{display:block}
+  .home{position:absolute;left:50%;bottom:8px;width:134px;height:5px;margin-left:-67px;border-radius:3px;background:#111}
+
+  /* ---------- 1. registration (mobile web) ---------- */
+  .urlbar{height:50px;padding:4px 12px 8px;border-bottom:1px solid #E4E4E7;background:#FFFFFF}
+  .pill{height:38px;border-radius:19px;background:#F1F1F3;display:flex;align-items:center;gap:8px;padding:0 12px 0 14px;font-size:15px;color:#18181B}
+  .pill .u{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.1px}
+  .pill .u span{color:#71717A}
+  .pill svg.i{width:14px;height:14px;color:#52525B}
+  .pill svg.rl{width:16px;height:16px;color:#3F3F46}
+
+  .band{background:var(--brand);color:#FFFFFF;padding:12px 16px 16px}
+  .band .back{color:var(--brand-100);font-size:12.5px;line-height:16px;font-weight:600;letter-spacing:.1px}
+  .band .back svg.i{width:14px;height:14px;stroke-width:2}
+  .band h1{color:#FFFFFF;margin:6px 0 0}
+  .page{padding:12px 16px 0}
+  .back{display:inline-flex;align-items:center;gap:2px;font-size:13px;color:#52525B;margin-left:-4px}
+  .back svg.i{width:16px;height:16px}
+  h1{font-size:22px;line-height:28px;font-weight:600;letter-spacing:-.35px;margin:10px 0 12px;color:#111827;max-width:none}
+  .meta{list-style:none;margin:0;padding:0}
+  .meta li{display:flex;align-items:center;gap:10px;font-size:14px;line-height:20px;color:#27272A;padding:2px 0}
+  .meta svg.i{color:var(--brand)}
+  hr{border:0;border-top:1px solid #E4E4E7;margin:12px 0 10px}
+
+  .field{margin-bottom:10px}
+  .field label,.lbl{display:block;font-size:13px;line-height:16px;font-weight:500;color:#3F3F46;margin-bottom:6px}
+  .field .in{height:42px;border:1px solid #D4D4D8;border-radius:6px;padding:0 12px;display:flex;align-items:center;font-size:15px;color:#18181B}
+  .field .hint{font-size:12px;line-height:16px;color:#71717A;margin-top:5px}
+
+  .radios{border:1px solid #D4D4D8;border-radius:8px;overflow:hidden}
+  .ro{height:48px;display:flex;align-items:center;gap:10px;padding:0 12px;font-size:15px}
+  .ro + .ro{border-top:1px solid #E4E4E7}
+  .ro.on{background:var(--brand-50)}
+  .ro .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ro .t span{color:#71717A}
+  .ro .s{font-size:12.5px;line-height:20px;color:var(--ok-800);background:var(--ok-100);border-radius:4px;padding:0 7px;font-weight:500}
+  .rd{width:18px;height:18px;border-radius:50%;border:1.5px solid #A1A1AA;flex:none}
+  .ro.on .rd{border:5.5px solid var(--brand);background:#fff}
+
+  .consent{display:flex;gap:10px;margin-top:16px;font-size:13.5px;line-height:19px;color:#3F3F46}
+  .cb{width:18px;height:18px;border-radius:4px;background:var(--brand);flex:none;margin-top:1px;display:grid;place-items:center}
+  .cb svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .consent a{color:var(--brand);white-space:nowrap;text-decoration:underline;text-underline-offset:2px;text-decoration-color:#7DC4D4}
+
+  .cta{position:absolute;left:0;right:0;bottom:0;height:96px;background:#FFFFFF;border-top:1px solid #E4E4E7;padding:12px 16px 0}
+  .btn{height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:15px;font-weight:600;letter-spacing:-.1px}
+  .btn.pri{background:var(--brand);color:#FFFFFF}
+  .btn.out{background:#FFFFFF;color:#18181B;border:1px solid #D4D4D8}
+
+  /* ---------- 2. scanner (staff app) ---------- */
+  .sb.on-brand{background:var(--brand);color:#FFFFFF}
+  .appbar{height:52px;display:flex;align-items:center;gap:6px;padding:0 8px 0 6px;background:var(--brand);color:#FFFFFF}
+  .ib{width:36px;height:36px;display:grid;place-items:center;color:#3F3F46;flex:none}
+  .appbar .ib{color:#FFFFFF}
+  .ib svg.i{width:20px;height:20px}
+  .appbar .tt{flex:1;min-width:0}
+  .appbar .tt b{display:block;font-size:16px;line-height:20px;font-weight:600;letter-spacing:-.2px}
+  .appbar .tt small{display:block;font-size:12.5px;line-height:16px;color:var(--brand-100);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .live{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--brand-50);margin-right:2px}
+  .live i{width:7px;height:7px;border-radius:50%;background:#4ADE80}
+
+  .counter{padding:10px 16px 12px;border-bottom:1px solid #E4E4E7}
+  .counter .row{display:flex;align-items:baseline;justify-content:space-between;font-size:13.5px;color:#52525B}
+  .counter .row b{font-size:15px;font-weight:600;color:#18181B}
+  .bar{height:6px;border-radius:3px;background:var(--brand-track);margin-top:8px;overflow:hidden}
+  .bar i{display:block;height:100%;width:65%;background:var(--brand);border-radius:3px}
+  .split{display:flex;gap:14px;margin-top:7px;font-size:12px;color:#71717A}
+  .split b{font-weight:500;color:#3F3F46}
+  .split .rest{margin-left:auto}
+
+  .cam{position:absolute;left:0;right:0;top:175px;bottom:0;background:#1E1E20;overflow:hidden}
+  .cam .wall{position:absolute;inset:0;background:#232325}
+  .cam .grain{position:absolute;inset:0;width:100%;height:100%;opacity:.07;mix-blend-mode:overlay;pointer-events:none}
+  .cam .vig{position:absolute;inset:0;box-shadow:inset 0 0 110px 30px rgba(0,0,0,.55);pointer-events:none}
+
+  /* điện thoại của khách giơ lên trước camera, màn hình hiển thị vé điện tử */
+  .guest{position:absolute;left:90px;top:84px;width:210px;height:440px;border-radius:20px;background:#161618;
+         border:1px solid #3A3A3D;padding:7px;transform:rotate(-5deg);transform-origin:105px 149px;
+         box-shadow:0 10px 30px rgba(0,0,0,.55)}
+  .guest .scr{position:relative;height:100%;border-radius:14px;background:#F4F4F2;overflow:hidden;color:#1F1F1F}
+  .guest .hd{background:var(--brand);color:#FFFFFF;padding-bottom:9px}
+  .guest .gsb{display:flex;justify-content:space-between;align-items:center;height:20px;padding:4px 14px 0 16px;font-size:9px;font-weight:600}
+  .guest .gsb i{display:block;width:14px;height:6px;border-radius:1.5px;background:#FFFFFF}
+  .guest .ev{margin:8px 16px 0;font-size:9.5px;line-height:12px;color:var(--brand-100);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .guest .ty{margin:2px 16px 0;font-size:12px;line-height:15px;font-weight:600;letter-spacing:-.1px}
+  .guest .qr{margin:10px auto 0;width:150px;height:150px}
+  .guest .qr svg{display:block;width:150px;height:150px}
+  .guest .code{margin-top:10px;text-align:center;font-size:12.5px;letter-spacing:.6px}
+  .guest .nm{margin-top:3px;text-align:center;font-size:10.5px;color:#6B6B68}
+  .guest .gl{position:absolute;left:16px;right:16px;top:290px;border-top:1px dashed #CFCFCB}
+
+  .vf{position:absolute;left:72px;top:110px;width:246px;height:246px}
+  .vf i{position:absolute;width:30px;height:30px;border:0 solid #1A7F37}
+  .vf .a{left:0;top:0;border-left-width:4px;border-top-width:4px;border-top-left-radius:6px}
+  .vf .b{right:0;top:0;border-right-width:4px;border-top-width:4px;border-top-right-radius:6px}
+  .vf .c{left:0;bottom:0;border-left-width:4px;border-bottom-width:4px;border-bottom-left-radius:6px}
+  .vf .d{right:0;bottom:0;border-right-width:4px;border-bottom-width:4px;border-bottom-right-radius:6px}
+  .camtool{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center;color:#F4F4F5}
+  .camtool svg.i{width:18px;height:18px}
+  .camhint{position:absolute;left:14px;top:18px;height:28px;padding:0 10px 0 8px;border-radius:6px;background:rgba(0,0,0,.45);color:#F4F4F5;
+           font-size:12.5px;display:flex;align-items:center;gap:6px}
+  .camhint svg.i{width:15px;height:15px;color:#D4D4D8}
+
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:#FFFFFF;border-radius:12px 12px 0 0;padding:8px 16px 42px;
+         box-shadow:0 -1px 0 rgba(0,0,0,.08),0 -4px 12px rgba(0,0,0,.12)}
+  .grab{width:36px;height:4px;border-radius:2px;background:#D4D4D8;margin:0 auto 14px}
+  .st{display:flex;align-items:center;gap:8px}
+  .st .ok{width:32px;height:32px;border-radius:50%;background:var(--ok-100);display:grid;place-items:center;flex:none}
+  .st svg.i{width:18px;height:18px;color:var(--ok-700);stroke-width:2.25}
+  .st{gap:10px}
+  .st b{font-size:17px;font-weight:600;letter-spacing:-.2px;color:var(--ok-800);flex:1}
+  .st .undo{font-size:13.5px;color:var(--brand);font-weight:500}
+  .who{font-size:15px;line-height:20px;color:#18181B;font-weight:500;margin:2px 0 0 42px}
+  .who > span{font-weight:400}
+  .who span{color:#52525B}
+  .kv{margin:14px 0 0;border-top:1px solid #E4E4E7}
+  .kv div{display:flex;justify-content:space-between;align-items:center;height:38px;border-bottom:1px solid #F0F0F2;font-size:13.5px;color:#71717A}
+  .kv div:last-child{border-bottom:0}
+  .kv dd{margin:0;color:#18181B}
+  .kv dd.mono{font-size:13.5px;letter-spacing:.2px}
+  .acts{display:flex;gap:8px;margin-top:10px}
+  .acts .btn{flex:1;height:44px;font-size:15px}
+  .acts .btn svg.i{width:16px;height:16px;color:var(--brand)}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. Trang đăng ký (web mobile) ============ -->
+<div class="screen" id="registration" data-device>
+  <div class="sb">
+    <span class="num">08:12</span>
+    <span class="r">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#000"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#000"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#000"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#000"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.1-1.1C13.2 1.6 10.7.6 8 .6S2.8 1.6.9 3.5L2 4.6c1.6-1.5 3.7-2.4 6-2.4Z" fill="#000"/><path d="M8 5.4c1.4 0 2.7.5 3.7 1.4l1.1-1.1C11.5 4.5 9.8 3.8 8 3.8s-3.5.7-4.8 1.9l1.1 1.1c1-.9 2.3-1.4 3.7-1.4Z" fill="#000"/><path d="M8 8.6c.6 0 1.1.2 1.5.6L8 11 6.5 9.2c.4-.4.9-.6 1.5-.6Z" fill="#000"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#000" opacity=".4"/><rect x="2" y="2" width="16" height="9" rx="2" fill="#000"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2Z" fill="#000" opacity=".45"/></svg>
+    </span>
+  </div>
+  <div class="urlbar">
+    <div class="pill">
+      <svg class="i" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <div class="u">example.com<span>/su-kien/dinh-huong-2026</span></div>
+      <svg class="i rl" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="back"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>Sự kiện</div>
+    <h1>Ngày hội Định hướng nghề nghiệp 2026</h1>
+  </div>
+
+  <div class="page">
+    <ul class="meta">
+      <li><svg class="i" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16.5" rx="2"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/></svg><span class="num">Thứ bảy, 17/10/2026 · 08:30</span></li>
+      <li><svg class="i" viewBox="0 0 24 24"><path d="M19 10c0 5.5-7 11.5-7 11.5S5 15.5 5 10a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>Hội trường A</li>
+      <li><svg class="i" viewBox="0 0 24 24"><path d="M3 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2Z"/><path d="M14 5v2M14 11v2M14 17v2"/></svg><span class="num">Miễn phí, 480 chỗ</span></li>
+    </ul>
+    <hr>
+
+    <div class="field"><label>Họ và tên</label><div class="in">Khánh Linh</div></div>
+    <div class="field"><label>Số điện thoại</label><div class="in num">09xx xxx 321</div></div>
+    <div class="field"><label>Email nhận vé</label><div class="in">k***@gmail.com</div><div class="hint">Vé QR sẽ được gửi tới email này.</div></div>
+
+    <div class="lbl" style="margin-top:14px">Chọn phiên</div>
+    <div class="radios">
+      <div class="ro on"><i class="rd"></i><div class="t">Phiên A <span>·</span> Công nghệ</div><div class="s num">còn 36 chỗ</div></div>
+      <div class="ro"><i class="rd"></i><div class="t">Phiên B <span>·</span> Thiết kế</div><div class="s num">còn 52 chỗ</div></div>
+    </div>
+
+    <div class="consent">
+      <span class="cb"><svg viewBox="0 0 12 12"><path d="M2.5 6.2 5 8.6l4.6-5"/></svg></span>
+      <div>Tôi đồng ý để ban tổ chức xử lý dữ liệu cá nhân nhằm gửi vé và liên hệ về sự kiện. <a>Chính sách dữ liệu</a></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="btn pri">Nhận vé QR qua email</div>
+  </div>
+  <div class="home"></div>
+</div>
+
+<!-- ============ 2. Ứng dụng quét (nhân viên) ============ -->
+<div class="screen" id="scanner" data-device>
+  <div class="sb on-brand">
+    <span class="num">08:42</span>
+    <span class="r">
+      <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#fff" opacity=".3"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 2.2c2.3 0 4.4.9 6 2.4l1.1-1.1C13.2 1.6 10.7.6 8 .6S2.8 1.6.9 3.5L2 4.6c1.6-1.5 3.7-2.4 6-2.4Z" fill="#fff"/><path d="M8 5.4c1.4 0 2.7.5 3.7 1.4l1.1-1.1C11.5 4.5 9.8 3.8 8 3.8s-3.5.7-4.8 1.9l1.1 1.1c1-.9 2.3-1.4 3.7-1.4Z" fill="#fff"/><path d="M8 8.6c.6 0 1.1.2 1.5.6L8 11 6.5 9.2c.4-.4.9-.6 1.5-.6Z" fill="#fff"/></svg>
+      <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#fff" opacity=".4"/><rect x="2" y="2" width="11" height="9" rx="2" fill="#fff"/><path d="M25 4.5v4c.8-.3 1.4-1.1 1.4-2s-.6-1.7-1.4-2Z" fill="#fff" opacity=".45"/></svg>
+    </span>
+  </div>
+
+  <div class="appbar">
+    <div class="ib"><svg class="i" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <div class="tt"><b>Quầy 2</b><small>Ngày hội Định hướng nghề nghiệp 2026</small></div>
+    <span class="live"><i></i>Trực tuyến</span>
+    <div class="ib"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="5.5" r=".9"/><circle cx="12" cy="12" r=".9"/><circle cx="12" cy="18.5" r=".9"/></svg></div>
+  </div>
+
+  <div class="counter">
+    <div class="row num"><span><b>312</b> / 480 đã đến</span><span>65%</span></div>
+    <div class="bar"><i></i></div>
+    <div class="split num"><span>Phiên A <b>174</b></span><span>Phiên B <b>138</b></span><span class="rest">Chưa đến <b>168</b></span></div>
+  </div>
+
+  <div class="cam">
+    <div class="wall"></div>
+    <svg class="grain" xmlns="http://www.w3.org/2000/svg">
+      <filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+      <rect width="100%" height="100%" filter="url(#n)"/>
+    </svg>
+
+    <div class="guest">
+      <div class="scr">
+        <div class="hd">
+          <div class="gsb"><span class="num">08:41</span><i></i></div>
+          <div class="ev">Ngày hội Định hướng nghề nghiệp 2026</div>
+          <div class="ty">Vé vào cửa · Phiên A</div>
+        </div>
+        <div class="qr"><svg id="qr" viewBox="0 0 25 25" shape-rendering="geometricPrecision"></svg></div>
+        <div class="code mono">EV26-0312</div>
+        <div class="nm">Gia Huy · 17/10 · 08:30</div>
+        <div class="gl"></div>
+      </div>
+    </div>
+    <div class="vig"></div>
+
+    <div class="vf"><i class="a"></i><i class="b"></i><i class="c"></i><i class="d"></i></div>
+    <div class="camhint"><svg class="i" viewBox="0 0 24 24"><path d="M14.5 4h-5L7.5 6.5H5a2 2 0 0 0-2 2V17a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a2 2 0 0 0-2-2h-2.5Z"/><circle cx="12" cy="12.5" r="3.25"/></svg>Camera sau</div>
+    <div class="camtool"><svg class="i" viewBox="0 0 24 24"><path d="M17 3H7v4l2 3v10a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V10l2-3V3Z"/><path d="M7 7h10M12 13v2"/></svg></div>
+  </div>
+
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="st">
+      <span class="ok"><svg class="i" viewBox="0 0 24 24"><path d="m6 12.5 4 4 8-9"/></svg></span>
+      <b>Đã check-in</b>
+      <span class="undo">Hoàn tác</span>
+    </div>
+    <div class="who">Gia Huy <span>· Phiên A · <span class="num">08:42</span></span></div>
+    <dl class="kv">
+      <div><dt>Mã vé</dt><dd class="mono">EV26-0312</dd></div>
+      <div><dt>Số điện thoại</dt><dd class="num">09xx xxx 518</dd></div>
+      <div><dt>Đăng ký lúc</dt><dd class="num">02/10/2026 21:14</dd></div>
+    </dl>
+    <div class="acts">
+      <div class="btn out"><svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Tra cứu thủ công</div>
+      <div class="btn pri">Quét tiếp</div>
+    </div>
+  </div>
+  <div class="home"></div>
+</div>
+
+<script>
+// QR 25×25 (version 2): lưới module vuông đều, 3 ô định vị + vạch phân cách, timing hàng/cột 6,
+// alignment tâm (18,18), dark module; phần dữ liệu sinh giả ngẫu nhiên tất định.
+(function () {
+  const N = 25, g = [], fixed = []
+  let s = 0x2f6b1d
+  const rnd = () => { s ^= s << 13; s ^= s >>> 17; s ^= s << 5; return (s >>> 0) / 4294967296 }
+  for (let y = 0; y < N; y++) { g[y] = []; fixed[y] = []; for (let x = 0; x < N; x++) { g[y][x] = rnd() < 0.5 ? 1 : 0; fixed[y][x] = 0 } }
+  const set = (x, y, v) => { if (x < 0 || y < 0 || x >= N || y >= N) return; g[y][x] = v; fixed[y][x] = 1 }
+  const finder = (ox, oy) => {
+    for (let y = -1; y <= 7; y++) for (let x = -1; x <= 7; x++) {
+      const inside = x >= 0 && x <= 6 && y >= 0 && y <= 6
+      const ring = x === 0 || x === 6 || y === 0 || y === 6, core = x >= 2 && x <= 4 && y >= 2 && y <= 4
+      set(ox + x, oy + y, inside && (ring || core) ? 1 : 0)
+    }
+  }
+  finder(0, 0); finder(N - 7, 0); finder(0, N - 7)
+  for (let i = 8; i <= N - 9; i++) { set(i, 6, i % 2 ? 0 : 1); set(6, i, i % 2 ? 0 : 1) }
+  for (let y = 16; y <= 20; y++) for (let x = 16; x <= 20; x++) {
+    set(x, y, (x === 16 || x === 20 || y === 16 || y === 20 || (x === 18 && y === 18)) ? 1 : 0)
+  }
+  set(8, N - 8, 1)
+  // vẽ theo từng đoạn ngang, cao hơi dư để không lộ khe giữa các hàng khi khung bị xoay
+  let d = ''
+  for (let y = 0; y < N; y++) {
+    let x = 0
+    while (x < N) {
+      if (!g[y][x]) { x++; continue }
+      let w = 0; while (x + w < N && g[y][x + w]) w++
+      d += `M${x - 0.02} ${y - 0.02}h${w + 0.04}v1.04h-${w + 0.04}z`
+      x += w
+    }
+  }
+  document.getElementById('qr').innerHTML = `<path d="${d}" fill="#1F1F1F"/>`
+})()
+</script>
+</body>
+</html>

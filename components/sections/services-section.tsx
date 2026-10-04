@@ -17,6 +17,7 @@ const colorMap: Record<ServiceItem['color'], { iconText: string; iconBg: string;
   emerald: { iconText: 'text-emerald-600', iconBg: 'bg-emerald-50', tag: 'bg-emerald-50 text-emerald-600' },
   cyan: { iconText: 'text-cyan-600', iconBg: 'bg-cyan-50', tag: 'bg-cyan-50 text-cyan-600' },
   teal: { iconText: 'text-teal-600', iconBg: 'bg-teal-50', tag: 'bg-teal-50 text-teal-600' },
+  slate: { iconText: 'text-slate-700', iconBg: 'bg-slate-100', tag: 'bg-slate-100 text-slate-700' },
 }
 
 function renderIcon(name: string, className: string) {

@@ -39,6 +39,30 @@ const INFO_KEYS = new Set([
   'step', 'result', 'results', 'benefit', 'benefits', 'text', 'content', 'excerpt', 'readTime',
 ])
 
+// Khối "dự án đã làm" (object có field `built`, vd WORK.items ở custom-software): đọc
+// phẳng thì bot không biết dòng nào là vấn đề, dòng nào là giải pháp, rồi kể lẫn với
+// "các loại hệ thống". Gắn nhãn từng field để bot kể đúng từng dự án.
+const CASE_LABELS = {
+  title: 'Dự án',
+  sector: 'Lĩnh vực',
+  problem: 'Vấn đề',
+  built: 'Đã xây dựng',
+  points: 'Điểm nổi bật',
+  stack: 'Công nghệ',
+}
+// Bảng dữ liệu (mỗi object = 1 dòng bảng): đọc phẳng thì mất liên kết giữa các cột, bot
+// ghép nhầm (vd tự bịa thêm "hình thức hợp tác" thứ 4) hoặc bỏ sót chuỗi thường (công nghệ,
+// mức P1/P2/P3). Nhận dạng theo field đặc trưng, gom mỗi dòng thành 1 câu có nhãn.
+const RECORD_KINDS = [
+  { marker: 'recommended', labels: { name: 'Hình thức hợp tác', fit: 'Phù hợp với', pricing: 'Cách tính phí', when: 'Nên chọn khi', includes: 'Bao gồm' } },
+  { marker: 'response', labels: { level: 'Mức sự cố', example: 'Ví dụ', response: 'Thời gian phản hồi' } },
+  { marker: 'prepare', labels: { phase: 'Giai đoạn', receive: 'Doanh nghiệp nhận được', prepare: 'Doanh nghiệp cần chuẩn bị', duration: 'Thời gian' } },
+  { marker: 'gate', labels: { title: 'Giai đoạn', body: 'Nội dung', gate: 'Điểm duyệt' } },
+  { marker: 'tech', labels: { layer: 'Lớp', tech: 'Công nghệ dùng' } },
+]
+// Chữ giao diện (nút đóng, ảnh trước/sau) và mô tả ảnh chụp: không phải nội dung dịch vụ
+const SKIP_KEYS = new Set(['labels', 'shots'])
+
 function isClassLike(s) {
   const tokens = s.trim().split(/\s+/)
   return tokens.length > 0 && tokens.every((tk) => /^[a-z0-9:!\[\]\/.%#-]+$/.test(tk) && /-|:/.test(tk))
@@ -87,6 +111,8 @@ function propName(node) {
 }
 
 function templateText(node) {
+  // 'P1' as const / … satisfies X → lấy chuỗi bên trong
+  if (ts.isAsExpression(node) || (ts.isSatisfiesExpression && ts.isSatisfiesExpression(node))) return templateText(node.expression)
   if (ts.isNoSubstitutionTemplateLiteral(node) || ts.isStringLiteral(node)) return node.text
   if (ts.isTemplateExpression(node)) {
     return node.head.text + node.templateSpans.map((s) => '…' + s.literal.text).join('')
@@ -143,6 +169,25 @@ function extractFile(file) {
         visit(vi.initializer, null)
         return
       }
+      // Dòng bảng (xem RECORD_KINDS). Bỏ qua object tiêu đề bảng (`head: {...}`): đó là tên cột.
+      const isHead = ts.isPropertyAssignment(node.parent) && propName(node.parent.name) === 'head'
+      const kind = !isHead && RECORD_KINDS.find((k) => node.properties.some((p) => ts.isPropertyAssignment(p) && propName(p.name) === k.marker))
+      if (kind) {
+        const parts = []
+        for (const p of node.properties) {
+          if (!ts.isPropertyAssignment(p)) continue
+          const label = kind.labels[propName(p.name)]
+          if (!label) continue
+          const start = lines.length
+          const txt = templateText(p.initializer)
+          if (txt != null) push(txt)
+          else visit(p.initializer, null)
+          const got = lines.splice(start)
+          if (got.length) parts.push(`${label}: ${got.join('; ')}`)
+        }
+        if (parts.length) lines.push(parts.join(' · '))
+        return
+      }
     }
     // language === 'vi' ? A : B → chỉ đọc nhánh tiếng Việt
     if (ts.isConditionalExpression(node)) {
@@ -152,6 +197,21 @@ function extractFile(file) {
     }
     if (ts.isPropertyAssignment(node)) {
       const key = propName(node.name)
+      if (SKIP_KEYS.has(key)) return
+      const label = key && Object.hasOwn(CASE_LABELS, key) ? CASE_LABELS[key] : null
+      const isCase =
+        label &&
+        ts.isObjectLiteralExpression(node.parent) &&
+        node.parent.properties.some((p) => ts.isPropertyAssignment(p) && propName(p.name) === 'built')
+      if (isCase) {
+        const start = lines.length
+        const txt = templateText(node.initializer)
+        if (txt != null) push(txt)
+        else visit(node.initializer, key)
+        const got = lines.splice(start)
+        if (got.length) lines.push(`${label}: ${got.join('; ')}`)
+        return
+      }
       visit(node.initializer, key)
       return
     }

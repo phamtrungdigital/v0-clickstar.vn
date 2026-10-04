@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Chiến dịch học kỳ mới · Việc nhóm</title>
+<style>
+:root{
+  --bg:#FFFFFF; --side:#F7F7F8; --board:#FAFAFA; --line:#E4E4E7; --line2:#EDEDEF;
+  --text:#18181B; --text2:#3F3F46; --muted:#71717A; --faint:#A1A1AA;
+  --brand:#F0605D; --brand-strong:#D8524A; --brand-ink:#B93A37; --brand-soft:#FDECEB;
+  --rail:#1F2023; --rail-hi:rgba(255,255,255,.12); --rail-text:rgba(255,255,255,.82); --rail-muted:rgba(255,255,255,.56); --rail-line:rgba(255,255,255,.10);
+  --ok:#1A7F37; --warn:#9A6700; --bad:#CF222E;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{width:1280px;height:800px;overflow:hidden;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:13.5px;line-height:1.4;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace}
+svg.i{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}
+svg.s14{width:14px;height:14px}
+svg.s12{width:12px;height:12px}
+.app{display:flex;height:800px}
+
+/* ---------- Sidebar ---------- */
+.side{width:224px;flex:none;background:var(--rail);color:var(--rail-text);display:flex;flex-direction:column;padding:8px 8px 10px}
+.ws{display:flex;align-items:center;gap:8px;height:42px;padding:0 6px}
+.ws .wt{min-width:0;line-height:1.2}
+.ws .wt small{display:block;font-size:11.5px;color:var(--rail-muted);white-space:nowrap}
+.ws .logo{width:22px;height:22px;border-radius:5px;background:var(--brand);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center;flex:none}
+.ws .nm{font-weight:600;font-size:13.5px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ws .cv{color:var(--rail-muted)}
+.ws .acts{margin-left:auto;display:flex;gap:2px}
+.ib{width:26px;height:26px;border-radius:6px;display:grid;place-items:center;color:var(--muted)}
+.side .ib{color:var(--rail-muted)}
+.ws .acts .ib.pen{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:var(--rail-text)}
+.nav{margin-top:6px;display:flex;flex-direction:column;gap:1px}
+.ni{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;color:var(--rail-text);font-size:13.5px;white-space:nowrap}
+.ni svg{color:var(--rail-muted)}
+.ni .ct{margin-left:auto;font-size:12px;color:var(--rail-muted)}
+.ni .ct.new{min-width:18px;height:16px;padding:0 5px;border-radius:8px;background:var(--brand-strong);color:#fff;font-size:11px;font-weight:600;display:grid;place-items:center;line-height:1}
+.ni.on{position:relative;background:var(--rail-hi);color:#fff;font-weight:500}
+.ni.on:before{content:"";position:absolute;left:0;top:5px;bottom:5px;width:3px;border-radius:0 2px 2px 0;background:var(--brand)}
+.ni svg.pj{color:var(--brand)}
+.ni svg.pj-teal{color:#5DBFAE}
+.ni svg.pj-violet{color:#A48BE8}
+.grp{margin-top:16px;padding:0 8px;height:24px;display:flex;align-items:center;gap:4px;font-size:12px;color:var(--rail-muted);font-weight:500}
+.team{display:flex;align-items:center;gap:8px;height:28px;padding:0 8px;border-radius:6px;color:var(--rail-text);font-weight:500}
+.team .tl{width:18px;height:18px;border-radius:4px;background:rgba(255,255,255,.10);color:#fff;font-size:10.5px;font-weight:600;display:grid;place-items:center;flex:none}
+.team .tl.t-coral{color:#F58A87}.team .tl.t-teal{color:#6FCBBB}.team .tl.t-amber{color:#E9B95A}
+.team .car{margin-left:auto;color:var(--rail-muted)}
+.sub1{padding-left:18px}
+.sub2{padding-left:34px}
+.side .sp{flex:1}
+.me{display:flex;align-items:center;gap:8px;padding:8px 6px 0;border-top:1px solid var(--rail-line);margin-top:8px}
+.me .t{line-height:1.25;min-width:0}
+.me .t b{display:block;font-size:13px;font-weight:500;color:#fff}
+.me .t span{font-size:12px;color:var(--rail-muted)}
+
+/* ---------- Avatars ---------- */
+.av{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-size:9.5px;font-weight:600;flex:none;letter-spacing:.01em}
+.av.md{width:24px;height:24px;font-size:10px}
+.av.lg{width:28px;height:28px;font-size:11px}
+.av.xs{width:16px;height:16px;font-size:8px}
+.a1{background:#FCE3E2;color:#A3302D}
+.a2{background:#DDEAF7;color:#1F5185}
+.a3{background:#ECE6FA;color:#5A3EA6}
+.a4{background:#FAEBCB;color:#7D5200}
+.a5{background:#DCF0E2;color:#1D6637}
+.a6{background:#D8EFEC;color:#15625A}
+.a7{background:#FAE3EE;color:#952C60}
+.a8{background:#E4E8EE;color:#3A4859}
+.av.none{background:transparent;border:1px dashed #C4C4CC;color:var(--faint)}
+
+/* ---------- Main ---------- */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;position:relative}
+.hd{height:64px;display:flex;align-items:center;padding:0 16px;gap:12px}
+.hd .l{min-width:0}
+.crumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.crumb .sl{color:#D4D4D8}
+.ttl{display:flex;align-items:center;gap:8px;margin-top:3px}
+.ttl h1{margin:0;font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.25}
+.ttl .st{color:var(--faint)}
+.status{display:flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #F1DFB4;background:#FDF6E5;border-radius:6px;font-size:12px;font-weight:500;color:#734A00}
+.ttl .dt{font-size:12.5px;color:var(--muted)}
+.hd .r{margin-left:auto;display:flex;align-items:center;gap:8px}
+.stack{display:flex;align-items:center;margin-right:2px}
+.hsep{width:1px;height:28px;background:var(--line);margin:0 4px 0 8px;align-self:center}
+.hd > .stack,.hd > #sharebtn{margin-top:14px}.hd > .hsep{margin-top:14px}
+.stack .av{border:2px solid #fff;margin-left:-6px;width:24px;height:24px;font-size:9.5px}
+.stack .av:first-child{margin-left:0}
+.stack .more{background:#F4F4F5;color:var(--muted)}
+.btn{height:30px;display:flex;align-items:center;gap:6px;padding:0 10px;border-radius:6px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;color:var(--text2);white-space:nowrap;box-shadow:0 1px 1px rgba(0,0,0,.03)}
+.btn svg{color:var(--muted)}
+.btn.pressed{background:#F4F4F5;border-color:#D4D4D8}
+.btn.pri{background:var(--brand-strong);border-color:#C4463F;color:#fff;font-weight:600;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.btn.pri svg{color:#fff}
+.btn .kb{font-size:11px;color:#F2D9D1;margin-left:2px}
+
+.tabs{height:38px;display:flex;align-items:stretch;gap:2px;padding:0 12px;border-bottom:1px solid var(--line)}
+.tab{display:flex;align-items:center;gap:6px;padding:0 8px;color:var(--muted);font-weight:500;font-size:13px;position:relative}
+.tab.on{color:var(--text);font-weight:600}
+.tab.on svg{color:var(--brand)}
+.tab.on:after{content:"";position:absolute;left:6px;right:6px;bottom:-1px;height:2px;background:var(--brand);border-radius:1px}
+.tabs .sp{flex:1}
+.tabs .ghost{align-self:center;height:26px;display:flex;align-items:center;gap:6px;padding:0 8px;border-radius:6px;color:var(--muted);font-size:12.5px}
+
+.fb{height:44px;display:flex;align-items:center;gap:6px;padding:0 16px;border-bottom:1px solid var(--line2)}
+.fbtn{height:26px;display:flex;align-items:center;gap:5px;padding:0 8px;border:1px solid #E4E4E7;background:#fff;border-radius:6px;font-size:12.5px;color:var(--text2);white-space:nowrap}
+.fbtn svg{color:var(--faint)}
+.fbtn.set{border-style:solid;background:#fff}
+.fbtn.set b{font-weight:500;color:var(--text)}
+.vsep{width:1px;height:16px;background:var(--line);margin:0 6px}
+.tog{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text2)}
+.sw{width:26px;height:16px;border-radius:8px;background:#E4E4E7;position:relative}
+.sw:after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 1px rgba(0,0,0,.15)}
+.fb .cnt{margin-left:auto;font-size:12px;color:var(--muted)}
+
+/* ---------- Board ---------- */
+.board{flex:1;min-height:0;background:var(--board);display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:10px 16px 0;overflow:hidden}
+.col{display:flex;flex-direction:column;gap:6px;min-width:0;min-height:0}
+.ch{height:30px;display:flex;align-items:center;gap:7px;padding:0 4px}
+.ch b{font-size:13px;font-weight:500}
+.ch .n{font-size:12px;color:var(--muted)}
+.ch .r{margin-left:auto;display:flex;gap:2px;color:var(--faint)}
+.ch .r .ib{width:22px;height:22px}
+.card{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:9px 11px 9px;flex:none}
+.c-top{display:flex;align-items:center;justify-content:space-between;height:18px}
+.c-l{display:flex;align-items:center;gap:6px}
+.c-id{font-size:11.5px;color:var(--muted);letter-spacing:.01em}
+.c-title{margin-top:3px;font-size:13.5px;font-weight:500;line-height:1.38;color:var(--text);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.done .c-title{color:var(--text2)}
+.c-rec{margin-top:5px;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);white-space:nowrap}
+.c-rec svg{color:var(--muted)}
+.c-meta{margin-top:8px;display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);white-space:nowrap}
+.lbl{height:20px;display:inline-flex;align-items:center;padding:0 7px;border-radius:4px;font-size:11.5px;font-weight:500}
+.l-rep{background:#E2F0FA;color:#1A5A86}
+.l-con{background:#EEE8FB;color:#5A3EA6}
+.l-ads{background:#FCEFD3;color:#7E4E00}
+.l-web{background:#E1F3E6;color:#1D6637}
+.l-dat{background:#DCF1EE;color:#15625A}
+.l-mail{background:#FBE5EE;color:#952C60}
+.l-des{background:#FDE9DA;color:#93450F}
+.due{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 2px;color:var(--text2);font-size:11.5px}
+.due svg{color:var(--faint)}
+.due.late{color:var(--bad)}
+.due.late svg{color:var(--bad)}
+.due.today{color:var(--warn)}
+.due.today svg{color:var(--warn)}
+.c-meta > *{flex:none}
+.c-meta .ic{display:inline-flex;align-items:center;gap:3px;font-size:11.5px}
+.c-meta .ic svg{color:var(--faint)}
+.c-meta .ic.full{color:var(--ok)}
+.c-meta .ic.full svg{color:var(--ok)}
+.c-meta .push{margin-left:auto;display:flex;gap:7px;padding-left:4px}
+.c-foot{margin:9px -11px -9px;padding:6px 11px;border-top:1px solid var(--line2);font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.prio{display:inline-flex;align-items:flex-end;gap:1.5px;height:12px;width:14px;padding-bottom:1px}
+.prio i{width:3px;background:#D4D4D8;border-radius:.5px;display:block}
+.prio i:nth-child(1){height:5px}.prio i:nth-child(2){height:8px}.prio i:nth-child(3){height:11px}
+.prio.p2 i:nth-child(-n+2){background:#D18B0B}
+.prio.p3 i{background:#E5574F}
+.prio.urg{width:14px;height:14px;border-radius:3px;background:var(--bad);color:#fff;font-size:10px;font-weight:700;display:inline-grid;place-items:center;padding:0;line-height:1}
+.addrow{height:30px;display:flex;align-items:center;gap:6px;padding:0 6px;color:var(--faint);font-size:12.5px;border-radius:6px}
+
+/* ---------- Popover ---------- */
+.pop{position:absolute;top:50px;width:372px;background:#fff;border:1px solid var(--line);border-radius:8px;
+  box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 20px -4px rgba(24,24,27,.14);z-index:10}
+.pop-h{height:44px;display:flex;align-items:center;padding:0 8px 0 14px}
+.pop-h b{font-size:13.5px;font-weight:600}
+.pop-h .ib{margin-left:auto}
+.inv{display:flex;gap:6px;padding:0 14px 12px}
+.inp{flex:1;height:32px;border:1px solid #E4E4E7;border-radius:6px;display:flex;align-items:center;padding:0 2px 0 9px;font-size:13px;color:var(--faint);min-width:0;gap:4px}
+.inp .ph{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.inp .rs{margin-left:auto;flex:none;display:flex;align-items:center;gap:3px;height:24px;padding:0 6px;border-radius:4px;font-size:12px;color:var(--text2);white-space:nowrap}
+.inp .rs svg{color:var(--faint)}
+.inv .btn{height:32px}
+.pl{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:26px;font-size:12px;color:var(--muted);border-top:1px solid var(--line2);padding-top:6px;height:32px}
+.mem{display:flex;align-items:center;gap:10px;height:44px;padding:0 10px 0 14px}
+.mem .t{min-width:0;line-height:1.3}
+.mem .t b{display:block;font-size:13px;font-weight:500;white-space:nowrap}
+.mem .t b em{font-style:normal;color:var(--muted);font-weight:400}
+.mem .t span{display:block;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.role{margin-left:auto;height:26px;display:flex;align-items:center;gap:4px;padding:0 6px 0 8px;border-radius:6px;font-size:12.5px;color:var(--text2);white-space:nowrap}
+.role svg{color:var(--faint)}
+.role.open{background:#F4F4F5}
+.role.fixed{color:var(--muted)}
+.more-m{height:32px;display:flex;align-items:center;padding:0 14px;font-size:12.5px;color:var(--muted)}
+.acc{border-top:1px solid var(--line2);padding:10px 14px 12px}
+.acc .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+.acc .row{display:flex;align-items:center;gap:10px}
+.acc .ico{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);flex:none}
+.acc .t{line-height:1.3}
+.acc .t b{display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500}
+.acc .t b svg{color:var(--faint)}
+.acc .t span{font-size:12px;color:var(--muted)}
+.pop-f{border-top:1px solid var(--line2);height:44px;display:flex;align-items:center;padding:0 10px 0 14px}
+.lnk{display:flex;align-items:center;gap:6px;color:var(--text);font-size:13px;font-weight:600}
+.lnk svg{color:var(--text2)}
+.pop-f .btn{margin-left:auto;height:28px}
+
+/* role menu */
+.menu{position:absolute;z-index:20;width:276px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:4px;
+  box-shadow:0 1px 2px rgba(0,0,0,.05),0 10px 22px -6px rgba(24,24,27,.20)}
+.mi{display:flex;gap:8px;padding:7px 8px 8px;border-radius:5px}
+.mi .ck{width:16px;flex:none;color:var(--text);padding-top:1px}
+.mi b{display:block;font-size:13px;font-weight:500;line-height:1.3}
+.mi span{display:block;font-size:12px;color:var(--muted);line-height:1.35;margin-top:1px}
+.mi.hl{background:#F4F4F5}
+.mi.off{cursor:not-allowed}
+.mi.off b{color:#A1A1AA}
+.mi.off span{color:#A1A1AA;font-size:11.5px}
+.msep{height:1px;background:var(--line2);margin:4px -4px}
+.mi.danger{padding:6px 8px 6px 32px}
+.mi.danger b{color:var(--bad);font-weight:400}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    <symbol id="i-me" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M7 19.2V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v.2"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.4 2.6a1 1 0 0 1 3 3l-9 9a2 2 0 0 1-.85.5l-2.87.84a.5.5 0 0 1-.62-.62l.84-2.87a2 2 0 0 1 .5-.85z"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+    <symbol id="i-msg" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="i-sub" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M11.5 2.3a.53.53 0 0 1 .95 0l2.31 4.68a2.12 2.12 0 0 0 1.6 1.16l5.16.76a.53.53 0 0 1 .3.9l-3.74 3.64a2.12 2.12 0 0 0-.61 1.88l.88 5.14a.53.53 0 0 1-.77.56l-4.62-2.43a2.12 2.12 0 0 0-1.97 0l-4.62 2.43a.53.53 0 0 1-.77-.56l.88-5.14a2.12 2.12 0 0 0-.61-1.88L2.16 9.8a.53.53 0 0 1 .29-.9l5.17-.76a2.12 2.12 0 0 0 1.6-1.16z"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M21 4h-7"/><path d="M10 4H3"/><path d="M21 12h-9"/><path d="M8 12H3"/><path d="M21 20h-5"/><path d="M12 20H3"/><path d="M14 2v4"/><path d="M8 10v4"/><path d="M16 18v4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="16" height="11" x="4" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M12.6 2.6A2 2 0 0 0 11.2 2H4a2 2 0 0 0-2 2v7.2a2 2 0 0 0 .6 1.4l8.7 8.7a2.4 2.4 0 0 0 3.4 0l6.6-6.6a2.4 2.4 0 0 0 0-3.4z"/><circle cx="7.5" cy="7.5" r=".5"/></symbol>
+    <symbol id="i-group" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+  </defs>
+</svg>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="side">
+    <div class="ws">
+      <span class="logo">V</span><span class="wt"><span class="nm">Việc nhóm</span><small>Trung tâm Đào tạo</small></span>
+      <svg class="i s12 cv"><use href="#i-down"/></svg>
+      <div class="acts">
+        <span class="ib"><svg class="i"><use href="#i-search"/></svg></span>
+        <span class="ib pen"><svg class="i s14"><use href="#i-pen"/></svg></span>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="ni"><svg class="i"><use href="#i-inbox"/></svg>Hộp thư<span class="ct new">3</span></div>
+      <div class="ni"><svg class="i"><use href="#i-me"/></svg>Việc của tôi<span class="ct">7</span></div>
+    </nav>
+
+    <div class="grp">Nhóm của bạn<svg class="i s12"><use href="#i-down"/></svg></div>
+    <nav class="nav" style="margin-top:2px">
+      <div class="team"><span class="tl t-coral">M</span>Marketing<svg class="i s12 car"><use href="#i-down"/></svg></div>
+      <div class="ni sub1"><svg class="i"><use href="#i-sub"/></svg>Việc</div>
+      <div class="ni sub1"><svg class="i"><use href="#i-group"/></svg>Dự án</div>
+      <div class="ni sub2 on"><svg class="i s14 pj" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 8V2a6 6 0 0 1 5.2 9z" fill="currentColor" stroke="none"/></svg>Chiến dịch học kỳ mới</div>
+      <div class="ni sub2"><svg class="i s14 pj-teal" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 8V2a6 6 0 0 1 6 6z" fill="currentColor" stroke="none"/></svg>Website khoá học</div>
+      <div class="ni sub2"><svg class="i s14 pj-violet" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke-dasharray="2 2"/></svg>Nội dung tháng 11</div>
+      <div class="ni sub1"><svg class="i"><use href="#i-repeat"/></svg>Việc định kỳ<span class="ct">4</span></div>
+      <div class="team" style="margin-top:6px"><span class="tl t-teal">T</span>Tư vấn<svg class="i s12 car"><use href="#i-right"/></svg></div>
+      <div class="team"><span class="tl t-amber">Đ</span>Đào tạo<svg class="i s12 car"><use href="#i-right"/></svg></div>
+    </nav>
+
+    <div class="sp"></div>
+    <nav class="nav">
+      <div class="ni"><svg class="i"><use href="#i-users"/></svg>Mời thành viên</div>
+      <div class="ni"><svg class="i"><use href="#i-help"/></svg>Trợ giúp</div>
+    </nav>
+    <div class="me">
+      <span class="av md a1">LA</span>
+      <div class="t"><b>Lan Anh</b><span>Trưởng nhóm · Marketing</span></div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="hd">
+      <div class="l">
+        <div class="crumb">Marketing<span class="sl">/</span>Dự án</div>
+        <div class="ttl">
+          <h1>Chiến dịch học kỳ mới</h1>
+          <svg class="i s14 st"><use href="#i-star"/></svg>
+          <span class="status"><svg class="i s12" viewBox="0 0 16 16" style="color:#9A6700"><circle cx="8" cy="8" r="6"/><path d="M8 8V2a6 6 0 0 1 5.2 9z" fill="currentColor" stroke="none"/></svg>Đang chạy</span>
+          <span class="dt">05/10 - 31/10/2026</span>
+        </div>
+      </div>
+      <span class="hsep"></span>
+      <div class="stack">
+        <span class="av a1">LA</span><span class="av a2">HN</span><span class="av a3">TT</span><span class="av a4">GH</span><span class="av a5">KL</span><span class="av a6">TK</span><span class="av more">+2</span>
+      </div>
+      <span class="btn pressed" id="sharebtn"><svg class="i s14"><use href="#i-users"/></svg>Chia sẻ</span>
+      <div class="r">
+        <span class="btn pri"><svg class="i s14"><use href="#i-plus"/></svg>Tạo việc</span>
+      </div>
+    </header>
+
+    <div class="tabs">
+      <span class="tab on"><svg class="i s14"><use href="#i-board"/></svg>Bảng</span>
+      <span class="tab"><svg class="i s14"><use href="#i-list"/></svg>Danh sách</span>
+      <span class="tab"><svg class="i s14"><use href="#i-cal"/></svg>Lịch</span>
+      <span class="tab"><svg class="i s14"><use href="#i-chart"/></svg>Báo cáo</span>
+      <span class="sp"></span>
+      <span class="ghost"><svg class="i s14"><use href="#i-sliders"/></svg>Hiển thị</span>
+    </div>
+
+    <div class="fb">
+      <span class="fbtn"><svg class="i s14"><use href="#i-user"/></svg>Người làm<svg class="i s12"><use href="#i-down"/></svg></span>
+      <span class="fbtn"><svg class="i s14"><use href="#i-tag"/></svg>Nhãn<svg class="i s12"><use href="#i-down"/></svg></span>
+      <span class="fbtn"><svg class="i s14"><use href="#i-cal"/></svg>Hạn<svg class="i s12"><use href="#i-down"/></svg></span>
+      <span class="vsep"></span>
+      <span class="tog"><span class="sw"></span>Chỉ việc của tôi</span>
+      <span class="cnt">23 việc</span>
+    </div>
+
+    <section class="board">
+      <!-- Cần làm -->
+      <div class="col">
+        <div class="ch">
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#9A9AA3"><circle cx="8" cy="8" r="6"/></svg>
+          <b>Cần làm</b><span class="n">5</span>
+          <span class="r"><span class="ib"><svg class="i s14"><use href="#i-plus"/></svg></span><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-148</span></span><span class="av a4">GH</span></div>
+          <div class="c-title">Báo cáo chỉ số quảng cáo tuần 41</div>
+          <div class="c-rec"><svg class="i s12"><use href="#i-repeat"/></svg>Hằng tuần · T2 09:00</div>
+          <div class="c-meta">
+            <span class="lbl l-rep">Báo cáo</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>09/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>0/3</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>1</span></span>
+          </div>
+          <div class="c-foot">Tạo tự động · T2 05/10</div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p3"><i></i><i></i><i></i></span><span class="c-id mono">MKT-139</span></span><span class="av a3">TT</span></div>
+          <div class="c-title">Viết kịch bản video giới thiệu khoá học mới</div>
+          <div class="c-meta">
+            <span class="lbl l-con">Nội dung</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>12/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>1/4</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>2</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-151</span></span><span class="av a5">KL</span></div>
+          <div class="c-title">Bộ ảnh quảng cáo buổi học thử tháng 11</div>
+          <div class="c-meta">
+            <span class="lbl l-des">Thiết kế</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>14/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>1/5</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>4</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio"><i></i><i></i><i></i></span><span class="c-id mono">MKT-154</span></span><span class="av none"><svg class="i s12"><use href="#i-user"/></svg></span></div>
+          <div class="c-title">Lên lịch đăng bài Zalo OA tuần 42</div>
+          <div class="c-meta">
+            <span class="lbl l-con">Nội dung</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-155</span></span><span class="av a7">PT</span></div>
+          <div class="c-title">Kiểm tra mã theo dõi trên trang đăng ký học</div>
+          <div class="c-meta">
+            <span class="lbl l-web">Website</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>16/10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Đang làm -->
+      <div class="col">
+        <div class="ch">
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#D18B0B"><circle cx="8" cy="8" r="6"/><path d="M8 4.5a3.5 3.5 0 0 1 0 7z" fill="currentColor" stroke="none"/></svg>
+          <b>Đang làm</b><span class="n">4</span>
+          <span class="r"><span class="ib"><svg class="i s14"><use href="#i-plus"/></svg></span><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio urg">!</span><span class="c-id mono">MKT-131</span></span><span class="av a2">HN</span></div>
+          <div class="c-title">Chạy thử 3 mẫu quảng cáo trên Meta</div>
+          <div class="c-meta">
+            <span class="lbl l-ads">Quảng cáo</span>
+            <span class="due late"><svg class="i s12"><use href="#i-cal"/></svg>07/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>3/5</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>6</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-142</span></span><span class="av a6">TK</span></div>
+          <div class="c-title">Cập nhật danh sách đăng ký buổi học thử</div>
+          <div class="c-rec"><svg class="i s12"><use href="#i-repeat"/></svg>Hằng tuần · T2 09:00</div>
+          <div class="c-meta">
+            <span class="lbl l-dat">Dữ liệu</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>09/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>2/4</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>3</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p3"><i></i><i></i><i></i></span><span class="c-id mono">MKT-127</span></span><span class="av a7">PT</span></div>
+          <div class="c-title">Trang đăng ký học cho khoá học kỳ mới</div>
+          <div class="c-meta">
+            <span class="lbl l-web">Website</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>15/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-sub"/></svg>4/7</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>5</span></span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-145</span></span><span class="av a2">HN</span></div>
+          <div class="c-title">Tách ngân sách Google theo từng khoá học</div>
+          <div class="c-meta">
+            <span class="lbl l-ads">Quảng cáo</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>13/10</span>
+            <span class="push"><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>1</span></span>
+          </div>
+        </div>
+        <div class="addrow"><svg class="i s14"><use href="#i-plus"/></svg>Thêm việc</div>
+      </div>
+
+      <!-- Chờ duyệt -->
+      <div class="col">
+        <div class="ch">
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#8467D7"><circle cx="8" cy="8" r="6"/><path d="M8 4.5a3.5 3.5 0 1 1-3.5 3.5H8z" fill="currentColor" stroke="none"/></svg>
+          <b>Chờ duyệt</b><span class="n">2</span>
+          <span class="r"><span class="ib"><svg class="i s14"><use href="#i-plus"/></svg></span><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-136</span></span><span class="av a3">TT</span></div>
+          <div class="c-title">Bài viết: 5 lý do chọn lớp buổi tối</div>
+          <div class="c-meta">
+            <span class="lbl l-con">Nội dung</span>
+            <span class="due today"><svg class="i s12"><use href="#i-cal"/></svg>Hôm nay</span>
+            <span class="push"><span class="ic full"><svg class="i s12"><use href="#i-sub"/></svg>3/3</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>8</span></span>
+          </div>
+          <div class="c-foot"><span class="av xs a1">LA</span>Chờ Lan Anh duyệt</div>
+        </div>
+        <div class="card">
+          <div class="c-top"><span class="c-l"><span class="prio p2"><i></i><i></i><i></i></span><span class="c-id mono">MKT-134</span></span><span class="av a5">KL</span></div>
+          <div class="c-title">Chuỗi email nhắc lịch buổi học thử</div>
+          <div class="c-meta">
+            <span class="lbl l-mail">Email</span>
+            <span class="due"><svg class="i s12"><use href="#i-cal"/></svg>09/10</span>
+            <span class="push"><span class="ic full"><svg class="i s12"><use href="#i-sub"/></svg>4/4</span><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>2</span></span>
+          </div>
+          <div class="c-foot"><span class="av xs a1">LA</span>Chờ Lan Anh duyệt</div>
+        </div>
+      </div>
+
+      <!-- Hoàn thành -->
+      <div class="col">
+        <div class="ch">
+          <svg class="i s14" viewBox="0 0 16 16" style="color:#2DA44E"><circle cx="8" cy="8" r="6.5" fill="currentColor" stroke="none"/><path d="m5.3 8.2 1.8 1.8 3.6-3.7" stroke="#fff" stroke-width="1.6"/></svg>
+          <b>Hoàn thành</b><span class="n">12</span>
+          <span class="r"><span class="ib"><svg class="i s14"><use href="#i-dots"/></svg></span></span>
+        </div>
+        <div class="card done">
+          <div class="c-top"><span class="c-id mono">MKT-118</span><span class="av a5">KL</span></div>
+          <div class="c-title">Banner trang chủ cho học kỳ mới</div>
+          <div class="c-meta"><span class="lbl l-des">Thiết kế</span><span>Xong 05/10</span></div>
+        </div>
+        <div class="card done">
+          <div class="c-top"><span class="c-id mono">MKT-121</span><span class="av a2">HN</span></div>
+          <div class="c-title">Thiết lập tệp đối tượng cho Google</div>
+          <div class="c-meta"><span class="lbl l-ads">Quảng cáo</span><span>Xong 07/10</span></div>
+        </div>
+        <div class="card done">
+          <div class="c-top"><span class="c-id mono">MKT-140</span><span class="av a4">GH</span></div>
+          <div class="c-title">Tổng hợp phản hồi học viên tuần 40</div>
+          <div class="c-rec"><svg class="i s12"><use href="#i-repeat"/></svg>Hằng tuần · T2 09:00</div>
+          <div class="c-meta"><span class="lbl l-rep">Báo cáo</span><span>Xong 06/10</span><span class="push"><span class="ic"><svg class="i s12"><use href="#i-msg"/></svg>3</span></span></div>
+        </div>
+        <div class="card done">
+          <div class="c-top"><span class="c-id mono">MKT-117</span><span class="av a1">LA</span></div>
+          <div class="c-title">Kịch bản tư vấn viên cho buổi học thử</div>
+          <div class="c-meta"><span class="lbl l-con">Nội dung</span><span>Xong 05/10</span></div>
+        </div>
+        <div class="card done">
+          <div class="c-top"><span class="c-id mono">MKT-124</span><span class="av a6">TK</span></div>
+          <div class="c-title">Gộp danh sách học viên cũ từ Gmail</div>
+          <div class="c-meta"><span class="lbl l-dat">Dữ liệu</span><span>Xong 06/10</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Share popover -->
+    <div class="pop">
+      <div class="pop-h"><b>Chia sẻ dự án</b><span class="ib"><svg class="i s14"><use href="#i-x"/></svg></span></div>
+      <div class="inv">
+        <div class="inp"><span class="ph">Thêm người theo tên hoặc email</span><span class="rs">Nhân viên<svg class="i s12"><use href="#i-down"/></svg></span></div>
+        <span class="btn">Mời</span>
+      </div>
+      <div class="pl"><span>Thành viên · 8</span></div>
+      <div class="mem"><span class="av lg a1">LA</span><div class="t"><b>Lan Anh <em>(bạn)</em></b><span>lananh@example.com</span></div><span class="role fixed">Trưởng nhóm</span></div>
+      <div class="mem"><span class="av lg a8">MC</span><div class="t"><b>Minh Châu</b><span>Quản trị workspace</span></div><span class="role fixed">Admin</span></div>
+      <div class="mem"><span class="av lg a2">HN</span><div class="t"><b>Hoàng Nam</b><span>hoangnam@example.com</span></div><span class="role open">Nhân viên<svg class="i s12"><use href="#i-down"/></svg></span></div>
+      <div class="mem"><span class="av lg a4">GH</span><div class="t"><b>Gia Huy</b><span>giahuy@example.com</span></div><span class="role">Nhân viên<svg class="i s12"><use href="#i-down"/></svg></span></div>
+      <div class="more-m">Xem thêm 4 người</div>
+      <div class="acc">
+        <div class="k">Quyền truy cập</div>
+        <div class="row">
+          <span class="ico"><svg class="i s14"><use href="#i-lock"/></svg></span>
+          <div class="t"><b>Chỉ thành viên dự án<svg class="i s12"><use href="#i-down"/></svg></b><span>Người khác trong Marketing không mở được</span></div>
+        </div>
+      </div>
+      <div class="pop-f">
+        <span class="lnk"><svg class="i s14"><use href="#i-link"/></svg>Sao chép liên kết</span>
+        <span class="btn">Xong</span>
+      </div>
+    </div>
+
+    <!-- Role menu for Hoàng Nam -->
+    <div class="menu" id="rolemenu">
+      <div class="mi off" aria-disabled="true"><span class="ck"></span><div><b>Admin</b><span>Chỉ Admin cấp được</span></div></div>
+      <div class="mi hl"><span class="ck"></span><div><b>Trưởng nhóm</b><span>Giao việc, duyệt và xem việc cả nhóm</span></div></div>
+      <div class="mi"><span class="ck"><svg class="i s14"><use href="#i-check"/></svg></span><div><b>Nhân viên</b><span>Chỉ xem và cập nhật việc được giao</span></div></div>
+    </div>
+  </main>
+</div>
+<script>
+  // Đặt menu vai trò ngay dưới nút vai trò đang mở (căn phải), như popover thật.
+  const sb = document.getElementById('sharebtn').getBoundingClientRect()
+  const pop = document.querySelector('.pop')
+  const mh = document.querySelector('.main').getBoundingClientRect()
+  pop.style.left = (sb.right - mh.left - 372) + 'px'
+  pop.style.top = (sb.bottom - mh.top + 6) + 'px'
+  const t = document.querySelector('.role.open').getBoundingClientRect()
+  const m = document.getElementById('rolemenu')
+  const host = document.querySelector('.main').getBoundingClientRect()
+  m.style.top = (t.bottom - host.top + 4) + 'px'
+  m.style.left = (t.right - host.left - 276) + 'px'
+</script>
+</body>
+</html>

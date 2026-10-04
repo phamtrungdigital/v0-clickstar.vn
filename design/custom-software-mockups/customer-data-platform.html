@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Khánh Linh · Hồ sơ</title>
+<style>
+:root{
+  --brand:#0F766E; --brand-h:#0D655E; --accent:#14B8A6; --brand-50:#E6F4F2; --brand-100:#CCE9E5;
+  --bg:#F6F8F8; --panel:#FFFFFF; --line:#E4E4E7; --line-2:#EFEFF1;
+  --fg:#18181B; --fg-2:#3F3F46; --muted:#71717A; --faint:#A1A1AA;
+  --ok:#1A7F37; --warn:#9A6700; --bad:#B42318;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1280px;height:800px;overflow:hidden;background:var(--bg)}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--fg);font-size:13.5px;line-height:20px;display:flex;flex-direction:column;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px;letter-spacing:-.1px}
+svg.i{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+svg.s{width:14px;height:14px}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* top nav */
+.top{height:48px;background:var(--brand);display:flex;align-items:center;padding:0 16px 0 20px;color:#fff}
+.logo{display:flex;align-items:center;gap:9px;font-weight:600;font-size:14px;letter-spacing:-.1px;margin-right:24px;color:#fff}
+.logo .mk{width:24px;height:24px;border-radius:6px;background:#fff;display:grid;place-items:center;flex:none}
+.logo svg{width:16px;height:16px}
+.nav{display:flex;height:48px}
+.nav a{display:flex;align-items:center;padding:0 12px;color:rgba(255,255,255,.88);text-decoration:none;font-size:13.5px;position:relative}
+.nav a.on{color:#fff;font-weight:600;background:rgba(255,255,255,.08)}
+.nav a.on:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:#fff}
+.top .right{margin-left:auto;display:flex;align-items:center;gap:4px}
+.search{width:264px;height:30px;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:#0B6660;display:flex;align-items:center;gap:8px;padding:0 6px 0 9px;color:#CFE6E3;font-size:13px;margin-right:8px}
+.search span{flex:1}
+kbd{font-family:inherit;font-size:11px;color:#CFE6E3;border:1px solid rgba(255,255,255,.22);border-radius:4px;padding:0 5px;line-height:17px;background:transparent}
+.ib{width:30px;height:30px;display:grid;place-items:center;color:rgba(255,255,255,.9);border-radius:6px}
+.sep{width:1px;height:20px;background:rgba(255,255,255,.22);margin:0 8px}
+.me{display:flex;align-items:center;gap:8px;padding:0 4px 0 2px}
+.av{border-radius:50%;display:grid;place-items:center;font-weight:500;flex:none}
+.me .av{width:28px;height:28px;background:#DCEBF8;color:#1D5A8C;font-size:11.5px;font-weight:600}
+.me .n{font-size:13px;line-height:16px;font-weight:500;color:#fff}
+.me .r{font-size:11.5px;line-height:14px;color:#DCEFEC}
+.me svg{color:rgba(255,255,255,.8)}
+/* avatar tints: same person = same colour */
+.av.c-sky{background:#DCEBF8 !important;color:#1D5A8C !important}
+.av.c-amb{background:#FCEBC7 !important;color:#7A4B00 !important}
+.av.c-pnk{background:#FADDE8 !important;color:#9D2350 !important}
+.av.c-tea{background:#D3EEEA !important;color:#0F5F58 !important}
+
+/* record header */
+.head{background:#fff;border-bottom:1px solid var(--line);padding:12px 20px 0}
+.crumb{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:16px}
+.crumb a{color:var(--muted);text-decoration:none}
+.crumb b{color:var(--fg-2);font-weight:400}
+.crumb svg{width:12px;height:12px;color:var(--faint)}
+.idrow{display:flex;align-items:center;margin-top:12px;gap:12px}
+.idrow .av{width:44px;height:44px;background:#D3EEEA;color:#0F5F58;font-size:15px;font-weight:600}
+.who h1{margin:0;font-size:20px;line-height:24px;font-weight:600;letter-spacing:-.2px;display:flex;align-items:center;gap:10px}
+.code{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-weight:400}
+.code svg{width:13px;height:13px;color:var(--faint)}
+.meta{white-space:nowrap;margin-top:4px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:18px}
+.meta i{font-style:normal;color:#D4D4D8}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid var(--line);border-radius:4px;font-size:12px;font-weight:500;color:#3F3F46;background:#fff;line-height:20px}
+.tags{display:flex;gap:6px;margin-left:4px}
+.tag.tea{background:#E6F4F2;border-color:#BFE3DE;color:#0F5F58}
+.tag.amb{background:#FFF4DB;border-color:#F2DDA6;color:#8A5300}
+.tag.pnk{background:#FCE8F0;border-color:#F4C9DA;color:#A3245A}
+.tag.sky{background:#E6F2FA;border-color:#C4DFF1;color:#0B5A86}
+.actions{margin-left:auto;display:flex;align-items:center;gap:8px;align-self:flex-start;margin-top:4px;white-space:nowrap}
+.ro{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);margin-right:2px}
+.ro svg{width:13px;height:13px}
+.btn{height:30px;display:inline-flex;align-items:center;gap:6px;padding:0 11px;border-radius:6px;border:1px solid #D4D4D8;background:#fff;font-size:13px;font-weight:500;color:var(--fg);font-family:inherit}
+.btn[disabled]{color:#A1A1AA;background:#FAFAFA;border-color:var(--line)}
+.btn.pri{background:var(--brand);border-color:var(--brand-h);color:#fff}
+.btn.pri[disabled]{background:#EAF4F2;border-color:#CCE5E1;color:#5E8F89}
+.btn.sq{width:30px;padding:0;justify-content:center}
+.tabs{display:flex;gap:20px;margin-top:14px}
+.tabs a{display:flex;align-items:center;gap:6px;height:38px;color:#52525B;text-decoration:none;font-size:13.5px;position:relative}
+.tabs a.on{color:var(--brand);font-weight:600}
+.tabs a.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--brand)}
+.tabs .c{font-size:11.5px;color:var(--muted);background:#F4F4F5;border-radius:4px;padding:0 5px;line-height:17px;font-weight:400}
+.tabs a.on .c{background:#E0F2EF;color:#0F5F58}
+
+/* body */
+.body{display:flex;flex:1;min-height:0}
+.side{width:296px;flex:none;background:#fff;border-right:1px solid var(--line);padding:4px 0 0;overflow:hidden}
+.sec-h{display:flex;align-items:center;gap:6px;padding:12px 20px 6px;font-size:12.5px;font-weight:600;color:var(--fg)}
+.sec-h svg{width:14px;height:14px;color:var(--brand)}
+.sec-h .x{margin-left:auto;font-weight:400;color:var(--faint);font-size:12px;display:flex;align-items:center;gap:4px}
+.kv{display:grid;grid-template-columns:112px 1fr;column-gap:12px;padding:0 20px}
+.kv dt{color:var(--muted);font-size:12.5px;padding:4px 0;line-height:18px}
+.kv dd{margin:0;padding:4px 0;line-height:18px;min-width:0;display:flex;align-items:center;gap:6px}
+.kv dd .av{width:18px;height:18px;font-size:9.5px;background:#EEF0EF;color:#4B5553}
+.dash{color:var(--faint)}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block;flex:none}
+.hr{height:1px;background:var(--line-2);margin:10px 20px 2px}
+.score{padding:0 20px}
+.score table{width:100%;border-collapse:collapse}
+.score td{padding:4px 0;font-size:13px;line-height:18px;color:var(--fg-2)}
+.score td.n{text-align:right;width:44px;color:var(--fg)}
+.score tr.t td{border-top:1px solid var(--line-2);padding-top:7px;font-weight:600;color:var(--fg)}
+.score .note{font-size:12px;color:var(--muted);margin-top:4px}
+.score td.neg{color:var(--bad)}
+.score tr.t td.n{color:var(--brand)}
+.meter{position:relative;height:6px;border-radius:3px;background:#E3ECEA;margin:2px 0 8px}
+.meter b{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--brand)}
+.meter i{position:absolute;top:-3px;bottom:-3px;width:2px;background:#3F3F46;border-radius:1px}
+.meter-l{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);line-height:14px;margin-bottom:6px}
+.minibar{width:40px;height:5px;border-radius:3px;background:#E3ECEA;position:relative;overflow:hidden;flex:none}
+.minibar b{position:absolute;left:0;top:0;bottom:0;background:var(--brand)}
+.pill{display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:999px;font-size:12px;font-weight:500;line-height:18px;border:1px solid transparent;white-space:nowrap}
+.pill.hot{background:#FFF0E0;border-color:#F7D3AE;color:#9A4A00}
+.pill.ok{background:#E6F4EA;border-color:#BFE1C9;color:#17703A}
+.pill.bad{background:#FDECEB;border-color:#F5C8C3;color:#B42318}
+.pill .dot{width:6px;height:6px}
+
+.main{flex:1;padding:16px 20px 0;display:flex;gap:16px;min-width:0;overflow:hidden}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.c-mid{flex:1}
+.c-right{width:376px;flex:none}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card-h{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--line-2);min-height:42px}
+.card-h h2{margin:0;font-size:13.5px;font-weight:600;line-height:20px}
+.card-h .cnt{color:var(--muted);font-weight:400}
+.card-h .r{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted)}
+a.lnk{color:var(--brand);text-decoration:none;font-size:12.5px;font-weight:500}
+.sub{display:flex;align-items:center;gap:6px;padding:8px 14px;font-size:12.5px;color:#4B5E5B;border-bottom:1px solid #DCEDEA;background:#F2F9F8;line-height:18px}
+.sub svg{width:14px;height:14px;color:var(--brand)}
+.sub b{color:var(--fg-2);font-weight:500}
+
+table.t{width:100%;border-collapse:collapse;table-layout:fixed}
+table.t th{text-align:left;font-weight:500;font-size:12px;color:var(--muted);padding:0 14px;height:30px;border-bottom:1px solid var(--line-2);background:#FAFAFA;white-space:nowrap}
+table.t th .srt{display:inline-flex;align-items:center;gap:3px}
+table.t th svg{width:12px;height:12px;color:var(--faint)}
+table.t td{padding:0 14px;height:36px;border-bottom:1px solid var(--line-2);font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+table.t tr:last-child td{border-bottom:0}
+table.t td.mut{color:var(--muted);font-size:13px}
+table.t td.r,table.t th.r{text-align:right}
+.ty{display:flex;align-items:center;gap:8px;color:var(--fg-2)}
+.ty svg{color:var(--muted)}
+.key{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;line-height:15px;margin-left:6px;vertical-align:1px}
+.st{display:inline-flex;align-items:center;gap:7px}
+.cell{display:flex;align-items:center;gap:10px;white-space:nowrap}
+.st.bad{color:#CF222E}
+.nosend{display:inline-flex;align-items:center;gap:4px;color:var(--muted);font-size:12.5px}
+.nosend svg{width:13px;height:13px}
+
+/* timeline */
+.tl{padding:10px 14px 6px}
+.day{font-size:12px;color:var(--muted);font-weight:500;padding:8px 0 4px}
+.ev{display:flex;gap:10px;position:relative;padding:4px 0 6px}
+.ev:before{content:"";position:absolute;left:11px;top:30px;bottom:-5px;width:1px;background:var(--line)}
+.ev.last:before{display:none}
+.ev .ic{width:23px;height:23px;border:1px solid var(--line);border-radius:50%;display:grid;place-items:center;color:var(--muted);background:#fff;flex:none;margin-top:-1px}
+.ev .ic svg{width:12px;height:12px}
+.ev .ic.k-zns{background:#E0F2EF;border-color:#BFE3DE;color:#0F766E}
+.ev .ic.k-chat{background:#F4F4F5;border-color:#E4E4E7;color:#3F3F46}
+.ev .ic.k-trial{background:#F4F4F5;border-color:#E4E4E7;color:#3F3F46}
+.ev .ic.k-unsub{background:#FDE9E7;border-color:#F5C8C3;color:#B42318}
+.ev .ic.k-mail{background:#F4F4F5;border-color:#E4E4E7;color:#3F3F46}
+.ev .tx{flex:1;min-width:0}
+.ev .tt{font-size:13px;line-height:19px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ev .tt b{font-weight:500;color:var(--fg)}
+.ev .ds{font-size:12px;line-height:17px;color:var(--muted)}
+.ev .tm{font-size:12px;color:var(--faint);white-space:nowrap;line-height:19px;text-align:right}
+
+/* audit */
+.log{padding:2px 0}
+.lg{display:flex;align-items:flex-start;gap:10px;padding:7px 14px;border-bottom:1px solid var(--line-2)}
+.lg:last-child{border-bottom:0}
+.lg .av{width:22px;height:22px;font-size:9.5px;background:#EEF0EF;color:#4B5553;margin-top:1px}
+.lg .av.sys{background:#fff;border:1px solid var(--line);color:var(--muted)}
+.lg .av.sys svg{width:12px;height:12px}
+.lg .tx{flex:1;min-width:0;font-size:13px;line-height:18px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lg .tx b{font-weight:500;color:var(--fg)}
+.lg .ds{font-size:12px;color:var(--muted);line-height:17px}
+.lg .tm{font-size:12px;color:var(--faint);white-space:nowrap;line-height:18px}
+.seg{display:inline-flex;align-items:center;gap:8px}
+.seg .dot{width:8px;height:8px;border-radius:2px}
+.chg{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12px;color:var(--fg-2)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+    <symbol id="cdown" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="cright" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></symbol>
+    <symbol id="mail" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+    <symbol id="mailopen" viewBox="0 0 24 24"><path d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z"/><path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10"/></symbol>
+    <symbol id="phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="cookie" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/></symbol>
+    <symbol id="idcard" viewBox="0 0 24 24"><rect width="20" height="14" x="2" y="5" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 10h4"/><path d="M14 14h4"/><path d="M5.5 17a3 3 0 0 1 5 0"/></symbol>
+    <symbol id="file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol>
+    <symbol id="ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol>
+    <symbol id="merge" viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M6 21V9a9 9 0 0 0 9 9"/></symbol>
+    <symbol id="eye" viewBox="0 0 24 24"><path d="M2.06 12.35a1 1 0 0 1 0-.7 10.75 10.75 0 0 1 19.88 0 1 1 0 0 1 0 .7 10.75 10.75 0 0 1-19.88 0"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="filter" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M7 12h10"/><path d="M10 18h4"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="pres" viewBox="0 0 24 24"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol>
+    <symbol id="globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol>
+    <symbol id="sort" viewBox="0 0 24 24"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></symbol>
+    <symbol id="pencil" viewBox="0 0 24 24"><path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"/><path d="m15 5 4 4"/></symbol>
+    <symbol id="cpu" viewBox="0 0 24 24"><rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/></symbol>
+    <symbol id="bellring" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/></symbol>
+    <symbol id="ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="logo">
+    <span class="mk"><svg viewBox="0 0 24 24" fill="none" stroke="#0F766E" stroke-width="2.2" stroke-linecap="round"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg></span>
+    Dữ liệu khách hàng
+  </div>
+  <nav class="nav">
+    <a class="on">Hồ sơ</a><a>Phân nhóm</a><a>Chiến dịch</a><a>Hành trình</a><a>Báo cáo</a><a>Cài đặt</a>
+  </nav>
+  <div class="right">
+    <div class="search"><svg class="i s"><use href="#search"/></svg><span>Tìm hồ sơ, email, số điện thoại</span><kbd>⌘K</kbd></div>
+    <div class="ib"><svg class="i"><use href="#help"/></svg></div>
+    <div class="ib"><svg class="i"><use href="#bell"/></svg></div>
+    <div class="sep"></div>
+    <div class="me">
+      <div class="av">TT</div>
+      <div><div class="n">Thanh Tùng</div><div class="r">Chuyên viên CRM</div></div>
+      <svg class="i s"><use href="#cdown"/></svg>
+    </div>
+  </div>
+</header>
+
+<section class="head">
+  <div class="crumb"><a>Hồ sơ</a><svg class="i"><use href="#cright"/></svg><b>Khánh Linh</b></div>
+  <div class="idrow">
+    <div class="av">KL</div>
+    <div class="who">
+      <h1>Khánh Linh <span class="code mono">KH-2609-0412 <svg class="i"><use href="#copy"/></svg></span><span class="tags"><span class="tag amb">Đã học thử</span><span class="tag">Quan tâm Phân tích dữ liệu</span><span class="tag">Đến từ form web</span><span class="tag">+2</span></span></h1>
+      <div class="meta">
+        Hoạt động gần nhất 2 giờ trước <i>·</i> Tư vấn viên Gia Huy
+      </div>
+    </div>
+    <div class="actions">
+      <span class="ro"><svg class="i"><use href="#lock"/></svg>Chỉ xem</span>
+      <button class="btn" disabled><svg class="i s"><use href="#pencil"/></svg>Sửa</button>
+      <button class="btn pri" disabled><svg class="i s"><use href="#plus"/></svg>Thêm vào phân nhóm</button>
+      <button class="btn sq"><svg class="i"><use href="#more"/></svg></button>
+    </div>
+  </div>
+  <div class="tabs">
+    <a class="on">Tổng quan</a>
+    <a>Hoạt động <span class="c">32</span></a>
+    <a>Danh tính <span class="c">5</span></a>
+    <a>Kênh &amp; đồng ý</a>
+    <a>Lịch sử thao tác <span class="c">14</span></a>
+  </div>
+</section>
+
+<div class="body">
+  <aside class="side">
+    <div class="sec-h"><svg class="i"><use href="#cdown"/></svg>Thuộc tính<span class="x">11 trường</span></div>
+    <dl class="kv">
+      <dt>Giai đoạn</dt><dd>Học viên tiềm năng</dd>
+      <dt>Điểm lead</dt><dd>72 <span class="pill hot">Nóng</span></dd>
+      <dt>Tư vấn viên</dt><dd><span class="av c-amb">GH</span>Gia Huy</dd>
+      <dt>Chi nhánh</dt><dd class="ell">Chi nhánh Trung tâm</dd>
+      <dt>Khoá quan tâm</dt><dd class="ell">Phân tích dữ liệu</dd>
+      <dt>Nguồn đầu tiên</dt><dd>Form web</dd>
+      <dt>Kênh ưa thích</dt><dd>Zalo</dd>
+      <dt>Nghề nghiệp</dt><dd class="ell">Nhân viên kế toán</dd>
+      <dt>Ngày sinh</dt><dd class="dash">-</dd>
+      <dt>Ghi nhận</dt><dd>02/09/2026 14:22</dd>
+      <dt>Cập nhật</dt><dd>Hôm qua 21:02</dd>
+    </dl>
+    <div class="hr"></div>
+    <div class="sec-h"><svg class="i"><use href="#cdown"/></svg>Điểm lead<span class="x">Quy tắc v3</span></div>
+    <div class="score">
+      <div class="meter"><b style="width:72%"></b><i style="left:70%"></i></div>
+      <table>
+        <tr><td>Điểm nền hồ sơ</td><td class="n">30</td></tr>
+        <tr><td>Tham gia buổi học thử</td><td class="n">+20</td></tr>
+        <tr><td>Chat với tư vấn viên</td><td class="n">+15</td></tr>
+        <tr><td>Xem trang học phí 3 lần</td><td class="n">+12</td></tr>
+        <tr><td>Huỷ đăng ký email</td><td class="n neg">−5</td></tr>
+        <tr class="t"><td>Tổng</td><td class="n">72</td></tr>
+      </table>
+      <div class="note">Ngưỡng chuyển tư vấn: 70 điểm</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="col c-mid">
+      <section class="card">
+        <div class="card-h"><h2>Danh tính <span class="cnt">5</span></h2><div class="r"><a class="lnk">Xem lịch sử gộp</a></div></div>
+        <div class="sub"><svg class="i"><use href="#merge"/></svg>Gộp từ 4 hồ sơ · 03/10/2026 16:40 · <b>Bảo Châu</b> · khớp theo email và số điện thoại</div>
+        <table class="t">
+          <colgroup><col style="width:134px"><col><col style="width:110px"><col style="width:110px"></colgroup>
+          <thead><tr><th>Loại</th><th>Giá trị</th><th>Nguồn</th><th class="r"><span class="srt">Ngày <svg class="i"><use href="#sort"/></svg></span></th></tr></thead>
+          <tbody>
+            <tr><td><span class="ty"><svg class="i s"><use href="#mail"/></svg>Email</span></td><td>k***@gmail.com</td><td class="mut">Form web</td><td class="r mut">02/09/2026</td></tr>
+            <tr><td><span class="ty"><svg class="i s"><use href="#phone"/></svg>Số điện thoại</span></td><td>09xx xxx 321</td><td class="mut">Form web</td><td class="r mut">02/09/2026</td></tr>
+            <tr><td><span class="ty"><svg class="i s"><use href="#cookie"/></svg>Mã cookie</span></td><td><span class="mono">cs_7f3a9c2e41b8</span></td><td class="mut">Website</td><td class="r mut">02/09/2026</td></tr>
+            <tr><td><span class="ty"><svg class="i s"><use href="#msg"/></svg>Zalo ID</span></td><td><span class="mono">4821…7730</span></td><td class="mut">Zalo OA</td><td class="r mut">05/09/2026</td></tr>
+            <tr><td><span class="ty"><svg class="i s"><use href="#idcard"/></svg>Mã khách CRM</span></td><td><span class="mono">CRM-58213</span></td><td class="mut">CRM</td><td class="r mut">14/09/2026</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><h2>Kênh &amp; đồng ý</h2><div class="r">Gửi gần nhất: Zalo ZNS · 09:12</div></div>
+        <table class="t">
+          <colgroup><col style="width:116px"><col><col style="width:128px"></colgroup>
+          <thead><tr><th>Kênh</th><th>Trạng thái</th><th>Nguồn đồng ý</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ty"><svg class="i s"><use href="#mail"/></svg>Email</span></td>
+              <td><div class="cell"><span class="pill bad"><span class="dot" style="background:#D1242F"></span>Đã huỷ</span> <span class="nosend">từ 12/09/2026</span></div></td>
+              <td class="mut">Liên kết huỷ</td></tr>
+            <tr><td><span class="ty"><svg class="i s"><use href="#chat"/></svg>Zalo ZNS</span></td>
+              <td><div class="cell"><span class="pill ok"><span class="dot" style="background:#1F883D"></span>Cho phép</span> <span class="nosend">từ 05/09/2026</span></div></td>
+              <td class="mut">Form web</td></tr>
+            <tr><td><span class="ty"><svg class="i s"><use href="#bellring"/></svg>Web Push</span></td>
+              <td><div class="cell"><span class="pill ok"><span class="dot" style="background:#1F883D"></span>Cho phép</span> <span class="nosend">từ 02/09/2026 · Chrome</span></div></td>
+              <td class="mut">Trình duyệt</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><h2>Phân nhóm <span class="cnt">5</span></h2><div class="r"><a class="lnk">Xem tất cả</a></div></div>
+        <table class="t">
+          <colgroup><col><col style="width:110px"><col style="width:104px"></colgroup>
+          <thead><tr><th>Tên phân nhóm</th><th>Loại</th><th class="r">Vào nhóm</th></tr></thead>
+          <tbody>
+            <tr><td><span class="seg"><span class="dot" style="background:#D69E2E"></span>Đã học thử · chưa đăng ký học</span></td><td class="mut">Tự động</td><td class="r mut">28/09/2026</td></tr>
+            <tr><td><span class="seg"><span class="dot" style="background:#14B8A6"></span>Quan tâm Phân tích dữ liệu</span></td><td class="mut">Tự động</td><td class="r mut">10/09/2026</td></tr>
+            <tr><td><span class="seg"><span class="dot" style="background:#3B8FCB"></span>Đến từ form web · tháng 9</span></td><td class="mut">Tĩnh</td><td class="r mut">02/09/2026</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <div class="col c-right">
+      <section class="card">
+        <div class="card-h"><h2>Hoạt động gần đây</h2><div class="r"><span style="display:flex;align-items:center;gap:4px"><svg class="i s"><use href="#filter"/></svg>Tất cả</span></div></div>
+        <div class="tl">
+                    <div class="ev"><div class="ic k-zns"><svg class="i"><use href="#chat"/></svg></div><div class="tx"><div class="tt">Nhận ZNS <b>Nhắc lịch tư vấn 1-1</b></div><div class="ds ell">Hành trình Chăm sóc sau học thử · đã xem 09:15</div></div><div class="tm">Hôm nay 09:12</div></div>
+                    <div class="ev"><div class="ic k-chat"><svg class="i"><use href="#msg"/></svg></div><div class="tx"><div class="tt">Chat với tư vấn viên <b>Gia Huy</b></div><div class="ds ell">12 tin nhắn · hỏi lịch học buổi tối</div></div><div class="tm">Hôm qua 20:41</div></div>
+                    <div class="ev"><div class="ic k-trial"><svg class="i"><use href="#pres"/></svg></div><div class="tx"><div class="tt ell">Tham gia buổi học thử <b>Từ Excel đến SQL</b></div><div class="ds ell">Chi nhánh Trung tâm · có mặt 90 phút</div></div><div class="tm">28/09 19:30</div></div>
+                    <div class="ev"><div class="ic k-unsub"><svg class="i"><use href="#ban"/></svg></div><div class="tx"><div class="tt">Huỷ đăng ký <b>Email</b></div><div class="ds ell">Qua liên kết cuối email · ngừng gửi ngay</div></div><div class="tm">12/09 08:03</div></div>
+                    <div class="ev last"><div class="ic k-mail"><svg class="i"><use href="#mailopen"/></svg></div><div class="tx"><div class="tt ell">Mở email <b>Lộ trình Phân tích dữ liệu 12 tuần</b></div><div class="ds ell">Bấm xem học phí</div></div><div class="tm">10/09 21:15</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><h2>Lịch sử thao tác</h2><div class="r"><a class="lnk">Xem tất cả 14</a></div></div>
+        <div class="log">
+          <div class="lg"><div class="av c-sky">TT</div><div class="tx"><b>Thanh Tùng</b> xem hồ sơ<div class="ds">Chuyên viên CRM · 113.161.xx.xx</div></div><div class="tm">Hôm nay 09:20</div></div>
+          <div class="lg"><div class="av c-amb">GH</div><div class="tx"><b>Gia Huy</b> sửa ghi chú tư vấn<div class="ds">Tư vấn viên</div></div><div class="tm">Hôm qua 21:02</div></div>
+          <div class="lg"><div class="av sys"><svg class="i"><use href="#cpu"/></svg></div><div class="tx"><b>Hệ thống</b> đổi điểm lead <span class="chg">57 → 72</span><div class="ds">Quy tắc: Chat với tư vấn viên</div></div><div class="tm">Hôm qua 20:42</div></div>
+          <div class="lg"><div class="av c-pnk">BC</div><div class="tx"><b>Bảo Châu</b> gộp 4 hồ sơ trùng<div class="ds">Quản trị dữ liệu</div></div><div class="tm">Hôm qua 16:40</div></div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>

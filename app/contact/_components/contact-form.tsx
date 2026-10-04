@@ -15,6 +15,7 @@ const SERVICES: { vi: string; en: string }[] = [
   { vi: 'AI Automation', en: 'AI Automation' },
   { vi: 'CRM & CDP', en: 'CRM & CDP' },
   { vi: 'Phân tích cuộc gọi AI', en: 'AI Call Analytics' },
+  { vi: 'Phần mềm theo yêu cầu', en: 'Custom Software' },
   { vi: 'Tư vấn tổng thể', en: 'End-to-end Consulting' },
 ]
 

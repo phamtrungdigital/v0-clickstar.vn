@@ -157,6 +157,41 @@ function flatten(node: Json, key: string | null, depth: number, out: string[], c
   }
 }
 
+/**
+ * Dự án viết trong code (scripts/build-site-knowledge.mjs gắn nhãn "Dự án: …" + các
+ * dòng "Lĩnh vực:/Vấn đề:/…") → tách khỏi khối trang, gom về khối DỰ ÁN cạnh /projects.
+ * Nằm lẫn trong trang dịch vụ thì khách hỏi "đã làm dự án nào" bot chỉ kể /projects.
+ */
+const CASE_FIELD = /^(Lĩnh vực|Vấn đề|Đã xây dựng|Điểm nổi bật|Công nghệ): (.*)$/
+function pullCodeCases(route: string, lines: string[]) {
+  const rest: string[] = []
+  const cases: string[] = []
+  let cur: { title: string; sector: string; fields: string[] } | null = null
+  const flush = () => {
+    if (!cur) return
+    const who = `khách: ẩn tên${cur.sector ? ', lĩnh vực ' + cur.sector : ''}`
+    cases.push(`- ${cur.title} (${who}) → ${route}${cur.fields.map((f) => `\n  ${f}`).join('')}`)
+    cur = null
+  }
+  for (const l of lines) {
+    if (l.startsWith('Dự án: ')) {
+      flush()
+      cur = { title: l.slice(7).trim(), sector: '', fields: [] }
+      continue
+    }
+    const m = cur ? CASE_FIELD.exec(l) : null
+    if (cur && m) {
+      if (m[1] === 'Lĩnh vực') cur.sector = m[2]
+      else cur.fields.push(l)
+      continue
+    }
+    flush()
+    rest.push(l)
+  }
+  flush()
+  return { rest, cases }
+}
+
 function slugToRoute(slug: string) {
   return slug === 'home' ? '/' : '/' + slug
 }
@@ -201,16 +236,18 @@ async function build(): Promise<SiteKnowledge> {
   // một đoạn DÀI của DB. KHÔNG khử trùng dòng ngắn: "Giá: Từ 8 triệu" của gói Website
   // trùng chữ với gói Marketing nhưng là 2 thông tin khác nhau — khử là mất giá.
   const order = [...routes].sort((a, b) => (a === '/' ? -1 : b === '/' ? 1 : a.localeCompare(b)))
+  const codeCases: string[] = []
   for (const route of order) {
     const dbLines = dbByRoute[route] ?? []
     const longDb = new Set(dbLines.map((l) => l.trim()).filter((l) => l.length >= MIN_DEDUP_CHARS))
-    const staticLines = (staticRoutes[route]?.split('\n') ?? []).filter((l) => !longDb.has(l.trim()))
-    const lines = [...dbLines, ...staticLines]
+    const pulled = pullCodeCases(route, (staticRoutes[route]?.split('\n') ?? []).filter((l) => !longDb.has(l.trim())))
+    codeCases.push(...pulled.cases)
+    const lines = [...dbLines, ...pulled.rest]
     if (lines.length) blocks.push(`### TRANG ${route}\n${lines.join('\n')}`)
   }
 
   const cases = casesRes.data ?? []
-  if (cases.length) {
+  if (cases.length || codeCases.length) {
     const lines = cases.map((c) => {
       routes.add(`/projects/${c.slug}`)
       const metrics = Array.isArray(c.metrics)
@@ -222,7 +259,9 @@ async function build(): Promise<SiteKnowledge> {
       // client_name "Bảo mật" = khách yêu cầu ẩn tên — giữ nguyên để bot không tự đoán tên
       return `- ${c.title_vi} (khách: ${c.client_name}${c.industry_vi ? ', ngành ' + c.industry_vi : ''}) → /projects/${c.slug}\n  ${clean(c.summary_vi ?? '')}${metrics ? `\n  Kết quả: ${metrics}` : ''}`
     })
-    blocks.push(`### DỰ ÁN ĐÃ TRIỂN KHAI (trang /projects)\n${lines.join('\n')}`)
+    blocks.push(
+      `### DỰ ÁN ĐÃ TRIỂN KHAI (${lines.length} dự án ở trang /projects + ${codeCases.length} hệ thống phần mềm ẩn tên khách ở mục "Dự án đã thực hiện" của trang dịch vụ)\n${[...lines, ...codeCases].join('\n')}`,
+    )
   }
 
   const posts = postsRes.data ?? []
@@ -261,7 +300,7 @@ async function build(): Promise<SiteKnowledge> {
  * phần chữ trích từ code (đổi mỗi khi trang đổi chữ). Data Cache của Vercel sống qua
  * các lần deploy, nên thiếu 2 phần này thì bản deploy mới vẫn đọc kiến thức CŨ tới 1 giờ.
  */
-const FORMAT_VERSION = '3'
+const FORMAT_VERSION = '5'
 const staticVersion = (staticKnowledge as { version?: string }).version ?? 'dev'
 
 export const getSiteKnowledge = unstable_cache(build, ['site-knowledge', FORMAT_VERSION, staticVersion], {

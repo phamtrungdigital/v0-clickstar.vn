@@ -12,3 +12,7 @@ build/
 # ignore only personal/local files
 .claude/settings.local.json
 *.tsbuildinfo
+
+# Mockup minh hoạ: ảnh render tạm + danh sách từ cấm có tên khách (repo public)
+design/custom-software-mockups/*.png
+design/custom-software-mockups/forbidden.local.txt
