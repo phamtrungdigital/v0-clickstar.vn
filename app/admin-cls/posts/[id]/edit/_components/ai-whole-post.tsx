@@ -62,7 +62,7 @@ export function AiWholePost({
     }
     const t = setTimeout(async () => {
       try {
-        const res = await fetch('/api/admin-cls/ai/keyword-check', {
+        const res = await fetch('/api/admin/ai/keyword-check', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ keyword }),
@@ -117,7 +117,7 @@ export function AiWholePost({
       setOutline(null)
       setProgress('Đang gen dàn bài...')
       try {
-        const res = await fetch('/api/admin-cls/ai/blog/outline', {
+        const res = await fetch('/api/admin/ai/blog/outline', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ topic, keyword, style, targetWords }),
@@ -142,7 +142,7 @@ export function AiWholePost({
 
   // STEP 2 (or single-step if !useOutline): Generate full content via SSE
   /**
-   * Build the outline payload that goes to /api/admin-cls/ai/blog.
+   * Build the outline payload that goes to /api/admin/ai/blog.
    * - If user ticked specific sections → only send those (in original order).
    * - If nothing ticked → send all sections (auto fallback per user request).
    */
@@ -161,7 +161,7 @@ export function AiWholePost({
       setProgress('Đang gọi AI...')
       setStep('writing')
       try {
-        const res = await fetch('/api/admin-cls/ai/blog', {
+        const res = await fetch('/api/admin/ai/blog', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({

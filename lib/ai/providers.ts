@@ -8,41 +8,23 @@ export type GenerateOpts = {
   prompt: string
   maxTokens?: number
   temperature?: number
+  /** Chỉ Claude 5.x: độ sâu suy nghĩ (mặc định low cho việc ngắn). */
+  effort?: 'low' | 'medium' | 'high'
 }
 
 export async function generateWithAnthropic(opts: GenerateOpts): Promise<string> {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': opts.apiKey,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: opts.model,
-      max_tokens: opts.maxTokens ?? 512,
-      // Note: temperature is deprecated on newer Claude models (Opus 4.7,
-      // Sonnet 4.6, Haiku 4.5) — only send it on legacy models.
-      ...(opts.temperature !== undefined && /claude-[123]/.test(opts.model)
-        ? { temperature: opts.temperature }
-        : {}),
-      system: opts.system,
-      messages: [{ role: 'user', content: opts.prompt }],
-    }),
+  // SDK chính thức + model 5.x: không gửi temperature; trần max_tokens rộng vì phần
+  // suy nghĩ của model tính vào max_tokens (trần 512 cũ làm câu trả lời bị cắt).
+  const { callClaude } = await import('./claude')
+  const r = await callClaude({
+    apiKey: opts.apiKey,
+    model: opts.model,
+    system: opts.system,
+    prompt: opts.prompt,
+    maxTokens: Math.min(64000, Math.max(opts.maxTokens ?? 0, 8000)),
+    effort: opts.effort ?? 'low',
   })
-  if (!res.ok) {
-    const text = await res.text()
-    let msg = text
-    try {
-      const j = JSON.parse(text)
-      msg = j?.error?.message || text
-    } catch {}
-    throw new Error(`Anthropic ${res.status}: ${msg.slice(0, 300)}`)
-  }
-  const data = await res.json()
-  const out = data?.content?.[0]?.text
-  if (typeof out !== 'string') throw new Error('Anthropic: unexpected response shape')
-  return out.trim()
+  return r.text.trim()
 }
 
 export async function generateWithOpenAI(opts: GenerateOpts): Promise<string> {
@@ -81,7 +63,7 @@ export async function generateWithOpenAI(opts: GenerateOpts): Promise<string> {
 export type GenerateImageOpts = {
   apiKey: string
   prompt: string
-  model?: string // 'gpt-image-1' (default) or 'dall-e-3'
+  model?: string // luôn chạy gpt-image-1 (dall-e-3 cũ tự chuyển)
   size?: '1024x1024' | '1536x1024' | '1024x1536' | '1792x1024' | '1024x1792'
   quality?: 'low' | 'medium' | 'high' | 'standard' | 'hd' | 'auto'
 }
@@ -93,19 +75,16 @@ export type GenerateImageOpts = {
 export async function generateImageWithOpenAI(
   opts: GenerateImageOpts
 ): Promise<string> {
-  const model = opts.model || 'gpt-image-1'
-  const isDalle = model.startsWith('dall-e')
+  // Gom về 1 model gpt-image-1 cho ảnh đồng đều. Cấu hình cũ còn chọn dall-e-3 thì tự
+  // chuyển, đổi luôn kích thước/chất lượng sang giá trị gpt-image-1 nhận.
+  const model = 'gpt-image-1'
+  const SIZE_MAP: Record<string, string> = { '1792x1024': '1536x1024', '1024x1792': '1024x1536' }
+  const QUALITY_MAP: Record<string, string> = { standard: 'medium', hd: 'high' }
+  const size = opts.size ? (SIZE_MAP[opts.size] ?? opts.size) : '1536x1024'
+  const quality = opts.quality ? (QUALITY_MAP[opts.quality] ?? opts.quality) : undefined
 
-  const body: Record<string, unknown> = {
-    model,
-    prompt: opts.prompt,
-    n: 1,
-    size: opts.size || (isDalle ? '1792x1024' : '1536x1024'),
-  }
-  // DALL-E quality: 'standard' | 'hd'. gpt-image-1: 'low' | 'medium' | 'high' | 'auto'.
-  if (opts.quality) body.quality = opts.quality
-  // DALL-E returns URLs by default; gpt-image-1 always returns base64.
-  if (isDalle) body.response_format = 'b64_json'
+  const body: Record<string, unknown> = { model, prompt: opts.prompt, n: 1, size }
+  if (quality) body.quality = quality
 
   const res = await fetch('https://api.openai.com/v1/images/generations', {
     method: 'POST',
@@ -129,15 +108,5 @@ export async function generateImageWithOpenAI(
   return b64
 }
 
-export const MODEL_OPTIONS = {
-  anthropic: [
-    { value: 'claude-haiku-4-5-20251001', label: 'Claude Haiku 4.5 (rẻ + nhanh)' },
-    { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6 (cân bằng)' },
-    { value: 'claude-opus-4-7', label: 'Claude Opus 4.7 (thông minh nhất)' },
-  ],
-  openai: [
-    { value: 'gpt-4o-mini', label: 'GPT-4o mini (rẻ + nhanh)' },
-    { value: 'gpt-4o', label: 'GPT-4o (cân bằng)' },
-    { value: 'gpt-4-turbo', label: 'GPT-4 Turbo (mạnh)' },
-  ],
-} as const
+// Danh sách model chuyển sang settings-shared (client-safe); giữ export cũ cho tương thích.
+export { MODEL_OPTIONS } from './settings-shared'

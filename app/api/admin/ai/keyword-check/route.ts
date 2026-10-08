@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { requireContentEditor } from '@/lib/ai/admin-guard'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -24,10 +25,8 @@ export async function POST(req: Request) {
     }
 
     const supabase = await createClient()
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-    if (!user) return NextResponse.json({ error: 'Chưa đăng nhập' }, { status: 401 })
+    const guard = await requireContentEditor(supabase)
+    if (!guard.ok) return NextResponse.json({ error: guard.error }, { status: guard.status })
 
     // Fetch posts (admin can see all incl. drafts)
     let query = supabase
@@ -66,7 +65,10 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ matches })
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message || 'Check failed' }, { status: 500 })
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : 'Kiểm tra trùng thất bại' },
+      { status: 500 }
+    )
   }
 }

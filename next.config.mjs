@@ -3,6 +3,10 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Ảnh bìa AI (next/og) đọc font + logo bằng fs lúc chạy → khai báo để Vercel đóng gói kèm.
+  outputFileTracingIncludes: {
+    '/api/admin/ai/pipeline': ['./lib/ai/fonts/**', './lib/ai/cover-assets/**'],
+  },
   experimental: {
     // Tree-shake import từ barrel (icon/date) → giảm JS client (landing + admin).
     optimizePackageImports: ['lucide-react', 'date-fns'],

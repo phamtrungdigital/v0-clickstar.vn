@@ -4,14 +4,16 @@ import { useState } from 'react'
 import { Sparkles, MessageCircle } from 'lucide-react'
 import { AiSettingsForm } from './ai-settings-form'
 import { ChatbotSettingsForm } from './chatbot-settings-form'
-import type { AiSettings } from '@/lib/ai/settings-shared'
+import type { AiSettings, KeySources } from '@/lib/ai/settings-shared'
 import type { ChatbotSettings } from '@/lib/cms/chatbot-shared'
 
 export function AiHub({
   aiInitial,
+  aiKeySources,
   chatbotInitial,
 }: {
   aiInitial: AiSettings | null
+  aiKeySources: KeySources
   chatbotInitial: ChatbotSettings | null
 }) {
   const [tab, setTab] = useState<'cms' | 'chatbot'>('cms')
@@ -45,7 +47,7 @@ export function AiHub({
       </div>
 
       {tab === 'cms' ? (
-        <AiSettingsForm initial={aiInitial} />
+        <AiSettingsForm initial={aiInitial} keySources={aiKeySources} />
       ) : (
         <ChatbotSettingsForm initial={chatbotInitial} />
       )}

@@ -196,6 +196,8 @@ function slugToRoute(slug: string) {
   return slug === 'home' ? '/' : '/' + slug
 }
 
+const BOT_POST_LIMIT = 30
+
 async function build(): Promise<SiteKnowledge> {
   const supabase = createPublicClient()
   const [pagesRes, casesRes, postsRes, settingsRes, webRes, teamRes] = await Promise.all([
@@ -209,7 +211,10 @@ async function build(): Promise<SiteKnowledge> {
       .from('posts')
       .select('slug, title, excerpt, tags, published_at')
       .eq('status', 'published')
-      .order('published_at', { ascending: false }),
+      .order('published_at', { ascending: false })
+      // Bot chỉ đọc 30 bài mới nhất: blog sẽ có thêm bài AI hỗ trợ viết đều đặn, giữ
+      // kiến thức gọn và bớt rủi ro bot lặp lại nội dung bài cũ đã lỗi thời.
+      .limit(BOT_POST_LIMIT),
     supabase.from('site_settings').select('contact_email, contact_phone, address, zalo_url').eq('id', 1).maybeSingle(),
     supabase.from('web_content').select('footer').eq('id', 1).maybeSingle(),
     supabase.from('team_members').select('name, role_vi').eq('enabled', true).order('sort_order'),
@@ -270,7 +275,7 @@ async function build(): Promise<SiteKnowledge> {
       routes.add(`/blog/${p.slug}`)
       return `- ${textOf(p.title as Json) ?? p.slug} → /blog/${p.slug}\n  ${textOf(p.excerpt as Json) ?? ''}`
     })
-    blocks.push(`### BÀI VIẾT BLOG (trang /blog)\n${lines.join('\n')}`)
+    blocks.push(`### BÀI VIẾT BLOG (trang /blog, ${lines.length} bài mới nhất)\n${lines.join('\n')}`)
   }
 
   const team = teamRes.data ?? []

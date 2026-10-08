@@ -60,7 +60,7 @@ export function AiCoverImage({
       setPreviewUrl(null)
       setProgress(null)
       try {
-        const res = await fetch('/api/admin-cls/ai/image', {
+        const res = await fetch('/api/admin/ai/image', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ prompt: finalPrompt }),

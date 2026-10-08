@@ -19,6 +19,10 @@ export type Post = {
   og_image: string | null
   created_at: string
   updated_at: string
+  /** Bài có AI hỗ trợ soạn → hiện nhãn AI + người biên tập (cột mới; DB cũ chưa có thì undefined). */
+  ai_assisted?: boolean
+  editor_name?: string | null
+  editor_title?: string | null
 }
 
 export async function listPublishedPosts(): Promise<Post[]> {

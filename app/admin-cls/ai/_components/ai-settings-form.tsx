@@ -22,13 +22,18 @@ import {
   testOpenAiImagesApi,
   type SaveAiSettingsInput,
 } from '../actions'
-import { MODEL_OPTIONS } from '@/lib/ai/providers'
-import type {
-  AiSettings,
-  AiProvider,
-  ImageModel,
-  ImageQuality,
-  ImageSize,
+import {
+  DEFAULT_CLAUDE_BLOG_MODEL,
+  DEFAULT_CLAUDE_INLINE_MODEL,
+  MODEL_OPTIONS,
+  isMaskedKey,
+  type AiSettings,
+  type AiProvider,
+  type ImageModel,
+  type ImageQuality,
+  type ImageSize,
+  type KeySource,
+  type KeySources,
 } from '@/lib/ai/settings-shared'
 
 const IMAGE_SIZES: { value: ImageSize; label: string }[] = [
@@ -41,16 +46,22 @@ const IMAGE_SIZES: { value: ImageSize; label: string }[] = [
 
 type Tab = 'keys' | 'inline' | 'blog' | 'image'
 
-export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
+export function AiSettingsForm({
+  initial,
+  keySources,
+}: {
+  initial: AiSettings | null
+  keySources: KeySources
+}) {
   const [draft, setDraft] = useState<SaveAiSettingsInput>({
     enabled: initial?.enabled ?? false,
     anthropic_api_key: initial?.anthropic_api_key ?? null,
     openai_api_key: initial?.openai_api_key ?? null,
     inline_provider: initial?.inline_provider ?? 'anthropic',
-    inline_model: initial?.inline_model ?? 'claude-haiku-4-5-20251001',
+    inline_model: initial?.inline_model ?? DEFAULT_CLAUDE_INLINE_MODEL,
     inline_system_prompt: initial?.inline_system_prompt ?? '',
     blog_provider: initial?.blog_provider ?? 'anthropic',
-    blog_model: initial?.blog_model ?? 'claude-opus-4-7',
+    blog_model: initial?.blog_model ?? DEFAULT_CLAUDE_BLOG_MODEL,
     blog_system_prompt: initial?.blog_system_prompt ?? '',
     blog_target_words: initial?.blog_target_words ?? 1200,
     image_model: initial?.image_model ?? 'gpt-image-1',
@@ -147,9 +158,9 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
           )}
           {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
           {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              Lỗi
+            <span className="flex items-center gap-1 text-xs text-red-600 max-w-[320px]" title={errorMsg}>
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate">{errorMsg || 'Lỗi'}</span>
             </span>
           )}
           <button
@@ -216,12 +227,14 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                   visible={showAnthropic}
                   onToggleVisible={() => setShowAnthropic((v) => !v)}
                   hint="Lấy ở https://console.anthropic.com/settings/keys"
+                  source={keySources.anthropic}
+                  envName="ANTHROPIC_API_KEY"
                 />
                 <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handleTestKey('anthropic')}
-                    disabled={keyTests.anthropic?.loading || !draft.anthropic_api_key}
+                    disabled={keyTests.anthropic?.loading || (!draft.anthropic_api_key && !keySources.anthropic)}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
                   >
                     {keyTests.anthropic?.loading ? (
@@ -244,12 +257,14 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                   visible={showOpenai}
                   onToggleVisible={() => setShowOpenai((v) => !v)}
                   hint="Lấy ở https://platform.openai.com/api-keys (cần credit cho Images API)"
+                  source={keySources.openai}
+                  envName="OPENAI_API_KEY"
                 />
                 <div className="flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => handleTestKey('openai')}
-                    disabled={keyTests.openai?.loading || !draft.openai_api_key}
+                    disabled={keyTests.openai?.loading || (!draft.openai_api_key && !keySources.openai)}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
                   >
                     {keyTests.openai?.loading ? (
@@ -262,7 +277,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                   <button
                     type="button"
                     onClick={() => handleTestKey('openai_images')}
-                    disabled={keyTests.openai_images?.loading || !draft.openai_api_key}
+                    disabled={keyTests.openai_images?.loading || (!draft.openai_api_key && !keySources.openai)}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
                   >
                     {keyTests.openai_images?.loading ? (
@@ -289,7 +304,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                 value={draft.inline_provider}
                 onChange={(p) => {
                   update('inline_provider', p)
-                  update('inline_model', MODEL_OPTIONS[p][0].value)
+                  update('inline_model', p === 'anthropic' ? DEFAULT_CLAUDE_INLINE_MODEL : MODEL_OPTIONS[p][0].value)
                 }}
               />
               <ModelSelect
@@ -336,7 +351,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
             <div className="space-y-4">
               <p className="text-xs text-slate-500">
                 Cấu hình cho nút <strong>✨ AI viết bài hoàn chỉnh</strong> trong PostEditor. AI viết toàn
-                bộ blog (title + excerpt + content markdown × VI/EN). Khuyến nghị <strong>Claude Opus 4.7</strong>{' '}
+                bộ blog (title + excerpt + content markdown × VI/EN). Khuyến nghị <strong>Claude Opus 5.5</strong>{' '}
                 cho chất lượng cao nhất.
               </p>
               <ProviderPicker
@@ -345,7 +360,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                   update('blog_provider', p)
                   update(
                     'blog_model',
-                    p === 'anthropic' ? 'claude-opus-4-7' : 'gpt-4o'
+                    p === 'anthropic' ? DEFAULT_CLAUDE_BLOG_MODEL : 'gpt-4o'
                   )
                 }}
               />
@@ -404,8 +419,10 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                     onChange={(e) => update('image_model', e.target.value as ImageModel)}
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
                   >
-                    <option value="gpt-image-1">gpt-image-1 (recommend, ~$0.04)</option>
-                    <option value="dall-e-3">DALL-E 3 (~$0.04 standard, ~$0.08 HD)</option>
+                    <option value="gpt-image-1">gpt-image-1 (khuyến nghị, ~$0.04)</option>
+                    {draft.image_model === 'dall-e-3' && (
+                      <option value="dall-e-3">DALL-E 3 (cũ, khi chạy tự chuyển sang gpt-image-1)</option>
+                    )}
                   </select>
                 </div>
 
@@ -485,8 +502,10 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                     onChange={(e) => update('body_image_model', e.target.value as ImageModel)}
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
                   >
-                    <option value="gpt-image-1">gpt-image-1 (recommend)</option>
-                    <option value="dall-e-3">DALL-E 3</option>
+                    <option value="gpt-image-1">gpt-image-1 (khuyến nghị)</option>
+                    {draft.body_image_model === 'dall-e-3' && (
+                      <option value="dall-e-3">DALL-E 3 (cũ, khi chạy tự chuyển sang gpt-image-1)</option>
+                    )}
                   </select>
                 </div>
 
@@ -666,6 +685,9 @@ function ModelSelect({
         onChange={(e) => onChange(e.target.value)}
         className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
       >
+        {!MODEL_OPTIONS[provider].some((m) => m.value === value) && value && (
+          <option value={value}>{value} (model cũ, nên đổi)</option>
+        )}
         {MODEL_OPTIONS[provider].map((m) => (
           <option key={m.value} value={m.value}>
             {m.label}
@@ -713,6 +735,8 @@ function ApiKeyInput({
   visible,
   onToggleVisible,
   hint,
+  source,
+  envName,
 }: {
   label: string
   placeholder: string
@@ -721,7 +745,10 @@ function ApiKeyInput({
   visible: boolean
   onToggleVisible: () => void
   hint?: string
+  source: KeySource
+  envName: string
 }) {
+  const masked = isMaskedKey(value)
   return (
     <div>
       <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
@@ -729,9 +756,10 @@ function ApiKeyInput({
       </label>
       <div className="relative">
         <input
-          type={visible ? 'text' : 'password'}
+          type={visible || masked ? 'text' : 'password'}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onFocus={(e) => masked && e.target.select()}
           placeholder={placeholder}
           className="w-full px-3 py-2 pr-9 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-xs font-mono"
           autoComplete="off"
@@ -748,7 +776,12 @@ function ApiKeyInput({
           )}
         </button>
       </div>
-      {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}
+      <p className="text-[10px] text-slate-500 mt-1">
+        {source === 'db' && masked && 'Đang dùng key lưu ở đây (chỉ hiện 4 ký tự cuối). Dán key mới để thay, xoá trống để bỏ. '}
+        {source === 'env' && !value && `Đang dùng biến môi trường ${envName} trên Vercel. `}
+        {!source && !value && `Chưa có key. Dán vào đây hoặc thêm biến môi trường ${envName} trên Vercel. `}
+        {hint}
+      </p>
     </div>
   )
 }

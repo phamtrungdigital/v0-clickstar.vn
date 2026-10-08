@@ -8,7 +8,7 @@ type Fields = { title?: string; excerpt?: string; content?: string }
 
 /**
  * Auto-translate VI → EN button for PostEditor header.
- * Translates title, excerpt, content from VI to EN via /api/admin-cls/ai/translate.
+ * Translates title, excerpt, content from VI to EN via /api/admin/ai/translate.
  * On success, calls onApply with the translated fields so parent merges into draft.
  */
 export function AutoTranslate({
@@ -51,7 +51,7 @@ export function AutoTranslate({
       setError(null)
       setProgress('Đang gọi AI dịch...')
       try {
-        const res = await fetch('/api/admin-cls/ai/translate', {
+        const res = await fetch('/api/admin/ai/translate', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ from: 'vi', to: 'en', fields: viFields }),

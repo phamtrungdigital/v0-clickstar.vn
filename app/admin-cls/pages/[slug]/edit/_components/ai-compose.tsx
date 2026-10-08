@@ -37,7 +37,7 @@ export function AiCompose({
       setPreview('')
       setDone(false)
       try {
-        const res = await fetch('/api/admin-cls/ai/inline', {
+        const res = await fetch('/api/admin/ai/inline', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({

@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
-import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
+import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink, AlertTriangle } from 'lucide-react'
 import type { Post } from '@/lib/cms/posts'
 import { savePost, deletePost, type PostUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
@@ -13,6 +13,8 @@ import { AiCoverImage } from './ai-cover-image'
 import { BodyImageReplacer } from './body-image-replacer'
 import { MarkdownEditor } from './markdown-editor'
 import { AutoTranslate } from './auto-translate'
+import { AiFullDraft } from './ai-full-draft'
+import { countExpertPlaceholders } from '@/lib/ai/content-rules'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
@@ -28,15 +30,17 @@ function slugify(s: string): string {
     .slice(0, 60)
 }
 
-export function PostEditor({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
+type EditorProps = { post: Post | null; mode: 'new' | 'edit'; currentEditorName?: string | null }
+
+export function PostEditor(props: EditorProps) {
   return (
     <EditLangProvider initial="vi">
-      <PostEditorInner post={post} mode={mode} />
+      <PostEditorInner {...props} />
     </EditLangProvider>
   )
 }
 
-function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
+function PostEditorInner({ post, mode, currentEditorName }: EditorProps) {
   const isNew = mode === 'new'
 
   const [draft, setDraft] = useState<PostUpdate>({
@@ -50,11 +54,17 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
     seo_title: post?.seo_title ?? null,
     seo_description: post?.seo_description ?? null,
     og_image: post?.og_image ?? null,
+    // Cột nhãn AI có thể chưa có trong DB (undefined) → giữ undefined để không gửi lên.
+    ai_assisted: post ? post.ai_assisted : false,
+    editor_name: post?.editor_name ?? null,
+    editor_title: post?.editor_title ?? null,
   })
 
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [warning, setWarning] = useState('')
+  const expertLeft = countExpertPlaceholders(draft.content.vi) + countExpertPlaceholders(draft.content.en)
 
   const update = <K extends keyof PostUpdate>(key: K, value: PostUpdate[K]) => {
     setDraft((prev) => ({ ...prev, [key]: value }))
@@ -68,6 +78,7 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
         setStatus('error')
         setErrorMsg(result.error)
       } else {
+        setWarning(result && 'warning' in result && result.warning ? result.warning : '')
         setStatus('saved')
         setTimeout(() => setStatus('idle'), 2500)
       }
@@ -95,6 +106,35 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
         </div>
 
         <div className="flex items-center gap-2">
+          <AiFullDraft
+            onApply={(r) => {
+              if (
+                draft.status === 'published' &&
+                !confirm(
+                  'Bài này đang đăng công khai. Đưa bản nháp AI vào sẽ chuyển bài về Draft (bấm Lưu thì bài tạm gỡ khỏi blog, ngày đăng gốc vẫn giữ). Tiếp tục?'
+                )
+              ) {
+                return false
+              }
+              setDraft((prev) => ({
+                ...prev,
+                title: r.title,
+                excerpt: r.excerpt,
+                content: r.content,
+                slug: prev.slug || r.slug,
+                tags: prev.tags.length ? prev.tags : r.tags,
+                seo_title: r.seo_title,
+                seo_description: r.seo_description,
+                cover_image: r.cover_image ?? prev.cover_image,
+                og_image: r.cover_image ?? prev.og_image,
+                status: 'draft',
+                ai_assisted: true,
+                editor_name: prev.editor_name || currentEditorName || null,
+              }))
+              setStatus('dirty')
+              return true
+            }}
+          />
           <AiWholePost
             onApply={(p) => {
               setDraft((prev) => ({
@@ -106,6 +146,9 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
                 slug: prev.slug || slugify(p.keyword || p.title_vi),
                 // Auto-fill tags from keyword if empty
                 tags: prev.tags.length === 0 && p.keyword ? [p.keyword.trim()] : prev.tags,
+                // Bài AI viết → bật nhãn AI, mặc định người biên tập là người đang soạn.
+                ai_assisted: true,
+                editor_name: prev.editor_name || currentEditorName || null,
               }))
               setStatus('dirty')
             }}
@@ -215,7 +258,16 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
             />
             <BodyImageReplacer
               content={draft.content}
-              onContentChange={(next) => update('content', next)}
+              onReplaceMarker={(raw, replacement) => {
+                setDraft((prev) => ({
+                  ...prev,
+                  content: {
+                    vi: prev.content.vi.split(raw).join(replacement),
+                    en: prev.content.en.split(raw).join(replacement),
+                  },
+                }))
+                setStatus('dirty')
+              }}
             />
           </div>
         </div>
@@ -255,6 +307,63 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
             />
           </div>
 
+          {expertLeft > 0 && (
+            <div className="flex gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-800">
+              <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
+              <span>
+                Còn {expertLeft} ô <code>[[CHUYÊN GIA: ...]]</code> trong nội dung. Thay bằng kinh nghiệm thật (hoặc xoá) rồi mới đăng được.
+              </span>
+            </div>
+          )}
+
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Nhãn AI</h2>
+            <label className="flex items-start gap-2 text-xs text-slate-700 dark:text-slate-300">
+              <input
+                type="checkbox"
+                checked={!!draft.ai_assisted}
+                onChange={(e) => {
+                  update('ai_assisted', e.target.checked)
+                  if (e.target.checked && !draft.editor_name && currentEditorName) update('editor_name', currentEditorName)
+                }}
+                className="mt-0.5"
+              />
+              <span>Bài có AI hỗ trợ soạn (hiện nhãn AI ở đầu bài, cả 2 ngôn ngữ)</span>
+            </label>
+            {draft.ai_assisted && (
+              <>
+                <TextInput
+                  label="Người biên tập *"
+                  value={draft.editor_name ?? ''}
+                  onChange={(v) => update('editor_name', v)}
+                  hint="Người đọc lại, kiểm nguồn và chịu trách nhiệm nội dung"
+                />
+                <TextInput
+                  label="Chức danh"
+                  value={draft.editor_title ?? ''}
+                  onChange={(v) => update('editor_title', v)}
+                  hint="VD: Trưởng nhóm Marketing"
+                />
+              </>
+            )}
+          </div>
+
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">SEO</h2>
+            <I18nInput
+              label="Tiêu đề SEO (tối đa ~60 ký tự)"
+              value={draft.seo_title ?? EMPTY_I18N}
+              onChange={(v) => update('seo_title', v)}
+            />
+            <I18nInput
+              label="Mô tả SEO (140-160 ký tự)"
+              multiline
+              rows={3}
+              value={draft.seo_description ?? EMPTY_I18N}
+              onChange={(v) => update('seo_description', v)}
+            />
+          </div>
+
           <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
@@ -279,6 +388,9 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
         <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
           {errorMsg}
         </div>
+      )}
+      {warning && status !== 'error' && (
+        <div className="px-3 py-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">{warning}</div>
       )}
     </div>
   )

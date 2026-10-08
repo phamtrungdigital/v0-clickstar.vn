@@ -7,16 +7,21 @@ import {
   generateWithOpenAI,
   type GenerateOpts,
 } from '@/lib/ai/providers'
-import type {
-  AiProvider,
-  AiSettings,
-  ImageModel,
-  ImageQuality,
-  ImageSize,
+import { requireAdmin, requireContentEditor } from '@/lib/ai/admin-guard'
+import {
+  isMaskedKey,
+  normalizeKeyInput,
+  resolveApiKey,
+  type AiProvider,
+  type AiSettings,
+  type ImageModel,
+  type ImageQuality,
+  type ImageSize,
 } from '@/lib/ai/settings'
 
 export type SaveAiSettingsInput = {
   enabled: boolean
+  /** "••••abcd" = giữ key cũ trong DB; null = xoá; chuỗi khác = key mới. */
   anthropic_api_key: string | null
   openai_api_key: string | null
 
@@ -40,17 +45,44 @@ export type SaveAiSettingsInput = {
   body_image_style_prefix: string
 }
 
+const SETTINGS_FIELDS = [
+  'enabled',
+  'inline_provider',
+  'inline_model',
+  'inline_system_prompt',
+  'blog_provider',
+  'blog_model',
+  'blog_system_prompt',
+  'blog_target_words',
+  'image_model',
+  'image_size',
+  'image_quality',
+  'image_style_prefix',
+  'body_image_model',
+  'body_image_size',
+  'body_image_quality',
+  'body_image_style_prefix',
+] as const satisfies ReadonlyArray<keyof SaveAiSettingsInput>
+
+async function readSettings(supabase: Awaited<ReturnType<typeof createClient>>) {
+  const { data } = await supabase.from('ai_settings').select('*').eq('id', 1).maybeSingle()
+  return data as AiSettings | null
+}
+
 export async function saveAiSettings(input: SaveAiSettingsInput) {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return { error: 'not_authenticated' }
+  const guard = await requireAdmin(supabase)
+  if (!guard.ok) return { error: guard.error }
 
-  const { error } = await supabase
-    .from('ai_settings')
-    .update({ ...input, updated_by: user.id })
-    .eq('id', 1)
+  // Chỉ nhận đúng các cột cấu hình (không để client ghi cột khác như id, updated_at).
+  const patch: Record<string, unknown> = { updated_by: guard.profile.user_id }
+  for (const k of SETTINGS_FIELDS) if (k in input) patch[k] = input[k]
+  // Key đang ở dạng che → không ghi đè (giữ key thật trong DB).
+  const { anthropic_api_key, openai_api_key } = input
+  if (!isMaskedKey(anthropic_api_key)) patch.anthropic_api_key = normalizeKeyInput(anthropic_api_key)
+  if (!isMaskedKey(openai_api_key)) patch.openai_api_key = normalizeKeyInput(openai_api_key)
+
+  const { error } = await supabase.from('ai_settings').update(patch).eq('id', 1)
 
   if (error) return { error: error.message }
   revalidatePath('/admin-cls/ai')
@@ -71,15 +103,20 @@ export type GenerateResult = { text?: string; error?: string }
 /** Inline ✨ AI on field — uses inline_* config */
 export async function generateText(input: GenerateInput): Promise<GenerateResult> {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return { error: 'Chưa đăng nhập' }
+  const guard = await requireContentEditor(supabase)
+  if (!guard.ok) return { error: guard.error }
 
-  const { data: settings } = await supabase.from('ai_settings').select('*').eq('id', 1).maybeSingle()
-  const s = settings as AiSettings | null
-  if (!s) return { error: 'Chưa init ai_settings' }
-  if (!s.enabled) return { error: 'AI chưa bật. Vào /admin-cls/ai để cấu hình + bật.' }
+  if (
+    (input.prompt?.length ?? 0) > 4000 ||
+    (input.currentValue?.length ?? 0) > 20000 ||
+    (input.pageContext?.length ?? 0) > 4000 ||
+    (input.fieldLabel?.length ?? 0) > 200
+  ) {
+    return { error: 'Nội dung gửi lên quá dài' }
+  }
+  const s = await readSettings(supabase)
+  if (!s) return { error: 'Chưa khởi tạo cấu hình AI' }
+  if (!s.enabled) return { error: 'AI chưa bật. Vào Cài đặt AI để cấu hình và bật.' }
 
   const lang = input.language || 'vi'
   const langLabel = lang === 'vi' ? 'tiếng Việt' : 'English'
@@ -97,8 +134,7 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
   parts.push(`Ngôn ngữ output: ${langLabel}`)
   const userPrompt = parts.join('\n\n')
 
-  const apiKey =
-    s.inline_provider === 'anthropic' ? s.anthropic_api_key : s.openai_api_key
+  const apiKey = resolveApiKey(s, s.inline_provider)
   if (!apiKey) return { error: `Chưa có API key cho ${s.inline_provider}` }
 
   const opts: GenerateOpts = {
@@ -106,7 +142,7 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
     model: s.inline_model,
     system,
     prompt: userPrompt,
-    maxTokens: input.maxTokens ?? 512,
+    maxTokens: Math.min(Math.max(input.maxTokens ?? 512, 16), 4096),
   }
 
   try {
@@ -115,8 +151,8 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
         ? await generateWithAnthropic(opts)
         : await generateWithOpenAI(opts)
     return { text }
-  } catch (err: any) {
-    return { error: err?.message || 'Lỗi không xác định' }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Lỗi không xác định' }
   }
 }
 
@@ -127,37 +163,50 @@ export async function testInlineConnection(): Promise<GenerateResult> {
   })
 }
 
-/** Test a specific provider API key without saving — uses CURRENT input value */
+/**
+ * Key để test: ô nhập còn dạng che hoặc trống → dùng key đang lưu (DB, rồi env);
+ * admin vừa dán key mới → test đúng key đó (chưa cần lưu).
+ */
+async function keyForTest(provider: AiProvider, typed: string) {
+  const supabase = await createClient()
+  const guard = await requireAdmin(supabase)
+  if (!guard.ok) return { error: guard.error }
+  const value = normalizeKeyInput(typed)
+  if (value && !isMaskedKey(value)) return { key: value }
+  const stored = resolveApiKey(await readSettings(supabase), provider)
+  return stored ? { key: stored } : { error: 'Chưa nhập API key' }
+}
+
+/** Test a specific provider API key without saving */
 export async function testProviderApiKey(
   provider: AiProvider,
   apiKey: string
 ): Promise<{ ok?: boolean; message?: string; error?: string }> {
-  if (!apiKey?.trim()) return { error: 'Chưa nhập API key' }
+  const k = await keyForTest(provider, apiKey)
+  if (!k.key) return { error: k.error }
 
   try {
     if (provider === 'anthropic') {
-      const { generateWithAnthropic } = await import('@/lib/ai/providers')
       const text = await generateWithAnthropic({
-        apiKey,
-        model: 'claude-haiku-4-5-20251001',
+        apiKey: k.key,
+        model: 'claude-haiku-5-5',
         system: 'You are a helpful assistant.',
         prompt: 'Trả lời 1 từ "OK" để xác nhận API hoạt động.',
         maxTokens: 16,
       })
-      return { ok: true, message: `✓ Anthropic OK — Claude trả lời: "${text.trim().slice(0, 50)}"` }
+      return { ok: true, message: `✓ Anthropic OK, Claude trả lời: "${text.trim().slice(0, 50)}"` }
     } else {
-      const { generateWithOpenAI } = await import('@/lib/ai/providers')
       const text = await generateWithOpenAI({
-        apiKey,
+        apiKey: k.key,
         model: 'gpt-4o-mini',
         system: 'You are a helpful assistant.',
         prompt: 'Trả lời 1 từ "OK" để xác nhận API hoạt động.',
         maxTokens: 16,
       })
-      return { ok: true, message: `✓ OpenAI OK — GPT trả lời: "${text.trim().slice(0, 50)}"` }
+      return { ok: true, message: `✓ OpenAI OK, GPT trả lời: "${text.trim().slice(0, 50)}"` }
     }
-  } catch (err: any) {
-    return { error: err?.message || 'Test failed' }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Test thất bại' }
   }
 }
 
@@ -165,50 +214,23 @@ export async function testProviderApiKey(
 export async function testOpenAiImagesApi(
   apiKey: string
 ): Promise<{ ok?: boolean; message?: string; error?: string }> {
-  if (!apiKey?.trim()) return { error: 'Chưa nhập OpenAI API key' }
+  const k = await keyForTest('openai', apiKey)
+  if (!k.key) return { error: k.error }
 
   try {
     const { generateImageWithOpenAI } = await import('@/lib/ai/providers')
     const b64 = await generateImageWithOpenAI({
-      apiKey,
-      prompt: 'A small blue checkmark on white background — test',
+      apiKey: k.key,
+      prompt: 'A small blue checkmark on white background, test',
       model: 'gpt-image-1',
       size: '1024x1024',
       quality: 'low',
     })
     return {
       ok: true,
-      message: `✓ OpenAI Images OK — gen ${Math.round(b64.length / 1024)} KB ảnh test`,
+      message: `✓ OpenAI Images OK, tạo được ảnh thử ${Math.round(b64.length / 1024)} KB`,
     }
-  } catch (err: any) {
-    return { error: err?.message || 'Image test failed' }
-  }
-}
-
-export async function testImageConnection(): Promise<{ url?: string; error?: string }> {
-  // Quick test: generate a tiny test image
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return { error: 'Chưa đăng nhập' }
-
-  const { data: settings } = await supabase.from('ai_settings').select('*').eq('id', 1).maybeSingle()
-  const s = settings as AiSettings | null
-  if (!s?.enabled) return { error: 'AI chưa bật' }
-  if (!s.openai_api_key) return { error: 'Chưa có OpenAI API key' }
-
-  try {
-    const { generateImageWithOpenAI } = await import('@/lib/ai/providers')
-    const b64 = await generateImageWithOpenAI({
-      apiKey: s.openai_api_key,
-      prompt: 'Simple blue gradient with a checkmark — test image',
-      model: s.image_model,
-      size: '1024x1024',
-      quality: 'low',
-    })
-    return { url: `data:image/png;base64,${b64.slice(0, 100)}...(truncated, full image works)` }
-  } catch (err: any) {
-    return { error: err?.message || 'Image test failed' }
+  } catch (err) {
+    return { error: err instanceof Error ? err.message : 'Test ảnh thất bại' }
   }
 }

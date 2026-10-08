@@ -1,6 +1,5 @@
-import { createClient } from '@/lib/supabase/server'
 import { generateImageWithOpenAI } from '@/lib/ai/providers'
-import type { AiSettings } from '@/lib/ai/settings'
+import { loadAiContext, missingKeyMessage } from '@/lib/ai/route-context'
 
 export const runtime = 'nodejs'
 export const maxDuration = 300
@@ -26,34 +25,18 @@ export async function POST(req: Request) {
         const mode = body.mode || 'cover'
         if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
           send(controller, 'error', { error: 'Thiếu prompt mô tả ảnh' })
-          controller.close()
           return
         }
 
-        const supabase = await createClient()
-        const {
-          data: { user },
-        } = await supabase.auth.getUser()
-        if (!user) {
-          send(controller, 'error', { error: 'Chưa đăng nhập' })
-          controller.close()
+        const ctx = await loadAiContext()
+        if (!ctx.ok) {
+          send(controller, 'error', { error: ctx.error })
           return
         }
-
-        const { data } = await supabase
-          .from('ai_settings')
-          .select('*')
-          .eq('id', 1)
-          .maybeSingle()
-        const settings = data as AiSettings | null
-        if (!settings?.enabled) {
-          send(controller, 'error', { error: 'AI chưa được kích hoạt. Vào /admin/ai để bật.' })
-          controller.close()
-          return
-        }
-        if (!settings.openai_api_key) {
-          send(controller, 'error', { error: 'Image generation cần OpenAI API key.' })
-          controller.close()
+        const { supabase, settings } = ctx
+        const openaiKey = ctx.keyFor('openai')
+        if (!openaiKey) {
+          send(controller, 'error', { error: missingKeyMessage('openai') })
           return
         }
 
@@ -86,7 +69,7 @@ export async function POST(req: Request) {
         }, 3000)
 
         const b64 = await generateImageWithOpenAI({
-          apiKey: settings.openai_api_key,
+          apiKey: openaiKey,
           prompt: finalPrompt,
           model: cfg.model,
           size: cfg.size,
@@ -116,7 +99,6 @@ export async function POST(req: Request) {
 
         if (uploadError) {
           send(controller, 'error', { error: `Upload lỗi: ${uploadError.message}` })
-          controller.close()
           return
         }
 
@@ -126,7 +108,9 @@ export async function POST(req: Request) {
         send(controller, 'error', { error: err?.message || 'Image generation failed' })
       } finally {
         if (heartbeat) clearInterval(heartbeat)
-        controller.close()
+        try {
+          controller.close()
+        } catch {}
       }
     },
   })

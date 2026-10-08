@@ -74,6 +74,19 @@ export default async function BlogPostPage({
   const settings = await getSiteSettings()
   const zaloUrl = settings?.zalo_url
 
+  const editorName = post.editor_name?.trim() || ''
+  const editorWho = [editorName, post.editor_title?.trim()].filter(Boolean).join(', ')
+  const editorLine = editorName ? `${t('Biên tập', 'Edited by')}: ${editorWho}` : ''
+  const aiLabel = editorWho
+    ? t(
+        `Bài viết được biên soạn với sự hỗ trợ của công cụ AI, do ${editorWho} biên tập và kiểm chứng.`,
+        `This article was prepared with the help of AI tools, then edited and fact-checked by ${editorWho}.`
+      )
+    : t(
+        'Bài viết được biên soạn với sự hỗ trợ của công cụ AI, được biên tập viên Click Star biên tập và kiểm chứng.',
+        'This article was prepared with the help of AI tools, then edited and fact-checked by a Click Star editor.'
+      )
+
   return (
     <div className="min-h-screen bg-background">
       <MainNav />
@@ -112,15 +125,27 @@ export default async function BlogPostPage({
                 {title}
               </h1>
 
-              {post.published_at && (
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-8">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(post.published_at).toLocaleDateString(locale, {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
+              {(post.published_at || editorLine) && (
+                <div
+                  className={`flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground ${post.ai_assisted ? 'mb-2' : 'mb-8'}`}
+                >
+                  {post.published_at && (
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4" />
+                      {new Date(post.published_at).toLocaleDateString(locale, {
+                        day: '2-digit',
+                        month: 'long',
+                        year: 'numeric',
+                        timeZone: 'Asia/Ho_Chi_Minh',
+                      })}
+                    </span>
+                  )}
+                  {editorLine && <span>{editorLine}</span>}
                 </div>
+              )}
+              {post.ai_assisted && (
+                // Nhãn nội dung có AI hỗ trợ (Luật AI 2025 Điều 11): hiện ngay đầu bài, cả 2 ngôn ngữ.
+                <p className="text-xs text-muted-foreground mb-8">{aiLabel}</p>
               )}
 
               {post.cover_image && (
@@ -251,6 +276,7 @@ export default async function BlogPostPage({
                                     day: '2-digit',
                                     month: '2-digit',
                                     year: 'numeric',
+                                    timeZone: 'Asia/Ho_Chi_Minh',
                                   })}
                                 </p>
                               )}

@@ -34,10 +34,15 @@ function scanMarkers(content: I18n): Marker[] {
  */
 export function BodyImageReplacer({
   content,
-  onContentChange,
+  onReplaceMarker,
 }: {
   content: I18n
-  onContentChange: (next: I18n) => void
+  /**
+   * Thay 1 marker bằng ảnh trên nội dung MỚI NHẤT (cha dùng setState dạng hàm).
+   * Trước đây truyền cả object content đã chụp lúc bấm → "Gen tất cả" chạy song song,
+   * ảnh xong sau cùng ghi đè nội dung bằng bản cũ và xoá mất các ảnh xong trước.
+   */
+  onReplaceMarker: (raw: string, replacement: string) => void
 }) {
   const markers = useMemo(() => scanMarkers(content), [content])
   const [editedPrompts, setEditedPrompts] = useState<Record<string, string>>({})
@@ -61,7 +66,7 @@ export function BodyImageReplacer({
     startTransition(async () => {
       setGenResults((p) => ({ ...p, [raw]: { loading: true, elapsedSec: 0 } }))
       try {
-        const res = await fetch('/api/admin-cls/ai/image', {
+        const res = await fetch('/api/admin/ai/image', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ prompt, mode: 'body' }),
@@ -104,11 +109,7 @@ export function BodyImageReplacer({
         // Replace ALL occurrences of this marker (VI + EN) with Markdown image
         const alt = group[0].alt
         const replacement = `![${alt}](${finalUrl})`
-        const next: I18n = {
-          vi: content.vi.split(raw).join(replacement),
-          en: content.en.split(raw).join(replacement),
-        }
-        onContentChange(next)
+        onReplaceMarker(raw, replacement)
         setGenResults((p) => ({ ...p, [raw]: { url: finalUrl! } }))
       } catch (err: any) {
         setGenResults((p) => ({ ...p, [raw]: { error: err?.message || 'Failed' } }))
