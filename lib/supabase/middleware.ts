@@ -1,47 +1,43 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import {
+  ADMIN_CACHE_COOKIE,
+  ADMIN_CACHE_TTL_MS,
+  ADMIN_TOKEN_HEADER,
+  signAdminToken,
+  verifyAdminToken,
+  type AdminCacheValue,
+} from '@/lib/admin-cls/admin-token'
 
 /**
  * Admin auth middleware — runs on every /admin-cls/* request.
  *
- * Optimization: caches the admin_users check result via signed cookie
- * (cs-admin-cache) valid for 5 minutes, so we skip the second DB query
- * on every navigation. Session freshness is verified LOCALLY via
+ * Optimization: caches the admin_users check result in an HMAC-signed cookie
+ * (cs-admin-cache, see lib/admin-cls/admin-token.ts) valid for 5 minutes, so
+ * we skip the second DB query on every navigation. Bad/missing signature →
+ * DB lookup + re-issue. Session freshness is verified LOCALLY via
  * auth.getClaims() (asymmetric ES256 JWT, WebCrypto) — no Auth-server
  * round-trip per request; getClaims still refreshes/rotates the cookie
  * when the token has expired.
  *
- * Also passes admin profile to RSC via request headers (x-admin-*) so
- * layout/pages can read it without re-querying.
+ * Passes the same signed token to RSC via the x-admin-token request header;
+ * getAdminProfile() re-verifies it (never trusts plain x-admin-* headers).
  */
-const ADMIN_CACHE_COOKIE = 'cs-admin-cache'
-const ADMIN_CACHE_TTL_MS = 5 * 60 * 1000 // 5 min
-
-type AdminCacheValue = {
-  uid: string
-  email: string
-  name: string | null
-  role: string
-  exp: number
-}
-
-function parseCache(raw: string | undefined): AdminCacheValue | null {
-  if (!raw) return null
-  try {
-    const decoded = JSON.parse(Buffer.from(raw, 'base64url').toString('utf8'))
-    if (!decoded.uid || !decoded.exp || decoded.exp < Date.now()) return null
-    return decoded as AdminCacheValue
-  } catch {
-    return null
-  }
-}
-
-function encodeCache(v: AdminCacheValue): string {
-  return Buffer.from(JSON.stringify(v)).toString('base64url')
-}
+const COOKIE_OPTIONS = {
+  httpOnly: true,
+  sameSite: 'lax',
+  secure: true,
+  maxAge: 60 * 60,
+  path: '/admin-cls',
+} as const
 
 export async function updateSession(request: NextRequest) {
   const requestHeaders = new Headers(request.headers)
+  // Client không được tự gửi header x-admin-* (giả hồ sơ admin) — xoá trước khi
+  // tạo NextResponse.next() vì danh sách header được chốt lúc khởi tạo.
+  for (const key of [...requestHeaders.keys()]) {
+    if (key.toLowerCase().startsWith('x-admin-')) requestHeaders.delete(key)
+  }
 
   let supabaseResponse = NextResponse.next({
     request: { headers: requestHeaders },
@@ -95,11 +91,12 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (isAdminRoute && !isLoginRoute && user) {
-    let cache = parseCache(request.cookies.get(ADMIN_CACHE_COOKIE)?.value)
+    // Cookie chỉ được tin khi đúng chữ ký, còn hạn và đúng người đang đăng nhập.
+    const rawCache = request.cookies.get(ADMIN_CACHE_COOKIE)?.value
+    const cached = verifyAdminToken(rawCache)
+    let token = cached && cached.uid === user.id ? rawCache! : null
 
-    if (cache && cache.uid !== user.id) cache = null
-
-    if (!cache) {
+    if (!token) {
       const { data: profile } = await supabase
         .from('admin_users')
         .select('user_id, email, full_name, role, is_active')
@@ -112,34 +109,35 @@ export async function updateSession(request: NextRequest) {
         const loginUrl = request.nextUrl.clone()
         loginUrl.pathname = '/admin-cls/login'
         loginUrl.searchParams.set('error', 'not_admin')
-        return NextResponse.redirect(loginUrl)
+        // signOut() ghi lệnh xoá cookie phiên vào supabaseResponse — phải chép sang
+        // redirect, nếu không JWT cũ vẫn hợp lệ cục bộ → login ↔ /admin-cls lặp vòng.
+        const denied = NextResponse.redirect(loginUrl)
+        supabaseResponse.cookies.getAll().forEach((c) => denied.cookies.set(c))
+        if (rawCache) denied.cookies.set(ADMIN_CACHE_COOKIE, '', { ...COOKIE_OPTIONS, maxAge: 0 })
+        return denied
       }
 
-      cache = {
+      const fresh: AdminCacheValue = {
         uid: profile.user_id,
         email: profile.email,
         name: profile.full_name,
         role: profile.role,
         exp: Date.now() + ADMIN_CACHE_TTL_MS,
       }
+      token = signAdminToken(fresh)
 
-      supabaseResponse.cookies.set(ADMIN_CACHE_COOKIE, encodeCache(cache), {
-        httpOnly: true,
-        sameSite: 'lax',
-        secure: true,
-        maxAge: 60 * 60,
-        path: '/admin-cls',
-      })
+      if (token) {
+        supabaseResponse.cookies.set(ADMIN_CACHE_COOKIE, token, COOKIE_OPTIONS)
+      } else if (rawCache) {
+        // Chưa có ADMIN_CACHE_SECRET: không phát cookie mới, xoá cookie cũ/giả.
+        supabaseResponse.cookies.set(ADMIN_CACHE_COOKIE, '', { ...COOKIE_OPTIONS, maxAge: 0 })
+      }
     }
 
-    // Pass admin profile to RSC via request headers — layout reads from these.
-    // HTTP headers only allow latin1 (ISO-8859-1). full_name can contain
-    // Vietnamese diacritics (non-latin1) which throws on Headers.set → 500.
-    // Encode to ASCII here, decode in getAdminProfile().
-    requestHeaders.set('x-admin-user-id', cache.uid)
-    requestHeaders.set('x-admin-email', encodeURIComponent(cache.email))
-    if (cache.name) requestHeaders.set('x-admin-name', encodeURIComponent(cache.name))
-    requestHeaders.set('x-admin-role', cache.role)
+    // Pass the signed token to RSC — getAdminProfile() verifies it again.
+    // Token is base64url (ASCII) so Vietnamese full_name is safe in headers.
+    // No token (secret missing) → getAdminProfile falls back to the RPC.
+    if (token) requestHeaders.set(ADMIN_TOKEN_HEADER, token)
 
     const finalResponse = NextResponse.next({
       request: { headers: requestHeaders },
