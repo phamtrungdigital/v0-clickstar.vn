@@ -109,7 +109,12 @@ export async function updateSession(request: NextRequest) {
         const loginUrl = request.nextUrl.clone()
         loginUrl.pathname = '/admin-cls/login'
         loginUrl.searchParams.set('error', 'not_admin')
-        return NextResponse.redirect(loginUrl)
+        // signOut() ghi lệnh xoá cookie phiên vào supabaseResponse — phải chép sang
+        // redirect, nếu không JWT cũ vẫn hợp lệ cục bộ → login ↔ /admin-cls lặp vòng.
+        const denied = NextResponse.redirect(loginUrl)
+        supabaseResponse.cookies.getAll().forEach((c) => denied.cookies.set(c))
+        if (rawCache) denied.cookies.set(ADMIN_CACHE_COOKIE, '', { ...COOKIE_OPTIONS, maxAge: 0 })
+        return denied
       }
 
       const fresh: AdminCacheValue = {
