@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
+import { ADMIN_TOKEN_HEADER, verifyAdminToken } from '@/lib/admin-cls/admin-token'
 
 export type AdminProfile = {
   user_id: string
@@ -9,41 +10,31 @@ export type AdminProfile = {
   role: string
 }
 
-/** Headers are URI-encoded in middleware; decode defensively (old cookies may be raw). */
-function safeDecode(v: string): string {
-  try {
-    return decodeURIComponent(v)
-  } catch {
-    return v
-  }
-}
-
 /**
  * Get current admin profile — memoized PER REQUEST via React.cache().
  *
- * Fast path: middleware (proxy.ts) verified admin and set x-admin-* headers.
- * Fallback: queries get_my_admin_profile() RPC if headers absent (eg. local dev).
+ * Fast path: proxy.ts verified admin and forwarded the HMAC-signed token in
+ * x-admin-token; we verify the signature + expiry again here because the proxy
+ * only runs on /admin-cls/* — on any other route (or a server action POSTed to
+ * one) the client controls every header. Plain x-admin-* headers are never read.
+ * Fallback: get_my_admin_profile() RPC (session-bound via auth.uid()).
  *
- * Multiple callers in the same request → 1 query at most (often 0 with header).
+ * For authorization (who may do what), server actions/APIs must still check
+ * the DB/RPC themselves (get_my_admin_profile / RLS is_admin()) — use this
+ * for display and per-page UX only.
  */
 export const getAdminProfile = cache(async (): Promise<AdminProfile | null> => {
   const h = await headers()
-  const headerUserId = h.get('x-admin-user-id')
-
-  if (headerUserId) {
-    // x-admin-email / x-admin-name are URI-encoded in middleware (full_name can
-    // contain Vietnamese diacritics which are invalid in raw HTTP headers).
-    const rawEmail = h.get('x-admin-email')
-    const rawName = h.get('x-admin-name')
+  const token = verifyAdminToken(h.get(ADMIN_TOKEN_HEADER))
+  if (token) {
     return {
-      user_id: headerUserId,
-      email: rawEmail ? safeDecode(rawEmail) : '',
-      full_name: rawName ? safeDecode(rawName) : null,
-      role: h.get('x-admin-role') || 'viewer',
+      user_id: token.uid,
+      email: token.email,
+      full_name: token.name,
+      role: token.role,
     }
   }
 
-  // Fallback (no header): query DB
   const supabase = await createClient()
   const { data } = await supabase.rpc('get_my_admin_profile')
   return data as AdminProfile | null
