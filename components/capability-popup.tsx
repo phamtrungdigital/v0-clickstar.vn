@@ -21,7 +21,7 @@ import {
   Sparkles,
   Code2,
   ArrowRight,
-  Download,
+  FileText,
 } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 
@@ -168,12 +168,14 @@ export function CapabilityPopup() {
 
             <div className="mt-5 flex flex-col gap-2.5 sm:flex-row">
               <Link
-                href="/contact?service=ho-so-nang-luc"
+                href="/ho-so-nang-luc-clickstar.html"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
                 className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
               >
-                <Download className="h-4 w-4" />
-                {t('Nhận hồ sơ năng lực', 'Get the profile')}
+                <FileText className="h-4 w-4" />
+                {t('Xem hồ sơ năng lực', 'View the profile')}
               </Link>
               <Link
                 href="/services"
