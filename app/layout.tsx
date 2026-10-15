@@ -12,6 +12,7 @@ import { ChatbotWidgets } from '@/components/chatbot-widgets'
 import { WebContentProvider } from '@/contexts/web-content-context'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
+import { CapabilityPopup } from '@/components/capability-popup'
 import { TrackingCode } from '@/components/tracking-scripts'
 import './globals.css'
 
@@ -90,6 +91,7 @@ export default async function RootLayout({
               <ChatbotWidgets config={chatbotConfig} />
               <EditModeOverlay />
               <PersonalizeBanner />
+              <CapabilityPopup />
             </LanguageProvider>
           </TeamMembersProvider>
         </SiteBrandingProvider>
