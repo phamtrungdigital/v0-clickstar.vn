@@ -13,6 +13,7 @@ import { WebContentProvider } from '@/contexts/web-content-context'
 import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
 import { CapabilityPopup } from '@/components/capability-popup'
+import { FloatingContact } from '@/components/floating-contact'
 import { TrackingCode } from '@/components/tracking-scripts'
 import './globals.css'
 
@@ -92,6 +93,7 @@ export default async function RootLayout({
               <EditModeOverlay />
               <PersonalizeBanner />
               <CapabilityPopup />
+              <FloatingContact />
             </LanguageProvider>
           </TeamMembersProvider>
         </SiteBrandingProvider>
