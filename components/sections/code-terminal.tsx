@@ -67,9 +67,9 @@ function Window({ lines, tab }: { lines: CodeTerminalContent['lines']; tab?: Cod
     <div className="rounded-xl bg-slate-900 dark:bg-slate-950 shadow-xl ring-1 ring-slate-800 overflow-hidden">
       <div className="flex items-center gap-2 px-4 py-2.5 bg-slate-800/60 border-b border-slate-700/60">
         <span className="flex gap-1.5" aria-hidden>
-          <i className="w-2.5 h-2.5 rounded-full bg-red-400" />
-          <i className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-          <i className="w-2.5 h-2.5 rounded-full bg-green-400" />
+          <i className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
+          <i className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
+          <i className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
         </span>
         {tab?.vi && (
           <span className="ml-2 font-mono text-[11px] text-slate-400 truncate">
@@ -85,7 +85,7 @@ function Window({ lines, tab }: { lines: CodeTerminalContent['lines']; tab?: Cod
           <TermLine key={idx} text={t(line.vi, line.en)} />
         ))}
         <span
-          className="inline-block w-1.5 h-3.5 bg-green-400 align-middle"
+          className="inline-block w-1.5 h-3.5 bg-[#1e6dda] align-middle"
           style={{ animation: 'ct-blink 1s steps(1) infinite' }}
           aria-hidden
         />
@@ -99,7 +99,7 @@ function TermLine({ text }: { text: string }) {
 
   if (text.startsWith('✦')) {
     return (
-      <div style={fade} className="text-green-400 whitespace-pre">
+      <div style={fade} className="text-[#1e6dda] whitespace-pre">
         {text}
       </div>
     )
@@ -110,16 +110,16 @@ function TermLine({ text }: { text: string }) {
     if (m) {
       return (
         <div style={fade} className="whitespace-pre">
-          <span className="text-green-400">✓</span>
+          <span className="text-[#1e6dda]">✓</span>
           {m[1]}
-          <span className="text-violet-300">[{m[2]}]</span>
+          <span className="text-[#1e6dda]">[{m[2]}]</span>
           <span className="text-slate-200">{m[3]}</span>
         </div>
       )
     }
     return (
       <div style={fade} className="whitespace-pre">
-        <span className="text-green-400">✓</span>
+        <span className="text-[#1e6dda]">✓</span>
         <span className="text-slate-200">{text.slice(1)}</span>
       </div>
     )
@@ -128,7 +128,7 @@ function TermLine({ text }: { text: string }) {
     return (
       <div style={fade} className="whitespace-pre">
         <span className="text-slate-500">$</span>
-        <span className="text-sky-300">{text.slice(1)}</span>
+        <span className="text-[#1e6dda]">{text.slice(1)}</span>
       </div>
     )
   }
@@ -139,7 +139,7 @@ function TermLine({ text }: { text: string }) {
       <div style={fade} className="whitespace-pre">
         <span className="text-slate-500">→</span>
         <span className="text-slate-200">{body}</span>
-        {hasCheck && <span className="text-green-400">✓</span>}
+        {hasCheck && <span className="text-[#1e6dda]">✓</span>}
       </div>
     )
   }

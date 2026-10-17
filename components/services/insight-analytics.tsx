@@ -68,7 +68,7 @@ export function InsightAnalytics() {
               {t('Tổng hợp tự động từ toàn bộ cuộc gọi trong kỳ', 'Aggregated automatically across every call in the period')}
             </p>
           </div>
-          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200 flex-shrink-0">
+          <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#f5f5f7] text-[#1e6dda] border border-border flex-shrink-0">
             <Layers className="w-3.5 h-3.5" />
             {t('Cập nhật theo thời gian thực', 'Updated in real time')}
           </span>
@@ -80,14 +80,14 @@ export function InsightAnalytics() {
               <span className="text-sm text-foreground w-44 sm:w-56 flex-shrink-0 truncate">{o.label}</span>
               <div className="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden min-w-0">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-teal-500"
+                  className="h-full rounded-full bg-[#1e6dda]"
                   style={{ width: `${o.share}%` }}
                 />
               </div>
               <span className="text-sm font-semibold text-foreground w-10 text-right flex-shrink-0">{o.share}%</span>
               <span className="w-4 flex-shrink-0">
-                {o.trend === 'up' && <TrendingUp className="w-4 h-4 text-rose-500" />}
-                {o.trend === 'down' && <TrendingDown className="w-4 h-4 text-emerald-500" />}
+                {o.trend === 'up' && <TrendingUp className="w-4 h-4 text-[#1e6dda]" />}
+                {o.trend === 'down' && <TrendingDown className="w-4 h-4 text-[#1e6dda]" />}
               </span>
             </div>
           ))}
@@ -106,9 +106,9 @@ export function InsightAnalytics() {
         {cards.map((c, i) => (
           <div
             key={i}
-            className="group bg-white rounded-2xl p-5 border border-border hover:border-cyan-200 hover:shadow-lg hover:shadow-cyan-500/5 transition-all duration-300"
+            className="group bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-lg transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-100 to-teal-100 flex items-center justify-center text-cyan-600 mb-4 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] mb-4 group-hover:scale-110 transition-transform">
               {c.icon}
             </div>
             <h4 className="font-bold text-foreground mb-2">{c.title}</h4>

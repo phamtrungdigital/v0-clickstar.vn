@@ -49,17 +49,17 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
       className="relative overflow-hidden bg-slate-950 text-white"
     >
       {/* ─── Background layers ─── */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950" />
+      <div className="absolute inset-0 bg-[#272729]" />
 
       {/* Animated mesh blobs */}
       <div className="absolute inset-0 opacity-60">
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-sky-400/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#1e6dda]/20 rounded-full blur-3xl animate-pulse" />
         <div
-          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-blue-500/30 rounded-full blur-3xl animate-pulse"
+          className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#1e6dda]/30 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: '1s', animationDuration: '4s' }}
         />
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-400/15 rounded-full blur-3xl animate-pulse"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#1e6dda]/15 rounded-full blur-3xl animate-pulse"
           style={{ animationDelay: '2s', animationDuration: '5s' }}
         />
       </div>
@@ -81,7 +81,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
             {[...Array(15)].map((_, i) => (
               <span
                 key={i}
-                className="absolute w-1 h-1 bg-sky-300/50 rounded-full"
+                className="absolute w-1 h-1 bg-[#1e6dda]/50 rounded-full"
                 style={{
                   top: `${(i * 37) % 100}%`,
                   left: `${(i * 53) % 100}%`,
@@ -98,10 +98,10 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge with sparkles */}
           <div
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 shadow-lg shadow-blue-500/10 animate-in fade-in slide-in-from-top-2 duration-500"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 shadow-lg animate-in fade-in slide-in-from-top-2 duration-500"
           >
-            <Sparkles className="w-3.5 h-3.5 text-sky-300 animate-pulse" />
-            <span className="text-xs font-semibold uppercase tracking-wider bg-gradient-to-r from-sky-200 to-blue-200 bg-clip-text text-transparent">
+            <Sparkles className="w-3.5 h-3.5 text-[#1e6dda] animate-pulse" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#c9dcf7]">
               {badge}
             </span>
           </div>
@@ -133,7 +133,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
               <Link
                 data-cms-field="cta"
                 href={content.cta_href || '/contact'}
-                className="group inline-flex items-center gap-2 bg-gradient-to-r from-sky-400 via-blue-500 to-blue-600 hover:from-sky-500 hover:via-blue-600 hover:to-blue-700 text-white font-semibold px-7 py-3.5 rounded-full text-base shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-[1.03] transition-all"
+                className="group inline-flex items-center gap-2 bg-[#1e6dda] hover:from-[#1e6dda] hover:via-[#1e6dda] hover:to-[#1e6dda] text-white font-semibold px-7 py-3.5 rounded-full text-base shadow-xl hover:scale-[1.03] transition-all"
               >
                 {t(content.cta_label.vi, content.cta_label.en)}
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -160,13 +160,13 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
               return (
                 <span
                   key={pill.label}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-sky-300/40 rounded-full text-xs text-slate-200 transition-all cursor-default"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#1e6dda]/40 rounded-full text-xs text-slate-200 transition-all cursor-default"
                   style={{
                     animationDelay: `${800 + idx * 80}ms`,
                     animationFillMode: 'backwards',
                   }}
                 >
-                  <Icon className="w-3 h-3 text-sky-300" />
+                  <Icon className="w-3 h-3 text-[#1e6dda]" />
                   {pill.label}
                 </span>
               )
@@ -225,7 +225,7 @@ function HighlightedHeading({ text, language }: { text: string; language: string
           return (
             <span
               key={i}
-              className="bg-gradient-to-r from-sky-300 via-blue-300 to-cyan-200 bg-clip-text text-transparent"
+              className="text-[#c9dcf7]"
             >
               {part}
             </span>

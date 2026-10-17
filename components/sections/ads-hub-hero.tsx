@@ -14,12 +14,12 @@ export function AdsHubHero() {
   return (
     <section
       data-cms-section="page_hero"
-      className="relative overflow-hidden pt-10 lg:pt-14 pb-14 lg:pb-20 bg-gradient-to-br from-slate-50 via-white to-primary/5"
+      className="relative overflow-hidden pt-10 lg:pt-14 pb-14 lg:pb-20 bg-[#f5f5f7]"
     >
       {/* Decorative background — gradient blobs + dotted pattern */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-gradient-to-br from-primary/30 to-transparent rounded-full blur-3xl opacity-40" />
-        <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-gradient-to-br from-orange-400/25 to-transparent rounded-full blur-3xl opacity-40" />
+        <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl opacity-40" />
+        <div className="absolute -bottom-32 -right-32 w-[600px] h-[600px] bg-[#1e6dda] rounded-full blur-3xl opacity-40" />
         <div
           className="absolute inset-0 opacity-[0.025]"
           style={{
@@ -37,11 +37,11 @@ export function AdsHubHero() {
             {/* Badge */}
             <span
               data-cms-field="badge"
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-500/15 to-red-500/15 text-orange-600 font-semibold text-[11px] px-3 py-1.5 rounded-full uppercase tracking-widest mb-5 ring-1 ring-orange-500/20"
+              className="inline-flex items-center gap-2 bg-[#1e6dda] text-[#1e6dda] font-semibold text-[11px] px-3 py-1.5 rounded-full uppercase tracking-widest mb-5 ring-1 ring-[#1e6dda]/20"
             >
               <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-orange-500 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-orange-500" />
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#1e6dda] opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-[#1e6dda]" />
               </span>
               {t(content.badge.vi, content.badge.en)}
             </span>
@@ -67,7 +67,7 @@ export function AdsHubHero() {
               <Link
                 data-cms-field="cta"
                 href={content.cta_href}
-                className="group inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] transition-all"
+                className="group inline-flex items-center justify-center gap-2 bg-[#1e6dda] text-white font-bold px-7 py-3.5 rounded-full shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 hover:scale-[1.02] transition-all"
               >
                 {t(content.cta_label.vi, content.cta_label.en)}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -97,26 +97,26 @@ export function AdsHubHero() {
               {/* Browser top bar */}
               <div className="bg-slate-50 px-4 py-2.5 flex items-center gap-2 border-b border-border/60">
                 <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-400" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
                 </div>
                 <div className="flex-1 bg-white rounded px-2 py-0.5 text-[10px] text-slate-400 ml-2 truncate font-mono">
                   ads-hub.clickstar.vn
                 </div>
-                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-emerald-50 text-emerald-600 text-[9px] rounded-full font-bold">
-                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-[#f5f5f7] text-[#1e6dda] text-[9px] rounded-full font-bold">
+                  <span className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full animate-pulse" />
                   LIVE
                 </div>
               </div>
 
               {/* Dashboard mockup */}
-              <div className="p-4 lg:p-5 bg-gradient-to-br from-white via-white to-slate-50/50">
+              <div className="p-4 lg:p-5 bg-[#f5f5f7]">
                 {/* KPI cards */}
                 <div className="grid grid-cols-3 gap-2.5 mb-4">
-                  <KpiCard label={t('Chi tiêu', 'Spend')} value="11.7" suffix="tr" trend="+12%" trendColor="text-emerald-600" />
-                  <KpiCard label="Leads" value="47" suffix="" trend="+8" trendColor="text-emerald-600" />
-                  <KpiCard label={t('CPL TB', 'Avg CPL')} value="249" suffix="k" trend="-15%" trendColor="text-emerald-600" />
+                  <KpiCard label={t('Chi tiêu', 'Spend')} value="11.7" suffix="tr" trend="+12%" trendColor="text-[#1e6dda]" />
+                  <KpiCard label="Leads" value="47" suffix="" trend="+8" trendColor="text-[#1e6dda]" />
+                  <KpiCard label={t('CPL TB', 'Avg CPL')} value="249" suffix="k" trend="-15%" trendColor="text-[#1e6dda]" />
                 </div>
 
                 {/* Chart mockup */}
@@ -129,7 +129,7 @@ export function AdsHubHero() {
                         Spend
                       </span>
                       <span className="text-[9px] text-slate-500 flex items-center gap-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#1e6dda]" />
                         Leads
                       </span>
                     </div>
@@ -139,10 +139,10 @@ export function AdsHubHero() {
 
                 {/* Bottom row pills */}
                 <div className="flex items-center gap-2 flex-wrap text-[10px]">
-                  <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
+                  <span className="inline-flex items-center gap-1 bg-[#eaf2fd] text-[#1e6dda] px-2 py-0.5 rounded font-semibold">
                     <Bot className="w-2.5 h-2.5" /> Claude 4.7
                   </span>
-                  <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-semibold">
+                  <span className="inline-flex items-center gap-1 bg-[#f5f5f7] text-[#1e6dda] px-2 py-0.5 rounded font-semibold">
                     <TrendingUp className="w-2.5 h-2.5" /> 47 active
                   </span>
                   <span className="text-slate-500">{t('Sync mỗi 2h', 'Syncs every 2h')}</span>
@@ -152,7 +152,7 @@ export function AdsHubHero() {
 
             {/* Floating AI Insight card */}
             <div className="hidden sm:flex absolute -top-4 -right-4 lg:-right-6 bg-white rounded-xl shadow-xl p-3 pr-4 border border-primary/20 items-center gap-2.5 max-w-[220px] z-10 animate-in slide-in-from-top fade-in duration-700">
-              <div className="w-9 h-9 bg-gradient-to-br from-primary via-purple-500 to-orange-500 rounded-lg flex items-center justify-center shrink-0 shadow-md">
+              <div className="w-9 h-9 bg-[#1e6dda] rounded-lg flex items-center justify-center shrink-0 shadow-md">
                 <Sparkles className="w-4 h-4 text-white" />
               </div>
               <div className="min-w-0">
@@ -164,9 +164,9 @@ export function AdsHubHero() {
             </div>
 
             {/* Floating alert card */}
-            <div className="hidden sm:flex absolute -bottom-4 -left-4 lg:-left-6 bg-white rounded-xl shadow-xl p-3 border border-emerald-500/20 items-center gap-2.5 max-w-[200px] z-10 animate-in slide-in-from-bottom fade-in duration-700 delay-200">
-              <div className="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="hidden sm:flex absolute -bottom-4 -left-4 lg:-left-6 bg-white rounded-xl shadow-xl p-3 border border-[#1e6dda]/20 items-center gap-2.5 max-w-[200px] z-10 animate-in slide-in-from-bottom fade-in duration-700 delay-200">
+              <div className="w-9 h-9 bg-[#f5f5f7] rounded-lg flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-4 h-4 text-[#1e6dda]" />
               </div>
               <div className="min-w-0">
                 <div className="text-[11px] font-bold text-foreground">{t('Sync thành công', 'Sync completed')}</div>
@@ -189,7 +189,7 @@ function renderHeading(text: string) {
       return (
         <span
           key={i}
-          className="bg-gradient-to-r from-primary via-purple-500 to-orange-500 bg-clip-text text-transparent"
+          className="bg-[#1e6dda] bg-clip-text text-transparent"
         >
           {part}
         </span>
@@ -202,7 +202,7 @@ function renderHeading(text: string) {
 function Trust({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-1.5">
-      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
+      <CheckCircle2 className="w-4 h-4 text-[#1e6dda] shrink-0" />
       <span className="font-medium">{label}</span>
     </div>
   )
@@ -240,8 +240,8 @@ function ChartMockup() {
     <svg viewBox="0 0 280 80" className="w-full h-20" preserveAspectRatio="none">
       <defs>
         <linearGradient id="spendGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1B7BFF" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#1B7BFF" stopOpacity="0" />
+          <stop offset="0%" stopColor="#1e6dda" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#1e6dda" stopOpacity="0" />
         </linearGradient>
       </defs>
       {/* Spend area */}
@@ -253,7 +253,7 @@ function ChartMockup() {
       <path
         d="M0,60 L30,55 L60,40 L90,30 L120,35 L150,25 L180,20 L210,28 L240,22 L280,15"
         fill="none"
-        stroke="#1B7BFF"
+        stroke="#1e6dda"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -262,7 +262,7 @@ function ChartMockup() {
       <path
         d="M0,55 L30,50 L60,45 L90,40 L120,38 L150,30 L180,32 L210,25 L240,28 L280,20"
         fill="none"
-        stroke="#FF6B35"
+        stroke="#1e6dda"
         strokeWidth="2"
         strokeDasharray="3 2"
         strokeLinecap="round"
@@ -276,7 +276,7 @@ function ChartMockup() {
         [240, 22],
         [280, 15],
       ].map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r="2.5" fill="#1B7BFF" stroke="white" strokeWidth="1.5" />
+        <circle key={i} cx={x} cy={y} r="2.5" fill="#1e6dda" stroke="white" strokeWidth="1.5" />
       ))}
     </svg>
   )

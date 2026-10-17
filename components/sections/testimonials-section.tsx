@@ -38,7 +38,7 @@ function TestimonialCard({
           <Star
             key={i}
             className={`w-5 h-5 ${
-              i < testimonial.rating ? 'fill-amber-400 text-amber-400' : 'fill-gray-200 text-gray-200'
+              i < testimonial.rating ? 'fill-[#1e6dda] text-[#1e6dda]' : 'fill-gray-200 text-gray-200'
             }`}
           />
         ))}
@@ -66,7 +66,7 @@ export function TestimonialsSection({ content }: { content: TestimonialsContent 
   const { t } = useLanguage()
 
   return (
-    <section data-cms-section="testimonials" className="py-20 lg:py-28 bg-[#EEF3FF] overflow-hidden">
+    <section data-cms-section="testimonials" className="py-20 lg:py-28 bg-[#eaf2fd] overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 lg:mb-16">
         <div className="text-center max-w-2xl mx-auto">
@@ -136,8 +136,8 @@ export function TestimonialsSection({ content }: { content: TestimonialsContent 
           })}
         </Swiper>
 
-        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 lg:w-24 bg-gradient-to-r from-[#EEF3FF] to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 lg:w-24 bg-gradient-to-l from-[#EEF3FF] to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 lg:w-24 bg-[#f5f5f7] z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 lg:w-24 bg-[#f5f5f7] z-10 pointer-events-none" />
       </div>
     </section>
   )

@@ -33,9 +33,9 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
 
   if (state.status === 'success') {
     return (
-      <div className="bg-white border border-emerald-200 rounded-2xl p-8 text-center shadow-sm">
-        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="w-8 h-8 text-emerald-600" />
+      <div className="bg-white border border-border rounded-2xl p-8 text-center shadow-sm">
+        <div className="w-16 h-16 bg-[#f5f5f7] rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 className="w-8 h-8 text-[#1e6dda]" />
         </div>
         <h3 className="text-xl font-bold text-foreground mb-2">
           {t('Đã gửi yêu cầu thành công!', 'Your request has been sent!')}

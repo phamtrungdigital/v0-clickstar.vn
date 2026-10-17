@@ -45,8 +45,8 @@ export default async function ContactPage({
       <MainNav />
 
       {/* Hero */}
-      <section className="relative pt-16 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-primary/5 via-background to-primary/10 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(27,123,255,0.08),transparent_55%)]" />
+      <section className="relative pt-16 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(30,109,218,0.08),transparent_55%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-5">
@@ -143,7 +143,7 @@ export default async function ContactPage({
                   href={zaloUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex items-center gap-3 bg-[#0068FF] hover:bg-[#0055d4] text-white font-semibold rounded-2xl p-5 transition-all duration-300 hover:shadow-xl hover:shadow-[#0068FF]/25"
+                  className="group flex items-center gap-3 bg-[#1e6dda] hover:bg-[#1e6dda] text-white font-semibold rounded-2xl p-5 transition-all duration-300 hover:shadow-xl hover:shadow-[#1e6dda]/25"
                 >
                   <span className="w-12 h-12 bg-white/15 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <MessageCircle className="w-6 h-6" />

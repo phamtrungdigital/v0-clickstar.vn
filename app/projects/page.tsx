@@ -25,8 +25,8 @@ export default async function ProjectsPage() {
       <MainNav />
 
       {/* Hero */}
-      <section className="relative pt-16 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-primary/5 via-background to-primary/10 overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(27,123,255,0.08),transparent_55%)]" />
+      <section className="relative pt-16 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(30,109,218,0.08),transparent_55%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-5">
@@ -75,11 +75,11 @@ export default async function ProjectsPage() {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/10 to-primary/5">
+                      <div className="absolute inset-0 flex items-center justify-center bg-[#f5f5f7]">
                         <Briefcase className="w-12 h-12 text-primary/30" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-[#f5f5f7] opacity-0 group-hover:opacity-100 transition-opacity" />
                     {p.industry_vi && (
                       <span className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-foreground text-xs font-semibold rounded-full">
                         {p.industry_vi}

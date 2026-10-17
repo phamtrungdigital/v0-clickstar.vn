@@ -228,17 +228,17 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
           className="fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-50 group"
         >
           {/* Outer glow rings */}
-          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-sky-400 via-blue-500 to-blue-600 blur-lg opacity-60 group-hover:opacity-90 transition-opacity animate-pulse" />
+          <span className="absolute inset-0 rounded-full bg-[#1e6dda] blur-lg opacity-60 group-hover:opacity-90 transition-opacity animate-pulse" />
           <span
-            className="absolute -inset-2 rounded-full bg-gradient-to-r from-sky-300 via-blue-400 to-cyan-300 opacity-30 animate-ping"
+            className="absolute -inset-2 rounded-full bg-[#eaf2fd] opacity-30 animate-ping"
             style={{ animationDuration: '2.5s' }}
           />
 
           {/* Main button */}
-          <span className="relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-br from-blue-600 via-[#1B7BFF] to-sky-500 shadow-2xl shadow-blue-500/40 border border-white/20 transition-transform group-hover:scale-110 group-active:scale-95">
+          <span className="relative flex items-center justify-center w-14 h-14 rounded-full bg-[#1e6dda] shadow-2xl border border-white/20 transition-transform group-hover:scale-110 group-active:scale-95">
             <Sparkles className="w-6 h-6 text-white drop-shadow-[0_0_8px_rgba(56,189,248,0.9)]" />
             {/* Tiny animated dot top-right (online indicator) */}
-            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-slate-900 animate-pulse" />
+            <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#1e6dda] rounded-full ring-2 ring-slate-900 animate-pulse" />
           </span>
 
           {/* Tooltip */}
@@ -268,22 +268,22 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
               <span className="h-1 w-10 rounded-full bg-white/25" />
             </div>
             {/* Background mesh — hiệu ứng mờ nặng GPU, chỉ bật trên máy tính */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950 to-indigo-950 -z-10" />
-            <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-sky-400/25 rounded-full blur-3xl -z-10 animate-pulse" />
-            <div className="hidden sm:block absolute bottom-0 left-0 w-64 h-64 bg-blue-500/30 rounded-full blur-3xl -z-10" />
+            <div className="absolute inset-0 bg-[#272729] -z-10" />
+            <div className="hidden sm:block absolute top-0 right-0 w-64 h-64 bg-[#1e6dda]/25 rounded-full blur-3xl -z-10 animate-pulse" />
+            <div className="hidden sm:block absolute bottom-0 left-0 w-64 h-64 bg-[#1e6dda]/30 rounded-full blur-3xl -z-10" />
 
             {/* Header */}
             <div className="flex items-center gap-3 px-4 py-3 sm:p-4 border-b border-white/10 shrink-0">
               <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/40">
+                <div className="w-10 h-10 rounded-full bg-[#1e6dda] flex items-center justify-center shadow-lg">
                   <Bot className="w-5 h-5 text-white" />
                 </div>
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-pulse" />
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#1e6dda] rounded-full ring-2 ring-slate-950 animate-pulse" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-white font-bold text-sm leading-tight">{botName}</h3>
                 <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
-                  <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full" />
+                  <span className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full" />
                   {t.online}
                 </p>
               </div>
@@ -314,7 +314,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
                     <button
                       key={p.value}
                       onClick={() => submit(p.value)}
-                      className="block w-full text-left px-3 py-2.5 sm:py-2 text-sm text-slate-200 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-sky-300/60 rounded-lg transition-all"
+                      className="block w-full text-left px-3 py-2.5 sm:py-2 text-sm text-slate-200 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#1e6dda]/60 rounded-lg transition-all"
                     >
                       {p.label}
                     </button>
@@ -340,20 +340,20 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
               {/* Thinking indicator */}
               {isPending && (
                 <div className="flex items-start gap-2.5">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center flex-shrink-0">
+                  <div className="w-7 h-7 rounded-full bg-[#1e6dda] flex items-center justify-center flex-shrink-0">
                     <Bot className="w-3.5 h-3.5 text-white" />
                   </div>
                   <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm px-4 py-2.5 flex items-center gap-1.5">
                     <span
-                      className="w-1.5 h-1.5 bg-sky-300 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full animate-bounce"
                       style={{ animationDelay: '0ms' }}
                     />
                     <span
-                      className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full animate-bounce"
                       style={{ animationDelay: '150ms' }}
                     />
                     <span
-                      className="w-1.5 h-1.5 bg-cyan-300 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full animate-bounce"
                       style={{ animationDelay: '300ms' }}
                     />
                   </div>
@@ -362,9 +362,9 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
 
               {/* Error */}
               {error && (
-                <div className="flex items-start gap-2 p-3 bg-red-500/10 border border-red-500/30 rounded-lg">
-                  <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-xs text-red-200">{error}</p>
+                <div className="flex items-start gap-2 p-3 bg-[#1e6dda]/10 border border-[#1e6dda]/30 rounded-lg">
+                  <AlertCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-[#1e6dda]">{error}</p>
                 </div>
               )}
             </div>
@@ -395,13 +395,13 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
                   enterKeyHint="send"
                   autoComplete="off"
                   // 16px trên điện thoại: iOS tự phóng to trang khi chạm vào ô chữ < 16px
-                  className="flex-1 min-w-0 px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400/60 focus:border-transparent disabled:opacity-60"
+                  className="flex-1 min-w-0 px-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-base sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-[#1e6dda]/60 focus:border-transparent disabled:opacity-60"
                 />
                 <button
                   type="submit"
                   disabled={isPending || input.trim().length < 2}
                   aria-label={t.send}
-                  className="flex items-center justify-center w-11 h-11 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-gradient-to-br from-sky-400 via-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30 disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-transform"
+                  className="flex items-center justify-center w-11 h-11 sm:w-10 sm:h-10 shrink-0 rounded-xl bg-[#1e6dda] text-white shadow-lg disabled:opacity-40 disabled:cursor-not-allowed hover:scale-105 active:scale-95 transition-transform"
                 >
                   {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 </button>
@@ -431,7 +431,7 @@ function MessageBubble({
   if (role === 'user') {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] bg-gradient-to-br from-sky-400 to-blue-600 text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm shadow-lg shadow-blue-500/20 break-words">
+        <div className="max-w-[85%] bg-[#1e6dda] text-white rounded-2xl rounded-br-sm px-4 py-2.5 text-sm shadow-lg break-words">
           {content}
         </div>
       </div>
@@ -440,7 +440,7 @@ function MessageBubble({
 
   return (
     <div ref={bubbleRef} className="flex items-start gap-2 sm:gap-2.5">
-      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-blue-600 flex items-center justify-center flex-shrink-0 shadow-md shadow-blue-500/30">
+      <div className="w-7 h-7 rounded-full bg-[#1e6dda] flex items-center justify-center flex-shrink-0 shadow-md">
         <Bot className="w-3.5 h-3.5 text-white" />
       </div>
       <div className="flex-1 min-w-0 space-y-2">
@@ -464,7 +464,7 @@ function MessageBubble({
               const cls =
                 'inline-flex items-center gap-1 min-h-9 sm:min-h-0 px-3 sm:px-2.5 py-1.5 sm:py-1 rounded-full text-xs sm:text-[11px] font-medium transition-all border ' +
                 (idx === 0
-                  ? 'bg-gradient-to-r from-sky-400/25 to-blue-500/25 hover:from-sky-400/40 hover:to-blue-500/40 border-sky-300/50 text-white'
+                  ? 'bg-[#1e6dda] hover:from-[#1e6dda]/40 hover:to-[#1e6dda]/40 border-[#1e6dda]/50 text-white'
                   : 'bg-white/5 hover:bg-white/10 border-white/10 text-slate-200')
               if (isContact) {
                 return (

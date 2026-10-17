@@ -111,13 +111,13 @@ export function ClaudeEngine() {
   return (
     <div className="space-y-6">
       {/* Thẻ định danh engine */}
-      <div className="rounded-2xl border border-cyan-200 bg-gradient-to-br from-cyan-50 via-white to-teal-50 p-5 sm:p-7">
+      <div className="rounded-2xl border border-border bg-[#f5f5f7] p-5 sm:p-7">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-500 flex items-center justify-center text-white flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-[#1e6dda] flex items-center justify-center text-white flex-shrink-0">
             <Bot className="w-7 h-7" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-bold uppercase tracking-wider text-cyan-700 mb-1">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#1e6dda] mb-1">
               {t('Mô hình phân tích', 'Analysis model')}
             </p>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground leading-tight">
@@ -138,9 +138,9 @@ export function ClaudeEngine() {
         {reasons.map((r, i) => (
           <div
             key={i}
-            className="group bg-white rounded-2xl p-5 border border-border hover:border-cyan-200 hover:shadow-lg hover:shadow-cyan-500/5 transition-all duration-300"
+            className="group bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-lg transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-100 to-teal-100 flex items-center justify-center text-cyan-600 mb-4 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] mb-4 group-hover:scale-110 transition-transform">
               {r.icon}
             </div>
             <h4 className="font-bold text-foreground mb-2">{r.title}</h4>
@@ -162,15 +162,15 @@ export function ClaudeEngine() {
         </p>
 
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="rounded-xl border border-cyan-200 bg-cyan-50/50 p-4">
+          <div className="rounded-xl border border-border bg-[#f5f5f7]/50 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Bot className="w-4 h-4 text-cyan-600" />
-              <span className="text-sm font-bold text-cyan-700">{t('AI làm', 'The AI does')}</span>
+              <Bot className="w-4 h-4 text-[#1e6dda]" />
+              <span className="text-sm font-bold text-[#1e6dda]">{t('AI làm', 'The AI does')}</span>
             </div>
             <ul className="space-y-2.5">
               {aiDoes.map((x, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                   <span>{x}</span>
                 </li>
               ))}
@@ -204,9 +204,9 @@ export function ClaudeEngine() {
       </div>
 
       {/* Cam kết dữ liệu */}
-      <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-5 sm:p-6">
+      <div className="rounded-2xl border border-border bg-[#f5f5f7]/50 p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
-          <ShieldCheck className="w-5 h-5 text-emerald-600" />
+          <ShieldCheck className="w-5 h-5 text-[#1e6dda]" />
           <h3 className="font-bold text-foreground">
             {t('Dữ liệu của bạn đi tới đâu', 'Where your data goes')}
           </h3>
@@ -214,7 +214,7 @@ export function ClaudeEngine() {
         <ul className="space-y-3">
           {commitments.map((c, i) => (
             <li key={i} className="flex items-start gap-3 text-sm text-foreground">
-              <span className="text-emerald-600 flex-shrink-0 mt-0.5">{c.icon}</span>
+              <span className="text-[#1e6dda] flex-shrink-0 mt-0.5">{c.icon}</span>
               <span>{c.text}</span>
             </li>
           ))}

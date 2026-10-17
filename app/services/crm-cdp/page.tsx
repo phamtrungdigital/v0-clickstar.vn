@@ -213,22 +213,22 @@ export default function CRMCDPPage() {
     {
       title: t('Website', 'Website'),
       icon: <Globe className="w-5 h-5" />,
-      color: 'bg-blue-500'
+      color: 'bg-[#1e6dda]'
     },
     {
       title: t('CDP', 'CDP'),
       icon: <BrainCircuit className="w-5 h-5" />,
-      color: 'bg-purple-500'
+      color: 'bg-[#1e6dda]'
     },
     {
       title: t('CRM', 'CRM'),
       icon: <Users className="w-5 h-5" />,
-      color: 'bg-emerald-500'
+      color: 'bg-[#1e6dda]'
     },
     {
       title: t('Dashboard', 'Dashboard'),
       icon: <BarChart3 className="w-5 h-5" />,
-      color: 'bg-orange-500'
+      color: 'bg-[#1e6dda]'
     }
   ]
 
@@ -237,30 +237,30 @@ export default function CRMCDPPage() {
       <MainNav />
       <main>
 {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
         {/* Background decoration */}
         <div className="absolute inset-0 overflow-hidden">
           
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#eaf2fd]/30 rounded-full blur-3xl" />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Content */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-primary/25">
+              <div className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-primary/25">
                 <Users className="w-4 h-4" />
                 CRM & CDP
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
                 {t('Quản trị & Thấu hiểu', 'Manage & Understand')}{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('Khách hàng', 'Customers')}
                 </span>
               </h1>
@@ -291,7 +291,7 @@ export default function CRMCDPPage() {
               <div className="flex flex-wrap gap-4">
                 <Link 
                   href="/contact"
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-6 py-3 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
+                  className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold px-6 py-3 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
                 >
                   {t('Tư vấn triển khai', 'Get Consultation')}
                   <ArrowRight className="w-4 h-4" />
@@ -312,9 +312,9 @@ export default function CRMCDPPage() {
                 {/* Browser bar */}
                 <div className="flex items-center gap-2 px-4 py-3 bg-slate-100 border-b border-border">
                   <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-400" />
-                    <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
+                    <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                    <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                    <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                   </div>
                   <div className="flex-1 mx-4">
                     <div className="bg-white rounded-md px-3 py-1 text-xs text-muted-foreground">
@@ -332,8 +332,8 @@ export default function CRMCDPPage() {
                       <div className="text-xs text-muted-foreground">{t('Cập nhật real-time', 'Real-time update')}</div>
                     </div>
                     <div className="flex gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
-                        <Users className="w-4 h-4 text-emerald-600" />
+                      <div className="w-8 h-8 rounded-lg bg-[#f5f5f7] flex items-center justify-center">
+                        <Users className="w-4 h-4 text-[#1e6dda]" />
                       </div>
                     </div>
                   </div>
@@ -341,10 +341,10 @@ export default function CRMCDPPage() {
                   {/* Stats grid */}
                   <div className="grid grid-cols-4 gap-3 mb-4">
                     {[
-                      { label: t('Tổng KH', 'Total'), value: '2,456', color: 'text-blue-600', bg: 'bg-blue-50' },
-                      { label: t('Mới tháng này', 'New this month'), value: '+124', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                      { label: t('Hot leads', 'Hot leads'), value: '45', color: 'text-orange-600', bg: 'bg-orange-50' },
-                      { label: t('Chờ chăm sóc', 'Need care'), value: '18', color: 'text-purple-600', bg: 'bg-purple-50' }
+                      { label: t('Tổng KH', 'Total'), value: '2,456', color: 'text-[#1e6dda]', bg: 'bg-[#eaf2fd]' },
+                      { label: t('Mới tháng này', 'New this month'), value: '+124', color: 'text-[#1e6dda]', bg: 'bg-[#f5f5f7]' },
+                      { label: t('Hot leads', 'Hot leads'), value: '45', color: 'text-[#1e6dda]', bg: 'bg-[#f5f5f7]' },
+                      { label: t('Chờ chăm sóc', 'Need care'), value: '18', color: 'text-[#1e6dda]', bg: 'bg-[#f5f5f7]' }
                     ].map((stat, i) => (
                       <div key={i} className={`${stat.bg} rounded-lg p-3`}>
                         <div className={`text-lg font-bold ${stat.color}`}>{stat.value}</div>
@@ -359,10 +359,10 @@ export default function CRMCDPPage() {
                     <div className="flex gap-1">
                       {[
                         { label: 'Lead', count: 45, width: 'w-1/4', color: 'bg-slate-300' },
-                        { label: 'Contact', count: 32, width: 'w-1/5', color: 'bg-blue-400' },
-                        { label: 'Demo', count: 18, width: 'w-[15%]', color: 'bg-purple-400' },
-                        { label: 'Proposal', count: 12, width: 'w-[12%]', color: 'bg-orange-400' },
-                        { label: 'Won', count: 8, width: 'w-[10%]', color: 'bg-emerald-500' }
+                        { label: 'Contact', count: 32, width: 'w-1/5', color: 'bg-[#1e6dda]' },
+                        { label: 'Demo', count: 18, width: 'w-[15%]', color: 'bg-[#1e6dda]' },
+                        { label: 'Proposal', count: 12, width: 'w-[12%]', color: 'bg-[#1e6dda]' },
+                        { label: 'Won', count: 8, width: 'w-[10%]', color: 'bg-[#1e6dda]' }
                       ].map((stage, i) => (
                         <div key={i} className={`${stage.width} ${stage.color} rounded-md p-2 text-center`}>
                           <div className="text-xs font-bold text-white">{stage.count}</div>
@@ -374,10 +374,10 @@ export default function CRMCDPPage() {
               </div>
 
               {/* Floating badges */}
-              <div className="absolute -top-4 -right-4 bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
+              <div className="absolute -top-4 -right-4 bg-[#1e6dda] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg animate-pulse">
                 {t('Automation', 'Automation')}
               </div>
-              <div className="absolute -bottom-4 -left-4 bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
+              <div className="absolute -bottom-4 -left-4 bg-[#1e6dda] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
                 {t('Real-time Sync', 'Real-time Sync')}
               </div>
             </div>
@@ -389,13 +389,13 @@ export default function CRMCDPPage() {
       <section id="crm" className="py-12 lg:py-16 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+            <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
               <Users className="w-4 h-4" />
               CRM - CUSTOMER RELATIONSHIP MANAGEMENT
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
               {t('Quản trị quan hệ', 'Customer Relationship')}{' '}
-              <span className="text-emerald-600">{t('Khách hàng', 'Management')}</span>
+              <span className="text-[#1e6dda]">{t('Khách hàng', 'Management')}</span>
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
               {t(
@@ -421,19 +421,19 @@ export default function CRMCDPPage() {
                 {crmProblems.map((item, index) => (
                   <div
                     key={index}
-                    className="group relative bg-white rounded-xl p-4 border border-border hover:border-emerald-300 hover:shadow-lg transition-all"
+                    className="group relative bg-white rounded-xl p-4 border border-border hover:border-border hover:shadow-lg transition-all"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda]">
                         {item.icon}
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                          <XCircle className="w-4 h-4 text-rose-500" />
-                          <p className="text-foreground font-medium text-sm line-through decoration-rose-300">{item.problem}</p>
+                          <XCircle className="w-4 h-4 text-[#1e6dda]" />
+                          <p className="text-foreground font-medium text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                         </div>
                         <div className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                           <p className="text-muted-foreground text-sm">{item.solution}</p>
                         </div>
                       </div>
@@ -449,9 +449,9 @@ export default function CRMCDPPage() {
             {crmFeatures.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl p-6 border border-border hover:shadow-xl hover:border-emerald-200 transition-all group"
+                className="bg-white rounded-2xl p-6 border border-border hover:shadow-xl hover:border-border transition-all group"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-blue-500 flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-[#1e6dda] flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">{feature.title}</h3>
@@ -459,7 +459,7 @@ export default function CRMCDPPage() {
                 <ul className="space-y-2">
                   {feature.features.map((f, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                      <CheckCircle2 className="w-4 h-4 text-[#1e6dda]" />
                       <span className="text-muted-foreground">{f}</span>
                     </li>
                   ))}
@@ -471,7 +471,7 @@ export default function CRMCDPPage() {
       </section>
 
       {/* Automation Channels */}
-      <section className="py-12 lg:py-16 bg-gradient-to-b from-emerald-50 to-white">
+      <section className="py-12 lg:py-16 bg-[#f5f5f7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
@@ -487,10 +487,10 @@ export default function CRMCDPPage() {
 
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { icon: <Mail className="w-8 h-8" />, title: 'Email Marketing', desc: t('Drip campaigns, newsletters', 'Drip campaigns, newsletters'), color: 'bg-blue-500' },
-              { icon: <MessageSquare className="w-8 h-8" />, title: 'Zalo ZNS', desc: t('Thông báo giao dịch', 'Transaction notifications'), color: 'bg-blue-600' },
-              { icon: <Smartphone className="w-8 h-8" />, title: 'SMS Brandname', desc: t('OTP, promotions', 'OTP, promotions'), color: 'bg-purple-500' },
-              { icon: <Globe className="w-8 h-8" />, title: 'Web Push', desc: t('Thông báo real-time', 'Real-time notifications'), color: 'bg-orange-500' }
+              { icon: <Mail className="w-8 h-8" />, title: 'Email Marketing', desc: t('Drip campaigns, newsletters', 'Drip campaigns, newsletters'), color: 'bg-[#1e6dda]' },
+              { icon: <MessageSquare className="w-8 h-8" />, title: 'Zalo ZNS', desc: t('Thông báo giao dịch', 'Transaction notifications'), color: 'bg-[#1e6dda]' },
+              { icon: <Smartphone className="w-8 h-8" />, title: 'SMS Brandname', desc: t('OTP, promotions', 'OTP, promotions'), color: 'bg-[#1e6dda]' },
+              { icon: <Globe className="w-8 h-8" />, title: 'Web Push', desc: t('Thông báo real-time', 'Real-time notifications'), color: 'bg-[#1e6dda]' }
             ].map((channel, i) => (
               <div key={i} className="bg-white rounded-xl p-6 text-center border border-border hover:shadow-lg transition-all group">
                 <div className={`w-16 h-16 ${channel.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-4 group-hover:scale-110 transition-transform`}>
@@ -514,7 +514,7 @@ export default function CRMCDPPage() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-4">
               {t('Thấu hiểu khách hàng', 'Understand Customers')}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                 {t('ở mức sâu nhất', 'at the deepest level')}
               </span>
             </h2>
@@ -533,7 +533,7 @@ export default function CRMCDPPage() {
                 key={index}
                 className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all group"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-[#1e6dda] flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform">
                   {feature.icon}
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">{feature.title}</h3>
@@ -543,9 +543,9 @@ export default function CRMCDPPage() {
           </div>
 
           {/* CDP Warning */}
-          <div className="bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-2xl p-6 mb-12">
+          <div className="bg-[#1e6dda] border border-[#1e6dda]/30 rounded-2xl p-6 mb-12">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center text-white flex-shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-[#1e6dda] flex items-center justify-center text-white flex-shrink-0">
                 <DollarSign className="w-6 h-6" />
               </div>
               <div>
@@ -559,15 +559,15 @@ export default function CRMCDPPage() {
                   )}
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-1 text-sm text-amber-400">
+                  <span className="inline-flex items-center gap-1 text-sm text-[#1e6dda]">
                     <CheckCircle2 className="w-4 h-4" />
                     {t('Triển khai từng phase', 'Phased implementation')}
                   </span>
-                  <span className="inline-flex items-center gap-1 text-sm text-amber-400">
+                  <span className="inline-flex items-center gap-1 text-sm text-[#1e6dda]">
                     <CheckCircle2 className="w-4 h-4" />
                     {t('Bắt đầu với gói nhỏ', 'Start with small package')}
                   </span>
-                  <span className="inline-flex items-center gap-1 text-sm text-amber-400">
+                  <span className="inline-flex items-center gap-1 text-sm text-[#1e6dda]">
                     <CheckCircle2 className="w-4 h-4" />
                     {t('ROI rõ ràng từng bước', 'Clear ROI at each step')}
                   </span>
@@ -581,7 +581,7 @@ export default function CRMCDPPage() {
             {cdpPackages.map((pkg, index) => (
               <div
                 key={index}
-                className={`rounded-2xl p-6 ${pkg.highlight ? 'bg-gradient-to-br from-purple-600 to-pink-600 border-0' : 'bg-white/5 border border-white/10'}`}
+                className={`rounded-2xl p-6 ${pkg.highlight ? 'bg-[#1e6dda] border-0' : 'bg-white/5 border border-white/10'}`}
               >
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-white">{pkg.name}</h3>
@@ -591,13 +591,13 @@ export default function CRMCDPPage() {
                 <ul className="space-y-3 mb-6">
                   {pkg.features.map((f, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-white/80">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                      <CheckCircle2 className="w-4 h-4 text-[#1e6dda]" />
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Button 
-                  className={`w-full ${pkg.highlight ? 'bg-white text-purple-600 hover:bg-white/90' : 'bg-transparent border border-white/30 text-white hover:bg-white/10'}`}
+                  className={`w-full ${pkg.highlight ? 'bg-white text-[#1e6dda] hover:bg-white/90' : 'bg-transparent border border-white/30 text-white hover:bg-white/10'}`}
                 >
                   {t('Tư vấn ngay', 'Get Consultation')}
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -677,17 +677,17 @@ export default function CRMCDPPage() {
       </section>
 
       {/* UX/UI Website Connection */}
-      <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+      <section className="py-12 lg:py-16 bg-[#f5f5f7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 font-semibold text-sm px-4 py-2 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#eaf2fd] text-[#1e6dda] font-semibold text-sm px-4 py-2 rounded-full mb-4">
                 <Sparkles className="w-4 h-4" />
                 {t('KẾT HỢP WEBSITE UX/UI', 'WEBSITE UX/UI INTEGRATION')}
               </span>
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
                 {t('Thiết kế Website', 'Website Design')}{' '}
-                <span className="text-blue-600">{t('tối ưu cho CDP', 'optimized for CDP')}</span>
+                <span className="text-[#1e6dda]">{t('tối ưu cho CDP', 'optimized for CDP')}</span>
               </h2>
               <p className="text-muted-foreground mb-6">
                 {t(
@@ -704,14 +704,14 @@ export default function CRMCDPPage() {
                   t('Custom events theo yêu cầu', 'Custom events on request')
                 ].map((item, i) => (
                   <li key={i} className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                    <CheckCircle2 className="w-5 h-5 text-[#1e6dda]" />
                     <span className="text-muted-foreground">{item}</span>
                   </li>
                 ))}
               </ul>
               <Link 
                 href="/services/website"
-                className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 text-[#1e6dda] font-semibold hover:gap-3 transition-all"
               >
                 {t('Xem dịch vụ thiết kế Website', 'View Website Design service')}
                 <ArrowRight className="w-5 h-5" />
@@ -728,8 +728,8 @@ export default function CRMCDPPage() {
                   { event: 'purchase', data: '{ value: 2500000 }', time: '15ms ago' }
                 ].map((log, i) => (
                   <div key={i} className="flex items-center gap-3 bg-slate-50 rounded-lg p-3 font-mono text-xs">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-purple-600 font-semibold">{log.event}</span>
+                    <div className="w-2 h-2 rounded-full bg-[#1e6dda] animate-pulse" />
+                    <span className="text-[#1e6dda] font-semibold">{log.event}</span>
                     <span className="text-muted-foreground flex-1 truncate">{log.data}</span>
                     <span className="text-muted-foreground">{log.time}</span>
                   </div>
@@ -741,7 +741,7 @@ export default function CRMCDPPage() {
       </section>
 
       {/* CTA Section */}
-      <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-primary to-primary-dark">
+      <section id="contact" className="py-12 lg:py-16 bg-[#1e6dda]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
             {t('Sẵn sàng triển khai CRM & CDP?', 'Ready to deploy CRM & CDP?')}
@@ -753,7 +753,7 @@ export default function CRMCDPPage() {
             )}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-white/90 font-semibold">
+            <Button asChild size="lg" className="bg-white text-[#1e6dda] hover:bg-white/90 font-semibold">
               <Link href="/contact">
                 {t('Đặt lịch tư vấn miễn phí', 'Book Free Consultation')}
                 <ArrowRight className="w-4 h-4 ml-2" />

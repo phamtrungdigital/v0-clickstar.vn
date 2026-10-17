@@ -199,7 +199,7 @@ export function TechPayload() {
               onClick={() => setTab(tb.key)}
               className={`flex items-center gap-1.5 px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                 tab === tb.key
-                  ? 'border-cyan-500 text-cyan-700'
+                  ? 'border-[#1e6dda] text-[#1e6dda]'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -215,7 +215,7 @@ export function TechPayload() {
             onClick={copy}
             className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded flex-shrink-0"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-[#1e6dda]" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? t('Đã chép', 'Copied') : t('Chép', 'Copy')}
           </button>
         )}
@@ -260,7 +260,7 @@ export function TechPayload() {
             <tbody>
               {fields.map((f) => (
                 <tr key={f.field} className="border-b border-border/60 last:border-0">
-                  <td className="px-4 py-3 font-mono text-xs text-cyan-700 whitespace-nowrap">{f.field}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-[#1e6dda] whitespace-nowrap">{f.field}</td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">{f.type}</td>
                   <td className="px-4 py-3 text-muted-foreground">{f.desc}</td>
                   <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">{f.crm}</td>

@@ -391,23 +391,23 @@ export default function SpeechInsightAiPage() {
       <MainNav />
       <main>
         {/* ═══════════ ① HERO ═══════════ */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-cyan-500/25">
+                <div className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
                   <AudioLines className="w-4 h-4" />
                   {t('CALL TO TEXT · PHÂN TÍCH CUỘC GỌI BẰNG AI', 'CALL TO TEXT · AI CALL ANALYTICS')}
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
                   {t('Biến mọi cuộc gọi thành ', 'Turn every call into ')}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('dữ liệu bán hàng', 'sales data')}
                   </span>
                 </h1>
@@ -429,7 +429,7 @@ export default function SpeechInsightAiPage() {
                 <div className="flex flex-col sm:flex-row gap-4 mb-4">
                   <Link
                     href={CONTACT_HREF}
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   >
                     {t('Nhận phân tích thử 50 cuộc gọi', 'Get a free 50-call analysis')}
                     <ArrowRight className="w-5 h-5" />
@@ -476,9 +476,9 @@ export default function SpeechInsightAiPage() {
                 <div className="relative bg-white rounded-2xl shadow-2xl p-2 border border-border">
                   <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-t-xl">
                     <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                      <div className="w-3 h-3 rounded-full bg-green-400" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                     </div>
                     <div className="flex-1 flex justify-center">
                       <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-muted-foreground border truncate">
@@ -487,15 +487,15 @@ export default function SpeechInsightAiPage() {
                     </div>
                   </div>
 
-                  <div className="p-4 sm:p-5 space-y-4 bg-gradient-to-br from-slate-50 to-white rounded-b-xl">
+                  <div className="p-4 sm:p-5 space-y-4 bg-[#f5f5f7] rounded-b-xl">
                     <div className="space-y-2">
                       <div className="text-[11px] sm:text-xs font-mono text-muted-foreground break-words">
-                        <span className="text-cyan-600 font-semibold">NV</span>
+                        <span className="text-[#1e6dda] font-semibold">NV</span>
                         {' : '}
                         {t('Dạ em chào anh, em gọi về căn 2 phòng ngủ ạ.', 'Hello, I’m calling about the 2-bedroom unit.')}
                       </div>
                       <div className="text-[11px] sm:text-xs font-mono text-muted-foreground break-words">
-                        <span className="text-teal-600 font-semibold">KH</span>
+                        <span className="text-[#1e6dda] font-semibold">KH</span>
                         {' : '}
                         {t('Anh cần trong tầm 2 tỷ, có hỗ trợ vay không em?', 'I need something around 2 billion. Any loan support?')}
                       </div>
@@ -506,15 +506,15 @@ export default function SpeechInsightAiPage() {
                         <span className="text-xs font-medium text-muted-foreground">
                           {t('Điểm chất lượng', 'Quality score')}
                         </span>
-                        <span className="text-xl font-extrabold text-cyan-600">82/100</span>
+                        <span className="text-xl font-extrabold text-[#1e6dda]">82/100</span>
                       </div>
                       <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
-                        <div className="h-full w-[82%] rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" />
+                        <div className="h-full w-[82%] rounded-full bg-[#1e6dda]" />
                       </div>
                     </div>
 
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#f5f5f7] text-[#1e6dda] border border-border">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#1e6dda]" />
                       {t('Cảm xúc: Tích cực', 'Sentiment: Positive')}
                     </span>
 
@@ -528,7 +528,7 @@ export default function SpeechInsightAiPage() {
                           <span className="text-xs text-muted-foreground flex-shrink-0">{f.l}</span>
                           <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground min-w-0">
                             <span className="truncate">{f.v}</span>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                            <CheckCircle2 className="w-3.5 h-3.5 text-[#1e6dda] flex-shrink-0" />
                           </span>
                         </div>
                       ))}
@@ -537,19 +537,19 @@ export default function SpeechInsightAiPage() {
                 </div>
 
                 {/* Floating badges — right-2 trên mobile để không tràn viewport */}
-                <div className="absolute right-2 sm:-right-4 top-1/4 bg-white rounded-xl shadow-lg p-2.5 border border-rose-200 max-w-[190px]">
+                <div className="absolute right-2 sm:-right-4 top-1/4 bg-white rounded-xl shadow-lg p-2.5 border border-border max-w-[190px]">
                   <div className="flex items-center gap-2">
-                    <ShieldAlert className="w-4 h-4 text-rose-500 flex-shrink-0" />
-                    <span className="text-[11px] font-medium text-rose-700 leading-tight">
+                    <ShieldAlert className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
+                    <span className="text-[11px] font-medium text-[#1e6dda] leading-tight">
                       {t('Đã gắn cờ: cam kết vượt quyền', 'Flagged: over-promise')}
                     </span>
                   </div>
                 </div>
 
-                <div className="absolute left-2 sm:-left-4 bottom-1/4 bg-white rounded-xl shadow-lg p-2.5 border border-emerald-200">
+                <div className="absolute left-2 sm:-left-4 bottom-1/4 bg-white rounded-xl shadow-lg p-2.5 border border-border">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
-                    <span className="text-[11px] font-medium text-emerald-700">
+                    <span className="w-2 h-2 rounded-full bg-[#1e6dda] animate-pulse flex-shrink-0" />
+                    <span className="text-[11px] font-medium text-[#1e6dda]">
                       {t('Đã đẩy vào CRM', 'Synced to CRM')}
                     </span>
                   </div>
@@ -561,16 +561,16 @@ export default function SpeechInsightAiPage() {
         </section>
 
         {/* ═══════════ ② VẤN ĐỀ & GIẢI PHÁP ═══════════ */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <PhoneCall className="w-4 h-4" />
                 {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-4">
                 {t('Bạn đo được từng đồng quảng cáo. Nhưng đúng lúc khách quyết định mua thì ', 'You measure every ad dollar. Yet at the exact moment customers decide, ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('bạn không nghe thấy gì', 'you hear nothing')}
                 </span>
               </h2>
@@ -586,27 +586,27 @@ export default function SpeechInsightAiPage() {
               {problems.map((item, index) => (
                 <div
                   key={index}
-                  className="group relative bg-white rounded-2xl p-5 border border-border hover:border-cyan-200 hover:shadow-xl hover:shadow-cyan-500/5 transition-all duration-300"
+                  className="group relative bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-xl transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start gap-2 mb-3">
-                        <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
+                        <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                         <p className="text-foreground font-semibold text-sm">{item.problem}</p>
                       </div>
                       <div className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                         <p className="text-muted-foreground text-sm">{item.solution}</p>
                       </div>
                     </div>
-                    <ArrowUpRight className="w-5 h-5 text-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                    <ArrowUpRight className="w-5 h-5 text-[#1e6dda] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                   </div>
                 </div>
               ))}
             </div>
 
             <div className="text-center mt-10">
-              <Link href="#bao-cao-mau" className="inline-flex items-center gap-2 text-cyan-600 font-semibold hover:gap-3 transition-all">
+              <Link href="#bao-cao-mau" className="inline-flex items-center gap-2 text-[#1e6dda] font-semibold hover:gap-3 transition-all">
                 {t('Xem AI đọc một cuộc gọi thật như thế nào', 'See how AI reads a real call')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
@@ -618,13 +618,13 @@ export default function SpeechInsightAiPage() {
         <section id="bao-cao-mau" className="py-12 lg:py-16 bg-background scroll-mt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <FileText className="w-4 h-4" />
                 {t('BÁO CÁO MẪU', 'SAMPLE REPORT')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                 {t('Một cuộc gọi 8 phút 14 giây, ', 'One 8-minute 14-second call, ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('sau khi AI xử lý', 'after AI processing')}
                 </span>
               </h2>
@@ -648,16 +648,16 @@ export default function SpeechInsightAiPage() {
         </section>
 
         {/* ═══════════ ④ 9 LỚP PHÂN TÍCH ═══════════ */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Sparkles className="w-4 h-4" />
                 {t('TÍNH NĂNG', 'CAPABILITIES')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                 {t('Mỗi cuộc gọi đi qua ', 'Every call passes through ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('9 lớp phân tích', '9 layers of analysis')}
                 </span>
                 {t(' — tự động, không ai phải bấm gì', ' — automatically, with zero clicks')}
@@ -670,12 +670,12 @@ export default function SpeechInsightAiPage() {
                   key={i}
                   className={`group bg-white rounded-2xl p-6 border transition-all duration-300 hover:shadow-xl ${
                     f.highlight
-                      ? 'border-cyan-300 shadow-lg shadow-cyan-500/10'
-                      : 'border-border hover:border-cyan-200'
+                      ? 'border-border shadow-lg'
+                      : 'border-border hover:border-border'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-cyan-100 to-teal-100 flex items-center justify-center text-cyan-600 group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] group-hover:scale-110 transition-transform">
                       {f.icon}
                     </div>
                     <span className="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-slate-100 text-slate-500">
@@ -684,7 +684,7 @@ export default function SpeechInsightAiPage() {
                   </div>
 
                   {f.highlight && (
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-cyan-600 mb-2">
+                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#1e6dda] mb-2">
                       {t('Trái tim của dịch vụ', 'The heart of the service')}
                     </span>
                   )}
@@ -695,7 +695,7 @@ export default function SpeechInsightAiPage() {
                   <ul className="space-y-2">
                     {f.items.map((it, k) => (
                       <li key={k} className="flex items-start gap-2 text-xs text-muted-foreground">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-cyan-500 flex-shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                         <span>{it}</span>
                       </li>
                     ))}
@@ -710,13 +710,13 @@ export default function SpeechInsightAiPage() {
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Bot className="w-4 h-4" />
                 {t('MÔ HÌNH AI', 'AI MODEL')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                 {t('Bộ não đọc cuộc gọi là ', 'The brain reading your calls is ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   Claude
                 </span>
                 {t(' của Anthropic', ' by Anthropic')}
@@ -734,16 +734,16 @@ export default function SpeechInsightAiPage() {
         </section>
 
         {/* ═══════════ ⑥ DEMO PHÂN TÍCH CỤ THỂ ═══════════ */}
-        <section id="demo-phan-tich" className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white scroll-mt-20">
+        <section id="demo-phan-tich" className="py-12 lg:py-16 bg-[#f5f5f7] scroll-mt-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <MessageSquare className="w-4 h-4" />
                 {t('DEMO PHÂN TÍCH', 'ANALYSIS DEMO')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                 {t('Cùng một cuộc gọi, ', 'The same call — ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('AI nhìn ra những gì', 'here is what the AI sees')}
                 </span>
               </h2>
@@ -763,13 +763,13 @@ export default function SpeechInsightAiPage() {
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Braces className="w-4 h-4" />
                 {t('DỮ LIỆU TRẢ VỀ', 'DATA OUTPUT')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                 {t('Không phải hộp đen — ', 'Not a black box — ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('dữ liệu có cấu trúc', 'structured data')}
                 </span>
                 {t(' đội kỹ thuật dùng được ngay', ' your engineers can use right away')}
@@ -794,16 +794,16 @@ export default function SpeechInsightAiPage() {
         </section>
 
         {/* ═══════════ ⑧ AI PHÂN TÍCH DỮ LIỆU (tổng hợp) ═══════════ */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <BarChart3 className="w-4 h-4" />
                 {t('AI PHÂN TÍCH DỮ LIỆU', 'AI DATA ANALYSIS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                 {t('Từ từng cuộc gọi lên ', 'From single calls to ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('bức tranh toàn đội', 'the whole team picture')}
                 </span>
               </h2>
@@ -829,7 +829,7 @@ export default function SpeechInsightAiPage() {
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
                 {t('Từ lúc cúp máy đến khi CRM có dữ liệu — ', 'From hang-up to CRM record — ')}
-                <span className="text-cyan-400">{t('không ai phải làm gì', 'nobody lifts a finger')}</span>
+                <span className="text-[#1e6dda]">{t('không ai phải làm gì', 'nobody lifts a finger')}</span>
               </h2>
             </div>
 
@@ -837,16 +837,16 @@ export default function SpeechInsightAiPage() {
               {steps.map((s, i) => (
                 <div
                   key={i}
-                  className="group relative bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-cyan-500/30 transition-all duration-300"
+                  className="group relative bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-[#1e6dda]/30 transition-all duration-300"
                 >
-                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                     {s.step}
                   </div>
                   <div className="pt-4">
                     <div className="flex items-start justify-between gap-2 mb-3">
                       <h3 className="text-lg font-bold text-white">{s.title}</h3>
                     </div>
-                    <span className="inline-block text-xs text-cyan-400 bg-cyan-500/20 px-2 py-1 rounded-full mb-3">
+                    <span className="inline-block text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded-full mb-3">
                       {s.duration}
                     </span>
                     <p className="text-gray-400 text-sm">{s.description}</p>
@@ -880,7 +880,7 @@ export default function SpeechInsightAiPage() {
                 <div className="bg-foreground rounded-2xl p-6 sm:p-8 space-y-4">
                   {securityPoints.map((p, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <span className="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0">
+                      <span className="w-10 h-10 rounded-xl bg-[#1e6dda]/20 text-[#1e6dda] flex items-center justify-center flex-shrink-0">
                         {p.icon}
                       </span>
                       <p className="text-gray-300 text-sm leading-relaxed pt-2">{p.title}</p>
@@ -890,19 +890,19 @@ export default function SpeechInsightAiPage() {
               </div>
 
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <ShieldCheck className="w-4 h-4" />
                   {t('BẢO MẬT & TUÂN THỦ', 'SECURITY & COMPLIANCE')}
                 </span>
 
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground leading-tight mb-6">
                   {t('Ghi âm là dữ liệu cá nhân của khách hàng bạn. ', 'Recordings are your customers’ personal data. ')}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('Chúng tôi coi đó là mặc định, không phải tuỳ chọn', 'We treat that as the default, not an option')}
                   </span>
                 </h2>
 
-                <div className="rounded-2xl border border-cyan-200 bg-cyan-50/60 p-5 mb-6">
+                <div className="rounded-2xl border border-border bg-[#f5f5f7]/60 p-5 mb-6">
                   <p className="text-sm text-foreground leading-relaxed">
                     {t(
                       'Việc ghi âm và phân tích cuộc gọi tại Việt Nam thuộc phạm vi Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân. Chúng tôi bàn giao kèm mẫu thông báo ghi âm và điều khoản đồng ý để doanh nghiệp triển khai đúng ngay từ đầu.',
@@ -923,16 +923,16 @@ export default function SpeechInsightAiPage() {
         </section>
 
         {/* ═══════════ ⑪ TÍCH HỢP ═══════════ */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-cyan-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Plug className="w-4 h-4" />
                 {t('TÍCH HỢP', 'INTEGRATIONS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight max-w-4xl mx-auto">
                 {t('Công cụ bóc băng chỉ trả cho bạn một file văn bản. ', 'A transcription tool hands you a text file. ')}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('Chúng tôi trả kết quả về đúng nơi bạn ra quyết định.', 'We deliver the result where you actually make decisions.')}
                 </span>
               </h2>
@@ -948,7 +948,7 @@ export default function SpeechInsightAiPage() {
                 <ul className="space-y-3">
                   {sources.map((s, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle2 className="w-4 h-4 text-cyan-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                       <span>{s}</span>
                     </li>
                   ))}
@@ -979,7 +979,7 @@ export default function SpeechInsightAiPage() {
                       <Link
                         key={i}
                         href={d.href}
-                        className="flex flex-col gap-0.5 rounded-xl border border-border hover:border-cyan-300 hover:bg-cyan-50/50 px-4 py-3 transition-colors"
+                        className="flex flex-col gap-0.5 rounded-xl border border-border hover:border-border hover:bg-[#f5f5f7]/50 px-4 py-3 transition-colors"
                       >
                         {inner}
                       </Link>
@@ -1000,7 +1000,7 @@ export default function SpeechInsightAiPage() {
             </div>
 
             {/* Box trấn an */}
-            <div className="mt-8 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 p-6 sm:p-8 text-center">
+            <div className="mt-8 rounded-2xl bg-[#1e6dda] p-6 sm:p-8 text-center">
               <p className="text-xl sm:text-2xl font-extrabold text-white mb-2">
                 {t('Bạn KHÔNG phải đổi tổng đài.', 'You do NOT need to replace your phone system.')}
               </p>
@@ -1019,13 +1019,13 @@ export default function SpeechInsightAiPage() {
           <section id="bang-gia" className="py-12 lg:py-16 bg-background scroll-mt-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-10">
-                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                   <Wallet className="w-4 h-4" />
                   {t('BẢNG GIÁ', 'PRICING')}
                 </span>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
                   {t('Ba gói theo ', 'Three plans by ')}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('hạn mức phút', 'minute quota')}
                   </span>
                 </h2>
@@ -1042,7 +1042,7 @@ export default function SpeechInsightAiPage() {
               <div className="text-center mt-8">
                 <Link
                   href="/pricing"
-                  className="inline-flex items-center gap-2 text-cyan-700 font-semibold hover:text-cyan-800 transition-colors"
+                  className="inline-flex items-center gap-2 text-[#1e6dda] font-semibold hover:text-[#1859b8] transition-colors"
                 >
                   {t('Xem bảng giá đầy đủ của Clickstar', 'See Clickstar’s full pricing')}
                   <ArrowRight className="w-4 h-4" />
@@ -1053,10 +1053,10 @@ export default function SpeechInsightAiPage() {
         )}
 
         {/* ═══════════ ⑬ FAQ ═══════════ */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-100 to-teal-100 text-cyan-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <ListChecks className="w-4 h-4" />
                 {t('CÂU HỎI THƯỜNG GẶP', 'FREQUENTLY ASKED')}
               </span>
@@ -1067,7 +1067,7 @@ export default function SpeechInsightAiPage() {
                   `${FAQ_ITEMS.length} câu quản lý sale hay hỏi nhất — `,
                   `The ${FAQ_ITEMS.length} questions sales leaders ask most — `
                 )}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-teal-500">
+                <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                   {t('trả lời thẳng', 'answered directly')}
                 </span>
               </h2>
@@ -1076,7 +1076,7 @@ export default function SpeechInsightAiPage() {
             <FaqAccordion items={FAQ_ITEMS} defaultOpen={1} />
 
             <div className="text-center mt-8">
-              <Link href="/pricing" className="inline-flex items-center gap-2 text-cyan-600 font-semibold hover:gap-3 transition-all">
+              <Link href="/pricing" className="inline-flex items-center gap-2 text-[#1e6dda] font-semibold hover:gap-3 transition-all">
                 {t('Xem bảng giá dịch vụ', 'See service pricing')}
                 <ArrowRight className="w-5 h-5" />
               </Link>
@@ -1085,7 +1085,7 @@ export default function SpeechInsightAiPage() {
         </section>
 
         {/* ═══════════ ⑭ CTA CUỐI ═══════════ */}
-        <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-cyan-600 to-teal-600">
+        <section id="contact" className="py-12 lg:py-16 bg-[#1e6dda]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             {/* Hộp trung thực — giữ lại từ khối "Kết quả đo được" */}
             <div className="rounded-2xl border-2 border-dashed border-white/30 bg-white/10 p-5 mb-10 text-left">
@@ -1105,7 +1105,7 @@ export default function SpeechInsightAiPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={cta.primary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white text-cyan-700 font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
+                className="inline-flex items-center justify-center gap-2 bg-white text-[#1e6dda] font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
               >
                 {cta.primary.label[language]}
                 <ArrowRight className="w-5 h-5" />

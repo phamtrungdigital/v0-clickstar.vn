@@ -6,13 +6,13 @@ import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'
 
 const COLOR_MAP = {
-  blue: { iconText: 'text-blue-600', iconBg: 'bg-blue-50' },
-  purple: { iconText: 'text-purple-600', iconBg: 'bg-purple-50' },
-  pink: { iconText: 'text-pink-600', iconBg: 'bg-pink-50' },
-  amber: { iconText: 'text-amber-600', iconBg: 'bg-amber-50' },
-  emerald: { iconText: 'text-emerald-600', iconBg: 'bg-emerald-50' },
-  cyan: { iconText: 'text-cyan-600', iconBg: 'bg-cyan-50' },
-  rose: { iconText: 'text-rose-600', iconBg: 'bg-rose-50' },
+  blue: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#eaf2fd]' },
+  purple: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
+  pink: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
+  amber: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
+  emerald: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
+  cyan: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
+  rose: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
 }
 
 function renderIcon(name: string, className: string) {

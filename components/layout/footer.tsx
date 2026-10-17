@@ -17,11 +17,11 @@ const SOCIAL_ICONS: Record<keyof FooterSocial, typeof Facebook> = {
   youtube: Youtube,
 }
 const SOCIAL_HOVER: Record<keyof FooterSocial, string> = {
-  facebook: 'hover:bg-blue-600',
-  twitter: 'hover:bg-sky-500',
-  instagram: 'hover:bg-pink-600',
-  linkedin: 'hover:bg-blue-700',
-  youtube: 'hover:bg-red-600',
+  facebook: 'hover:bg-[#1e6dda]',
+  twitter: 'hover:bg-[#1e6dda]',
+  instagram: 'hover:bg-[#1e6dda]',
+  linkedin: 'hover:bg-[#1e6dda]',
+  youtube: 'hover:bg-[#1e6dda]',
 }
 
 export function Footer() {
@@ -40,7 +40,7 @@ export function Footer() {
   }
 
   return (
-    <footer className="bg-[#0f172a] text-white">
+    <footer className="bg-[#272729] text-white">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">

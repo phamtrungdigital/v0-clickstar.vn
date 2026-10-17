@@ -21,7 +21,7 @@ export function NewsletterCard() {
   }
 
   return (
-    <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-background border border-primary/20 rounded-2xl p-6">
+    <div className="bg-[#f5f5f7] border border-primary/20 rounded-2xl p-6">
       <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-3">
         <Mail className="w-5 h-5 text-primary" />
       </div>
@@ -35,7 +35,7 @@ export function NewsletterCard() {
         )}
       </p>
       {submitted ? (
-        <div className="text-sm text-emerald-600 font-medium">
+        <div className="text-sm text-[#1e6dda] font-medium">
           {t('✓ Đã đăng ký thành công!', "✓ You're subscribed!")}
         </div>
       ) : (

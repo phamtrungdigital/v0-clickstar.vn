@@ -6,13 +6,13 @@ import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'
 
 const COLOR_MAP = {
-  blue: 'bg-blue-50 text-blue-600',
-  purple: 'bg-purple-50 text-purple-600',
-  pink: 'bg-pink-50 text-pink-600',
-  amber: 'bg-amber-50 text-amber-600',
-  emerald: 'bg-emerald-50 text-emerald-600',
-  cyan: 'bg-cyan-50 text-cyan-600',
-  rose: 'bg-rose-50 text-rose-600',
+  blue: 'bg-[#eaf2fd] text-[#1e6dda]',
+  purple: 'bg-[#f5f5f7] text-[#1e6dda]',
+  pink: 'bg-[#f5f5f7] text-[#1e6dda]',
+  amber: 'bg-[#f5f5f7] text-[#1e6dda]',
+  emerald: 'bg-[#f5f5f7] text-[#1e6dda]',
+  cyan: 'bg-[#f5f5f7] text-[#1e6dda]',
+  rose: 'bg-[#f5f5f7] text-[#1e6dda]',
 }
 
 function renderIcon(name: string, className: string) {
@@ -30,7 +30,7 @@ export function ProblemsGrid() {
     <section data-cms-section="problems_grid" className="py-20 lg:py-28 bg-secondary/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-rose-100 text-rose-700 font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full mb-6">
+          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full mb-6">
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
           <h2 data-cms-field="heading" className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">

@@ -80,7 +80,7 @@ export default async function BlogList() {
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       ) : (
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
+                        <div className="absolute inset-0 bg-[#f5f5f7]" />
                       )}
                       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                         {post.tags.slice(0, 2).map((tag) => (

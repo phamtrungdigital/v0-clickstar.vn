@@ -14,7 +14,7 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
   return (
     <section
       data-cms-section="about_why_choose_us"
-      className="py-20 lg:py-28 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"
+      className="py-20 lg:py-28 bg-[#f5f5f7]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">

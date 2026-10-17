@@ -58,7 +58,7 @@ export function PricingTiers({
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 bg-[#1e6dda] text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg">
                   <Sparkles className="w-3.5 h-3.5" />
                   Phổ biến nhất
                 </div>
@@ -87,7 +87,7 @@ export function PricingTiers({
               <ul className="space-y-3 mb-8">
                 {tier.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
-                    <Check className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                     <span className="text-foreground">{t(f.vi, f.en)}</span>
                   </li>
                 ))}

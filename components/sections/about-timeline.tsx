@@ -33,7 +33,7 @@ export function AboutTimelineSection({ content }: { content: AboutTimelineConten
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative auto-rows-fr">
           {/* Connecting line — desktop only */}
           <div
-            className="hidden lg:block absolute top-3 left-[10%] right-[10%] h-0.5 bg-gradient-to-r from-primary/20 via-primary/60 to-primary/20"
+            className="hidden lg:block absolute top-3 left-[10%] right-[10%] h-0.5 bg-[#f5f5f7]"
             aria-hidden="true"
           />
 

@@ -15,12 +15,12 @@ export function PageHero({ fallback }: { fallback?: PageHeroContent }) {
   return (
     <section
       data-cms-section="page_hero"
-      className="relative overflow-hidden bg-gradient-to-br from-background-soft via-white to-secondary"
+      className="relative overflow-hidden bg-[#f5f5f7]"
     >
       {/* Gradient orbs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/10 to-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
       </div>
 
       <div className="relative max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 lg:pt-40 lg:pb-28">
