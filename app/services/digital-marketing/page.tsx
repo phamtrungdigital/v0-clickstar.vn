@@ -40,12 +40,12 @@ export default function DigitalMarketingPage() {
   const cta = useServiceCta('digital-marketing') ?? DEFAULT_SERVICE_CTAS['digital-marketing']
 
   const platforms = [
-    { name: 'Google Ads', icon: '/images/platforms/google.svg', color: 'bg-red-50 border-red-200' },
-    { name: 'Meta Ads', icon: '/images/platforms/meta.svg', color: 'bg-blue-50 border-blue-200' },
-    { name: 'TikTok Ads', icon: '/images/platforms/tiktok.svg', color: 'bg-gray-50 border-gray-200' },
-    { name: 'YouTube Ads', icon: '/images/platforms/youtube.svg', color: 'bg-red-50 border-red-200' },
-    { name: 'LinkedIn Ads', icon: '/images/platforms/linkedin.svg', color: 'bg-blue-50 border-blue-200' },
-    { name: 'Zalo Ads', icon: '/images/platforms/zalo.svg', color: 'bg-blue-50 border-blue-200' },
+    { name: 'Google Ads', icon: '/images/platforms/google.svg', color: 'bg-[#f5f5f7] border-border' },
+    { name: 'Meta Ads', icon: '/images/platforms/meta.svg', color: 'bg-[#f5f5f7] border-border' },
+    { name: 'TikTok Ads', icon: '/images/platforms/tiktok.svg', color: 'bg-[#f5f5f7] border-border' },
+    { name: 'YouTube Ads', icon: '/images/platforms/youtube.svg', color: 'bg-[#f5f5f7] border-border' },
+    { name: 'LinkedIn Ads', icon: '/images/platforms/linkedin.svg', color: 'bg-[#f5f5f7] border-border' },
+    { name: 'Zalo Ads', icon: '/images/platforms/zalo.svg', color: 'bg-[#f5f5f7] border-border' },
   ]
 
   const problems = [
@@ -73,7 +73,7 @@ export default function DigitalMarketingPage() {
 
   const services = [
     {
-      icon: <MousePointerClick className="w-8 h-8 text-blue-600" />,
+      icon: <MousePointerClick className="w-8 h-8 text-[#1e6dda]" />,
       title: t('Quảng cáo đa nền tảng', 'Multi-platform Advertising'),
       description: t(
         'Chạy quảng cáo trên Google, Facebook, TikTok, YouTube với chiến lược tối ưu cho từng kênh.',
@@ -86,7 +86,7 @@ export default function DigitalMarketingPage() {
         t('YouTube Video Ads', 'YouTube Video Ads'),
         t('Retargeting & Remarketing', 'Retargeting & Remarketing'),
       ],
-      color: 'bg-blue-50',
+      color: 'bg-[#f5f5f7]',
     },
     {
       icon: <Search className="w-8 h-8 text-emerald-600" />,
@@ -102,10 +102,10 @@ export default function DigitalMarketingPage() {
         t('Content Creation & Optimization', 'Content Creation & Optimization'),
         t('Link Building chất lượng', 'Quality Link Building'),
       ],
-      color: 'bg-emerald-50',
+      color: 'bg-[#f5f5f7]',
     },
     {
-      icon: <Share2 className="w-8 h-8 text-purple-600" />,
+      icon: <Share2 className="w-8 h-8 text-[#1e6dda]" />,
       title: t('Social Media Marketing', 'Social Media Marketing'),
       description: t(
         'Xây dựng và phát triển thương hiệu trên các nền tảng mạng xã hội với content sáng tạo.',
@@ -118,10 +118,10 @@ export default function DigitalMarketingPage() {
         t('Influencer marketing', 'Influencer marketing'),
         t('Social listening & Analytics', 'Social listening & Analytics'),
       ],
-      color: 'bg-purple-50',
+      color: 'bg-[#f5f5f7]',
     },
     {
-      icon: <Mail className="w-8 h-8 text-amber-600" />,
+      icon: <Mail className="w-8 h-8 text-[#1e6dda]" />,
       title: t('Email & Automation Marketing', 'Email & Automation Marketing'),
       description: t(
         'Xây dựng hệ thống email marketing tự động, nurturing leads và tăng retention.',
@@ -134,7 +134,7 @@ export default function DigitalMarketingPage() {
         t('A/B testing campaigns', 'A/B testing campaigns'),
         t('Performance tracking', 'Performance tracking'),
       ],
-      color: 'bg-amber-50',
+      color: 'bg-[#f5f5f7]',
     },
   ]
 
@@ -153,7 +153,7 @@ export default function DigitalMarketingPage() {
         t('Xác định KPIs và mục tiêu', 'Define KPIs and objectives'),
       ],
       duration: t('1-2 tuần', '1-2 weeks'),
-      color: 'bg-blue-500',
+      color: 'bg-[#1e6dda]',
     },
     {
       step: '02',
@@ -169,7 +169,7 @@ export default function DigitalMarketingPage() {
         t('Tạo content calendar', 'Create content calendar'),
       ],
       duration: t('1-2 tuần', '1-2 weeks'),
-      color: 'bg-purple-500',
+      color: 'bg-[#1e6dda]',
     },
     {
       step: '03',
@@ -201,7 +201,7 @@ export default function DigitalMarketingPage() {
         t('Scale chiến dịch winning', 'Scale winning campaigns'),
       ],
       duration: t('Liên tục', 'Ongoing'),
-      color: 'bg-amber-500',
+      color: 'bg-[#1e6dda]',
     },
     {
       step: '05',
@@ -217,7 +217,7 @@ export default function DigitalMarketingPage() {
         t('Điều chỉnh chiến lược Q/Q', 'Quarterly strategy adjustments'),
       ],
       duration: t('Liên tục', 'Ongoing'),
-      color: 'bg-rose-500',
+      color: 'bg-[#1e6dda]',
     },
   ]
 
@@ -282,129 +282,79 @@ export default function DigitalMarketingPage() {
   ]
 
   return (
-    <>
+    <div className="theme-apple">
       <MainNav />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
-          </div>
-          {/* Background decoration */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl" />
-          </div>
+        {/* Hero: khối sáng, căn giữa theo mockup Apple */}
+        <section className="ap-tile ap-light">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <p className="text-sm text-muted-foreground tracking-[-0.016em] uppercase">
+                {t('DIGITAL MARKETING', 'DIGITAL MARKETING')}
+              </p>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-blue-500/25">
-                  <Zap className="w-4 h-4" />
-                  {t('DIGITAL MARKETING', 'DIGITAL MARKETING')}
-                </div>
+              <h1 className="ap-hero-title">
+                {t('Tăng trưởng doanh thu với Digital Marketing', 'Grow revenue with Digital Marketing')}
+              </h1>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-                  {t('Tăng trưởng doanh thu với', 'Grow revenue with')}{' '}
-                  <span className="text-primary">{t('Digital Marketing', 'Digital Marketing')}</span>
-                </h1>
+              <p className="ap-lead max-w-[760px]">
+                {t(
+                  'Chiến lược marketing đa kênh được thiết kế riêng cho doanh nghiệp của bạn. Từ quảng cáo Google, Facebook đến SEO - chúng tôi giúp bạn tiếp cận đúng khách hàng với chi phí tối ưu.',
+                  'Multi-channel marketing strategy designed specifically for your business. From Google, Facebook ads to SEO - we help you reach the right customers at optimal cost.'
+                )}
+              </p>
 
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                  {t(
-                    'Chiến lược marketing đa kênh được thiết kế riêng cho doanh nghiệp của bạn. Từ quảng cáo Google, Facebook đến SEO - chúng tôi giúp bạn tiếp cận đúng khách hàng với chi phí tối ưu.',
-                    'Multi-channel marketing strategy designed specifically for your business. From Google, Facebook ads to SEO - we help you reach the right customers at optimal cost.'
-                  )}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
-                  >
-                    {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <button className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-foreground font-semibold px-8 py-4 rounded-full border border-border transition-all duration-300">
-                    <Play className="w-5 h-5 text-primary" />
-                    {t('Xem case study', 'Watch case study')}
-                  </button>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-                  {stats.map((stat, index) => (
-                    <div key={index}>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-foreground">{stat.value}</div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
+              <div className="ap-cta-row mt-2">
+                <Link href="/contact" className="ap-btn ap-btn-primary">
+                  {t('Nhận tư vấn miễn phí', 'Get Free Consultation')}
+                </Link>
+                <a href="#case-studies" className="ap-btn ap-btn-ghost">
+                  {t('Xem case study', 'Watch case study')}
+                </a>
               </div>
+            </div>
 
-              {/* Platforms Grid */}
-              <div className="relative">
-                <div className="bg-white rounded-3xl shadow-2xl p-8 lg:p-10">
-                  <h3 className="text-lg font-bold text-foreground mb-6 text-center">
-                    {t('Nền tảng quảng cáo chúng tôi hỗ trợ', 'Advertising platforms we support')}
-                  </h3>
-                  <div className="grid grid-cols-3 gap-4">
-                    {platforms.map((platform, index) => (
-                      <div
-                        key={index}
-                        className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 ${platform.color} hover:scale-105 transition-transform cursor-pointer`}
-                      >
-                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-2 shadow-sm p-2">
-                          <Image quality={95}
-                            src={platform.icon}
-                            alt={platform.name}
-                            width={32}
-                            height={32}
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                        <span className="text-xs font-medium text-gray-600 text-center">{platform.name}</span>
-                      </div>
-                    ))}
+            {/* Số liệu */}
+            <div className="mt-12 sm:mt-14 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
+              {stats.map((stat, index) => (
+                <div key={index}>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-foreground">
+                    {stat.value}
                   </div>
+                  <div className="mt-1 text-[15px] text-muted-foreground">{stat.label}</div>
+                </div>
+              ))}
+            </div>
 
-                  {/* Trust badges */}
-                  <div className="mt-8 pt-6 border-t border-border">
-                    <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-emerald-500" />
-                        <span>{t('Google Partner', 'Google Partner')}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-blue-500" />
-                        <span>{t('Meta Partner', 'Meta Partner')}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute -top-6 -right-6 bg-emerald-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                  +250% ROI
-                </div>
-                <div className="absolute -bottom-4 -left-4 bg-white px-4 py-3 rounded-2xl shadow-lg flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold text-foreground">{t('Tăng trưởng', 'Growth')}</div>
-                    <div className="text-xs text-muted-foreground">{t('Liên tục mỗi tháng', 'Every month')}</div>
-                  </div>
-                </div>
-              </div>
+            {/* Nền tảng quảng cáo hỗ trợ: logo xám có tên (giữ nguyên các file logo) */}
+            <div className="mt-14 sm:mt-16 pt-10 border-t border-border">
+              <p className="text-sm text-muted-foreground tracking-[-0.016em]">
+                {t('Nền tảng quảng cáo chúng tôi hỗ trợ', 'Advertising platforms we support')}
+              </p>
+              <ul className="mt-6 m-0 p-0 list-none flex flex-wrap justify-center gap-x-9 gap-y-5">
+                {platforms.map((platform, index) => (
+                  <li key={index} className="inline-flex items-center gap-2.5">
+                    <Image
+                      quality={95}
+                      src={platform.icon}
+                      alt=""
+                      width={28}
+                      height={28}
+                      className="w-7 h-7 object-contain grayscale opacity-60"
+                    />
+                    <span className="text-sm text-[#515154] tracking-[-0.016em] whitespace-nowrap">{platform.name}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 text-sm text-muted-foreground">
+                {t('Google Partner · Meta Partner', 'Google Partner · Meta Partner')}
+              </p>
             </div>
           </div>
         </section>
 
 {/* Problems & Solutions */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left: SVG Illustration */}
@@ -490,14 +440,14 @@ export default function DigitalMarketingPage() {
 
               {/* Right: Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-rose-100 to-orange-100 text-rose-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
                   <Target className="w-4 h-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </span>
                 
-                <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6">
+                <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold text-foreground leading-tight mb-6">
                   {t('Doanh nghiệp của bạn đang', 'Is your business')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('gặp khó khăn?', 'struggling?')}
                   </span>
                 </h2>
@@ -514,11 +464,11 @@ export default function DigitalMarketingPage() {
                   {problems.map((item, index) => (
                     <div
                       key={index}
-                      className="group relative bg-white rounded-2xl p-5 border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
+                      className="group relative bg-white rounded-[18px] p-5 border border-border hover:border-primary/30 transition-all duration-300"
                     >
                       <div className="flex items-start gap-4">
                         {/* Icon */}
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-rose-100 to-orange-100 flex items-center justify-center text-rose-600 group-hover:scale-110 transition-transform">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-[11px] bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] transition-transform">
                           {item.icon}
                         </div>
                         
@@ -526,7 +476,7 @@ export default function DigitalMarketingPage() {
                         <div className="flex-1 min-w-0">
                           {/* Problem */}
                           <div className="flex items-center gap-2 mb-2">
-                            <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
+                            <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
                             <p className="text-foreground font-semibold text-sm line-through decoration-rose-300">{item.problem}</p>
                           </div>
                           
@@ -560,14 +510,14 @@ export default function DigitalMarketingPage() {
         </section>
 
         {/* Services Detail */}
-        <section className="py-12 lg:py-16 bg-secondary/30">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
                 <Zap className="w-4 h-4" />
                 {t('DỊCH VỤ CHI TIẾT', 'DETAILED SERVICES')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
                 {t('Giải pháp', 'Solutions')}{' '}
                 <span className="text-primary">{t('toàn diện', 'comprehensive')}</span>
               </h2>
@@ -577,12 +527,12 @@ export default function DigitalMarketingPage() {
               {services.map((service, index) => (
                 <div
                   key={index}
-                  className={`${service.color} rounded-3xl p-8 hover:shadow-xl transition-all duration-300 group`}
+                  className={`${service.color} rounded-[18px] p-8 transition-all duration-300 group`}
                 >
-                  <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                  <div className="w-16 h-16 bg-white rounded-[18px] flex items-center justify-center mb-6 transition-transform">
                     {service.icon}
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-3">{service.title}</h3>
+                  <h3 className="text-2xl font-semibold text-foreground mb-3">{service.title}</h3>
                   <p className="text-muted-foreground mb-6">{service.description}</p>
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
@@ -599,14 +549,14 @@ export default function DigitalMarketingPage() {
         </section>
 
         {/* Process Steps */}
-        <section className="pt-12 pb-20 lg:pt-16 lg:pb-28 bg-foreground text-background">
+        <section className="pt-12 pb-20 lg:pt-16 lg:pb-28 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-4 py-2 rounded-full mb-6">
+              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#a1a1a6]">
                 <Rocket className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-6">
                 {t('Quy trình làm việc', 'Working process')}{' '}
                 <span className="text-primary">{t('minh bạch', 'transparent')}</span>
               </h2>
@@ -620,19 +570,19 @@ export default function DigitalMarketingPage() {
 
             <div className="relative">
               {/* Connection line */}
-              <div className="hidden lg:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-rose-500" />
+              <div className="hidden lg:block absolute top-24 left-0 right-0 h-1 bg-[#1e6dda]" />
 
               <div className="grid lg:grid-cols-5 gap-8">
                 {processSteps.map((step, index) => (
                   <div key={index} className="relative">
                     {/* Step number */}
-                    <div className={`w-12 h-12 ${step.color} rounded-full flex items-center justify-center text-white font-bold text-lg mb-6 mx-auto lg:mx-0 relative z-10`}>
+                    <div className={`w-12 h-12 ${step.color} rounded-full flex items-center justify-center text-white font-semibold text-lg mb-6 mx-auto lg:mx-0 relative z-10`}>
                       {step.step}
                     </div>
 
-                    <div className="bg-white/5 backdrop-blur rounded-2xl p-6 h-full">
+                    <div className="bg-white/5 backdrop-blur rounded-[18px] p-6 h-full">
                       <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-bold text-white">{step.title}</h3>
+                        <h3 className="text-lg font-semibold text-white">{step.title}</h3>
                         <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-gray-300">
                           {step.duration}
                         </span>
@@ -655,15 +605,15 @@ export default function DigitalMarketingPage() {
         </section>
 
         {/* Portal Features */}
-        <section className="py-12 lg:py-16 bg-gradient-to-br from-primary/5 via-white to-purple-50">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <div>
-                <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
                   <Settings className="w-4 h-4" />
                   {t('CLICKSTAR PORTAL', 'CLICKSTAR PORTAL')}
                 </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
                   {t('Theo dõi chiến dịch', 'Track campaigns')}{' '}
                   <span className="text-primary">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
                 </h2>
@@ -676,7 +626,7 @@ export default function DigitalMarketingPage() {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   {portalFeatures.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3 bg-white rounded-xl p-4 shadow-sm">
+                    <div key={index} className="flex items-start gap-3 bg-white rounded-[11px] p-4">
                       <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                         {feature.icon}
                       </div>
@@ -691,12 +641,12 @@ export default function DigitalMarketingPage() {
 
               {/* Portal Preview */}
               <div className="relative">
-                <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-border">
+                <div className="bg-white rounded-[18px] overflow-hidden border border-border">
                   {/* Browser header */}
-                  <div className="bg-gray-100 px-4 py-3 flex items-center gap-2 border-b border-border">
+                  <div className="bg-[#f5f5f7] px-4 py-3 flex items-center gap-2 border-b border-border">
                     <div className="flex gap-1.5">
                       <div className="w-3 h-3 rounded-full bg-red-400" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                       <div className="w-3 h-3 rounded-full bg-green-400" />
                     </div>
                     <div className="flex-1 flex justify-center">
@@ -707,37 +657,37 @@ export default function DigitalMarketingPage() {
                   </div>
 
                   {/* Dashboard preview */}
-                  <div className="p-6 bg-gray-50">
+                  <div className="p-6 bg-[#f5f5f7]">
                     <div className="flex items-center justify-between mb-6">
                       <div>
-                        <h4 className="font-bold text-foreground">{t('Dashboard Overview', 'Dashboard Overview')}</h4>
+                        <h4 className="font-semibold text-foreground">{t('Dashboard Overview', 'Dashboard Overview')}</h4>
                         <p className="text-sm text-muted-foreground">{t('Cập nhật 5 phút trước', 'Updated 5 minutes ago')}</p>
                       </div>
                       <div className="flex gap-2">
-                        <span className="px-3 py-1 bg-emerald-100 text-emerald-700 text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
+                        <span className="px-3 py-1 bg-[#f5f5f7] text-emerald-700 text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 mb-6">
-                      <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">{t('Chi tiêu', 'Spend')}</div>
-                        <div className="text-xl font-bold text-foreground">45.2M</div>
+                        <div className="text-xl font-semibold text-foreground">45.2M</div>
                         <div className="text-xs text-emerald-600">{t('+12% vs tuần trước', '+12% vs last week')}</div>
                       </div>
-                      <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">{t('Leads', 'Leads')}</div>
-                        <div className="text-xl font-bold text-foreground">324</div>
+                        <div className="text-xl font-semibold text-foreground">324</div>
                         <div className="text-xs text-emerald-600">{t('+28% vs tuần trước', '+28% vs last week')}</div>
                       </div>
-                      <div className="bg-white rounded-xl p-4 shadow-sm">
+                      <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">ROAS</div>
-                        <div className="text-xl font-bold text-foreground">3.8x</div>
+                        <div className="text-xl font-semibold text-foreground">3.8x</div>
                         <div className="text-xs text-emerald-600">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
                       </div>
                     </div>
 
                     {/* Chart placeholder */}
-                    <div className="bg-white rounded-xl p-4 shadow-sm">
+                    <div className="bg-white rounded-[11px] p-4">
                       <div className="flex items-center justify-between mb-4">
                         <span className="font-semibold text-foreground">{t('Hiệu suất theo ngày', 'Daily Performance')}</span>
                         <LineChart className="w-5 h-5 text-muted-foreground" />
@@ -745,7 +695,7 @@ export default function DigitalMarketingPage() {
                       <div className="h-32 flex items-end justify-between gap-2">
                         {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
                           <div key={i} className="flex-1 bg-primary/20 rounded-t" style={{ height: `${h}%` }}>
-                            <div className="w-full bg-primary rounded-t" style={{ height: `${h * 0.7}%` }} />
+                            <div className="w-full bg-[#1e6dda] rounded-t" style={{ height: `${h * 0.7}%` }} />
                           </div>
                         ))}
                       </div>
@@ -754,12 +704,12 @@ export default function DigitalMarketingPage() {
                 </div>
 
                 {/* Floating notification */}
-                <div className="absolute -bottom-4 -right-4 bg-white rounded-xl p-4 shadow-xl flex items-center gap-3">
-                  <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
+                <div className="absolute -bottom-4 -right-4 bg-white rounded-[11px] p-4 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-[#f5f5f7] rounded-full flex items-center justify-center">
                     <ThumbsUp className="w-5 h-5 text-emerald-600" />
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-foreground">{t('Chiến dịch đạt KPI!', 'Campaign hit KPI!')}</div>
+                    <div className="text-sm font-semibold text-foreground">{t('Chiến dịch đạt KPI!', 'Campaign hit KPI!')}</div>
                     <div className="text-xs text-muted-foreground">{t('Vừa xong', 'Just now')}</div>
                   </div>
                 </div>
@@ -769,14 +719,14 @@ export default function DigitalMarketingPage() {
         </section>
 
         {/* Case Studies */}
-        <section className="py-12 lg:py-16 bg-background">
+        <section id="case-studies" className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
                 <TrendingUp className="w-4 h-4" />
                 {t('CASE STUDIES', 'CASE STUDIES')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
                 {t('Kết quả', 'Results')}{' '}
                 <span className="text-primary">{t('thực tế', 'in action')}</span>
               </h2>
@@ -786,27 +736,27 @@ export default function DigitalMarketingPage() {
               {caseStudies.map((study, index) => (
                 <div
                   key={index}
-                  className="group bg-white rounded-2xl overflow-hidden border border-border hover:shadow-xl transition-all duration-300"
+                  className="group bg-white rounded-[18px] overflow-hidden border border-border transition-all duration-300"
                 >
-                  <div className="relative h-48 bg-gray-100">
+                  <div className="relative h-48 bg-[#f5f5f7]">
                     <Image quality={95}
                       src={study.logo}
                       alt={study.industry}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <span className="absolute bottom-4 left-4 bg-white/90 text-foreground text-sm font-medium px-3 py-1 rounded-full">
+                    <div className="absolute inset-0 bg-[#f5f5f7]" />
+                    <span className="absolute bottom-4 left-4 bg-white/90 text-foreground text-sm font-normal px-3 py-1 rounded-full">
                       {study.industry}
                     </span>
                   </div>
                   <div className="p-6">
-                    <h3 className="text-xl font-bold text-foreground mb-4">{study.title}</h3>
+                    <h3 className="text-xl font-semibold text-foreground mb-4">{study.title}</h3>
                     <div className="flex gap-4">
                       {study.metrics.map((metric, idx) => (
-                        <div key={idx} className="flex-1 bg-secondary/50 rounded-xl p-3 text-center">
-                          <div className="text-lg font-bold text-primary">{metric.value}</div>
+                        <div key={idx} className="flex-1 bg-secondary/50 rounded-[11px] p-3 text-center">
+                          <div className="text-lg font-semibold text-primary">{metric.value}</div>
                           <div className="text-xs text-muted-foreground">{metric.label}</div>
                         </div>
                       ))}
@@ -829,32 +779,24 @@ export default function DigitalMarketingPage() {
         </section>
 
         {/* CTA Section */}
-        <section id="contact" className="py-12 lg:py-16 bg-primary">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
-              {cta.heading[language]}
-            </h2>
-            <p className="text-lg text-white/80 mb-8">{cta.description[language]}</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href={cta.primary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-gray-100 transition-all duration-300 hover:shadow-lg"
-              >
-                {cta.primary.label[language]}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <a
-                href={cta.secondary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white/10 text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all duration-300 border border-white/30"
-              >
-                <Clock className="w-5 h-5" />
-                {cta.secondary.label[language]}
-              </a>
+        <section id="contact" className="ap-tile ap-dark">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h2 className="ap-display max-w-[820px]">{cta.heading[language]}</h2>
+              <p className="ap-lead max-w-[680px]">{cta.description[language]}</p>
+              <div className="ap-cta-row mt-2">
+                <Link href={cta.primary.href} className="ap-btn ap-btn-primary">
+                  {cta.primary.label[language]}
+                </Link>
+                <a href={cta.secondary.href} className="ap-btn ap-btn-ghost">
+                  {cta.secondary.label[language]}
+                </a>
+              </div>
             </div>
           </div>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
