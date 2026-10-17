@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { z } from 'zod'
 
 export const runtime = 'nodejs'
@@ -43,14 +44,33 @@ export async function POST(req: Request) {
 
   const { interests, recent_pages, prompt_hint } = parsed.data
 
-  // Cờ bật/tắt + model đọc qua RPC (không trả khoá). Khoá Anthropic chỉ nằm ở
-  // biến môi trường server — KHÔNG đi qua DB/RPC công khai.
-  const supabase = await createClient()
-  const { data: status } = await supabase.rpc('get_personalize_ai_status').single<{
-    model: string
-    enabled: boolean
-  }>()
-  const cfg = status ? { ...status, api_key: process.env.ANTHROPIC_API_KEY ?? null } : null
+  // Khoá Anthropic do admin nhập ở /admin-cls/ai (bảng ai_settings, RLS chỉ admin).
+  // Route chạy phía server nên đọc bằng service role — KHÔNG còn RPC công khai trả khoá.
+  // Không có service key thì lấy cờ bật/tắt qua RPC (không trả khoá) + khoá từ env.
+  const model = 'claude-haiku-4-5-20251001'
+  const service = createServiceClient()
+  let cfg: { api_key: string | null; model: string; enabled: boolean } | null = null
+  if (service) {
+    const { data } = await service
+      .from('ai_settings')
+      .select('anthropic_api_key, enabled')
+      .eq('id', 1)
+      .maybeSingle()
+    if (data) {
+      cfg = {
+        api_key: data.anthropic_api_key?.trim() || process.env.ANTHROPIC_API_KEY?.trim() || null,
+        model,
+        enabled: !!data.enabled,
+      }
+    }
+  } else {
+    const supabase = await createClient()
+    const { data: status } = await supabase.rpc('get_personalize_ai_status').single<{
+      model: string
+      enabled: boolean
+    }>()
+    if (status) cfg = { ...status, api_key: process.env.ANTHROPIC_API_KEY?.trim() || null }
+  }
 
   if (!cfg?.enabled || !cfg.api_key) {
     return Response.json(fallback(interests), { status: 200 })
