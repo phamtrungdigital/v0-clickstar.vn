@@ -59,57 +59,27 @@ export function StatsSection({ content }: { content: StatsContent }) {
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      data-cms-section="stats"
-      className="bg-[#EEF3FF] py-20 lg:py-28"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <span
-            data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
-          >
-            <span className="w-2 h-2 bg-primary rounded-full" />
+    <section ref={sectionRef} data-cms-section="stats" className="ap-tile ap-dark" id="results">
+      <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="ap-stack">
+          <span data-cms-field="eyebrow" className="text-sm text-[#a1a1a6] tracking-[-0.016em]">
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
-          <h2
-            data-cms-field="heading"
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground text-balance"
-          >
+          <h2 data-cms-field="heading" className="ap-display">
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
-              {t(content.heading_highlight.vi, content.heading_highlight.en)}
-            </span>
+            {t(content.heading_highlight.vi, content.heading_highlight.en)}
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 lg:gap-y-0">
+        <div className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
           {content.items.map((stat, index) => (
-            <div
-              key={index}
-              data-cms-field="item"
-              data-cms-item-index={index}
-              className="relative"
-            >
+            <div key={index} data-cms-field="item" data-cms-item-index={index} className="min-w-0">
               <StatItem
                 value={stat.value}
                 suffix={stat.suffix}
                 label={t(stat.label.vi, stat.label.en)}
                 isVisible={isVisible}
               />
-              {index < content.items.length - 1 && (
-                <div
-                  className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-20 bg-border"
-                  aria-hidden="true"
-                />
-              )}
-              {(index === 0 || index === 2) && (
-                <div
-                  className="lg:hidden absolute right-0 top-1/2 -translate-y-1/2 w-px h-16 bg-border"
-                  aria-hidden="true"
-                />
-              )}
             </div>
           ))}
         </div>
@@ -131,12 +101,12 @@ function StatItem({
 }) {
   const count = useCountUp(value, 2500, isVisible)
   return (
-    <div className="text-center px-4 lg:px-8">
-      <div className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-3">
+    <div className="text-center px-2">
+      <div className="text-[clamp(44px,8vw,80px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums">
         {formatNumber(count)}
-        <span className="text-primary">{suffix}</span>
+        {suffix}
       </div>
-      <p className="text-sm lg:text-base text-muted-foreground max-w-[200px] mx-auto">{label}</p>
+      <p className="mt-2 text-base lg:text-[17px] text-[#a1a1a6] max-w-[220px] mx-auto">{label}</p>
     </div>
   )
 }

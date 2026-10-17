@@ -234,3 +234,86 @@ html {
     scroll-behavior: auto;
   }
 }
+
+/* ───────────────────────────────────────────────────────────────────────────
+   Theme "Apple" cho trang chủ (mockup anh duyệt 18/10/2026)
+   - Một màu hành động duy nhất (xanh), nền trắng / xám nhạt / gần đen xen kẽ
+   - Chữ: font hệ thống (SF Pro trên thiết bị Apple), Inter ở nơi khác; chỉ 400 và 600
+   - Không gradient trang trí, không bóng trên thẻ; một bóng duy nhất dưới ảnh minh họa
+   Chỉ áp trong .theme-apple (bọc ở app/page.tsx) nên không đụng các trang khác và admin.
+   Viết ngoài @layer để thắng các class tiện ích Tailwind của những section cũ.
+   ─────────────────────────────────────────────────────────────────────────── */
+.theme-apple {
+  --background: #ffffff;
+  --background-soft: #f5f5f7;
+  --foreground: #1d1d1f;
+  --card: #ffffff;
+  --card-foreground: #1d1d1f;
+  --popover: #ffffff;
+  --popover-foreground: #1d1d1f;
+  --primary: #1e6dda;
+  --primary-dark: #1859b8;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f7;
+  --secondary-foreground: #1d1d1f;
+  --accent: #1e6dda;
+  --accent-foreground: #ffffff;
+  --muted: #f5f5f7;
+  --muted-foreground: #6e6e73;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #0071e3;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', var(--font-inter), 'Inter', system-ui, 'Segoe UI', sans-serif;
+  letter-spacing: -0.011em;
+}
+.theme-apple h1,
+.theme-apple h2,
+.theme-apple h3 {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.15;
+}
+.theme-apple h1,
+.theme-apple h2 { text-wrap: balance; }
+/* Tiêu đề một màu: bỏ phần nhấn màu của thiết kế cũ */
+.theme-apple h1 .text-primary,
+.theme-apple h2 .text-primary { color: inherit; }
+/* Nhãn nhỏ phía trên tiêu đề (eyebrow): chữ xám thường, bỏ viên thuốc và chấm tròn */
+.theme-apple [data-cms-field='eyebrow'] {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.016em;
+  margin-bottom: 12px;
+}
+.theme-apple [data-cms-field='eyebrow'] > span:first-child:empty,
+.theme-apple [data-cms-field='eyebrow'] > span[class*='rounded-full']:first-child { display: none; }
+
+/* Khối (tile) toàn chiều rộng: màu nền đổi chính là đường chia */
+.ap-tile { padding-block: clamp(48px, 8vw, 88px); text-align: center; }
+.ap-light { background: #ffffff; color: #1d1d1f; }
+.ap-parchment { background: #f5f5f7; color: #1d1d1f; }
+.ap-dark { background: #272729; color: #ffffff; }
+.ap-hero-title { font-size: clamp(34px, 6vw, 56px); font-weight: 600; line-height: 1.12; letter-spacing: -0.005em; text-wrap: balance; }
+.ap-display { font-size: clamp(30px, 4.6vw, 40px); font-weight: 600; line-height: 1.15; letter-spacing: -0.005em; text-wrap: balance; }
+.ap-lead { font-size: clamp(19px, 2.6vw, 28px); font-weight: 400; line-height: 1.28; letter-spacing: 0; color: #6e6e73; text-wrap: balance; }
+.ap-dark .ap-lead { color: #a1a1a6; }
+.ap-stack { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.ap-cta-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; }
+.ap-btn { display: inline-flex; align-items: center; justify-content: center; font-size: 17px; letter-spacing: -0.022em; padding: 11px 22px; border-radius: 9999px; border: 1px solid #1e6dda; cursor: pointer; transition: transform 0.12s ease; }
+.ap-btn:active { transform: scale(0.95); }
+.ap-btn-primary { background: #1e6dda; color: #ffffff; }
+.ap-btn-ghost { background: transparent; color: #1e6dda; }
+.ap-dark .ap-btn-ghost { color: #4da3ff; border-color: #4da3ff; }
+.ap-link { color: #1e6dda; font-size: 17px; }
+.ap-link::after { content: ' \203A'; }
+.ap-dark .ap-link { color: #4da3ff; }
+.ap-product { border-radius: 18px; overflow: hidden; background: #ffffff; margin-inline: auto; }
+.ap-product-shadow { box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0; }
+.theme-apple a:focus-visible,
+.theme-apple button:focus-visible { outline: 2px solid #0071e3; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .ap-btn { transition: none; } }

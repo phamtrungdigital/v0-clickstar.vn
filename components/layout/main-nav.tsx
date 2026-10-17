@@ -82,17 +82,8 @@ export function MainNav() {
   const { language, setLanguage } = useLanguage()
   const branding = useSiteBranding()
   const navItems = navItemsData[language]
-  const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   // Close mobile menu on resize
   useEffect(() => {
@@ -108,14 +99,12 @@ export function MainNav() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-50 w-full transition-all duration-300',
-        isScrolled 
-          ? 'bg-background/95 backdrop-blur-md shadow-sm border-b border-border' 
-          : 'bg-background'
+        'sticky top-0 z-50 w-full',
+        'bg-white/80 backdrop-blur-[20px] backdrop-saturate-[180%] border-b border-black/[0.08]'
       )}
     >
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[72px] md:h-20">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link href="/" className="flex items-center flex-shrink-0">
             <Image
@@ -123,7 +112,7 @@ export function MainNav() {
               alt={branding.siteName}
               width={120}
               height={30}
-              className="h-7 w-auto"
+              className="h-[22px] w-auto"
               priority
               unoptimized
             />
@@ -140,24 +129,20 @@ export function MainNav() {
               >
                 <Link
                   href={item.href}
-                  className="group relative flex items-center gap-1.5 text-foreground/70 hover:text-primary font-medium text-[15px] transition-all duration-300 py-2 px-1"
+                  className="flex items-center gap-1.5 text-[#424245] hover:text-[#1d1d1f] text-[13px] tracking-[-0.01em] transition-colors py-2 px-1"
                 >
-                  <span className="relative z-10">{item.label}</span>
+                  <span>{item.label}</span>
                   {'badge' in item && item.badge && (
-                    <span className="relative z-10 inline-flex items-center text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-sm animate-pulse">
+                    <span className="inline-flex items-center text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-[#1e6dda] text-white">
                       {item.badge}
                     </span>
                   )}
                   {item.hasDropdown && (
                     <ChevronDown className={cn(
-                      "h-4 w-4 transition-transform duration-300 relative z-10",
+                      "h-3.5 w-3.5 transition-transform duration-200",
                       openDropdown === item.label && "rotate-180"
                     )} />
                   )}
-                  {/* Animated underline effect */}
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-primary-dark transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full" />
-                  {/* Subtle glow on hover */}
-                  <span className="absolute inset-0 bg-primary/5 rounded-lg transform scale-95 opacity-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 -z-10" />
                 </Link>
 
                 {/* Dropdown Menu */}
@@ -170,21 +155,16 @@ export function MainNav() {
                         : "opacity-0 invisible -translate-y-2"
                     )}
                   >
-                    <div className="bg-background rounded-xl shadow-xl shadow-primary/5 border border-border py-2 min-w-[220px] backdrop-blur-sm">
+                    <div className="bg-white rounded-[14px] border border-[#e0e0e0] py-2 min-w-[220px]">
                       {item.dropdownItems.map((dropdownItem) => (
                         <Link
                           key={dropdownItem.label}
                           href={dropdownItem.href}
-                          className="group/item relative flex items-center gap-3 px-4 py-3 text-sm text-foreground/70 hover:text-primary transition-all duration-200"
+                          className="flex items-center gap-3 px-4 py-2.5 text-[14px] text-[#424245] hover:text-[#1d1d1f] hover:bg-[#f5f5f7] transition-colors"
                         >
-                          {/* Hover indicator bar */}
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gradient-to-b from-primary to-primary-dark rounded-r-full group-hover/item:h-6 transition-all duration-200" />
-                          {/* Text with slide effect */}
-                          <span className="relative transform group-hover/item:translate-x-2 transition-transform duration-200">
-                            {dropdownItem.label}
-                          </span>
+                          <span>{dropdownItem.label}</span>
                           {'badge' in dropdownItem && dropdownItem.badge && (
-                            <span className="ml-auto text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white">
+                            <span className="ml-auto text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-[#1e6dda] text-white">
                               {dropdownItem.badge}
                             </span>
                           )}
@@ -199,41 +179,30 @@ export function MainNav() {
 
           {/* Desktop CTA + Language Switcher */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* Language Switcher */}
-            <div className="flex items-center gap-1 bg-secondary rounded-full p-1">
-              <button
-                onClick={() => setLanguage('vi')}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
-                  language === 'vi' 
-                    ? "bg-primary text-primary-foreground shadow-sm" 
-                    : "text-foreground/70 hover:text-foreground"
-                )}
-              >
-                <span className="text-base">🇻🇳</span>
-                VI
-              </button>
-              <button
-                onClick={() => setLanguage('en')}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
-                  language === 'en' 
-                    ? "bg-primary text-primary-foreground shadow-sm" 
-                    : "text-foreground/70 hover:text-foreground"
-                )}
-              >
-                <span className="text-base">🇬🇧</span>
-                EN
-              </button>
+            {/* Language Switcher: chữ thường, không cờ */}
+            <div className="flex items-center gap-0.5">
+              {(['vi', 'en'] as const).map((lng) => (
+                <button
+                  key={lng}
+                  onClick={() => setLanguage(lng)}
+                  aria-pressed={language === lng}
+                  className={cn(
+                    "px-2.5 py-1 rounded-full text-xs transition-colors",
+                    language === lng
+                      ? "bg-black/[0.07] text-[#1d1d1f] font-semibold"
+                      : "text-[#424245] hover:text-[#1d1d1f]"
+                  )}
+                >
+                  {lng.toUpperCase()}
+                </button>
+              ))}
             </div>
-            
+
             <Link
               href="/contact"
-              className="group relative bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-7 py-3 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-primary/30 overflow-hidden"
+              className="bg-[#1e6dda] text-white text-[13px] px-3.5 py-1.5 rounded-full transition-transform active:scale-95"
             >
-              <span className="relative z-10">{ctaText[language]}</span>
-              {/* Shine effect on hover */}
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+              {ctaText[language]}
             </Link>
           </div>
 
@@ -255,7 +224,7 @@ export function MainNav() {
         <div
           className={cn(
             "lg:hidden overflow-hidden transition-all duration-300 ease-in-out",
-            isMobileMenuOpen ? "max-h-[calc(100vh-72px)] opacity-100" : "max-h-0 opacity-0"
+            isMobileMenuOpen ? "max-h-[calc(100vh-56px)] opacity-100" : "max-h-0 opacity-0"
           )}
         >
           <div className="py-4 border-t border-border">
@@ -289,7 +258,7 @@ export function MainNav() {
                           <span className="absolute left-4 top-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-primary/30 rounded-full group-hover/sub:bg-primary transition-colors duration-200" />
                           <span className="transform group-hover/sub:translate-x-1 inline-block transition-transform duration-200">{dropdownItem.label}</span>
                           {'badge' in dropdownItem && dropdownItem.badge && (
-                            <span className="ml-2 text-[9px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white align-middle">
+                            <span className="ml-2 text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-[#1e6dda] text-white align-middle">
                               {dropdownItem.badge}
                             </span>
                           )}
@@ -324,7 +293,6 @@ export function MainNav() {
                         : "text-foreground/70 hover:text-foreground"
                     )}
                   >
-                    <span className="text-base">🇻🇳</span>
                     VI
                   </button>
                   <button
@@ -336,7 +304,6 @@ export function MainNav() {
                         : "text-foreground/70 hover:text-foreground"
                     )}
                   >
-                    <span className="text-base">🇬🇧</span>
                     EN
                   </button>
                 </div>
@@ -344,7 +311,7 @@ export function MainNav() {
               
               <Link
                 href="/contact"
-                className="block text-center bg-primary hover:bg-primary-dark text-primary-foreground font-semibold py-3 rounded-full transition-all duration-200"
+                className="block text-center bg-[#1e6dda] text-white py-3 rounded-full transition-transform active:scale-95"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {ctaText[language]}

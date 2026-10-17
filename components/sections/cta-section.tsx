@@ -1,8 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { Phone } from 'lucide-react'
-import { Reveal } from '@/components/reveal'
 import { useLanguage } from '@/contexts/language-context'
 import type { CtaContent } from '@/lib/cms/types'
 
@@ -10,88 +8,46 @@ export function CTASection({ content }: { content: CtaContent }) {
   const { t } = useLanguage()
 
   return (
-    <section data-cms-section="cta" className="py-20 lg:py-28 bg-[#EEF3FF]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* CTA Content */}
-        <Reveal variant="scale-up" className="text-center max-w-3xl mx-auto mb-16">
-          {/* Badge */}
-          <span
-            data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
-          >
-            <span className="w-1.5 h-1.5 bg-primary rounded-full" />
+    <section data-cms-section="cta" className="ap-tile ap-parchment">
+      <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="ap-stack">
+          <span data-cms-field="eyebrow" className="text-sm text-muted-foreground tracking-[-0.016em]">
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
 
-          {/* Heading */}
-          <h2
-            data-cms-field="heading"
-            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-8 text-balance"
-          >
+          <h2 data-cms-field="heading" className="ap-display max-w-[820px]">
             {t(content.heading_lead.vi, content.heading_lead.en)}
-            <span className="text-primary">
-              {t(content.heading_highlight.vi, content.heading_highlight.en)}
-            </span>
+            {t(content.heading_highlight.vi, content.heading_highlight.en)}
           </h2>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-            <Link
-              data-cms-field="cta"
-              href={content.cta_href}
-              className="group inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-4 rounded-full text-lg transition-all duration-300 hover:shadow-lg hover:shadow-accent/25 hover:-translate-y-0.5"
-            >
+          <div className="ap-cta-row mt-2">
+            <Link data-cms-field="cta" href={content.cta_href} className="ap-btn ap-btn-primary">
               {t(content.cta_label.vi, content.cta_label.en)}
-              <svg
-                className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
             </Link>
-
             <Link
               data-cms-field="phone"
               href={`tel:${content.phone.replace(/[^+\d]/g, '')}`}
-              className="inline-flex items-center gap-3 text-foreground hover:text-primary transition-colors"
+              className="ap-btn ap-btn-ghost"
             >
-              <span className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md">
-                <Phone className="w-5 h-5 text-primary" />
-              </span>
-              <span className="text-left">
-                <span className="block text-sm text-muted-foreground">
-                  {t(content.phone_label.vi, content.phone_label.en)}
-                </span>
-                <span className="block font-semibold">{content.phone}</span>
-              </span>
+              {content.phone}
             </Link>
           </div>
-        </Reveal>
+        </div>
 
-        {/* Partners — danh sách rỗng thì ẩn cả khối (kể cả nhãn và đường kẻ),
-            admin xoá hết tên trong CMS là dải này biến mất, không cần deploy */}
+        {/* Partners — danh sách rỗng thì ẩn cả khối (admin xoá hết tên trong CMS là dải này biến mất) */}
         {(content.partner_names?.length ?? 0) > 0 && (
-          <Reveal
-            delay={150}
-            data-cms-field="partners"
-            className="border-t border-primary/10 pt-12"
-          >
-            <p className="text-center text-sm text-muted-foreground mb-8">
+          <div data-cms-field="partners" className="mt-14 pt-10 border-t border-border">
+            <p className="text-sm text-muted-foreground mb-6">
               {t(content.trust_label.vi, content.trust_label.en)}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
               {content.partner_names.map((partner) => (
-                <div
-                  key={partner}
-                  className="text-xl font-bold text-muted-foreground/50 hover:text-muted-foreground transition-colors cursor-pointer"
-                >
+                <div key={partner} className="text-xl font-semibold text-[#86868b]">
                   {partner}
                 </div>
               ))}
             </div>
-          </Reveal>
+          </div>
         )}
       </div>
     </section>

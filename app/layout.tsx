@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/contexts/language-context'
 import { SiteBrandingProvider, type SiteBranding } from '@/contexts/site-branding-context'
@@ -21,6 +21,14 @@ const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-plus-jakarta',
   weight: ['400', '500', '600', '700', '800'],
+})
+
+// Inter: phông thay thế SF Pro trên thiết bị không phải Apple (theme-apple của trang chủ).
+// Có subset vietnamese để dấu tiếng Việt hiển thị đúng.
+const inter = Inter({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-inter',
+  weight: ['300', '400', '600'],
 })
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -77,7 +85,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en" className="bg-background">
-      <body className={`${plusJakarta.variable} font-sans antialiased`}>
+      <body className={`${plusJakarta.variable} ${inter.variable} font-sans antialiased`}>
         {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
         <TrackingCode code={settings?.head_code} />
         {/* Tracking code — vị trí "Body" (đầu trang): GTM noscript, chat widget */}
