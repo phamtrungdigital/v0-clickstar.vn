@@ -34,6 +34,7 @@ import { useServiceCta } from '@/contexts/web-content-context'
 import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
+import { MarketingGrowthIllustration } from '@/components/illustrations/service-illustrations'
 
 export default function DigitalMarketingPage() {
   const { t, language } = useLanguage()
@@ -361,80 +362,7 @@ export default function DigitalMarketingPage() {
               <div className="relative order-2 lg:order-1">
                 <div className="relative">
                   {/* Main SVG Illustration */}
-                  <svg viewBox="0 0 500 400" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    {/* Background circles */}
-                    <circle cx="250" cy="200" r="180" fill="#EEF2FF" opacity="0.5"/>
-                    <circle cx="250" cy="200" r="130" fill="#E0E7FF" opacity="0.5"/>
-                    
-                    {/* Central dashboard */}
-                    <rect x="150" y="100" width="200" height="140" rx="12" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                    <rect x="165" y="115" width="170" height="25" rx="4" fill="#F3F4F6"/>
-                    <circle cx="178" cy="127" r="6" fill="#EF4444"/>
-                    <circle cx="195" cy="127" r="6" fill="#F59E0B"/>
-                    <circle cx="212" cy="127" r="6" fill="#10B981"/>
-                    
-                    {/* Chart bars */}
-                    <rect x="175" y="200" width="20" height="25" rx="2" fill="#DBEAFE"/>
-                    <rect x="205" y="185" width="20" height="40" rx="2" fill="#93C5FD"/>
-                    <rect x="235" y="170" width="20" height="55" rx="2" fill="#60A5FA"/>
-                    <rect x="265" y="155" width="20" height="70" rx="2" fill="#3B82F6"/>
-                    <rect x="295" y="165" width="20" height="60" rx="2" fill="#2563EB"/>
-                    
-                    {/* Growth arrow */}
-                    <path d="M180 195 L310 145" stroke="#10B981" strokeWidth="3" strokeLinecap="round" strokeDasharray="8 4"/>
-                    <polygon points="315,140 305,145 310,155" fill="#10B981"/>
-                    
-                    {/* Floating elements - Problem indicators (red) */}
-                    <g>
-                      <rect x="50" y="80" width="80" height="50" rx="8" fill="white" stroke="#FEE2E2" strokeWidth="2"/>
-                      <circle cx="70" cy="105" r="12" fill="#FEE2E2"/>
-                      <text x="70" y="110" textAnchor="middle" fill="#DC2626" fontSize="14" fontWeight="bold">!</text>
-                      <rect x="90" y="95" width="30" height="6" rx="2" fill="#FECACA"/>
-                      <rect x="90" y="105" width="25" height="6" rx="2" fill="#FEE2E2"/>
-                    </g>
-                    
-                    <g>
-                      <rect x="30" y="200" width="80" height="50" rx="8" fill="white" stroke="#FEE2E2" strokeWidth="2"/>
-                      <circle cx="50" cy="225" r="12" fill="#FEE2E2"/>
-                      <text x="50" y="230" textAnchor="middle" fill="#DC2626" fontSize="14" fontWeight="bold">$</text>
-                      <rect x="70" y="215" width="30" height="6" rx="2" fill="#FECACA"/>
-                      <rect x="70" y="225" width="25" height="6" rx="2" fill="#FEE2E2"/>
-                    </g>
-                    
-                    {/* Floating elements - Solution indicators (green) */}
-                    <g>
-                      <rect x="370" y="70" width="90" height="55" rx="8" fill="white" stroke="#D1FAE5" strokeWidth="2"/>
-                      <circle cx="392" cy="97" r="14" fill="#D1FAE5"/>
-                      <path d="M386 97 L390 101 L400 91" stroke="#059669" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                      <rect x="415" y="87" width="35" height="6" rx="2" fill="#A7F3D0"/>
-                      <rect x="415" y="97" width="28" height="6" rx="2" fill="#D1FAE5"/>
-                    </g>
-                    
-                    <g>
-                      <rect x="380" y="180" width="90" height="55" rx="8" fill="white" stroke="#D1FAE5" strokeWidth="2"/>
-                      <circle cx="402" cy="207" r="14" fill="#D1FAE5"/>
-                      <path d="M396 207 L400 211 L410 201" stroke="#059669" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-                      <rect x="425" y="197" width="35" height="6" rx="2" fill="#A7F3D0"/>
-                      <rect x="425" y="207" width="28" height="6" rx="2" fill="#D1FAE5"/>
-                    </g>
-                    
-                    {/* Connecting lines with animation effect */}
-                    <path d="M130 105 L150 120" stroke="#FCA5A5" strokeWidth="2" strokeDasharray="4 2"/>
-                    <path d="M110 225 L150 200" stroke="#FCA5A5" strokeWidth="2" strokeDasharray="4 2"/>
-                    <path d="M350 200 L370 207" stroke="#6EE7B7" strokeWidth="2" strokeDasharray="4 2"/>
-                    <path d="M350 130 L370 105" stroke="#6EE7B7" strokeWidth="2" strokeDasharray="4 2"/>
-                    
-                    {/* Target icon in center */}
-                    <circle cx="250" cy="300" r="30" fill="white" stroke="#3B82F6" strokeWidth="3"/>
-                    <circle cx="250" cy="300" r="20" fill="white" stroke="#3B82F6" strokeWidth="2"/>
-                    <circle cx="250" cy="300" r="8" fill="#3B82F6"/>
-                    
-                    {/* Small decorative dots */}
-                    <circle cx="80" cy="320" r="4" fill="#93C5FD"/>
-                    <circle cx="420" cy="280" r="5" fill="#86EFAC"/>
-                    <circle cx="400" cy="320" r="3" fill="#FCA5A5"/>
-                    <circle cx="100" cy="150" r="3" fill="#C4B5FD"/>
-                  </svg>
+                  <MarketingGrowthIllustration className="w-full h-auto" />
                 </div>
               </div>
 

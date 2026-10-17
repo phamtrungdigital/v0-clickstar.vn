@@ -28,7 +28,7 @@
     <filter id="etlShadow" x="-5%" y="-30%" width="110%" height="160%">
       <feGaussianBlur in="SourceAlpha" stdDeviation="10"/>
       <feOffset dx="0" dy="6" result="offsetblur"/>
-      <feFlood flood-color="#8B5CF6" flood-opacity="0.18"/>
+      <feFlood flood-color="#1e6dda" flood-opacity="0.18"/>
       <feComposite in2="offsetblur" operator="in"/>
       <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
@@ -49,14 +49,14 @@
 
     <!-- Gradients -->
     <linearGradient id="etlGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#FAF5FF"/>
-      <stop offset="50%" stop-color="#F5F3FF"/>
+      <stop offset="0%" stop-color="#eef4fd"/>
+      <stop offset="50%" stop-color="#eef4fd"/>
       <stop offset="100%" stop-color="#EEF3FF"/>
     </linearGradient>
 
     <linearGradient id="aiGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#1B7BFF"/>
-      <stop offset="100%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#1e6dda"/>
     </linearGradient>
 
     <!-- ============ FLOW PATHS (cho animateMotion) ============ -->
@@ -132,17 +132,17 @@
 
   <!-- ETL → Neon: purple dots (transformed data) -->
   <g filter="url(#dotGlow)">
-    <circle r="4" fill="#8B5CF6">
+    <circle r="4" fill="#1e6dda">
       <animateMotion dur="1.8s" repeatCount="indefinite" begin="0s">
         <mpath href="#flowEtlNeon"/>
       </animateMotion>
     </circle>
-    <circle r="3" fill="#8B5CF6" opacity="0.7">
+    <circle r="3" fill="#1e6dda" opacity="0.7">
       <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.6s">
         <mpath href="#flowEtlNeon"/>
       </animateMotion>
     </circle>
-    <circle r="3" fill="#8B5CF6" opacity="0.5">
+    <circle r="3" fill="#1e6dda" opacity="0.5">
       <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.2s">
         <mpath href="#flowEtlNeon"/>
       </animateMotion>
@@ -226,9 +226,9 @@
   <!-- LAYER 2: ETL PIPELINE -->
   <g filter="url(#etlShadow)">
     <rect x="30" y="255" width="1020" height="130" rx="20" fill="url(#etlGrad)" opacity="0.6"/>
-    <rect x="40" y="260" width="1000" height="120" rx="16" fill="#FFFFFF" stroke="#C4B5FD" stroke-width="1.5"/>
-    <rect x="64" y="284" width="72" height="72" rx="14" fill="#F5F3FF"/>
-    <g transform="translate(80, 300)" stroke="#8B5CF6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect x="40" y="260" width="1000" height="120" rx="16" fill="#FFFFFF" stroke="#a9c8f3" stroke-width="1.5"/>
+    <rect x="64" y="284" width="72" height="72" rx="14" fill="#eef4fd"/>
+    <g transform="translate(80, 300)" stroke="#1e6dda" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none">
       <circle cx="10" cy="10" r="6"/>
       <circle cx="30" cy="30" r="6"/>
       <path d="M 14,14 L 26,26"/>
@@ -275,17 +275,17 @@
 
   <!-- LAYER 4: AI Analysis -->
   <g filter="url(#cardShadow)">
-    <rect x="560" y="700" width="480" height="120" rx="16" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.5"/>
-    <rect x="584" y="724" width="72" height="72" rx="14" fill="#F5F3FF"/>
+    <rect x="560" y="700" width="480" height="120" rx="16" fill="#FFFFFF" stroke="#c9dcf7" stroke-width="1.5"/>
+    <rect x="584" y="724" width="72" height="72" rx="14" fill="#eef4fd"/>
     <g transform="translate(600, 740)" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M 18,6 C 14,6 10,8 10,12 C 6,12 4,15 6,19 C 4,22 6,26 10,26 C 10,30 14,32 18,30 V 6 Z" stroke="url(#aiGrad)" stroke-width="2"/>
       <path d="M 22,6 C 26,6 30,8 30,12 C 34,12 36,15 34,19 C 36,22 34,26 30,26 C 30,30 26,32 22,30 V 6 Z" stroke="url(#aiGrad)" stroke-width="2"/>
       <circle cx="14" cy="14" r="1.5" fill="#1B7BFF" stroke="none"/>
-      <circle cx="14" cy="22" r="1.5" fill="#8B5CF6" stroke="none"/>
+      <circle cx="14" cy="22" r="1.5" fill="#1e6dda" stroke="none"/>
       <circle cx="26" cy="14" r="1.5" fill="#1B7BFF" stroke="none"/>
-      <circle cx="26" cy="22" r="1.5" fill="#8B5CF6" stroke="none"/>
-      <path d="M 14,14 L 14,22" stroke="#8B5CF6" stroke-width="1" opacity="0.5"/>
-      <path d="M 26,14 L 26,22" stroke="#8B5CF6" stroke-width="1" opacity="0.5"/>
+      <circle cx="26" cy="22" r="1.5" fill="#1e6dda" stroke="none"/>
+      <path d="M 14,14 L 14,22" stroke="#1e6dda" stroke-width="1" opacity="0.5"/>
+      <path d="M 26,14 L 26,22" stroke="#1e6dda" stroke-width="1" opacity="0.5"/>
       <path d="M 20,18 L 20,14 M 20,18 L 20,22 M 20,18 L 16,18 M 20,18 L 24,18" stroke="url(#aiGrad)" stroke-width="1.2" opacity="0.7"/>
     </g>
     <text x="680" y="752" font-size="24" font-weight="700" fill="#0F172A">AI Analysis</text>

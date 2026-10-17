@@ -33,183 +33,22 @@ import {
   FileText,
   Webhook
 } from 'lucide-react'
+import { AutomationChecklistIllustration, AutomationWorkflowIllustration } from '@/components/illustrations/service-illustrations'
 
-// Robot SVG Component
+// Hình hero: thẻ danh sách việc tự động (thay robot hoạt hình)
 const RobotSVG = ({ className = "w-full h-full" }: { className?: string }) => (
-  <svg viewBox="0 0 200 200" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Robot Head */}
-    <rect x="50" y="30" width="100" height="80" rx="12" fill="url(#robotGradient)" />
-    <rect x="55" y="35" width="90" height="70" rx="8" fill="#1A1A2E" opacity="0.1" />
-    
-    {/* Eyes */}
-    <circle cx="80" cy="65" r="12" fill="white" />
-    <circle cx="120" cy="65" r="12" fill="white" />
-    <circle cx="82" cy="67" r="6" fill="#1B7BFF">
-      <animate attributeName="cx" values="82;78;82;86;82" dur="3s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="122" cy="67" r="6" fill="#1B7BFF">
-      <animate attributeName="cx" values="122;118;122;126;122" dur="3s" repeatCount="indefinite" />
-    </circle>
-    
-    {/* Antenna */}
-    <line x1="100" y1="30" x2="100" y2="15" stroke="url(#robotGradient)" strokeWidth="4" strokeLinecap="round" />
-    <circle cx="100" cy="12" r="6" fill="#1B7BFF">
-      <animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite" />
-    </circle>
-    
-    {/* Mouth - LED display */}
-    <rect x="75" y="85" width="50" height="10" rx="3" fill="#1A1A2E" opacity="0.3" />
-    <rect x="78" y="87" width="8" height="6" rx="1" fill="#10B981">
-      <animate attributeName="opacity" values="1;0.3;1" dur="0.5s" repeatCount="indefinite" />
-    </rect>
-    <rect x="88" y="87" width="8" height="6" rx="1" fill="#10B981">
-      <animate attributeName="opacity" values="0.3;1;0.3" dur="0.5s" repeatCount="indefinite" />
-    </rect>
-    <rect x="98" y="87" width="8" height="6" rx="1" fill="#10B981">
-      <animate attributeName="opacity" values="1;0.3;1" dur="0.5s" repeatCount="indefinite" />
-    </rect>
-    <rect x="108" y="87" width="8" height="6" rx="1" fill="#10B981">
-      <animate attributeName="opacity" values="0.3;1;0.3" dur="0.5s" repeatCount="indefinite" />
-    </rect>
-    
-    {/* Neck */}
-    <rect x="85" y="110" width="30" height="15" fill="url(#robotGradient)" />
-    
-    {/* Body */}
-    <rect x="45" y="125" width="110" height="60" rx="10" fill="url(#robotGradient)" />
-    <rect x="55" y="135" width="90" height="40" rx="6" fill="#1A1A2E" opacity="0.1" />
-    
-    {/* Chest display */}
-    <rect x="70" y="140" width="60" height="30" rx="4" fill="#1A1A2E" opacity="0.3" />
-    <circle cx="85" cy="155" r="8" fill="#1B7BFF" opacity="0.8">
-      <animate attributeName="r" values="8;10;8" dur="2s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="100" cy="155" r="4" fill="#10B981" />
-    <circle cx="115" cy="155" r="4" fill="#F59E0B" />
-    
-    {/* Arms */}
-    <rect x="25" y="130" width="20" height="50" rx="8" fill="url(#robotGradient)" />
-    <rect x="155" y="130" width="20" height="50" rx="8" fill="url(#robotGradient)" />
-    <circle cx="35" cy="185" r="10" fill="url(#robotGradient)" />
-    <circle cx="165" cy="185" r="10" fill="url(#robotGradient)" />
-    
-    <defs>
-      <linearGradient id="robotGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#1B7BFF" />
-        <stop offset="100%" stopColor="#3B5FFF" />
-      </linearGradient>
-    </defs>
-  </svg>
+  <AutomationChecklistIllustration className={className} />
 )
 
-// Automation Flow SVG Component
+// Sơ đồ luồng: Kích hoạt, n8n, mô hình AI, Hành động
 const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string }) => {
   const { t } = useLanguage()
   return (
-  <svg viewBox="0 0 600 350" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Background Grid */}
-    <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#E2E8F0" strokeWidth="0.5" opacity="0.5" />
-    </pattern>
-    <rect width="600" height="350" fill="url(#grid)" />
-    
-    {/* Connection Lines with animation */}
-    <path d="M 120 100 Q 180 100 180 175 Q 180 250 240 250" stroke="url(#lineGradient)" strokeWidth="3" strokeDasharray="8 4" fill="none">
-      <animate attributeName="stroke-dashoffset" values="0;-24" dur="1s" repeatCount="indefinite" />
-    </path>
-    <path d="M 330 250 L 390 250" stroke="url(#lineGradient)" strokeWidth="3" strokeDasharray="8 4" fill="none">
-      <animate attributeName="stroke-dashoffset" values="0;-24" dur="1s" repeatCount="indefinite" />
-    </path>
-    <path d="M 480 250 Q 530 250 530 175 Q 530 100 480 100" stroke="url(#lineGradient)" strokeWidth="3" strokeDasharray="8 4" fill="none">
-      <animate attributeName="stroke-dashoffset" values="0;-24" dur="1s" repeatCount="indefinite" />
-    </path>
-    <path d="M 390 100 L 330 100" stroke="url(#lineGradient)" strokeWidth="3" strokeDasharray="8 4" fill="none">
-      <animate attributeName="stroke-dashoffset" values="0;-24" dur="1s" repeatCount="indefinite" />
-    </path>
-    
-    {/* Central Hub - N8N */}
-    <g>
-      <circle cx="300" cy="175" r="55" fill="url(#hubGradient)" />
-      <circle cx="300" cy="175" r="45" fill="white" />
-      <text x="300" y="170" textAnchor="middle" fill="#1A1A2E" fontSize="14" fontWeight="bold">N8N</text>
-      <text x="300" y="188" textAnchor="middle" fill="#64748B" fontSize="10">Automation Hub</text>
-      {/* Rotating ring */}
-      <circle cx="300" cy="175" r="50" fill="none" stroke="#1B7BFF" strokeWidth="2" strokeDasharray="10 5" opacity="0.5">
-        <animateTransform attributeName="transform" type="rotate" from="0 300 175" to="360 300 175" dur="10s" repeatCount="indefinite" />
-      </circle>
-    </g>
-    
-    {/* Node 1 - Claude */}
-    <g>
-      <rect x="30" y="60" width="90" height="80" rx="12" fill="white" stroke="#D97757" strokeWidth="2" />
-      <rect x="40" y="70" width="70" height="30" rx="6" fill="#D97757" opacity="0.1" />
-      <text x="75" y="90" textAnchor="middle" fill="#D97757" fontSize="12" fontWeight="bold">Claude</text>
-      <text x="75" y="115" textAnchor="middle" fill="#64748B" fontSize="9">{t('Phân tích', 'Analysis')}</text>
-      <text x="75" y="127" textAnchor="middle" fill="#64748B" fontSize="9">& Content</text>
-    </g>
-    
-    {/* Node 2 - GPT */}
-    <g>
-      <rect x="240" y="210" width="90" height="80" rx="12" fill="white" stroke="#10A37F" strokeWidth="2" />
-      <rect x="250" y="220" width="70" height="30" rx="6" fill="#10A37F" opacity="0.1" />
-      <text x="285" y="240" textAnchor="middle" fill="#10A37F" fontSize="12" fontWeight="bold">GPT-4o</text>
-      <text x="285" y="265" textAnchor="middle" fill="#64748B" fontSize="9">Creative</text>
-      <text x="285" y="277" textAnchor="middle" fill="#64748B" fontSize="9">& Chatbot</text>
-    </g>
-    
-    {/* Node 3 - Data Analytics */}
-    <g>
-      <rect x="390" y="210" width="90" height="80" rx="12" fill="white" stroke="#8B5CF6" strokeWidth="2" />
-      <rect x="400" y="220" width="70" height="30" rx="6" fill="#8B5CF6" opacity="0.1" />
-      <text x="435" y="240" textAnchor="middle" fill="#8B5CF6" fontSize="11" fontWeight="bold">Analytics</text>
-      <text x="435" y="265" textAnchor="middle" fill="#64748B" fontSize="9">{t('Phân tích', 'Data')}</text>
-      <text x="435" y="277" textAnchor="middle" fill="#64748B" fontSize="9">{t('dữ liệu', 'analysis')}</text>
-    </g>
-    
-    {/* Node 4 - Webapp */}
-    <g>
-      <rect x="390" y="60" width="90" height="80" rx="12" fill="white" stroke="#1B7BFF" strokeWidth="2" />
-      <rect x="400" y="70" width="70" height="30" rx="6" fill="#1B7BFF" opacity="0.1" />
-      <text x="435" y="90" textAnchor="middle" fill="#1B7BFF" fontSize="11" fontWeight="bold">WebApp</text>
-      <text x="435" y="115" textAnchor="middle" fill="#64748B" fontSize="9">Dashboard</text>
-      <text x="435" y="127" textAnchor="middle" fill="#64748B" fontSize="9">& CRM</text>
-    </g>
-    
-    {/* Floating data particles */}
-    <circle cx="150" cy="130" r="4" fill="#1B7BFF">
-      <animate attributeName="cy" values="130;175;220" dur="2s" repeatCount="indefinite" />
-      <animate attributeName="opacity" values="1;0.5;0" dur="2s" repeatCount="indefinite" />
-    </circle>
-    <circle cx="450" cy="220" r="4" fill="#8B5CF6">
-      <animate attributeName="cy" values="220;175;130" dur="2s" repeatCount="indefinite" />
-      <animate attributeName="opacity" values="1;0.5;0" dur="2s" repeatCount="indefinite" />
-    </circle>
-    
-    {/* Output indicators */}
-    <g>
-      <rect x="520" y="155" width="70" height="40" rx="8" fill="#10B981" opacity="0.1" stroke="#10B981" strokeWidth="1" />
-      <text x="555" y="173" textAnchor="middle" fill="#10B981" fontSize="9" fontWeight="bold">OUTPUT</text>
-      <text x="555" y="185" textAnchor="middle" fill="#10B981" fontSize="8">Auto Tasks</text>
-    </g>
-    
-    {/* Input indicators */}
-    <g>
-      <rect x="10" y="155" width="70" height="40" rx="8" fill="#F59E0B" opacity="0.1" stroke="#F59E0B" strokeWidth="1" />
-      <text x="45" y="173" textAnchor="middle" fill="#F59E0B" fontSize="9" fontWeight="bold">INPUT</text>
-      <text x="45" y="185" textAnchor="middle" fill="#F59E0B" fontSize="8">Triggers</text>
-    </g>
-    
-    <defs>
-      <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stopColor="#1B7BFF" />
-        <stop offset="100%" stopColor="#3B5FFF" />
-      </linearGradient>
-      <linearGradient id="hubGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#1B7BFF" />
-        <stop offset="100%" stopColor="#3B5FFF" />
-      </linearGradient>
-    </defs>
-  </svg>
+    <AutomationWorkflowIllustration
+      className={`${className} !h-auto max-w-[780px] mx-auto`}
+      headers={[t('KÍCH HOẠT', 'TRIGGERS'), t('ĐIỀU PHỐI', 'ORCHESTRATION'), t('MÔ HÌNH AI', 'AI MODELS'), t('HÀNH ĐỘNG', 'ACTIONS')]}
+      caption={t('Chạy 24/7, không cần thao tác thủ công', 'Runs 24/7 with no manual steps')}
+    />
   )
 }
 
