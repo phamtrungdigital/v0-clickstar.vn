@@ -205,7 +205,7 @@ export function PricingSection() {
                         )}>
                           <Check className={cn(
                             "w-3 h-3",
-                            plan.popular ? "text-primary" : "text-primary"
+                            plan.popular ? "text-[#1859b8]" : "text-[#1859b8]"
                           )} />
                         </span>
                         <span className="text-sm text-foreground/80">{feature}</span>
@@ -246,19 +246,19 @@ export function PricingSection() {
         <div className="mt-12 pt-12 border-t border-border">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
             <div className="text-center">
-              <div className="text-3xl font-extrabold text-primary mb-1">500+</div>
+              <div className="text-3xl font-extrabold text-[#1859b8] mb-1">500+</div>
               <div className="text-sm text-muted-foreground">{t('Doanh nghiệp tin tưởng', 'Businesses trust us')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-extrabold text-primary mb-1">98%</div>
+              <div className="text-3xl font-extrabold text-[#1859b8] mb-1">98%</div>
               <div className="text-sm text-muted-foreground">{t('Khách hàng hài lòng', 'Customer satisfaction')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-extrabold text-primary mb-1">24/7</div>
+              <div className="text-3xl font-extrabold text-[#1859b8] mb-1">24/7</div>
               <div className="text-sm text-muted-foreground">{t('Hỗ trợ kỹ thuật', 'Technical support')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-extrabold text-primary mb-1">10+</div>
+              <div className="text-3xl font-extrabold text-[#1859b8] mb-1">10+</div>
               <div className="text-sm text-muted-foreground">{t('Năm kinh nghiệm', 'Years of experience')}</div>
             </div>
           </div>

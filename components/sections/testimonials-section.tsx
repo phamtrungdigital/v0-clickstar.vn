@@ -29,7 +29,7 @@ function TestimonialCard({
       data-cms-item-index={itemIndex}
       className="bg-white rounded-2xl p-7 shadow-sm border border-border/50 relative h-full"
     >
-      <div className="absolute top-6 right-6 text-primary/10">
+      <div className="absolute top-6 right-6 text-[#1859b8]/10">
         <Quote className="w-12 h-12 fill-current" />
       </div>
 
@@ -38,7 +38,7 @@ function TestimonialCard({
           <Star
             key={i}
             className={`w-5 h-5 ${
-              i < testimonial.rating ? 'fill-[#1e6dda] text-[#1e6dda]' : 'fill-gray-200 text-gray-200'
+              i < testimonial.rating ? 'fill-[#1e6dda] text-[#1859b8]' : 'fill-gray-200 text-gray-200'
             }`}
           />
         ))}
@@ -72,7 +72,7 @@ export function TestimonialsSection({ content }: { content: TestimonialsContent 
         <div className="text-center max-w-2xl mx-auto">
           <div
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-white text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6 shadow-sm"
+            className="inline-flex items-center gap-2 bg-white text-[#1859b8] font-semibold text-sm px-4 py-2 rounded-full mb-6 shadow-sm"
           >
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -83,7 +83,7 @@ export function TestimonialsSection({ content }: { content: TestimonialsContent 
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>

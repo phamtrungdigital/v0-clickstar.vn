@@ -117,7 +117,7 @@ export function ClaudeEngine() {
             <Bot className="w-7 h-7" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#1e6dda] mb-1">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#1859b8] mb-1">
               {t('Mô hình phân tích', 'Analysis model')}
             </p>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-foreground leading-tight">
@@ -140,7 +140,7 @@ export function ClaudeEngine() {
             key={i}
             className="group bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-lg transition-all duration-300"
           >
-            <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] mb-4 group-hover:scale-110 transition-transform">
+            <div className="w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1859b8] mb-4 group-hover:scale-110 transition-transform">
               {r.icon}
             </div>
             <h4 className="font-bold text-foreground mb-2">{r.title}</h4>
@@ -164,13 +164,13 @@ export function ClaudeEngine() {
         <div className="grid md:grid-cols-2 gap-4">
           <div className="rounded-xl border border-border bg-[#f5f5f7]/50 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Bot className="w-4 h-4 text-[#1e6dda]" />
-              <span className="text-sm font-bold text-[#1e6dda]">{t('AI làm', 'The AI does')}</span>
+              <Bot className="w-4 h-4 text-[#1859b8]" />
+              <span className="text-sm font-bold text-[#1859b8]">{t('AI làm', 'The AI does')}</span>
             </div>
             <ul className="space-y-2.5">
               {aiDoes.map((x, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                   <span>{x}</span>
                 </li>
               ))}
@@ -179,7 +179,7 @@ export function ClaudeEngine() {
 
           <div className="rounded-xl border border-border bg-slate-50 p-4">
             <div className="flex items-center gap-2 mb-3">
-              <UserCheck className="w-4 h-4 text-slate-600" />
+              <UserCheck className="w-4 h-4 text-[#515154]" />
               <span className="text-sm font-bold text-slate-700">
                 {t('Người quyết định', 'People decide')}
               </span>
@@ -187,7 +187,7 @@ export function ClaudeEngine() {
             <ul className="space-y-2.5">
               {humanDoes.map((x, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-foreground">
-                  <CheckCircle2 className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#515154] flex-shrink-0 mt-0.5" />
                   <span>{x}</span>
                 </li>
               ))}
@@ -206,7 +206,7 @@ export function ClaudeEngine() {
       {/* Cam kết dữ liệu */}
       <div className="rounded-2xl border border-border bg-[#f5f5f7]/50 p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
-          <ShieldCheck className="w-5 h-5 text-[#1e6dda]" />
+          <ShieldCheck className="w-5 h-5 text-[#1859b8]" />
           <h3 className="font-bold text-foreground">
             {t('Dữ liệu của bạn đi tới đâu', 'Where your data goes')}
           </h3>
@@ -214,7 +214,7 @@ export function ClaudeEngine() {
         <ul className="space-y-3">
           {commitments.map((c, i) => (
             <li key={i} className="flex items-start gap-3 text-sm text-foreground">
-              <span className="text-[#1e6dda] flex-shrink-0 mt-0.5">{c.icon}</span>
+              <span className="text-[#1859b8] flex-shrink-0 mt-0.5">{c.icon}</span>
               <span>{c.text}</span>
             </li>
           ))}

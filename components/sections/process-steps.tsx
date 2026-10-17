@@ -18,7 +18,7 @@ export function ProcessSteps() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span data-cms-field="eyebrow" className={`inline-flex items-center gap-2 font-semibold text-sm px-4 py-2 rounded-full mb-6 ${
-            isDark ? 'bg-white/10 text-white' : 'bg-primary/10 text-primary'
+            isDark ? 'bg-white/10 text-white' : 'bg-primary/10 text-[#1859b8]'
           }`}>
             <span className={`w-2 h-2 rounded-full ${isDark ? 'bg-white' : 'bg-primary'}`} />
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -27,7 +27,7 @@ export function ProcessSteps() {
             isDark ? 'text-background' : 'text-foreground'
           }`}>
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -61,7 +61,7 @@ export function ProcessSteps() {
                 </p>
                 {step.duration?.vi && (
                   <span className={`inline-block text-[10px] uppercase font-semibold px-2 py-1 rounded ${
-                    isDark ? 'bg-primary/20 text-primary' : 'bg-primary/10 text-primary'
+                    isDark ? 'bg-primary/20 text-[#1859b8]' : 'bg-primary/10 text-[#1859b8]'
                   }`}>
                     {t(step.duration.vi, step.duration.en)}
                   </span>

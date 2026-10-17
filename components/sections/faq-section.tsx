@@ -19,7 +19,7 @@ export function FAQSection({ content }: { content: FaqContent }) {
           <div className="lg:sticky lg:top-32 lg:self-start">
             <div
               data-cms-field="eyebrow"
-              className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+              className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6"
             >
               <span className="w-2 h-2 bg-primary rounded-full" />
               {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -30,7 +30,7 @@ export function FAQSection({ content }: { content: FaqContent }) {
               className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6"
             >
               {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-              <span className="text-primary">
+              <span className="text-[#1859b8]">
                 {t(content.heading_highlight.vi, content.heading_highlight.en)}
               </span>
             </h2>
@@ -71,7 +71,7 @@ export function FAQSection({ content }: { content: FaqContent }) {
                 >
                   <span
                     className={`font-semibold text-base lg:text-lg transition-colors duration-200 ${
-                      openIndex === index ? 'text-primary' : 'text-foreground'
+                      openIndex === index ? 'text-[#1859b8]' : 'text-foreground'
                     }`}
                   >
                     {t(faq.question.vi, faq.question.en)}

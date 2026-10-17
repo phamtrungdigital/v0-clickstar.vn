@@ -28,7 +28,7 @@ export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
           </p>
         )}
         {content.sub?.vi && (
-          <p data-cms-field="sub" className="text-sm text-muted-foreground/80 mt-1">
+          <p data-cms-field="sub" className="text-sm text-muted-foreground mt-1">
             {t(content.sub.vi, content.sub.en)}
           </p>
         )}

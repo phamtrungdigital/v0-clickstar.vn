@@ -31,7 +31,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
             <div data-cms-field="stat" className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 max-w-[240px]">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Award className="w-6 h-6 text-primary" />
+                  <Award className="w-6 h-6 text-[#1859b8]" />
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-foreground">{content.stat_value}</div>
@@ -47,7 +47,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
           <div>
             <span
               data-cms-field="eyebrow"
-              className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+              className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6"
             >
               {t(content.eyebrow.vi, content.eyebrow.en)}
             </span>
@@ -57,7 +57,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
               className="text-3xl sm:text-4xl font-extrabold text-foreground leading-tight mb-6"
             >
               {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-              <span className="text-primary">
+              <span className="text-[#1859b8]">
                 {t(content.heading_highlight.vi, content.heading_highlight.en)}
               </span>
             </h2>

@@ -35,7 +35,7 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
     return (
       <div className="bg-white border border-border rounded-2xl p-8 text-center shadow-sm">
         <div className="w-16 h-16 bg-[#f5f5f7] rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 className="w-8 h-8 text-[#1e6dda]" />
+          <CheckCircle2 className="w-8 h-8 text-[#1859b8]" />
         </div>
         <h3 className="text-xl font-bold text-foreground mb-2">
           {t('Đã gửi yêu cầu thành công!', 'Your request has been sent!')}
@@ -133,7 +133,7 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
               'I agree that my personal data collected on this page may be processed and stored by Click Star Digital Co., Ltd (Click Star) for consultation purposes and under the conditions published in the ',
             )}
             {PRIVACY_POLICY_URL ? (
-              <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className="underline text-primary hover:text-primary-dark">
+              <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className="underline text-[#1859b8] hover:text-primary-dark">
                 {t('Quy định bảo vệ dữ liệu cá nhân của Click Star', 'Click Star Personal Data Protection Policy')}
               </a>
             ) : (

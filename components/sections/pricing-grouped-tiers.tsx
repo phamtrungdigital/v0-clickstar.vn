@@ -27,7 +27,7 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
         <div className="text-center max-w-3xl mx-auto mb-10">
           <span
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-5"
+            className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-5"
           >
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -37,7 +37,7 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -66,7 +66,7 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
                 {group.badge?.vi && (
                   <span
                     className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-[#f5f5f7] text-[#1e6dda]'
+                      isActive ? 'bg-white/20 text-white' : 'bg-[#f5f5f7] text-[#1859b8]'
                     }`}
                   >
                     {t(group.badge.vi, group.badge.en)}
@@ -142,7 +142,7 @@ export function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
             <ul className="space-y-2.5 mb-8">
               {tier.features.map((f, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm">
-                  <Check className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                   <span className="text-foreground">{t(f.vi, f.en)}</span>
                 </li>
               ))}

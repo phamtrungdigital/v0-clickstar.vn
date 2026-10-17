@@ -318,10 +318,10 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
               <RouterIcon showRing={showCountdown} progress={progress} urgent={urgent} warning={warning} />
               <div className="min-w-0">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary/90">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#1859b8]">
                     {copy.badge}
                   </span>
-                  <span className="hidden sm:flex items-center text-[9px] text-[#1e6dda] font-bold">
+                  <span className="hidden sm:flex items-center text-[9px] text-[#1859b8] font-bold">
                     <span className="w-1 h-1 bg-[#1e6dda] rounded-full mr-1 animate-pulse" />
                     LIVE
                   </span>
@@ -329,9 +329,9 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
                     <span
                       className={`flex items-center gap-1 text-[9px] font-mono font-bold tabular-nums transition-colors duration-300 ${
                         urgent
-                          ? 'text-[#1e6dda] animate-pulse'
+                          ? 'text-[#1859b8] animate-pulse'
                           : warning
-                            ? 'text-[#1e6dda]'
+                            ? 'text-[#1859b8]'
                             : 'text-white/50'
                       }`}
                     >
@@ -421,7 +421,7 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
               {hasReachedMax && !loading && (
                 <div className="relative px-4 lg:px-5 pb-2 pt-1">
                   <div className="bg-[#1e6dda] border border-primary/30 rounded-lg p-2.5 flex items-center justify-between gap-3">
-                    <div className="text-[11px] text-white/80 flex-1 min-w-0">{copy.finalHint}</div>
+                    <div className="text-[11px] text-white flex-1 min-w-0">{copy.finalHint}</div>
                     <Link
                       href={buildContactHref()}
                       onClick={() => setDismissed()}
@@ -491,7 +491,7 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
                       handleChip(p.value)
                     }}
                     disabled={loading}
-                    className="text-xs px-3 py-1.5 bg-white/8 hover:bg-white/15 border border-white/10 hover:border-primary/40 text-white/85 hover:text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="text-xs px-3 py-1.5 bg-white/8 hover:bg-white/15 border border-white/10 hover:border-primary/40 text-white hover:text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {p.label}
                   </button>

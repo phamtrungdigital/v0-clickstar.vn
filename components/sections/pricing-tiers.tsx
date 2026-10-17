@@ -29,13 +29,13 @@ export function PricingTiers({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6">
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
           <h2 data-cms-field="heading" className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -87,7 +87,7 @@ export function PricingTiers({
               <ul className="space-y-3 mb-8">
                 {tier.features.map((f, i) => (
                   <li key={i} className="flex items-start gap-2 text-sm">
-                    <Check className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                    <Check className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                     <span className="text-foreground">{t(f.vi, f.en)}</span>
                   </li>
                 ))}

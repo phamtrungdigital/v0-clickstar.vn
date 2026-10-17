@@ -229,7 +229,7 @@ export default function DashboardServicePage() {
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
                   {t('Biến dữ liệu thành', 'Transform data into')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     {t('quyết định', 'decisions')}
                   </span>
                 </h1>
@@ -284,7 +284,7 @@ export default function DashboardServicePage() {
                       <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                     </div>
                     <div className="flex-1 bg-white/10 rounded-full h-6 flex items-center px-3">
-                      <span className="text-xs text-gray-400">dashboard.clickstar.vn</span>
+                      <span className="text-xs text-[#d2d2d7]">dashboard.clickstar.vn</span>
                     </div>
                   </div>
                   
@@ -293,15 +293,15 @@ export default function DashboardServicePage() {
                     {/* Top metrics */}
                     <div className="grid grid-cols-4 gap-2">
                       {[
-                        { label: t('Doanh thu', 'Revenue'), value: '₫2.4B', change: '+18%', color: 'text-[#1e6dda]' },
-                        { label: t('Chi phí ADS', 'Ad Spend'), value: '₫180M', change: '-12%', color: 'text-[#1e6dda]' },
-                        { label: 'ROAS', value: '4.2x', change: '+25%', color: 'text-[#1e6dda]' },
-                        { label: t('Leads', 'Leads'), value: '1,247', change: '+32%', color: 'text-[#1e6dda]' }
+                        { label: t('Doanh thu', 'Revenue'), value: '₫2.4B', change: '+18%', color: 'text-[#7db8ff]' },
+                        { label: t('Chi phí ADS', 'Ad Spend'), value: '₫180M', change: '-12%', color: 'text-[#7db8ff]' },
+                        { label: 'ROAS', value: '4.2x', change: '+25%', color: 'text-[#7db8ff]' },
+                        { label: t('Leads', 'Leads'), value: '1,247', change: '+32%', color: 'text-[#7db8ff]' }
                       ].map((metric, i) => (
                         <div key={i} className="bg-slate-700/50 rounded-lg p-2">
-                          <div className="text-[10px] text-slate-400">{metric.label}</div>
+                          <div className="text-[10px] text-[#d2d2d7]">{metric.label}</div>
                           <div className={`text-sm font-bold ${metric.color}`}>{metric.value}</div>
-                          <div className="text-[10px] text-[#1e6dda]">{metric.change}</div>
+                          <div className="text-[10px] text-[#7db8ff]">{metric.change}</div>
                         </div>
                       ))}
                     </div>
@@ -309,8 +309,8 @@ export default function DashboardServicePage() {
                     {/* Chart placeholder */}
                     <div className="bg-slate-700/30 rounded-lg p-3">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs text-slate-300">{t('Hiệu quả theo kênh', 'Channel Performance')}</span>
-                        <span className="text-[10px] text-slate-400">{t('7 ngày qua', 'Last 7 days')}</span>
+                        <span className="text-xs text-[#d2d2d7]">{t('Hiệu quả theo kênh', 'Channel Performance')}</span>
+                        <span className="text-[10px] text-[#d2d2d7]">{t('7 ngày qua', 'Last 7 days')}</span>
                       </div>
                       <div className="flex items-end gap-1 h-20">
                         {[40, 65, 45, 80, 60, 90, 75].map((h, i) => (
@@ -323,21 +323,21 @@ export default function DashboardServicePage() {
                     <div className="grid grid-cols-2 gap-2">
                       <div className="bg-slate-700/30 rounded-lg p-2">
                         <div className="flex items-center gap-2 mb-1">
-                          <Bot className="w-4 h-4 text-[#1e6dda]" />
-                          <span className="text-xs text-slate-300">AI Insights</span>
+                          <Bot className="w-4 h-4 text-[#7db8ff]" />
+                          <span className="text-xs text-[#d2d2d7]">AI Insights</span>
                         </div>
-                        <p className="text-[10px] text-slate-400 leading-relaxed">
+                        <p className="text-[10px] text-[#d2d2d7] leading-relaxed">
                           {t('"Tăng ngân sách Google Ads 20% để tối ưu ROAS"', '"Increase Google Ads budget 20% to optimize ROAS"')}
                         </p>
                       </div>
                       <div className="bg-slate-700/30 rounded-lg p-2">
                         <div className="flex items-center gap-2 mb-1">
-                          <Activity className="w-4 h-4 text-[#1e6dda]" />
-                          <span className="text-xs text-slate-300">{t('Live', 'Live')}</span>
+                          <Activity className="w-4 h-4 text-[#7db8ff]" />
+                          <span className="text-xs text-[#d2d2d7]">{t('Live', 'Live')}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <div className="w-1.5 h-1.5 rounded-full bg-[#1e6dda] animate-pulse" />
-                          <span className="text-[10px] text-slate-400">{t('23 người online', '23 users online')}</span>
+                          <span className="text-[10px] text-[#d2d2d7]">{t('23 người online', '23 users online')}</span>
                         </div>
                       </div>
                     </div>
@@ -364,14 +364,14 @@ export default function DashboardServicePage() {
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left: Content */}
               <div>
-                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <Target className="w-4 h-4" />
                   {t('TẠI SAO CẦN DASHBOARD?', 'WHY DASHBOARD?')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6">
                   {t('Dữ liệu của bạn đang', 'Your data is')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     {t('nằm rải rác?', 'scattered everywhere?')}
                   </span>
                 </h2>
@@ -396,7 +396,7 @@ export default function DashboardServicePage() {
                       { icon: <BarChart3 className="w-4 h-4" />, name: 'POS/ERP' }
                     ].map((source, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-primary">
+                        <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-[#1859b8]">
                           {source.icon}
                         </div>
                         {source.name}
@@ -407,7 +407,7 @@ export default function DashboardServicePage() {
 
                 <Link
                   href="/contact"
-                  className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+                  className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
                 >
                   {t('Tích hợp dữ liệu của bạn ngay', 'Integrate your data now')}
                   <ArrowRight className="w-5 h-5" />
@@ -422,23 +422,23 @@ export default function DashboardServicePage() {
                     className="group relative bg-white rounded-2xl p-5 border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] group-hover:scale-110 transition-transform">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1859b8] group-hover:scale-110 transition-transform">
                         {item.icon}
                       </div>
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
+                          <XCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0" />
                           <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                         </div>
                         
                         <div className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                           <p className="text-muted-foreground text-sm">{item.solution}</p>
                         </div>
                       </div>
                       
-                      <ArrowUpRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                      <ArrowUpRight className="w-5 h-5 text-[#1859b8] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                     </div>
                   </div>
                 ))}
@@ -451,7 +451,7 @@ export default function DashboardServicePage() {
         <section className="py-12 lg:py-16 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Layers className="w-4 h-4" />
                 {t('MẪU DASHBOARD', 'DASHBOARD TEMPLATES')}
               </span>
@@ -475,7 +475,7 @@ export default function DashboardServicePage() {
                   {/* Header */}
                   <div className={`bg-gradient-to-r ${template.color} p-6 text-white`}>
                     <h3 className="text-xl font-bold mb-2">{template.title}</h3>
-                    <p className="text-sm text-white/80">{template.description}</p>
+                    <p className="text-sm text-white">{template.description}</p>
                     
                     {/* Metrics */}
                     <div className="flex gap-4 mt-4">
@@ -493,7 +493,7 @@ export default function DashboardServicePage() {
                     {/* Platforms */}
                     <div className="flex flex-wrap gap-2 mb-4">
                       {template.platforms.map((platform, i) => (
-                        <span key={i} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full">
+                        <span key={i} className="text-xs bg-slate-100 text-[#515154] px-2 py-1 rounded-full">
                           {platform}
                         </span>
                       ))}
@@ -503,7 +503,7 @@ export default function DashboardServicePage() {
                     <ul className="space-y-2">
                       {template.features.map((feature, i) => (
                         <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <ChevronRight className="w-4 h-4 text-primary" />
+                          <ChevronRight className="w-4 h-4 text-[#1859b8]" />
                           {feature}
                         </li>
                       ))}
@@ -529,19 +529,19 @@ export default function DashboardServicePage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Content */}
               <div>
-                <span className="inline-flex items-center gap-2 bg-[#1e6dda]/20 text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6 backdrop-blur">
+                <span className="inline-flex items-center gap-2 bg-[#1e6dda]/20 text-[#7db8ff] font-semibold text-sm px-5 py-2.5 rounded-full mb-6 backdrop-blur">
                   <Brain className="w-4 h-4" />
                   {t('TÍCH HỢP AI', 'AI INTEGRATION')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
                   {t('Phân tích nâng cao với', 'Advanced analytics with')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     Claude 4.7
                   </span>
                 </h2>
                 
-                <p className="text-lg text-slate-300 leading-relaxed mb-8">
+                <p className="text-lg text-[#d2d2d7] leading-relaxed mb-8">
                   {t(
                     'Không chỉ hiển thị số liệu, dashboard của chúng tôi còn tích hợp Claude 4.7 - AI mạnh mẽ nhất hiện nay - để phân tích, dự đoán và đề xuất chiến lược kinh doanh.',
                     'Not just displaying metrics, our dashboard integrates Claude 4.7 - the most powerful AI today - to analyze, predict and recommend business strategies.'
@@ -551,12 +551,12 @@ export default function DashboardServicePage() {
                 {/* AI Demo */}
                 <div className="bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700 p-4 mb-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Bot className="w-5 h-5 text-[#1e6dda]" />
-                    <span className="text-sm font-medium text-slate-300">AI Assistant</span>
-                    <span className="text-xs bg-[#1e6dda]/20 text-[#1e6dda] px-2 py-0.5 rounded-full">Claude 4.7</span>
+                    <Bot className="w-5 h-5 text-[#1859b8]" />
+                    <span className="text-sm font-medium text-[#d2d2d7]">AI Assistant</span>
+                    <span className="text-xs bg-[#1e6dda]/20 text-[#7db8ff] px-2 py-0.5 rounded-full">Claude 4.7</span>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-3 mb-3">
-                    <p className="text-sm text-slate-300 italic">{t('"Phân tích hiệu quả quảng cáo tháng này"', '"Analyze this month\'s ad performance"')}</p>
+                    <p className="text-sm text-[#d2d2d7] italic">{t('"Phân tích hiệu quả quảng cáo tháng này"', '"Analyze this month\'s ad performance"')}</p>
                   </div>
                   <div className="bg-[#1e6dda]/10 border border-[#1e6dda]/20 rounded-lg p-3">
                     <p className="text-sm text-slate-200 leading-relaxed">
@@ -583,11 +583,11 @@ export default function DashboardServicePage() {
                     key={index}
                     className="bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700 p-5 hover:bg-slate-800/70 transition-colors"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-[#1e6dda] flex items-center justify-center text-[#1e6dda] mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-[#1e6dda] flex items-center justify-center text-[#1859b8] mb-4">
                       {feature.icon}
                     </div>
                     <h4 className="font-bold text-white mb-2">{feature.title}</h4>
-                    <p className="text-sm text-slate-400">{feature.description}</p>
+                    <p className="text-sm text-[#515154]">{feature.description}</p>
                   </div>
                 ))}
               </div>
@@ -604,22 +604,22 @@ export default function DashboardServicePage() {
                 <div className="bg-slate-900 rounded-2xl p-8 text-white">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-12 h-12 rounded-xl bg-[#1e6dda]/20 flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-[#1e6dda]" />
+                      <Shield className="w-6 h-6 text-[#1859b8]" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold">{t('Bảo mật cấp doanh nghiệp', 'Enterprise-grade Security')}</h3>
-                      <p className="text-sm text-slate-400">{t('Dữ liệu của bạn được bảo vệ tuyệt đối', 'Your data is absolutely protected')}</p>
+                      <p className="text-sm text-[#515154]">{t('Dữ liệu của bạn được bảo vệ tuyệt đối', 'Your data is absolutely protected')}</p>
                     </div>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
                     {securityFeatures.map((feature, index) => (
                       <div key={index} className="bg-slate-800/50 rounded-xl p-4">
-                        <div className="w-8 h-8 rounded-lg bg-[#1e6dda]/10 flex items-center justify-center text-[#1e6dda] mb-3">
+                        <div className="w-8 h-8 rounded-lg bg-[#1e6dda]/10 flex items-center justify-center text-[#1859b8] mb-3">
                           {feature.icon}
                         </div>
                         <h4 className="font-semibold text-sm text-white mb-1">{feature.title}</h4>
-                        <p className="text-xs text-slate-400">{feature.description}</p>
+                        <p className="text-xs text-[#515154]">{feature.description}</p>
                       </div>
                     ))}
                   </div>
@@ -628,12 +628,12 @@ export default function DashboardServicePage() {
                     <div className="flex items-center gap-4">
                       <div className="flex -space-x-2">
                         {['ISO 27001', 'GDPR', 'SOC 2'].map((cert, i) => (
-                          <div key={i} className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-[8px] font-bold text-slate-300 border-2 border-slate-800">
+                          <div key={i} className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-[8px] font-bold text-[#d2d2d7] border-2 border-slate-800">
                             {cert.split(' ')[0]}
                           </div>
                         ))}
                       </div>
-                      <span className="text-sm text-slate-400">{t('Tuân thủ chuẩn bảo mật quốc tế', 'International security compliance')}</span>
+                      <span className="text-sm text-[#515154]">{t('Tuân thủ chuẩn bảo mật quốc tế', 'International security compliance')}</span>
                     </div>
                   </div>
                 </div>
@@ -641,14 +641,14 @@ export default function DashboardServicePage() {
 
               {/* Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <Zap className="w-4 h-4" />
                   {t('AN TOÀN & REAL-TIME', 'SECURE & REAL-TIME')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground leading-tight mb-6">
                   {t('Dữ liệu bảo mật,', 'Secure data,')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     {t('cập nhật tức thì', 'instant updates')}
                   </span>
                 </h2>
@@ -679,7 +679,7 @@ export default function DashboardServicePage() {
                     }
                   ].map((item, index) => (
                     <div key={index} className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-                      <div className="w-10 h-10 rounded-lg bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda]">
+                      <div className="w-10 h-10 rounded-lg bg-[#f5f5f7] flex items-center justify-center text-[#1859b8]">
                         {item.icon}
                       </div>
                       <div>
@@ -698,7 +698,7 @@ export default function DashboardServicePage() {
         <section className="pt-12 pb-20 lg:pt-16 lg:pb-24 bg-slate-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Layers className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </span>
@@ -720,7 +720,7 @@ export default function DashboardServicePage() {
                     </div>
                     
                     <div className="lg:pt-10 bg-white rounded-xl p-5 border border-border hover:shadow-lg transition-shadow h-full">
-                      <div className="text-xs text-primary font-semibold mb-2">{step.duration}</div>
+                      <div className="text-xs text-[#1859b8] font-semibold mb-2">{step.duration}</div>
                       <h4 className="font-bold text-foreground mb-2">{step.title}</h4>
                       <p className="text-sm text-muted-foreground">{step.description}</p>
                     </div>
@@ -737,14 +737,14 @@ export default function DashboardServicePage() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
               {t('Bứt phá với dữ liệu ngay hôm nay', 'Break through with data today')}
             </h2>
-            <p className="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-white mb-8 max-w-2xl mx-auto">
               {t(
                 'Đặt lịch demo miễn phí để xem dashboard hoạt động thực tế và nhận tư vấn từ chuyên gia.',
                 'Schedule a free demo to see the dashboard in action and get expert consultation.'
               )}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-white text-primary hover:bg-slate-100 shadow-xl">
+              <Button asChild size="lg" className="bg-white text-[#1859b8] hover:bg-slate-100 shadow-xl">
                 <Link href="/contact?service=Dashboard%20d%E1%BB%AF%20li%E1%BB%87u">
                   {t('Đặt lịch demo miễn phí', 'Book Free Demo')}
                   <Play className="w-4 h-4 ml-2" />

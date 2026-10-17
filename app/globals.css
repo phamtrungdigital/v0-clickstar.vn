@@ -28,7 +28,7 @@
   --accent-foreground: #ffffff;
   
   --muted: #f5f5f7;
-  --muted-foreground: #6e6e73;
+  --muted-foreground: #515154;
   
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
@@ -259,7 +259,7 @@ html {
   --accent: #1e6dda;
   --accent-foreground: #ffffff;
   --muted: #f5f5f7;
-  --muted-foreground: #6e6e73;
+  --muted-foreground: #515154;
   --border: #e0e0e0;
   --input: #e0e0e0;
   --ring: #0071e3;
@@ -294,26 +294,45 @@ html {
 .theme-apple [data-cms-field='eyebrow'] > span[class*='rounded-full']:first-child { display: none; }
 
 /* Khối (tile) toàn chiều rộng: màu nền đổi chính là đường chia */
+/* Nhãn nhỏ trên khối tối phải sáng, không dùng xám của khối sáng */
+.theme-apple .ap-dark [data-cms-field='eyebrow'] { color: #d2d2d7; }
 .ap-tile { padding-block: clamp(48px, 8vw, 88px); text-align: center; }
 .ap-light { background: #ffffff; color: #1d1d1f; }
 .ap-parchment { background: #f5f5f7; color: #1d1d1f; }
 .ap-dark { background: #272729; color: #ffffff; }
 .ap-hero-title { font-size: clamp(34px, 6vw, 56px); font-weight: 600; line-height: 1.12; letter-spacing: -0.005em; text-wrap: balance; }
 .ap-display { font-size: clamp(30px, 4.6vw, 40px); font-weight: 600; line-height: 1.15; letter-spacing: -0.005em; text-wrap: balance; }
-.ap-lead { font-size: clamp(19px, 2.6vw, 28px); font-weight: 400; line-height: 1.28; letter-spacing: 0; color: #6e6e73; text-wrap: balance; }
-.ap-dark .ap-lead { color: #a1a1a6; }
+.ap-lead { font-size: clamp(19px, 2.6vw, 28px); font-weight: 400; line-height: 1.28; letter-spacing: 0; color: #515154; text-wrap: balance; }
+.ap-dark .ap-lead { color: #d2d2d7; }
 .ap-stack { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 .ap-cta-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; }
 .ap-btn { display: inline-flex; align-items: center; justify-content: center; font-size: 17px; letter-spacing: -0.022em; padding: 11px 22px; border-radius: 9999px; border: 1px solid #1e6dda; cursor: pointer; transition: transform 0.12s ease; }
 .ap-btn:active { transform: scale(0.95); }
 .ap-btn-primary { background: #1e6dda; color: #ffffff; }
-.ap-btn-ghost { background: transparent; color: #1e6dda; }
-.ap-dark .ap-btn-ghost { color: #4da3ff; border-color: #4da3ff; }
-.ap-link { color: #1e6dda; font-size: 17px; }
+.ap-btn-ghost { background: transparent; color: #1859b8; border-color: #1859b8; }
+.ap-dark .ap-btn-ghost { color: #7db8ff; border-color: #7db8ff; }
+.ap-link { color: #1859b8; font-size: 17px; }
 .ap-link::after { content: ' \203A'; }
-.ap-dark .ap-link { color: #4da3ff; }
+.ap-dark .ap-link { color: #7db8ff; }
 .ap-product { border-radius: 18px; overflow: hidden; background: #ffffff; margin-inline: auto; }
 .ap-product-shadow { box-shadow: rgba(0, 0, 0, 0.22) 3px 5px 30px 0; }
 .theme-apple a:focus-visible,
 .theme-apple button:focus-visible { outline: 2px solid #0071e3; outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .ap-btn { transition: none; } }
+
+/* ── Lưới an toàn tương phản (giữ chữ luôn rõ trên nền tối và nền xanh) ─────────
+   Các class màu chữ ở nhiều trang cũ được viết cho nền sáng; khi nằm trong khối tối
+   hoặc khối xanh thì ghi đè về màu sáng. Chỉ khớp ĐÚNG tên class (không khớp biến thể
+   hover:/data-[...]:), và bỏ qua phần tử tự có nền trắng. Viết ngoài @layer để thắng tiện ích. */
+:is(.ap-dark, .bg-\[\#272729\], .bg-\[\#1d1d1f\], .bg-foreground, .bg-slate-950, .bg-slate-900, .bg-slate-800, .bg-gray-900, .bg-gray-800) :is(.text-\[\#515154\], .text-muted-foreground, .text-slate-500, .text-gray-500):not([class*="bg-white"]) {
+  color: #d2d2d7;
+}
+:is(.ap-dark, .bg-\[\#272729\], .bg-\[\#1d1d1f\], .bg-foreground, .bg-slate-950, .bg-slate-900, .bg-slate-800, .bg-gray-900, .bg-gray-800) .text-\[\#1859b8\]:not([class*="bg-white"]):not([class*="bg-[#1e6dda]"]) {
+  color: #7db8ff;
+}
+:is(.bg-\[\#1e6dda\], .bg-primary, .bg-\[\#1859b8\]):not(a):not(button) :is(.text-white\/50, .text-white\/60, .text-white\/70, .text-white\/75, .text-white\/80, .text-white\/85, .text-white\/90, .text-blue-100, .text-blue-200, .text-muted-foreground) {
+  color: #ffffff;
+}
+:is(.bg-\[\#1e6dda\], .bg-primary):not(a):not(button) .text-\[\#1859b8\]:not([class*="bg-"]) {
+  color: #ffffff;
+}

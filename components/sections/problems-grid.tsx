@@ -6,13 +6,13 @@ import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'
 
 const COLOR_MAP = {
-  blue: 'bg-[#eaf2fd] text-[#1e6dda]',
-  purple: 'bg-[#f5f5f7] text-[#1e6dda]',
-  pink: 'bg-[#f5f5f7] text-[#1e6dda]',
-  amber: 'bg-[#f5f5f7] text-[#1e6dda]',
-  emerald: 'bg-[#f5f5f7] text-[#1e6dda]',
-  cyan: 'bg-[#f5f5f7] text-[#1e6dda]',
-  rose: 'bg-[#f5f5f7] text-[#1e6dda]',
+  blue: 'bg-[#eaf2fd] text-[#1859b8]',
+  purple: 'bg-[#f5f5f7] text-[#1859b8]',
+  pink: 'bg-[#f5f5f7] text-[#1859b8]',
+  amber: 'bg-[#f5f5f7] text-[#1859b8]',
+  emerald: 'bg-[#f5f5f7] text-[#1859b8]',
+  cyan: 'bg-[#f5f5f7] text-[#1859b8]',
+  rose: 'bg-[#f5f5f7] text-[#1859b8]',
 }
 
 function renderIcon(name: string, className: string) {
@@ -30,12 +30,12 @@ export function ProblemsGrid() {
     <section data-cms-section="problems_grid" className="py-20 lg:py-28 bg-secondary/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full mb-6">
+          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full mb-6">
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
           <h2 data-cms-field="heading" className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>

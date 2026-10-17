@@ -19,7 +19,7 @@ export function AboutValuesSection({ content }: { content: AboutValuesContent })
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6"
           >
             {renderIcon('Heart', 'w-4 h-4')}
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -29,7 +29,7 @@ export function AboutValuesSection({ content }: { content: AboutValuesContent })
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -46,7 +46,7 @@ export function AboutValuesSection({ content }: { content: AboutValuesContent })
               data-cms-item-index={index}
               className="group relative bg-white rounded-2xl p-8 shadow-sm border border-border/50 hover:shadow-xl hover:border-primary/20 transition-all duration-300 cursor-pointer"
             >
-              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center text-[#144c97] mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                 {renderIcon(value.icon, 'w-6 h-6')}
               </div>
               <h3 className="text-lg font-bold text-foreground mb-3">

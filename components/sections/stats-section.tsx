@@ -62,7 +62,7 @@ export function StatsSection({ content }: { content: StatsContent }) {
     <section ref={sectionRef} data-cms-section="stats" className="ap-tile ap-dark" id="results">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="ap-stack">
-          <span data-cms-field="eyebrow" className="text-sm text-[#a1a1a6] tracking-[-0.016em]">
+          <span data-cms-field="eyebrow" className="text-sm text-[#d2d2d7] tracking-[-0.016em]">
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
           <h2 data-cms-field="heading" className="ap-display">
@@ -106,7 +106,7 @@ function StatItem({
         {formatNumber(count)}
         {suffix}
       </div>
-      <p className="mt-2 text-base lg:text-[17px] text-[#a1a1a6] max-w-[220px] mx-auto">{label}</p>
+      <p className="mt-2 text-base lg:text-[17px] text-[#d2d2d7] max-w-[220px] mx-auto">{label}</p>
     </div>
   )
 }

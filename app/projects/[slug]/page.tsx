@@ -70,7 +70,7 @@ export default async function ProjectDetailPage({
 
           <div className="flex flex-wrap items-center gap-3 mb-4">
             {project.industry_vi && (
-              <span className="inline-flex items-center gap-1.5 bg-primary/10 text-primary text-xs font-semibold px-3 py-1.5 rounded-full">
+              <span className="inline-flex items-center gap-1.5 bg-primary/10 text-[#144c97] text-xs font-semibold px-3 py-1.5 rounded-full">
                 <Briefcase className="w-3 h-3" />
                 {project.industry_vi}
               </span>
@@ -95,7 +95,7 @@ export default async function ProjectDetailPage({
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 max-w-3xl">
               {project.metrics.map((m, i) => (
                 <div key={i} className="bg-white border border-border/50 rounded-xl p-4 lg:p-5 shadow-sm">
-                  <div className="text-2xl lg:text-3xl font-extrabold text-primary mb-1">{m.value}</div>
+                  <div className="text-2xl lg:text-3xl font-extrabold text-[#1859b8] mb-1">{m.value}</div>
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">{m.label_vi}</div>
                 </div>
               ))}
@@ -141,7 +141,7 @@ export default async function ProjectDetailPage({
               href={project.project_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary font-semibold rounded-full hover:bg-primary hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-[#1859b8] font-semibold rounded-full hover:bg-primary hover:text-white transition-colors"
             >
               {t('Truy cập website khách hàng', 'Visit the live website')}
               <ExternalLink className="w-4 h-4" />

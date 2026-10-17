@@ -42,7 +42,7 @@ export function CTASection({ content }: { content: CtaContent }) {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
               {content.partner_names.map((partner) => (
-                <div key={partner} className="text-xl font-semibold text-[#86868b]">
+                <div key={partner} className="text-xl font-semibold text-[#515154]">
                   {partner}
                 </div>
               ))}

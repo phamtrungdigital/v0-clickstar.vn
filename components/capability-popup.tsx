@@ -91,14 +91,14 @@ export function CapabilityPopup() {
           className="fixed left-1/2 top-1/2 z-[70] flex w-[calc(100vw-24px)] max-w-[880px] max-h-[90dvh] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl bg-white shadow-2xl outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 md:flex-row"
         >
           <Dialog.Close
-            className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-600 shadow-md backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+            className="absolute right-3 top-3 z-20 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-[#515154] shadow-md backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             aria-label={t('Đóng', 'Close')}
           >
             <X className="h-5 w-5" />
           </Dialog.Close>
 
           {/* Cột trái: panel xanh thương hiệu */}
-          <div className="relative shrink-0 overflow-hidden bg-[#f5f5f7] px-6 py-7 text-white md:w-[44%] md:px-8 md:py-9">
+          <div className="relative shrink-0 overflow-hidden bg-[#1e6dda] px-6 py-7 text-white md:w-[44%] md:px-8 md:py-9">
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10"
@@ -111,14 +111,14 @@ export function CapabilityPopup() {
               <div className="text-lg font-extrabold tracking-tight">
                 click<span className="text-white/70">star.</span>
               </div>
-              <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
+              <span className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#1859b8] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em]">
                 <span className="h-1.5 w-1.5 rounded-full bg-white" />
                 {t('Hồ sơ năng lực', 'Capability profile')}
               </span>
               <Dialog.Title className="mt-4 text-2xl font-extrabold leading-[1.15] tracking-tight md:text-[28px]">
                 {t('Đối tác tăng trưởng số cho doanh nghiệp Việt.', 'A digital growth partner for Vietnamese businesses.')}
               </Dialog.Title>
-              <p className="mt-3 text-sm leading-relaxed text-white/80">
+              <p className="mt-3 text-sm leading-relaxed text-white">
                 {t(
                   'Marketing, dữ liệu, công nghệ và AI trong cùng một hệ thống.',
                   'Marketing, data, technology and AI in one system.',
@@ -128,7 +128,7 @@ export function CapabilityPopup() {
                 {STATS.map((s) => (
                   <div key={s.value}>
                     <div className="text-xl font-extrabold leading-none md:text-2xl">{s.value}</div>
-                    <div className="mt-1.5 text-[11px] leading-snug text-white/75">{pick(s.vi, s.en)}</div>
+                    <div className="mt-1.5 text-[11px] leading-snug text-white">{pick(s.vi, s.en)}</div>
                   </div>
                 ))}
               </div>
@@ -139,7 +139,7 @@ export function CapabilityPopup() {
           <div className="relative flex min-h-0 flex-1 flex-col bg-white px-6 py-7 md:px-8 md:py-9">
             <div className="pr-10">
               <h3 className="text-base font-bold text-slate-900">{t('Năng lực cốt lõi', 'Core capabilities')}</h3>
-              <p className="mt-1 text-[13px] text-slate-500">
+              <p className="mt-1 text-[13px] text-[#515154]">
                 {t('Tám nhóm năng lực, triển khai riêng lẻ hoặc trọn gói.', 'Eight capabilities, delivered alone or together.')}
               </p>
             </div>
@@ -158,7 +158,7 @@ export function CapabilityPopup() {
                       </span>
                       <span className="min-w-0">
                         <span className="block text-[13px] font-semibold leading-tight text-slate-900">{pick(c.vi, c.en)}</span>
-                        <span className="mt-0.5 block text-[11px] leading-snug text-slate-500">{pick(c.descVi, c.descEn)}</span>
+                        <span className="mt-0.5 block text-[11px] leading-snug text-[#515154]">{pick(c.descVi, c.descEn)}</span>
                       </span>
                     </li>
                   )

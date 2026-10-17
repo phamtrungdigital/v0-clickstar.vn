@@ -49,13 +49,13 @@ export default async function ContactPage({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(30,109,218,0.08),transparent_55%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-5">
+            <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-5">
               <Sparkles className="w-3.5 h-3.5" />
               {t('Tư vấn miễn phí', 'Free consultation')}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance">
               {t('Để Click Star đồng hành', 'Let Click Star power')}{' '}
-              <span className="text-primary">{t('cùng bạn chuyển đổi số', 'your digital transformation')}</span>
+              <span className="text-[#1859b8]">{t('cùng bạn chuyển đổi số', 'your digital transformation')}</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
               {t(
@@ -95,7 +95,7 @@ export default async function ContactPage({
                 <ul className="space-y-4">
                   <li className="flex items-start gap-3">
                     <span className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Phone className="w-4 h-4 text-primary" />
+                      <Phone className="w-4 h-4 text-[#1859b8]" />
                     </span>
                     <div>
                       <div className="text-xs text-white/60 mb-0.5">Hotline</div>
@@ -106,7 +106,7 @@ export default async function ContactPage({
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Mail className="w-4 h-4 text-primary" />
+                      <Mail className="w-4 h-4 text-[#1859b8]" />
                     </span>
                     <div>
                       <div className="text-xs text-white/60 mb-0.5">Email</div>
@@ -117,7 +117,7 @@ export default async function ContactPage({
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-4 h-4 text-primary" />
+                      <MapPin className="w-4 h-4 text-[#1859b8]" />
                     </span>
                     <div>
                       <div className="text-xs text-white/60 mb-0.5">{t('Văn phòng', 'Office')}</div>
@@ -126,7 +126,7 @@ export default async function ContactPage({
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-4 h-4 text-primary" />
+                      <Clock className="w-4 h-4 text-[#1859b8]" />
                     </span>
                     <div>
                       <div className="text-xs text-white/60 mb-0.5">{t('Giờ làm việc', 'Working hours')}</div>
@@ -149,7 +149,7 @@ export default async function ContactPage({
                     <MessageCircle className="w-6 h-6" />
                   </span>
                   <div className="flex-1">
-                    <div className="text-sm text-white/80">{t('Tư vấn nhanh qua', 'Chat with us on')}</div>
+                    <div className="text-sm text-white">{t('Tư vấn nhanh qua', 'Chat with us on')}</div>
                     <div className="text-lg font-bold">Zalo Click Star</div>
                   </div>
                   <span className="text-2xl">→</span>

@@ -282,7 +282,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-white font-bold text-sm leading-tight">{botName}</h3>
-                <p className="text-[11px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+                <p className="text-[11px] text-[#515154] flex items-center gap-1.5 mt-0.5">
                   <span className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full" />
                   {t.online}
                 </p>
@@ -290,7 +290,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
               <button
                 onClick={() => setOpen(false)}
                 aria-label={t.closeLabel}
-                className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition-colors"
+                className="w-10 h-10 sm:w-8 sm:h-8 rounded-lg hover:bg-white/10 flex items-center justify-center text-[#d2d2d7] hover:text-white transition-colors"
               >
                 <X className="w-5 h-5 sm:w-4.5 sm:h-4.5" />
               </button>
@@ -307,7 +307,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
               {/* Quick prompts (shown only at start) */}
               {messages.length === 0 && !isPending && quickPrompts.length > 0 && (
                 <div className="space-y-1.5 pt-1">
-                  <p className="text-[11px] text-slate-500 px-1 uppercase tracking-wider font-medium">
+                  <p className="text-[11px] text-[#515154] px-1 uppercase tracking-wider font-medium">
                     {t.quickLabel}
                   </p>
                   {quickPrompts.map((p) => (
@@ -363,8 +363,8 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
               {/* Error */}
               {error && (
                 <div className="flex items-start gap-2 p-3 bg-[#1e6dda]/10 border border-[#1e6dda]/30 rounded-lg">
-                  <AlertCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
-                  <p className="text-xs text-[#1e6dda]">{error}</p>
+                  <AlertCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
+                  <p className="text-xs text-[#1859b8]">{error}</p>
                 </div>
               )}
             </div>
@@ -406,7 +406,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
                   {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                 </button>
               </div>
-              <p className="text-[10px] text-slate-500 mt-1.5 text-center">{poweredBy}</p>
+              <p className="text-[10px] text-[#515154] mt-1.5 text-center">{poweredBy}</p>
             </form>
           </div>
         </div>

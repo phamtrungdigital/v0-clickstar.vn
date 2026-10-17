@@ -179,9 +179,10 @@ export function PersonalizeBanner() {
   const styles = campaign.styles ?? {}
   const position = styles.position ?? 'bottom-right'
   const size = styles.size ?? 'default'
-  const gradientFrom = styles.gradient_from ?? '#1e6dda'
-  const gradientTo = styles.gradient_to ?? '#1e6dda'
-  const buttonColor = styles.button_color ?? '#1e6dda'
+  // Màu popup cố định theo thương hiệu: bỏ qua màu cam/tím admin từng lưu trong campaign
+  const gradientFrom = '#1e6dda'
+  const gradientTo = '#1859b8'
+  const buttonColor = '#1e6dda'
 
   const ctaHref = campaign.content.service_param
     ? `${campaign.content.cta_href}?service=${encodeURIComponent(campaign.content.service_param)}&utm_source=banner_personalize&utm_campaign=${encodeURIComponent(campaign.name)}`
@@ -242,14 +243,14 @@ export function PersonalizeBanner() {
             </div>
             <div>
               <div className="text-white font-bold text-sm leading-tight">Click Star</div>
-              <div className="text-[10px] uppercase tracking-widest text-white/85 font-semibold">
+              <div className="text-[10px] uppercase tracking-widest text-white font-semibold">
                 {campaign.content.header_label}
               </div>
             </div>
           </div>
           <button
             onClick={handleDismiss}
-            className="p-1.5 hover:bg-white/20 rounded-full text-white/90 hover:text-white transition-colors flex-shrink-0"
+            className="p-1.5 hover:bg-white/20 rounded-full text-white hover:text-white transition-colors flex-shrink-0"
             aria-label={t('Đóng', 'Close')}
           >
             <X className="w-4 h-4" />

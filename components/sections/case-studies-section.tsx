@@ -29,7 +29,7 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
           <div>
             <div
               data-cms-field="eyebrow"
-              className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full mb-4"
+              className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-xs uppercase tracking-wider px-4 py-2 rounded-full mb-4"
             >
               <span className="w-1.5 h-1.5 bg-primary rounded-full" />
               {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -40,7 +40,7 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
               className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight text-balance"
             >
               {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-              <span className="text-primary">
+              <span className="text-[#1859b8]">
                 {t(content.heading_highlight.vi, content.heading_highlight.en)}
               </span>
             </h2>
@@ -50,7 +50,7 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
             <Link
               data-cms-field="view_all"
               href={content.view_all_href}
-              className="hidden sm:inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all duration-200"
+              className="hidden sm:inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all duration-200"
             >
               {t(content.view_all_label.vi, content.view_all_label.en)}
               <ArrowRight className="w-4 h-4" />
@@ -110,7 +110,7 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
         <div className="sm:hidden mt-8 text-center">
           <Link
             href={content.view_all_href}
-            className="inline-flex items-center gap-2 text-primary font-semibold"
+            className="inline-flex items-center gap-2 text-[#1859b8] font-semibold"
           >
             {t(content.view_all_label.vi, content.view_all_label.en)}
             <ArrowRight className="w-4 h-4" />
@@ -145,7 +145,7 @@ function CaseStudyCard({
         className="object-cover transition-transform duration-500 group-hover:scale-110"
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
-      <div className="absolute inset-0 bg-[#f5f5f7] opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
         {study.tags.map((tag) => (
           <span
@@ -163,7 +163,7 @@ function CaseStudyCard({
         </h3>
       </div>
       <div className="absolute bottom-5 right-5 w-10 h-10 rounded-full bg-white flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-        <ArrowRight className="w-5 h-5 text-primary" />
+        <ArrowRight className="w-5 h-5 text-[#1859b8]" />
       </div>
     </div>
   )

@@ -341,14 +341,14 @@ export default function AIIntegrationPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left content */}
               <div>
-                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-primary px-4 py-2 rounded-full mb-6 shadow-sm">
+                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-[#1859b8] px-4 py-2 rounded-full mb-6 shadow-sm">
                   <Sparkles className="w-4 h-4" />
                   <span className="text-sm font-medium">{t('Công nghệ AI tiên tiến nhất 2026', 'The most advanced AI technology of 2026')}</span>
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
                   {t('Tích hợp', 'Integrate')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     AI
                   </span>{' '}
                   {t('vào Hoạt động Kinh doanh', 'into Your Business Operations')}
@@ -368,7 +368,7 @@ export default function AIIntegrationPage() {
                   </Link>
                   <Link
                     href="#use-cases"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-primary font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-[#1859b8] font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
                   >
                     <Play className="w-5 h-5" />
                     {t('Xem use cases', 'Explore use cases')}
@@ -379,7 +379,7 @@ export default function AIIntegrationPage() {
                 <div className="flex flex-wrap gap-6">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-primary" />
+                      <TrendingUp className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">40%</p>
@@ -388,7 +388,7 @@ export default function AIIntegrationPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Users className="w-5 h-5 text-primary" />
+                      <Users className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">500+</p>
@@ -397,7 +397,7 @@ export default function AIIntegrationPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Star className="w-5 h-5 text-primary" />
+                      <Star className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">4.9/5</p>
@@ -410,7 +410,7 @@ export default function AIIntegrationPage() {
               {/* Right - AI Applications Grid */}
               <div className="relative">
                 <div className="bg-white/70 backdrop-blur-sm border border-primary/10 rounded-3xl p-6 shadow-xl">
-                  <p className="text-sm font-semibold text-primary mb-4 uppercase tracking-wider">AI Applications</p>
+                  <p className="text-sm font-semibold text-[#1859b8] mb-4 uppercase tracking-wider">AI Applications</p>
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { name: 'Content', icon: FileText, color: 'from-primary to-primary-dark' },
@@ -461,7 +461,7 @@ export default function AIIntegrationPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {transformationStats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <p className="text-3xl md:text-4xl font-bold text-primary">{stat.value}</p>
+                  <p className="text-3xl md:text-4xl font-bold text-[#1859b8]">{stat.value}</p>
                   <p className="text-sm text-foreground font-medium mt-1">{t(stat.label.vi, stat.label.en)}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{t(stat.desc.vi, stat.desc.en)}</p>
                 </div>
@@ -479,9 +479,9 @@ export default function AIIntegrationPage() {
                 {t('TẠI SAO CẦN AI', 'WHY AI')}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('AI đang thay đổi', 'AI is changing')} <span className="text-primary">{t('cuộc chơi', 'the game')}</span> {t('kinh doanh', 'in business')}
+                {t('AI đang thay đổi', 'AI is changing')} <span className="text-[#1859b8]">{t('cuộc chơi', 'the game')}</span> {t('kinh doanh', 'in business')}
               </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
+              <p className="text-[#515154] max-w-2xl mx-auto">
                 {t('Doanh nghiệp không tích hợp AI sẽ bị tụt hậu. AI không thay thế con người, nhưng người dùng AI sẽ thay thế những người không dùng.', "Businesses that skip AI will fall behind. AI won't replace people — but people who use AI will replace those who don't.")}
               </p>
             </div>
@@ -493,10 +493,10 @@ export default function AIIntegrationPage() {
                   className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-primary/30 transition-all group"
                 >
                   <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-all">
-                    <item.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
+                    <item.icon className="w-6 h-6 text-[#1859b8] group-hover:text-white transition-colors" />
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">{t(item.title.vi, item.title.en)}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
+                  <p className="text-[#515154] text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
                 </div>
               ))}
             </div>
@@ -507,7 +507,7 @@ export default function AIIntegrationPage() {
         <section id="use-cases" className="py-16 lg:py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
                 {t('Ứng dụng AI', 'AI in action')}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -526,10 +526,10 @@ export default function AIIntegrationPage() {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all">
-                      <useCase.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
+                      <useCase.icon className="w-6 h-6 text-[#1859b8] group-hover:text-white transition-colors" />
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-primary">{useCase.stats}</p>
+                      <p className="text-2xl font-bold text-[#1859b8]">{useCase.stats}</p>
                       <p className="text-xs text-muted-foreground">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>
@@ -537,7 +537,7 @@ export default function AIIntegrationPage() {
                   <p className="text-muted-foreground text-sm mb-4">{t(useCase.description.vi, useCase.description.en)}</p>
                   <div className="flex flex-wrap gap-2">
                     {useCase.features.map((feature, i) => (
-                      <span key={i} className="text-xs bg-primary/5 text-primary px-2 py-1 rounded-full">
+                      <span key={i} className="text-xs bg-primary/5 text-[#1859b8] px-2 py-1 rounded-full">
                         {t(feature.vi, feature.en)}
                       </span>
                     ))}
@@ -557,9 +557,9 @@ export default function AIIntegrationPage() {
                 {t('HỆ SINH THÁI AI', 'THE AI ECOSYSTEM')}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('Công cụ AI', "The world's")} <span className="text-primary">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
+                {t('Công cụ AI', "The world's")} <span className="text-[#1859b8]">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
               </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
+              <p className="text-[#515154] max-w-2xl mx-auto">
                 {t('ClickStar làm việc với các nền tảng AI mạnh nhất để mang lại kết quả tối ưu cho doanh nghiệp', 'ClickStar works with the most powerful AI platforms to deliver the best results for your business')}
               </p>
             </div>
@@ -580,17 +580,17 @@ export default function AIIntegrationPage() {
                     </div>
                     <div>
                       <h3 className="font-bold text-white">{tool.name}</h3>
-                      <p className="text-xs text-gray-400">{tool.provider}</p>
+                      <p className="text-xs text-[#515154]">{tool.provider}</p>
                     </div>
                   </div>
-                  <span className="inline-block text-xs bg-primary/20 text-primary px-2 py-0.5 rounded mb-3">
+                  <span className="inline-block text-xs bg-primary/20 text-[#1859b8] px-2 py-0.5 rounded mb-3">
                     {t(tool.category.vi, tool.category.en)}
                   </span>
-                  <p className="text-sm text-gray-400 mb-4">{t(tool.description.vi, tool.description.en)}</p>
+                  <p className="text-sm text-[#515154] mb-4">{t(tool.description.vi, tool.description.en)}</p>
                   <ul className="space-y-1">
                     {tool.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-xs text-gray-500">
-                        <CheckCircle2 className="w-3 h-3 text-primary" />
+                      <li key={i} className="flex items-center gap-2 text-xs text-[#515154]">
+                        <CheckCircle2 className="w-3 h-3 text-[#1859b8]" />
                         {t(feature.vi, feature.en)}
                       </li>
                     ))}
@@ -611,7 +611,7 @@ export default function AIIntegrationPage() {
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
                 {t('Quy trình', 'Our process')}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -632,7 +632,7 @@ export default function AIIntegrationPage() {
                     <div className="pt-4">
                       <h3 className="text-lg font-bold text-foreground mb-2">{t(step.title.vi, step.title.en)}</h3>
                       <p className="text-muted-foreground text-sm mb-4">{t(step.description.vi, step.description.en)}</p>
-                      <span className="inline-flex items-center gap-1 text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-xs text-[#144c97] font-medium bg-primary/10 px-2 py-1 rounded-full">
                         <Clock className="w-3 h-3" />
                         {t(step.duration.vi, step.duration.en)}
                       </span>
@@ -640,7 +640,7 @@ export default function AIIntegrationPage() {
                   </div>
                   {index < integrationProcess.length - 1 && (
                     <div className="hidden lg:flex items-center justify-center absolute top-0 -right-5 h-full w-10 z-10 pointer-events-none">
-                      <ChevronRight className="w-6 h-6 text-primary/40" />
+                      <ChevronRight className="w-6 h-6 text-[#1859b8]/40" />
                     </div>
                   )}
                 </div>
@@ -659,7 +659,7 @@ export default function AIIntegrationPage() {
                   {t('TIN TỨC AI', 'AI NEWS')}
                 </span>
                 <h2 className="text-3xl md:text-4xl font-bold text-white">
-                  {t('Bài viết', 'Our')} <span className="text-primary">{t('mới nhất', 'latest')}</span> {t('về AI', 'AI articles')}
+                  {t('Bài viết', 'Our')} <span className="text-[#1859b8]">{t('mới nhất', 'latest')}</span> {t('về AI', 'AI articles')}
                 </h2>
               </div>
               <Link 
@@ -682,13 +682,13 @@ export default function AIIntegrationPage() {
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
-                    <div className="absolute inset-0 bg-[#f5f5f7]" />
-                    <span className="absolute top-3 left-3 text-xs bg-white text-primary font-medium px-2 py-1 rounded shadow-sm">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <span className="absolute top-3 left-3 text-xs bg-white text-[#1859b8] font-medium px-2 py-1 rounded shadow-sm">
                       {article.category}
                     </span>
                   </div>
                   <div className="p-4">
-                    <div className="flex items-center gap-3 text-xs text-gray-500 mb-2">
+                    <div className="flex items-center gap-3 text-xs text-[#515154] mb-2">
                       <span>{article.date}</span>
                       <span className="w-1 h-1 bg-gray-500 rounded-full" />
                       <span>{t(article.readTime.vi, article.readTime.en)}</span>
@@ -696,7 +696,7 @@ export default function AIIntegrationPage() {
                     <h3 className="font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">
                       {t(article.title.vi, article.title.en)}
                     </h3>
-                    <p className="text-sm text-gray-400 line-clamp-2">
+                    <p className="text-sm text-[#515154] line-clamp-2">
                       {t(article.excerpt.vi, article.excerpt.en)}
                     </p>
                   </div>

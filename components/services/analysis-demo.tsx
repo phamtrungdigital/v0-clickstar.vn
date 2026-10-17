@@ -37,19 +37,19 @@ type Outcome = { label: string; value: string }
 
 const TONE_STYLE: Record<Tone, { chip: string; icon: React.ReactNode }> = {
   risk: {
-    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
+    chip: 'bg-[#f5f5f7] text-[#1859b8] border-border',
     icon: <Flame className="w-3.5 h-3.5" />,
   },
   warn: {
-    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
+    chip: 'bg-[#f5f5f7] text-[#1859b8] border-border',
     icon: <AlertTriangle className="w-3.5 h-3.5" />,
   },
   info: {
-    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
+    chip: 'bg-[#f5f5f7] text-[#1859b8] border-border',
     icon: <Info className="w-3.5 h-3.5" />,
   },
   good: {
-    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
+    chip: 'bg-[#f5f5f7] text-[#1859b8] border-border',
     icon: <CheckCircle2 className="w-3.5 h-3.5" />,
   },
 }
@@ -705,7 +705,7 @@ export function AnalysisDemo() {
             >
               <span
                 className={`inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
-                  on ? 'text-[#1e6dda]' : 'text-muted-foreground'
+                  on ? 'text-[#1859b8]' : 'text-muted-foreground'
                 }`}
               >
                 {sc.icon}
@@ -729,7 +729,7 @@ export function AnalysisDemo() {
                 <div className="min-w-0">
                   <span
                     className={`text-[10px] font-bold uppercase tracking-wider ${
-                      turn.who === 'sale' ? 'text-[#1e6dda]' : 'text-slate-500'
+                      turn.who === 'sale' ? 'text-[#1859b8]' : 'text-[#515154]'
                     }`}
                   >
                     {turn.who === 'sale' ? t('Nhân viên', 'Agent') : t('Khách', 'Customer')}
@@ -775,7 +775,7 @@ export function AnalysisDemo() {
             <div className="space-y-2.5">
               {s.outcomes.map((o, i) => (
                 <div key={i} className="rounded-lg border border-border bg-slate-50 px-3 py-2.5">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1e6dda] mb-1">{o.label}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1859b8] mb-1">{o.label}</p>
                   <p className="text-xs text-foreground leading-snug">{o.value}</p>
                 </div>
               ))}
@@ -793,7 +793,7 @@ function StepHeader({ n, icon, title }: { n: string; icon: React.ReactNode; titl
       <span className="w-6 h-6 rounded-full bg-[#1e6dda] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
         {n}
       </span>
-      <span className="text-[#1e6dda]">{icon}</span>
+      <span className="text-[#1859b8]">{icon}</span>
       <span className="text-sm font-bold text-foreground">{title}</span>
     </div>
   )
