@@ -360,12 +360,12 @@ export default function WebsiteDesignPage() {
   }
 
   const textColorMap: Record<string, string> = {
-    blue: 'text-[#1e6dda]',
-    emerald: 'text-[#1e6dda]',
-    purple: 'text-[#1e6dda]',
-    amber: 'text-[#1e6dda]',
-    rose: 'text-[#1e6dda]',
-    orange: 'text-[#1e6dda]'
+    blue: 'text-[#1859b8]',
+    emerald: 'text-[#1859b8]',
+    purple: 'text-[#1859b8]',
+    amber: 'text-[#1859b8]',
+    rose: 'text-[#1859b8]',
+    orange: 'text-[#1859b8]'
   }
 
   return (
@@ -396,7 +396,7 @@ export default function WebsiteDesignPage() {
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
                   {t('Website ', 'Website ')}<br />
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     {t('chuyển đổi cao', 'that converts')}
                   </span>
                 </h1>
@@ -455,7 +455,7 @@ export default function WebsiteDesignPage() {
                     </div>
                     <div className="flex-1 flex justify-center">
                       <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-muted-foreground flex items-center gap-2 border">
-                        <Shield className="w-3 h-3 text-[#1e6dda]" />
+                        <Shield className="w-3 h-3 text-[#1859b8]" />
                         yourwebsite.com
                       </div>
                     </div>
@@ -476,11 +476,11 @@ export default function WebsiteDesignPage() {
                 <div className="absolute -left-4 top-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
-                      <Gauge className="w-5 h-5 text-[#1e6dda]" />
+                      <Gauge className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">PageSpeed</div>
-                      <div className="text-lg font-bold text-[#1e6dda]">98/100</div>
+                      <div className="text-lg font-bold text-[#1859b8]">98/100</div>
                     </div>
                   </div>
                 </div>
@@ -488,11 +488,11 @@ export default function WebsiteDesignPage() {
                 <div className="absolute -right-4 bottom-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
-                      <Smartphone className="w-5 h-5 text-[#1e6dda]" />
+                      <Smartphone className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">Mobile</div>
-                      <div className="text-lg font-bold text-[#1e6dda]">100%</div>
+                      <div className="text-lg font-bold text-[#1859b8]">100%</div>
                     </div>
                   </div>
                 </div>
@@ -512,14 +512,14 @@ export default function WebsiteDesignPage() {
 
               {/* Right: Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-[#eaf2fd] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#eaf2fd] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <Target className="w-4 h-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6">
                   {t('Website của bạn', 'Is your website')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     {t('đang mất khách?', 'losing customers?')}
                   </span>
                 </h2>
@@ -539,23 +539,23 @@ export default function WebsiteDesignPage() {
                       className="group relative bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-xl transition-all duration-300"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#eaf2fd] flex items-center justify-center text-[#1e6dda] group-hover:scale-110 transition-transform">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#eaf2fd] flex items-center justify-center text-[#1859b8] group-hover:scale-110 transition-transform">
                           {item.icon}
                         </div>
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
-                            <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
+                            <XCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0" />
                             <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                           </div>
                           
                           <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                             <p className="text-muted-foreground text-sm">{item.solution}</p>
                           </div>
                         </div>
                         
-                        <ArrowUpRight className="w-5 h-5 text-[#1e6dda] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                        <ArrowUpRight className="w-5 h-5 text-[#1859b8] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </div>
                     </div>
                   ))}
@@ -574,9 +574,9 @@ export default function WebsiteDesignPage() {
                 {t('QUY TRÌNH LÀM VIỆC', 'OUR PROCESS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-                {t('Quy trình ', 'Transparent ')}<span className="text-[#1e6dda]">{t('minh bạch', 'process')}</span>
+                {t('Quy trình ', 'Transparent ')}<span className="text-[#1859b8]">{t('minh bạch', 'process')}</span>
               </h2>
-              <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              <p className="text-lg text-[#d2d2d7] max-w-2xl mx-auto">
                 {t(
                   '6 bước rõ ràng từ khám phá đến bàn giao, bạn luôn nắm được tiến độ qua portal riêng.',
                   '6 clear steps from discovery to delivery, you always track progress through your dedicated portal.'
@@ -598,25 +598,25 @@ export default function WebsiteDesignPage() {
                   
                   <div className="pt-4">
                     {/* Icon */}
-                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-[#1e6dda] mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-[#1859b8] mb-4 group-hover:scale-110 transition-transform">
                       {step.icon}
                     </div>
                     
                     {/* Title & Duration */}
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-xl font-bold text-white">{step.title}</h3>
-                      <span className="text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded-full">
+                      <span className="text-xs text-[#8cc4ff] bg-[#4da3ff]/15 px-2 py-1 rounded-full">
                         {step.duration}
                       </span>
                     </div>
                     
                     {/* Description */}
-                    <p className="text-gray-400 text-sm mb-4">{step.description}</p>
+                    <p className="text-[#d2d2d7] text-sm mb-4">{step.description}</p>
                     
                     {/* Deliverables */}
                     <div className="flex flex-wrap gap-2">
                       {step.deliverables.map((item, i) => (
-                        <span key={i} className="text-xs text-gray-500 bg-white/5 px-2 py-1 rounded">
+                        <span key={i} className="text-xs text-[#c7c7cc] bg-white/5 px-2 py-1 rounded">
                           {item}
                         </span>
                       ))}
@@ -633,7 +633,7 @@ export default function WebsiteDesignPage() {
                   <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
                     {t('Portal theo dõi dự án', 'Project Tracking Portal')}
                   </h3>
-                  <p className="text-gray-400 mb-6">
+                  <p className="text-white mb-6">
                     {t(
                       'Truy cập portal riêng để xem tiến độ real-time, phê duyệt design, và giao tiếp trực tiếp với team.',
                       'Access your dedicated portal to see real-time progress, approve designs, and communicate directly with the team.'
@@ -646,8 +646,8 @@ export default function WebsiteDesignPage() {
                       t('Chat trực tiếp với team', 'Direct chat with team'),
                       t('Lịch sử thay đổi đầy đủ', 'Complete change history'),
                     ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-gray-300">
-                        <CheckCircle2 className="w-5 h-5 text-[#1e6dda] flex-shrink-0" />
+                      <li key={i} className="flex items-center gap-3 text-white">
+                        <CheckCircle2 className="w-5 h-5 text-[#1859b8] flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -659,29 +659,29 @@ export default function WebsiteDesignPage() {
                       <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                       <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                       <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <span className="ml-2 text-xs text-gray-500">portal.clickstar.vn</span>
+                      <span className="ml-2 text-xs text-[#c7c7cc]">portal.clickstar.vn</span>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-3">
-                          <Figma className="w-5 h-5 text-[#1e6dda]" />
+                          <Figma className="w-5 h-5 text-[#1859b8]" />
                           <span className="text-sm text-white">{t('UI Design - Homepage', 'UI Design - Homepage')}</span>
                         </div>
-                        <span className="text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded">{t('Đã duyệt', 'Approved')}</span>
+                        <span className="text-xs text-[#8cc4ff] bg-[#4da3ff]/15 px-2 py-1 rounded">{t('Đã duyệt', 'Approved')}</span>
                       </div>
                       <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-3">
-                          <Code2 className="w-5 h-5 text-[#1e6dda]" />
+                          <Code2 className="w-5 h-5 text-[#1859b8]" />
                           <span className="text-sm text-white">{t('Development Sprint 2', 'Development Sprint 2')}</span>
                         </div>
-                        <span className="text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded">{t('Đang làm', 'In Progress')}</span>
+                        <span className="text-xs text-[#8cc4ff] bg-[#4da3ff]/15 px-2 py-1 rounded">{t('Đang làm', 'In Progress')}</span>
                       </div>
                       <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-3">
-                          <BarChart3 className="w-5 h-5 text-gray-400" />
+                          <BarChart3 className="w-5 h-5 text-[#d2d2d7]" />
                           <span className="text-sm text-white">{t('SEO Setup', 'SEO Setup')}</span>
                         </div>
-                        <span className="text-xs text-gray-400 bg-white/5 px-2 py-1 rounded">{t('Chờ', 'Pending')}</span>
+                        <span className="text-xs text-[#d2d2d7] bg-white/5 px-2 py-1 rounded">{t('Chờ', 'Pending')}</span>
                       </div>
                     </div>
                   </div>
@@ -695,12 +695,12 @@ export default function WebsiteDesignPage() {
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Layers className="w-4 h-4" />
                 {t('LOẠI WEBSITE', 'WEBSITE TYPES')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('Mẫu website ', 'Website templates for ')}<span className="text-primary">{t('chuyển đổi cao', 'high conversion')}</span>
+                {t('Mẫu website ', 'Website templates for ')}<span className="text-[#1859b8]">{t('chuyển đổi cao', 'high conversion')}</span>
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 {t(
@@ -751,12 +751,12 @@ export default function WebsiteDesignPage() {
         <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Sparkles className="w-4 h-4" />
                 {t('DỊCH VỤ BỔ SUNG', 'ADD-ON SERVICES')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('SEO & Ads ', 'SEO & Ads ')}<span className="text-[#1e6dda]">{t('tích hợp sẵn', 'ready to go')}</span>
+                {t('SEO & Ads ', 'SEO & Ads ')}<span className="text-[#1859b8]">{t('tích hợp sẵn', 'ready to go')}</span>
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 {t(
@@ -772,7 +772,7 @@ export default function WebsiteDesignPage() {
                   key={index}
                   className="bg-white rounded-2xl p-8 border border-border hover:shadow-xl hover:border-border transition-all duration-300 group"
                 >
-                  <div className="w-14 h-14 bg-[#f5f5f7] rounded-xl flex items-center justify-center text-[#1e6dda] mb-6 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 bg-[#f5f5f7] rounded-xl flex items-center justify-center text-[#1859b8] mb-6 group-hover:scale-110 transition-transform">
                     {service.icon}
                   </div>
                   
@@ -782,7 +782,7 @@ export default function WebsiteDesignPage() {
                   <div className="space-y-3">
                     {service.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-[#1e6dda] flex-shrink-0" />
+                        <CheckCircle2 className="w-5 h-5 text-[#1859b8] flex-shrink-0" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
                     ))}
@@ -797,12 +797,12 @@ export default function WebsiteDesignPage() {
         <section id="portfolio" className="py-12 lg:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Star className="w-4 h-4" />
                 {t('DỰ ÁN TIÊU BIỂU', 'FEATURED PROJECTS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('Kết quả ', 'Results ')}<span className="text-primary">{t('thực tế', 'that speak')}</span>
+                {t('Kết quả ', 'Results ')}<span className="text-[#1859b8]">{t('thực tế', 'that speak')}</span>
               </h2>
             </div>
 
@@ -826,21 +826,21 @@ export default function WebsiteDesignPage() {
                   
                   {/* Content */}
                   <div className="p-6">
-                    <span className="text-xs text-primary font-semibold uppercase tracking-wider">{item.category}</span>
+                    <span className="text-xs text-[#1859b8] font-semibold uppercase tracking-wider">{item.category}</span>
                     <h3 className="text-xl font-bold text-foreground mt-2 mb-4">{item.title}</h3>
                     
                     {/* Metrics */}
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <div className="text-lg font-bold text-[#1e6dda]">{item.metrics.conversion}</div>
+                        <div className="text-lg font-bold text-[#1859b8]">{item.metrics.conversion}</div>
                         <div className="text-xs text-muted-foreground">Conversion</div>
                       </div>
                       <div>
-                        <div className="text-lg font-bold text-[#1e6dda]">{item.metrics.speed}</div>
+                        <div className="text-lg font-bold text-[#1859b8]">{item.metrics.speed}</div>
                         <div className="text-xs text-muted-foreground">PageSpeed</div>
                       </div>
                       <div>
-                        <div className="text-lg font-bold text-[#1e6dda]">{item.metrics.bounce}</div>
+                        <div className="text-lg font-bold text-[#1859b8]">{item.metrics.bounce}</div>
                         <div className="text-xs text-muted-foreground">Bounce Rate</div>
                       </div>
                     </div>
@@ -860,7 +860,7 @@ export default function WebsiteDesignPage() {
             <div className="text-center mt-12">
               <Link
                 href="/projects"
-                className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
               >
                 {t('Xem tất cả dự án', 'View all projects')}
                 <ArrowRight className="w-5 h-5" />
@@ -875,19 +875,19 @@ export default function WebsiteDesignPage() {
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
               {cta.heading[language]}
             </h2>
-            <p className="text-xl text-white/80 mb-10 max-w-2xl mx-auto">{cta.description[language]}</p>
+            <p className="text-xl text-white mb-10 max-w-2xl mx-auto">{cta.description[language]}</p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href={cta.primary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white text-primary font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
+                className="inline-flex items-center justify-center gap-2 bg-white text-[#1859b8] font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
               >
                 <Settings className="w-5 h-5" />
                 {cta.primary.label[language]}
               </Link>
               <Link
                 href={cta.secondary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all border border-white/30"
+                className="inline-flex items-center justify-center gap-2 bg-[#1859b8] text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all border border-white/30"
               >
                 {cta.secondary.label[language]}
                 <ArrowRight className="w-5 h-5" />

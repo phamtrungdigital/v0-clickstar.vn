@@ -7,13 +7,13 @@ import { useLanguage } from '@/contexts/language-context'
 import type { BlogContent } from '@/lib/cms/types'
 
 const tagColors: Record<string, string> = {
-  AI: 'bg-primary/10 text-primary',
-  Marketing: 'bg-[#f5f5f7] text-[#1e6dda]',
-  Dashboard: 'bg-[#f5f5f7] text-[#1e6dda]',
-  Data: 'bg-[#f5f5f7] text-[#1e6dda]',
-  CRM: 'bg-[#f5f5f7] text-[#1e6dda]',
-  CDP: 'bg-[#f5f5f7] text-[#1e6dda]',
-  Website: 'bg-[#f5f5f7] text-[#1e6dda]',
+  AI: 'bg-primary/10 text-[#1859b8]',
+  Marketing: 'bg-[#f5f5f7] text-[#1859b8]',
+  Dashboard: 'bg-[#f5f5f7] text-[#1859b8]',
+  Data: 'bg-[#f5f5f7] text-[#1859b8]',
+  CRM: 'bg-[#f5f5f7] text-[#1859b8]',
+  CDP: 'bg-[#f5f5f7] text-[#1859b8]',
+  Website: 'bg-[#f5f5f7] text-[#1859b8]',
 }
 
 export function BlogSection({ content }: { content: BlogContent }) {
@@ -26,7 +26,7 @@ export function BlogSection({ content }: { content: BlogContent }) {
         <div className="text-center mb-12 lg:mb-16">
           <div
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6"
           >
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -37,7 +37,7 @@ export function BlogSection({ content }: { content: BlogContent }) {
             className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-4 text-balance"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -91,7 +91,7 @@ export function BlogSection({ content }: { content: BlogContent }) {
 
                 <Link
                   href={post.slug}
-                  className="inline-flex items-center gap-2 text-primary font-semibold text-sm group/link"
+                  className="inline-flex items-center gap-2 text-[#1859b8] font-semibold text-sm group/link"
                 >
                   {t(content.read_more_label.vi, content.read_more_label.en)}
                   <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1" />

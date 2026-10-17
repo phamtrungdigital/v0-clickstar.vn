@@ -45,7 +45,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
           className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-foreground"
         >
           <span className="flex items-center gap-2">
-            <List className="w-4 h-4 text-primary" />
+            <List className="w-4 h-4 text-[#1859b8]" />
             {t('Mục lục bài viết', 'Table of contents')} ({headings.length})
           </span>
           <span className="text-xs text-muted-foreground">
@@ -84,7 +84,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
                   href={`#${h.id}`}
                   className={`block -ml-[2px] pl-3 border-l-2 transition-colors leading-snug py-1 ${
                     isActive
-                      ? 'border-primary text-primary font-semibold'
+                      ? 'border-primary text-[#1859b8] font-semibold'
                       : 'border-transparent text-muted-foreground hover:text-foreground hover:border-foreground/30'
                   }`}
                 >

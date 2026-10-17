@@ -18,7 +18,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-4 py-2 rounded-full mb-5"
+            className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-4 py-2 rounded-full mb-5"
           >
             <Settings className="w-4 h-4" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -28,7 +28,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -78,7 +78,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground lg:order-1 mt-1">
                   {t('Chi phí', 'Price')}
                 </div>
-                <div className="text-lg font-extrabold text-primary">
+                <div className="text-lg font-extrabold text-[#1859b8]">
                   {t(item.price.vi, item.price.en)}
                 </div>
               </div>

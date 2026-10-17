@@ -56,7 +56,7 @@ export function Footer() {
                 unoptimized
               />
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6">{footer.description[language]}</p>
+            <p className="text-[#d2d2d7] text-sm leading-relaxed mb-6">{footer.description[language]}</p>
             {/* Social Icons */}
             <div className="flex items-center gap-2">
               {SOCIAL_KEYS.map((key) => {
@@ -88,7 +88,7 @@ export function Footer() {
                 <li key={service.href + service.label[language]}>
                   <Link
                     href={service.href}
-                    className="text-gray-400 hover:text-primary transition-colors text-sm inline-flex items-center gap-2 group"
+                    className="text-[#d2d2d7] hover:text-white transition-colors text-sm inline-flex items-center gap-2 group"
                   >
                     <span className="w-1.5 h-1.5 bg-primary/50 rounded-full group-hover:bg-primary transition-colors" />
                     {service.label[language]}
@@ -109,7 +109,7 @@ export function Footer() {
                 <li key={link.href + link.label[language]}>
                   <Link
                     href={link.href}
-                    className="text-gray-400 hover:text-primary transition-colors text-sm inline-flex items-center gap-2 group"
+                    className="text-[#d2d2d7] hover:text-white transition-colors text-sm inline-flex items-center gap-2 group"
                   >
                     <span className="w-1.5 h-1.5 bg-primary/50 rounded-full group-hover:bg-primary transition-colors" />
                     {link.label[language]}
@@ -128,16 +128,16 @@ export function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <MapPin className="w-4 h-4 text-primary" />
+                  <MapPin className="w-4 h-4 text-[#1859b8]" />
                 </span>
-                <span className="text-gray-400 text-sm leading-relaxed">{footer.contact_address[language]}</span>
+                <span className="text-[#d2d2d7] text-sm leading-relaxed">{footer.contact_address[language]}</span>
               </li>
               {footer.contact_phone && (
                 <li className="flex items-center gap-3">
                   <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-4 h-4 text-primary" />
+                    <Phone className="w-4 h-4 text-[#1859b8]" />
                   </span>
-                  <Link href={telHref} className="text-gray-400 hover:text-primary transition-colors text-sm">
+                  <Link href={telHref} className="text-[#d2d2d7] hover:text-white transition-colors text-sm">
                     {footer.contact_phone}
                   </Link>
                 </li>
@@ -145,11 +145,11 @@ export function Footer() {
               {footer.contact_email && (
                 <li className="flex items-center gap-3">
                   <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-4 h-4 text-primary" />
+                    <Mail className="w-4 h-4 text-[#1859b8]" />
                   </span>
                   <Link
                     href={`mailto:${footer.contact_email}`}
-                    className="text-gray-400 hover:text-primary transition-colors text-sm"
+                    className="text-[#d2d2d7] hover:text-white transition-colors text-sm"
                   >
                     {footer.contact_email}
                   </Link>
@@ -164,7 +164,7 @@ export function Footer() {
               {footer.newsletter_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
             </h4>
-            <p className="text-gray-400 text-sm mb-4">{footer.newsletter_desc[language]}</p>
+            <p className="text-[#d2d2d7] text-sm mb-4">{footer.newsletter_desc[language]}</p>
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">
                 <input
@@ -172,7 +172,7 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={language === 'vi' ? 'Nhập email của bạn' : 'Enter your email'}
-                  className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-white/10 border border-white/10 rounded-lg px-4 py-3 text-sm text-white placeholder:text-[#c7c7cc] focus:outline-none focus:border-primary transition-colors"
                   required
                 />
               </div>
@@ -192,7 +192,7 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-gray-400 text-sm text-center md:text-left">
+            <p className="text-[#d2d2d7] text-sm text-center md:text-left">
               © {new Date().getFullYear()} {footer.copyright[language]}
             </p>
             <div className="flex items-center gap-6">
@@ -200,7 +200,7 @@ export function Footer() {
                 <Link
                   key={link.href + link.label[language]}
                   href={link.href}
-                  className="text-gray-400 hover:text-primary text-sm transition-colors"
+                  className="text-[#d2d2d7] hover:text-white text-sm transition-colors"
                 >
                   {link.label[language]}
                 </Link>

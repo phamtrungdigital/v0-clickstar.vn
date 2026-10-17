@@ -6,13 +6,13 @@ import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'
 
 const COLOR_MAP = {
-  blue: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#eaf2fd]' },
-  purple: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
-  pink: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
-  amber: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
-  emerald: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
-  cyan: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
-  rose: { iconText: 'text-[#1e6dda]', iconBg: 'bg-[#f5f5f7]' },
+  blue: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#eaf2fd]' },
+  purple: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#f5f5f7]' },
+  pink: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#f5f5f7]' },
+  amber: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#f5f5f7]' },
+  emerald: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#f5f5f7]' },
+  cyan: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#f5f5f7]' },
+  rose: { iconText: 'text-[#1859b8]', iconBg: 'bg-[#f5f5f7]' },
 }
 
 function renderIcon(name: string, className: string) {
@@ -33,13 +33,13 @@ export function FeatureGrid() {
     <section data-cms-section="feature_grid" className="py-20 lg:py-28 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+          <span data-cms-field="eyebrow" className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6">
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
           <h2 data-cms-field="heading" className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-6 text-balance">
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>

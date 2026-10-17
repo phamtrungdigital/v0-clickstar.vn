@@ -20,7 +20,7 @@ export function AdsHubScreenshots({ content }: { content: AdsHubScreenshotsConte
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6"
           >
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
@@ -30,7 +30,7 @@ export function AdsHubScreenshots({ content }: { content: AdsHubScreenshotsConte
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -64,7 +64,7 @@ export function AdsHubScreenshots({ content }: { content: AdsHubScreenshotsConte
                     sizes={idx === 0 ? '(max-width: 1024px) 100vw, 1280px' : '(max-width: 1024px) 100vw, 50vw'}
                   />
                 ) : (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-slate-400 gap-2">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-[#515154] gap-2">
                     <ImageIcon className="w-12 h-12" />
                     <p className="text-xs">Anh upload screenshot qua admin</p>
                   </div>

@@ -36,7 +36,7 @@ export function CodeTerminal({ content }: { content: CodeTerminalContent }) {
           </p>
         )}
         {content.sub?.vi && (
-          <p data-cms-field="sub" className="text-center text-sm text-muted-foreground/80 mb-6">
+          <p data-cms-field="sub" className="text-center text-sm text-muted-foreground mb-6">
             {t(content.sub.vi, content.sub.en)}
           </p>
         )}
@@ -72,7 +72,7 @@ function Window({ lines, tab }: { lines: CodeTerminalContent['lines']; tab?: Cod
           <i className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
         </span>
         {tab?.vi && (
-          <span className="ml-2 font-mono text-[11px] text-slate-400 truncate">
+          <span className="ml-2 font-mono text-[11px] text-[#515154] truncate">
             {t(tab.vi, tab.en)}
           </span>
         )}
@@ -99,7 +99,7 @@ function TermLine({ text }: { text: string }) {
 
   if (text.startsWith('✦')) {
     return (
-      <div style={fade} className="text-[#1e6dda] whitespace-pre">
+      <div style={fade} className="text-[#1859b8] whitespace-pre">
         {text}
       </div>
     )
@@ -110,16 +110,16 @@ function TermLine({ text }: { text: string }) {
     if (m) {
       return (
         <div style={fade} className="whitespace-pre">
-          <span className="text-[#1e6dda]">✓</span>
+          <span className="text-[#1859b8]">✓</span>
           {m[1]}
-          <span className="text-[#1e6dda]">[{m[2]}]</span>
+          <span className="text-[#1859b8]">[{m[2]}]</span>
           <span className="text-slate-200">{m[3]}</span>
         </div>
       )
     }
     return (
       <div style={fade} className="whitespace-pre">
-        <span className="text-[#1e6dda]">✓</span>
+        <span className="text-[#1859b8]">✓</span>
         <span className="text-slate-200">{text.slice(1)}</span>
       </div>
     )
@@ -127,8 +127,8 @@ function TermLine({ text }: { text: string }) {
   if (text.startsWith('$')) {
     return (
       <div style={fade} className="whitespace-pre">
-        <span className="text-slate-500">$</span>
-        <span className="text-[#1e6dda]">{text.slice(1)}</span>
+        <span className="text-[#515154]">$</span>
+        <span className="text-[#1859b8]">{text.slice(1)}</span>
       </div>
     )
   }
@@ -137,15 +137,15 @@ function TermLine({ text }: { text: string }) {
     const body = hasCheck ? text.slice(1, -1) : text.slice(1)
     return (
       <div style={fade} className="whitespace-pre">
-        <span className="text-slate-500">→</span>
+        <span className="text-[#515154]">→</span>
         <span className="text-slate-200">{body}</span>
-        {hasCheck && <span className="text-[#1e6dda]">✓</span>}
+        {hasCheck && <span className="text-[#1859b8]">✓</span>}
       </div>
     )
   }
   // Dòng output thường (thụt đầu dòng hoặc không có ký hiệu)
   return (
-    <div style={fade} className="text-slate-400 whitespace-pre">
+    <div style={fade} className="text-[#515154] whitespace-pre">
       {text}
     </div>
   )

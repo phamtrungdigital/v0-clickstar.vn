@@ -74,7 +74,7 @@ export default function DigitalMarketingPage() {
 
   const services = [
     {
-      icon: <MousePointerClick className="w-8 h-8 text-[#1e6dda]" />,
+      icon: <MousePointerClick className="w-8 h-8 text-[#1859b8]" />,
       title: t('Quảng cáo đa nền tảng', 'Multi-platform Advertising'),
       description: t(
         'Chạy quảng cáo trên Google, Facebook, TikTok, YouTube với chiến lược tối ưu cho từng kênh.',
@@ -90,7 +90,7 @@ export default function DigitalMarketingPage() {
       color: 'bg-[#f5f5f7]',
     },
     {
-      icon: <Search className="w-8 h-8 text-[#1e6dda]" />,
+      icon: <Search className="w-8 h-8 text-[#1859b8]" />,
       title: t('SEO & Content Marketing', 'SEO & Content Marketing'),
       description: t(
         'Tối ưu website để đứng top Google, xây dựng nội dung chất lượng thu hút khách hàng tự nhiên.',
@@ -106,7 +106,7 @@ export default function DigitalMarketingPage() {
       color: 'bg-[#f5f5f7]',
     },
     {
-      icon: <Share2 className="w-8 h-8 text-[#1e6dda]" />,
+      icon: <Share2 className="w-8 h-8 text-[#1859b8]" />,
       title: t('Social Media Marketing', 'Social Media Marketing'),
       description: t(
         'Xây dựng và phát triển thương hiệu trên các nền tảng mạng xã hội với content sáng tạo.',
@@ -122,7 +122,7 @@ export default function DigitalMarketingPage() {
       color: 'bg-[#f5f5f7]',
     },
     {
-      icon: <Mail className="w-8 h-8 text-[#1e6dda]" />,
+      icon: <Mail className="w-8 h-8 text-[#1859b8]" />,
       title: t('Email & Automation Marketing', 'Email & Automation Marketing'),
       description: t(
         'Xây dựng hệ thống email marketing tự động, nurturing leads và tăng retention.',
@@ -224,22 +224,22 @@ export default function DigitalMarketingPage() {
 
   const portalFeatures = [
     {
-      icon: <BarChart3 className="w-6 h-6 text-primary" />,
+      icon: <BarChart3 className="w-6 h-6 text-[#1859b8]" />,
       title: t('Dashboard Real-time', 'Real-time Dashboard'),
       description: t('Theo dõi hiệu suất chiến dịch mọi lúc, mọi nơi', 'Track campaign performance anytime, anywhere'),
     },
     {
-      icon: <FileText className="w-6 h-6 text-primary" />,
+      icon: <FileText className="w-6 h-6 text-[#1859b8]" />,
       title: t('Báo cáo tự động', 'Automated Reports'),
       description: t('Nhận báo cáo chi tiết qua email hàng tuần', 'Receive detailed reports via email weekly'),
     },
     {
-      icon: <MessageSquare className="w-6 h-6 text-primary" />,
+      icon: <MessageSquare className="w-6 h-6 text-[#1859b8]" />,
       title: t('Chat & Support', 'Chat & Support'),
       description: t('Trao đổi trực tiếp với team qua chat', 'Communicate directly with team via chat'),
     },
     {
-      icon: <Settings className="w-6 h-6 text-primary" />,
+      icon: <Settings className="w-6 h-6 text-[#1859b8]" />,
       title: t('Quản lý Campaign', 'Campaign Management'),
       description: t('Xem và approve content, creative trước khi chạy', 'View and approve content, creatives before launch'),
     },
@@ -375,7 +375,7 @@ export default function DigitalMarketingPage() {
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold text-foreground leading-tight mb-6">
                   {t('Doanh nghiệp của bạn đang', 'Is your business')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     {t('gặp khó khăn?', 'struggling?')}
                   </span>
                 </h2>
@@ -396,7 +396,7 @@ export default function DigitalMarketingPage() {
                     >
                       <div className="flex items-start gap-4">
                         {/* Icon */}
-                        <div className="flex-shrink-0 w-12 h-12 rounded-[11px] bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] transition-transform">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-[11px] bg-[#f5f5f7] flex items-center justify-center text-[#1859b8] transition-transform">
                           {item.icon}
                         </div>
                         
@@ -404,19 +404,19 @@ export default function DigitalMarketingPage() {
                         <div className="flex-1 min-w-0">
                           {/* Problem */}
                           <div className="flex items-center gap-2 mb-2">
-                            <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
+                            <XCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0" />
                             <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                           </div>
                           
                           {/* Solution */}
                           <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                             <p className="text-muted-foreground text-sm">{item.solution}</p>
                           </div>
                         </div>
                         
                         {/* Arrow indicator */}
-                        <ArrowUpRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                        <ArrowUpRight className="w-5 h-5 text-[#1859b8] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </div>
                     </div>
                   ))}
@@ -426,7 +426,7 @@ export default function DigitalMarketingPage() {
                 <div className="mt-10">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+                    className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
                   >
                     {t('Tìm hiểu giải pháp cho doanh nghiệp của bạn', 'Find solutions for your business')}
                     <ArrowRight className="w-5 h-5" />
@@ -447,7 +447,7 @@ export default function DigitalMarketingPage() {
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
                 {t('Giải pháp', 'Solutions')}{' '}
-                <span className="text-primary">{t('toàn diện', 'comprehensive')}</span>
+                <span className="text-[#1859b8]">{t('toàn diện', 'comprehensive')}</span>
               </h2>
             </div>
 
@@ -465,7 +465,7 @@ export default function DigitalMarketingPage() {
                   <ul className="space-y-3">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-primary flex-shrink-0" />
+                        <Check className="w-5 h-5 text-[#1859b8] flex-shrink-0" />
                         <span className="text-foreground">{feature}</span>
                       </li>
                     ))}
@@ -480,15 +480,15 @@ export default function DigitalMarketingPage() {
         <section className="pt-12 pb-20 lg:pt-16 lg:pb-28 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#a1a1a6]">
+              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#d2d2d7]">
                 <Rocket className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-6">
                 {t('Quy trình làm việc', 'Working process')}{' '}
-                <span className="text-primary">{t('minh bạch', 'transparent')}</span>
+                <span className="text-[#1859b8]">{t('minh bạch', 'transparent')}</span>
               </h2>
-              <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+              <p className="text-lg text-[#515154] max-w-2xl mx-auto">
                 {t(
                   '5 bước triển khai rõ ràng, bạn theo dõi được tiến độ mọi lúc qua Portal.',
                   '5 clear implementation steps, track progress anytime via Portal.'
@@ -511,15 +511,15 @@ export default function DigitalMarketingPage() {
                     <div className="bg-white/5 backdrop-blur rounded-[18px] p-6 h-full">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                        <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-gray-300">
+                        <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-[#d2d2d7]">
                           {step.duration}
                         </span>
                       </div>
-                      <p className="text-gray-400 text-sm mb-4">{step.description}</p>
+                      <p className="text-[#515154] text-sm mb-4">{step.description}</p>
                       <ul className="space-y-2">
                         {step.tasks.map((task, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
-                            <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                          <li key={idx} className="flex items-start gap-2 text-sm text-[#d2d2d7]">
+                            <Check className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
                             {task}
                           </li>
                         ))}
@@ -543,7 +543,7 @@ export default function DigitalMarketingPage() {
                 </span>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
                   {t('Theo dõi chiến dịch', 'Track campaigns')}{' '}
-                  <span className="text-primary">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
+                  <span className="text-[#1859b8]">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
                 </h2>
                 <p className="text-lg text-muted-foreground mb-8">
                   {t(
@@ -578,7 +578,7 @@ export default function DigitalMarketingPage() {
                       <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                     </div>
                     <div className="flex-1 flex justify-center">
-                      <div className="bg-white rounded-lg px-4 py-1 text-sm text-gray-500">
+                      <div className="bg-white rounded-lg px-4 py-1 text-sm text-[#515154]">
                         portal.clickstar.vn
                       </div>
                     </div>
@@ -592,7 +592,7 @@ export default function DigitalMarketingPage() {
                         <p className="text-sm text-muted-foreground">{t('Cập nhật 5 phút trước', 'Updated 5 minutes ago')}</p>
                       </div>
                       <div className="flex gap-2">
-                        <span className="px-3 py-1 bg-[#f5f5f7] text-[#1e6dda] text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
+                        <span className="px-3 py-1 bg-[#f5f5f7] text-[#1859b8] text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
                       </div>
                     </div>
 
@@ -600,17 +600,17 @@ export default function DigitalMarketingPage() {
                       <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">{t('Chi tiêu', 'Spend')}</div>
                         <div className="text-xl font-semibold text-foreground">45.2M</div>
-                        <div className="text-xs text-[#1e6dda]">{t('+12% vs tuần trước', '+12% vs last week')}</div>
+                        <div className="text-xs text-[#1859b8]">{t('+12% vs tuần trước', '+12% vs last week')}</div>
                       </div>
                       <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">{t('Leads', 'Leads')}</div>
                         <div className="text-xl font-semibold text-foreground">324</div>
-                        <div className="text-xs text-[#1e6dda]">{t('+28% vs tuần trước', '+28% vs last week')}</div>
+                        <div className="text-xs text-[#1859b8]">{t('+28% vs tuần trước', '+28% vs last week')}</div>
                       </div>
                       <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">ROAS</div>
                         <div className="text-xl font-semibold text-foreground">3.8x</div>
-                        <div className="text-xs text-[#1e6dda]">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
+                        <div className="text-xs text-[#1859b8]">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
                       </div>
                     </div>
 
@@ -634,7 +634,7 @@ export default function DigitalMarketingPage() {
                 {/* Floating notification */}
                 <div className="absolute -bottom-4 -right-4 bg-white rounded-[11px] p-4 flex items-center gap-3">
                   <div className="w-10 h-10 bg-[#f5f5f7] rounded-full flex items-center justify-center">
-                    <ThumbsUp className="w-5 h-5 text-[#1e6dda]" />
+                    <ThumbsUp className="w-5 h-5 text-[#1859b8]" />
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground">{t('Chiến dịch đạt KPI!', 'Campaign hit KPI!')}</div>
@@ -656,7 +656,7 @@ export default function DigitalMarketingPage() {
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
                 {t('Kết quả', 'Results')}{' '}
-                <span className="text-primary">{t('thực tế', 'in action')}</span>
+                <span className="text-[#1859b8]">{t('thực tế', 'in action')}</span>
               </h2>
             </div>
 
@@ -684,7 +684,7 @@ export default function DigitalMarketingPage() {
                     <div className="flex gap-4">
                       {study.metrics.map((metric, idx) => (
                         <div key={idx} className="flex-1 bg-secondary/50 rounded-[11px] p-3 text-center">
-                          <div className="text-lg font-semibold text-primary">{metric.value}</div>
+                          <div className="text-lg font-semibold text-[#1859b8]">{metric.value}</div>
                           <div className="text-xs text-muted-foreground">{metric.label}</div>
                         </div>
                       ))}
@@ -697,7 +697,7 @@ export default function DigitalMarketingPage() {
             <div className="text-center mt-12">
               <Link
                 href="/projects"
-                className="inline-flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all"
+                className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
               >
                 {t('Xem tất cả case studies', 'View all case studies')}
                 <ArrowUpRight className="w-5 h-5" />

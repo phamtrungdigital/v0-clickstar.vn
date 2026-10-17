@@ -180,8 +180,8 @@ export function AiServiceRouter() {
       <div className="container relative mx-auto px-4 max-w-4xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold mb-4 shadow-lg">
-            <Sparkles className="w-3.5 h-3.5 text-[#1e6dda] animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1859b8]md border border-white/20 text-white text-xs font-semibold mb-4 shadow-lg">
+            <Sparkles className="w-3.5 h-3.5 text-[#1859b8] animate-pulse" />
             <span className="bg-[#eaf2fd] bg-clip-text text-transparent">
               {t.badge}
             </span>
@@ -192,7 +192,7 @@ export function AiServiceRouter() {
               {t.titleHighlight}
             </span>
           </h2>
-          <p className="text-sm md:text-base text-slate-300 max-w-2xl mx-auto">{t.subtitle}</p>
+          <p className="text-sm md:text-base text-[#d2d2d7] max-w-2xl mx-auto">{t.subtitle}</p>
         </div>
 
         {/* Input card — glassmorphism */}
@@ -209,7 +209,7 @@ export function AiServiceRouter() {
           <div className="relative bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-3 md:p-4 shadow-2xl">
             <div className="flex flex-col sm:flex-row gap-2">
               <div className="relative flex-1">
-                <Bot className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1e6dda]" />
+                <Bot className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#1859b8]" />
                 <input
                   type="text"
                   value={query}
@@ -242,14 +242,14 @@ export function AiServiceRouter() {
             {/* Quick prompts */}
             {!result && !error && !isPending && (
               <div className="mt-4 pt-4 border-t border-white/10">
-                <p className="text-xs text-slate-400 mb-2.5">{t.quickLabel}</p>
+                <p className="text-xs text-[#515154] mb-2.5">{t.quickLabel}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {quickPrompts.map((p) => (
                     <button
                       key={p}
                       type="button"
                       onClick={() => submit(p)}
-                      className="text-xs px-3 py-1.5 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#1e6dda]/50 text-slate-300 hover:text-white rounded-full transition-all"
+                      className="text-xs px-3 py-1.5 bg-white/5 hover:bg-white/15 border border-white/10 hover:border-[#1e6dda]/50 text-[#d2d2d7] hover:text-white rounded-full transition-all"
                     >
                       {p}
                     </button>
@@ -275,7 +275,7 @@ export function AiServiceRouter() {
                     style={{ animationDelay: '300ms' }}
                   />
                 </div>
-                <span className="text-sm text-slate-300">{t.aiThinking}</span>
+                <span className="text-sm text-[#d2d2d7]">{t.aiThinking}</span>
               </div>
             )}
           </div>
@@ -284,12 +284,12 @@ export function AiServiceRouter() {
         {/* Error */}
         {error && (
           <div className="mt-4 p-4 bg-[#1e6dda]/10 backdrop-blur-md border border-[#1e6dda]/30 rounded-xl flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-[#1e6dda] flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-[#1859b8] flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <p className="text-sm text-[#1e6dda]">{error}</p>
+              <p className="text-sm text-[#1859b8]">{error}</p>
               <button
                 onClick={reset}
-                className="text-xs text-[#1e6dda] hover:text-[#1e6dda] underline mt-1"
+                className="text-xs text-[#1859b8] hover:text-[#1859b8] underline mt-1"
               >
                 {t.askAnother}
               </button>
@@ -307,7 +307,7 @@ export function AiServiceRouter() {
                   <Bot className="w-4.5 h-4.5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-[#1e6dda] mb-1.5">Click Star AI</p>
+                  <p className="text-xs font-semibold text-[#1859b8] mb-1.5">Click Star AI</p>
                   <div
                     className="text-sm md:text-[15px] text-slate-100 leading-relaxed prose-strong:text-white prose-em:text-slate-200"
                     dangerouslySetInnerHTML={{
@@ -321,7 +321,7 @@ export function AiServiceRouter() {
             {/* Suggested links */}
             {result.links && result.links.length > 0 && (
               <div className="space-y-2">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-1">
+                <p className="text-xs font-semibold text-[#515154] uppercase tracking-wider px-1">
                   {t.seeMore}
                 </p>
                 <div className="flex flex-wrap gap-2">
@@ -356,10 +356,10 @@ export function AiServiceRouter() {
 
             {/* Footer note + reset */}
             <div className="flex items-center justify-between gap-3 pt-1">
-              <p className="text-[11px] text-slate-500">{t.note}</p>
+              <p className="text-[11px] text-[#515154]">{t.note}</p>
               <button
                 onClick={reset}
-                className="inline-flex items-center gap-1 text-xs text-[#1e6dda] hover:text-white whitespace-nowrap transition-colors"
+                className="inline-flex items-center gap-1 text-xs text-[#1859b8] hover:text-white whitespace-nowrap transition-colors"
               >
                 <RotateCcw className="w-3 h-3" />
                 {t.askAnother}

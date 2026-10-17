@@ -29,13 +29,13 @@ export default async function ProjectsPage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,rgba(30,109,218,0.08),transparent_55%)]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-5">
+            <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-5">
               <Sparkles className="w-3.5 h-3.5" />
               Case Studies
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance">
               {t('Những dự án', 'Success stories')}{' '}
-              <span className="text-primary">{t('Click Star đã đồng hành', 'Click Star has delivered')}</span>
+              <span className="text-[#1859b8]">{t('Click Star đã đồng hành', 'Click Star has delivered')}</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
               {t(
@@ -76,10 +76,10 @@ export default async function ProjectsPage() {
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center bg-[#f5f5f7]">
-                        <Briefcase className="w-12 h-12 text-primary/30" />
+                        <Briefcase className="w-12 h-12 text-[#1859b8]/30" />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-[#f5f5f7] opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     {p.industry_vi && (
                       <span className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-sm text-foreground text-xs font-semibold rounded-full">
                         {p.industry_vi}
@@ -104,7 +104,7 @@ export default async function ProjectsPage() {
                       <div className="flex items-center gap-4 pt-3 border-t border-border/50">
                         {p.metrics.slice(0, 3).map((m, i) => (
                           <div key={i}>
-                            <div className="text-lg font-bold text-primary">{m.value}</div>
+                            <div className="text-lg font-bold text-[#1859b8]">{m.value}</div>
                             <div className="text-[10px] text-muted-foreground uppercase tracking-wider">
                               {m.label_vi}
                             </div>
@@ -113,7 +113,7 @@ export default async function ProjectsPage() {
                       </div>
                     )}
 
-                    <div className="flex items-center gap-1.5 text-sm font-semibold text-primary pt-2">
+                    <div className="flex items-center gap-1.5 text-sm font-semibold text-[#1859b8] pt-2">
                       {t('Xem chi tiết', 'View case study')}
                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -130,7 +130,7 @@ export default async function ProjectsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground mb-4">
             {t('Doanh nghiệp của anh/chị muốn', 'Ready for')}{' '}
-            <span className="text-primary">{t('tăng trưởng đột phá', 'breakthrough growth')}</span>?
+            <span className="text-[#1859b8]">{t('tăng trưởng đột phá', 'breakthrough growth')}</span>?
           </h2>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
             {t(

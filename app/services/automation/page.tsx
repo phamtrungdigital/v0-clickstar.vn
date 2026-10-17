@@ -243,14 +243,14 @@ export default function AIAutomationPage() {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Left content */}
               <div>
-                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-primary px-4 py-2 rounded-full mb-6 shadow-sm">
+                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-[#1859b8] px-4 py-2 rounded-full mb-6 shadow-sm">
                   <Bot className="w-4 h-4" />
                   <span className="text-sm font-medium">AI Automation 2026</span>
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
                   {t('Tự động hóa với', 'Automate everything with')}{' '}
-                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
+                  <span className="text-[#1859b8]">
                     AI Automation
                   </span>
                 </h1>
@@ -269,7 +269,7 @@ export default function AIAutomationPage() {
                   </Link>
                   <Link
                     href="#workflow"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-primary font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-[#1859b8] font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
                   >
                     <Play className="w-5 h-5" />
                     {t('Xem workflow', 'See the workflow')}
@@ -280,7 +280,7 @@ export default function AIAutomationPage() {
                 <div className="flex flex-wrap gap-6">
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-primary" />
+                      <Clock className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">80%</p>
@@ -289,7 +289,7 @@ export default function AIAutomationPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-primary" />
+                      <Zap className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">24/7</p>
@@ -298,7 +298,7 @@ export default function AIAutomationPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Star className="w-5 h-5 text-primary" />
+                      <Star className="w-5 h-5 text-[#1859b8]" />
                     </div>
                     <div>
                       <p className="text-xl font-bold text-foreground">100+</p>
@@ -316,7 +316,7 @@ export default function AIAutomationPage() {
                   {/* Floating elements around robot */}
                   <div className="absolute -top-4 -right-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-xs">C</span>
                       </div>
                       <span className="text-xs font-medium text-foreground">Claude</span>
@@ -325,7 +325,7 @@ export default function AIAutomationPage() {
                   
                   <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-xs">GPT</span>
                       </div>
                       <span className="text-xs font-medium text-foreground">GPT-4o</span>
@@ -334,7 +334,7 @@ export default function AIAutomationPage() {
                   
                   <div className="absolute top-1/2 -right-8 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-[10px]">N8N</span>
                       </div>
                       <span className="text-xs font-medium text-foreground">N8N</span>
@@ -355,9 +355,9 @@ export default function AIAutomationPage() {
                 {t('TẠI SAO CẦN AUTOMATION', 'WHY AUTOMATION')}
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('Tự động hóa là', 'Automation is')} <span className="text-primary">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
+                {t('Tự động hóa là', 'Automation is')} <span className="text-[#1859b8]">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
               </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
+              <p className="text-[#515154] max-w-2xl mx-auto">
                 {t('Doanh nghiệp không tự động hóa sẽ lãng phí thời gian vào các tác vụ lặp lại, bỏ lỡ cơ hội tận dụng sức mạnh của công nghệ AI.', "Businesses that don't automate waste time on repetitive work — and miss the chance to harness the power of AI.")}
               </p>
             </div>
@@ -369,10 +369,10 @@ export default function AIAutomationPage() {
                   className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-primary/30 transition-all group"
                 >
                   <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-all">
-                    <item.icon className="w-6 h-6 text-primary group-hover:text-white transition-colors" />
+                    <item.icon className="w-6 h-6 text-[#1859b8] group-hover:text-white transition-colors" />
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">{t(item.title.vi, item.title.en)}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
+                  <p className="text-[#515154] text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
                 </div>
               ))}
             </div>
@@ -389,7 +389,7 @@ export default function AIAutomationPage() {
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
                 Workflow Automation
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -429,7 +429,7 @@ export default function AIAutomationPage() {
         <section className="py-16 lg:py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
                 Use Cases
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -448,10 +448,10 @@ export default function AIAutomationPage() {
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <useCase.icon className="w-6 h-6 text-primary" />
+                      <useCase.icon className="w-6 h-6 text-[#1859b8]" />
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-primary">{useCase.stats}</p>
+                      <p className="text-2xl font-bold text-[#1859b8]">{useCase.stats}</p>
                       <p className="text-xs text-muted-foreground">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>
@@ -462,7 +462,7 @@ export default function AIAutomationPage() {
                   <div className="flex flex-wrap items-center gap-2">
                     {useCase.flow.map((step, i) => (
                       <div key={i} className="flex items-center gap-2">
-                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full whitespace-nowrap">
+                        <span className="text-xs bg-primary/10 text-[#144c97] px-2 py-1 rounded-full whitespace-nowrap">
                           {t(step.vi, step.en)}
                         </span>
                         {i < useCase.flow.length - 1 && (
@@ -486,9 +486,9 @@ export default function AIAutomationPage() {
                 TECH STACK
               </span>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('Công nghệ', 'Our')} <span className="text-primary">{t('Automation', 'Automation stack')}</span>
+                {t('Công nghệ', 'Our')} <span className="text-[#1859b8]">{t('Automation', 'Automation stack')}</span>
               </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
+              <p className="text-[#515154] max-w-2xl mx-auto">
                 {t('Bộ công cụ automation và AI hàng đầu được ClickStar sử dụng', 'The leading automation and AI toolkit ClickStar builds with')}
               </p>
             </div>
@@ -507,15 +507,15 @@ export default function AIAutomationPage() {
                           className="w-full h-full object-contain"
                         />
                       ) : (
-                        <Webhook className="w-6 h-6 text-primary" />
+                        <Webhook className="w-6 h-6 text-[#1859b8]" />
                       )}
                     </div>
                     <div>
                       <h3 className="font-bold text-white">{tool.name}</h3>
-                      <p className="text-xs text-gray-400">{tool.category}</p>
+                      <p className="text-xs text-[#515154]">{tool.category}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-400">{t(tool.description.vi, tool.description.en)}</p>
+                  <p className="text-sm text-[#515154]">{t(tool.description.vi, tool.description.en)}</p>
                 </div>
               ))}
             </div>
@@ -532,7 +532,7 @@ export default function AIAutomationPage() {
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <span className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-3">
+              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
                 {t('Quy trình', 'Our process')}
               </span>
               <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -553,7 +553,7 @@ export default function AIAutomationPage() {
                     <div className="pt-4">
                       <h3 className="text-lg font-bold text-foreground mb-2">{t(step.title.vi, step.title.en)}</h3>
                       <p className="text-muted-foreground text-sm mb-4">{t(step.description.vi, step.description.en)}</p>
-                      <span className="inline-flex items-center gap-1 text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center gap-1 text-xs text-[#144c97] font-medium bg-primary/10 px-2 py-1 rounded-full">
                         <Clock className="w-3 h-3" />
                         {t(step.duration.vi, step.duration.en)}
                       </span>
@@ -561,7 +561,7 @@ export default function AIAutomationPage() {
                   </div>
                   {index < automationProcess.length - 1 && (
                     <div className="hidden lg:flex items-center justify-center absolute top-0 -right-5 h-full w-10 z-10 pointer-events-none">
-                      <ChevronRight className="w-6 h-6 text-primary/40" />
+                      <ChevronRight className="w-6 h-6 text-[#1859b8]/40" />
                     </div>
                   )}
                 </div>

@@ -23,7 +23,7 @@ export function AboutTimelineSection({ content }: { content: AboutTimelineConten
             className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6"
           >
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-primary">
+            <span className="text-[#1859b8]">
               {t(content.heading_highlight.vi, content.heading_highlight.en)}
             </span>
           </h2>
@@ -52,7 +52,7 @@ export function AboutTimelineSection({ content }: { content: AboutTimelineConten
 
               {/* Card */}
               <div className="w-full flex-1 flex flex-col bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center hover:border-primary/40 hover:bg-white/10 transition-all">
-                <div className="text-primary font-bold text-2xl mb-2">{milestone.year}</div>
+                <div className="text-[#1859b8] font-bold text-2xl mb-2">{milestone.year}</div>
                 <h3 className="font-bold text-base lg:text-lg mb-2 text-white">
                   {t(milestone.title.vi, milestone.title.en)}
                 </h3>

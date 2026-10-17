@@ -100,7 +100,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
           <div
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 mb-6 shadow-lg animate-in fade-in slide-in-from-top-2 duration-500"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#1e6dda] animate-pulse" />
+            <Sparkles className="w-3.5 h-3.5 text-[#1859b8] animate-pulse" />
             <span className="text-xs font-semibold uppercase tracking-wider text-[#c9dcf7]">
               {badge}
             </span>
@@ -118,7 +118,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
           {/* Description */}
           <p
             data-cms-field="description"
-            className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-3xl mx-auto mb-10 animate-in fade-in duration-700"
+            className="text-base sm:text-lg text-[#d2d2d7] leading-relaxed max-w-3xl mx-auto mb-10 animate-in fade-in duration-700"
             style={{ animationDelay: '300ms', animationFillMode: 'backwards' }}
           >
             {description}
@@ -152,7 +152,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
             className="mt-12 flex flex-wrap items-center justify-center gap-2 animate-in fade-in duration-700"
             style={{ animationDelay: '700ms', animationFillMode: 'backwards' }}
           >
-            <span className="text-[11px] text-slate-500 uppercase tracking-wider mr-2">
+            <span className="text-[11px] text-[#515154] uppercase tracking-wider mr-2">
               {t('Công nghệ ứng dụng', 'Tech stack')}:
             </span>
             {TECH_PILLS.map((pill, idx) => {
@@ -166,7 +166,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
                     animationFillMode: 'backwards',
                   }}
                 >
-                  <Icon className="w-3 h-3 text-[#1e6dda]" />
+                  <Icon className="w-3 h-3 text-[#1859b8]" />
                   {pill.label}
                 </span>
               )

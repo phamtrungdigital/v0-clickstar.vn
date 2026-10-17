@@ -34,13 +34,13 @@ export default async function BlogList() {
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12 lg:mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-sm px-4 py-2 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-4 py-2 rounded-full mb-6">
               <span className="w-2 h-2 bg-primary rounded-full" />
               {t('Tin tức & Bài viết', 'News & Articles')}
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-4 text-balance">
               {t('Kiến thức ', 'Knowledge on ')}
-              <span className="text-primary">
+              <span className="text-[#1859b8]">
                 {t('chuyển đổi số', 'digital transformation')}
               </span>
             </h1>
@@ -109,7 +109,7 @@ export default async function BlogList() {
                       )}
                       <Link
                         href={`/blog/${post.slug}`}
-                        className="inline-flex items-center gap-2 text-primary font-semibold text-sm group/link"
+                        className="inline-flex items-center gap-2 text-[#1859b8] font-semibold text-sm group/link"
                       >
                         {t('Đọc thêm', 'Read more')}
                         <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/link:translate-x-1" />

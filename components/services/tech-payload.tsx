@@ -199,7 +199,7 @@ export function TechPayload() {
               onClick={() => setTab(tb.key)}
               className={`flex items-center gap-1.5 px-3 sm:px-4 py-3 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
                 tab === tb.key
-                  ? 'border-[#1e6dda] text-[#1e6dda]'
+                  ? 'border-[#1e6dda] text-[#1859b8]'
                   : 'border-transparent text-muted-foreground hover:text-foreground'
               }`}
             >
@@ -215,7 +215,7 @@ export function TechPayload() {
             onClick={copy}
             className="hidden sm:flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded flex-shrink-0"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-[#1e6dda]" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-[#1859b8]" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? t('Đã chép', 'Copied') : t('Chép', 'Copy')}
           </button>
         )}
@@ -224,7 +224,7 @@ export function TechPayload() {
       {/* Nội dung */}
       {tab === 'json' && (
         <div className="bg-slate-900">
-          <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-slate-300">
+          <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-[#d2d2d7]">
             <code>{jsonPayload}</code>
           </pre>
         </div>
@@ -232,11 +232,11 @@ export function TechPayload() {
 
       {tab === 'api' && (
         <div className="bg-slate-900">
-          <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-slate-300">
+          <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-[#d2d2d7]">
             <code>{webhookSnippet}</code>
           </pre>
           <div className="px-4 sm:px-5 pb-5 -mt-1">
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-[#515154]">
               {t(
                 'Mỗi cuộc gọi phân tích xong sẽ bắn webhook có chữ ký HMAC về hệ thống của bạn. Nếu không dùng webhook, đội kỹ thuật có thể chủ động lấy theo lô qua API.',
                 'Each analysed call fires an HMAC-signed webhook to your system. If you prefer, your team can pull results in batches via the API.'
@@ -260,7 +260,7 @@ export function TechPayload() {
             <tbody>
               {fields.map((f) => (
                 <tr key={f.field} className="border-b border-border/60 last:border-0">
-                  <td className="px-4 py-3 font-mono text-xs text-[#1e6dda] whitespace-nowrap">{f.field}</td>
+                  <td className="px-4 py-3 font-mono text-xs text-[#1859b8] whitespace-nowrap">{f.field}</td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">{f.type}</td>
                   <td className="px-4 py-3 text-muted-foreground">{f.desc}</td>
                   <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">{f.crm}</td>

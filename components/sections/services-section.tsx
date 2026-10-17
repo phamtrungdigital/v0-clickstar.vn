@@ -22,7 +22,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
       <section data-cms-field="pipeline" className="ap-tile ap-dark" id="pipeline">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="ap-stack">
-            <p className="text-sm text-[#a1a1a6] tracking-[-0.016em]">
+            <p className="text-sm text-[#d2d2d7] tracking-[-0.016em]">
               {t(content.pipeline_eyebrow.vi, content.pipeline_eyebrow.en)}
             </p>
             <h2 className="ap-display">{t(content.pipeline_heading.vi, content.pipeline_heading.en)}</h2>

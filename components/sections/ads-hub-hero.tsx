@@ -37,7 +37,7 @@ export function AdsHubHero() {
             {/* Badge */}
             <span
               data-cms-field="badge"
-              className="inline-flex items-center gap-2 bg-[#1e6dda] text-[#1e6dda] font-semibold text-[11px] px-3 py-1.5 rounded-full uppercase tracking-widest mb-5 ring-1 ring-[#1e6dda]/20"
+              className="inline-flex items-center gap-2 bg-[#eaf2fd] text-[#1859b8] font-semibold text-[11px] px-3 py-1.5 rounded-full uppercase tracking-widest mb-5 ring-1 ring-[#1e6dda]/20"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#1e6dda] opacity-75" />
@@ -101,10 +101,10 @@ export function AdsHubHero() {
                   <div className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
                   <div className="w-2.5 h-2.5 rounded-full bg-[#1e6dda]" />
                 </div>
-                <div className="flex-1 bg-white rounded px-2 py-0.5 text-[10px] text-slate-400 ml-2 truncate font-mono">
+                <div className="flex-1 bg-white rounded px-2 py-0.5 text-[10px] text-[#515154] ml-2 truncate font-mono">
                   ads-hub.clickstar.vn
                 </div>
-                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-[#f5f5f7] text-[#1e6dda] text-[9px] rounded-full font-bold">
+                <div className="flex items-center gap-1 px-1.5 py-0.5 bg-[#f5f5f7] text-[#1859b8] text-[9px] rounded-full font-bold">
                   <span className="w-1.5 h-1.5 bg-[#1e6dda] rounded-full animate-pulse" />
                   LIVE
                 </div>
@@ -114,9 +114,9 @@ export function AdsHubHero() {
               <div className="p-4 lg:p-5 bg-[#f5f5f7]">
                 {/* KPI cards */}
                 <div className="grid grid-cols-3 gap-2.5 mb-4">
-                  <KpiCard label={t('Chi tiêu', 'Spend')} value="11.7" suffix="tr" trend="+12%" trendColor="text-[#1e6dda]" />
-                  <KpiCard label="Leads" value="47" suffix="" trend="+8" trendColor="text-[#1e6dda]" />
-                  <KpiCard label={t('CPL TB', 'Avg CPL')} value="249" suffix="k" trend="-15%" trendColor="text-[#1e6dda]" />
+                  <KpiCard label={t('Chi tiêu', 'Spend')} value="11.7" suffix="tr" trend="+12%" trendColor="text-[#1859b8]" />
+                  <KpiCard label="Leads" value="47" suffix="" trend="+8" trendColor="text-[#1859b8]" />
+                  <KpiCard label={t('CPL TB', 'Avg CPL')} value="249" suffix="k" trend="-15%" trendColor="text-[#1859b8]" />
                 </div>
 
                 {/* Chart mockup */}
@@ -124,11 +124,11 @@ export function AdsHubHero() {
                   <div className="flex items-center justify-between mb-2">
                     <div className="text-[10px] font-bold text-slate-700">{t('Chi tiêu & Leads theo ngày', 'Daily spend & leads')}</div>
                     <div className="flex gap-1.5">
-                      <span className="text-[9px] text-slate-500 flex items-center gap-1">
+                      <span className="text-[9px] text-[#515154] flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                         Spend
                       </span>
-                      <span className="text-[9px] text-slate-500 flex items-center gap-1">
+                      <span className="text-[9px] text-[#515154] flex items-center gap-1">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#1e6dda]" />
                         Leads
                       </span>
@@ -139,13 +139,13 @@ export function AdsHubHero() {
 
                 {/* Bottom row pills */}
                 <div className="flex items-center gap-2 flex-wrap text-[10px]">
-                  <span className="inline-flex items-center gap-1 bg-[#eaf2fd] text-[#1e6dda] px-2 py-0.5 rounded font-semibold">
+                  <span className="inline-flex items-center gap-1 bg-[#eaf2fd] text-[#1859b8] px-2 py-0.5 rounded font-semibold">
                     <Bot className="w-2.5 h-2.5" /> Claude 4.7
                   </span>
-                  <span className="inline-flex items-center gap-1 bg-[#f5f5f7] text-[#1e6dda] px-2 py-0.5 rounded font-semibold">
+                  <span className="inline-flex items-center gap-1 bg-[#f5f5f7] text-[#1859b8] px-2 py-0.5 rounded font-semibold">
                     <TrendingUp className="w-2.5 h-2.5" /> 47 active
                   </span>
-                  <span className="text-slate-500">{t('Sync mỗi 2h', 'Syncs every 2h')}</span>
+                  <span className="text-[#515154]">{t('Sync mỗi 2h', 'Syncs every 2h')}</span>
                 </div>
               </div>
             </div>
@@ -166,7 +166,7 @@ export function AdsHubHero() {
             {/* Floating alert card */}
             <div className="hidden sm:flex absolute -bottom-4 -left-4 lg:-left-6 bg-white rounded-xl shadow-xl p-3 border border-[#1e6dda]/20 items-center gap-2.5 max-w-[200px] z-10 animate-in slide-in-from-bottom fade-in duration-700 delay-200">
               <div className="w-9 h-9 bg-[#f5f5f7] rounded-lg flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-4 h-4 text-[#1e6dda]" />
+                <CheckCircle2 className="w-4 h-4 text-[#1859b8]" />
               </div>
               <div className="min-w-0">
                 <div className="text-[11px] font-bold text-foreground">{t('Sync thành công', 'Sync completed')}</div>
@@ -189,7 +189,7 @@ function renderHeading(text: string) {
       return (
         <span
           key={i}
-          className="bg-[#1e6dda] bg-clip-text text-transparent"
+          className="text-[#1859b8]"
         >
           {part}
         </span>
@@ -202,7 +202,7 @@ function renderHeading(text: string) {
 function Trust({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-1.5">
-      <CheckCircle2 className="w-4 h-4 text-[#1e6dda] shrink-0" />
+      <CheckCircle2 className="w-4 h-4 text-[#1859b8] shrink-0" />
       <span className="font-medium">{label}</span>
     </div>
   )
@@ -223,12 +223,12 @@ function KpiCard({
 }) {
   return (
     <div className="bg-white rounded-lg border border-border/60 p-2.5">
-      <div className="text-[9px] uppercase tracking-wider text-slate-500 font-semibold mb-0.5">
+      <div className="text-[9px] uppercase tracking-wider text-[#515154] font-semibold mb-0.5">
         {label}
       </div>
       <div className="flex items-baseline gap-0.5">
         <span className="text-lg font-extrabold text-foreground">{value}</span>
-        <span className="text-[10px] text-slate-500">{suffix}</span>
+        <span className="text-[10px] text-[#515154]">{suffix}</span>
       </div>
       <div className={`text-[9px] font-semibold ${trendColor}`}>{trend}</div>
     </div>

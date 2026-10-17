@@ -27,7 +27,7 @@ export function PageHero({ fallback }: { fallback?: PageHeroContent }) {
         <div className="text-center max-w-3xl mx-auto">
           <span
             data-cms-field="badge"
-            className="inline-flex items-center gap-2 bg-primary/10 text-primary font-semibold text-xs sm:text-sm uppercase tracking-wide px-4 py-2 rounded-full mb-6"
+            className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-xs sm:text-sm uppercase tracking-wide px-4 py-2 rounded-full mb-6"
           >
             <span className="w-2 h-2 bg-primary rounded-full" />
             {t(content.badge.vi, content.badge.en)}
