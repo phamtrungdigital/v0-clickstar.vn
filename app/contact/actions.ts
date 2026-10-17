@@ -38,6 +38,13 @@ function makeContactSchema(t: (vi: string, en: string) => string) {
     message: z.string().trim().max(2000).optional().or(z.literal('')),
     // honeypot — bots fill this hidden field, real users leave empty
     website: z.string().max(0).optional().or(z.literal('')),
+    // đồng ý thu thập/xử lý dữ liệu cá nhân — bắt buộc, kiểm cả phía server
+    consent: z.literal('on', {
+      message: t(
+        'Vui lòng đồng ý để chúng tôi xử lý dữ liệu cá nhân của anh/chị',
+        'Please agree to the processing of your personal data',
+      ),
+    }),
   })
 }
 
@@ -61,6 +68,7 @@ export async function submitContactForm(
     service: String(formData.get('service') ?? ''),
     message: String(formData.get('message') ?? ''),
     website: String(formData.get('website') ?? ''),
+    consent: String(formData.get('consent') ?? ''),
   }
 
   const parsed = makeContactSchema(t).safeParse(raw)
@@ -87,6 +95,7 @@ export async function submitContactForm(
   const messageWithMeta = [
     parsed.data.service ? `Dịch vụ quan tâm: ${parsed.data.service}` : null,
     parsed.data.message || null,
+    `Đã đồng ý xử lý dữ liệu cá nhân (${new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })} giờ VN)`,
   ]
     .filter(Boolean)
     .join('\n\n')

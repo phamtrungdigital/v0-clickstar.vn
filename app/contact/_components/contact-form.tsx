@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { submitContactForm, type ContactFormState } from '../actions'
@@ -21,9 +21,15 @@ const SERVICES: { vi: string; en: string }[] = [
 
 const INITIAL_STATE: ContactFormState = { status: 'idle' }
 
+// Link tới văn bản Quy định bảo vệ dữ liệu cá nhân của Click Star. Để trống thì
+// cụm chữ hiển thị không có liên kết (điền URL khi có văn bản chính thức).
+const PRIVACY_POLICY_URL = ''
+
 export function ContactForm({ defaultService }: { defaultService?: string }) {
   const { t } = useLanguage()
   const [state, formAction, isPending] = useActionState(submitContactForm, INITIAL_STATE)
+  // controlled để không mất dấu tích khi form báo lỗi và React reset các ô nhập
+  const [consent, setConsent] = useState(false)
 
   if (state.status === 'success') {
     return (
@@ -111,6 +117,36 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
         {fieldErrors.message && <p className="mt-1 text-xs text-red-600">{fieldErrors.message}</p>}
       </div>
 
+      <div>
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            name="consent"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            required
+            className="mt-1 h-5 w-5 flex-shrink-0 rounded border-border accent-[var(--primary)] cursor-pointer"
+          />
+          <span className="text-sm leading-relaxed text-muted-foreground">
+            {t(
+              'Đồng ý để dữ liệu cá nhân của Anh/Chị được thu thập trên trang này, được xử lý và lưu trữ bởi Công ty TNHH Click Star Digital (gọi tắt là Click Star) cho mục đích tư vấn và theo điều kiện đã được công bố tại ',
+              'I agree that my personal data collected on this page may be processed and stored by Click Star Digital Co., Ltd (Click Star) for consultation purposes and under the conditions published in the ',
+            )}
+            {PRIVACY_POLICY_URL ? (
+              <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className="underline text-primary hover:text-primary-dark">
+                {t('Quy định bảo vệ dữ liệu cá nhân của Click Star', 'Click Star Personal Data Protection Policy')}
+              </a>
+            ) : (
+              <span className="font-medium text-foreground">
+                {t('Quy định bảo vệ dữ liệu cá nhân của Click Star', 'Click Star Personal Data Protection Policy')}
+              </span>
+            )}
+            .
+          </span>
+        </label>
+        {fieldErrors.consent && <p className="mt-1 text-xs text-red-600">{fieldErrors.consent}</p>}
+      </div>
+
       <button
         type="submit"
         disabled={isPending}
@@ -128,13 +164,6 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
           </>
         )}
       </button>
-
-      <p className="text-xs text-muted-foreground">
-        {t(
-          'Bằng việc gửi yêu cầu, anh/chị đồng ý cho Click Star liên hệ tư vấn về dịch vụ. Thông tin được bảo mật theo chính sách của chúng tôi.',
-          'By submitting this form, you agree to be contacted by Click Star about our services. Your information is kept confidential under our privacy policy.',
-        )}
-      </p>
     </form>
   )
 }
