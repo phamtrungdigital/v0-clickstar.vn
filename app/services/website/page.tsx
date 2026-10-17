@@ -42,6 +42,7 @@ import {
   Settings,
   Sparkles
 } from 'lucide-react'
+import { WebsiteBrowserIllustration } from '@/components/illustrations/service-illustrations'
 
 export default function WebsiteDesignPage() {
   const { language, t } = useLanguage()
@@ -506,68 +507,7 @@ export default function WebsiteDesignPage() {
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left: SVG Illustration */}
               <div className="relative order-2 lg:order-1">
-                <svg viewBox="0 0 500 400" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Background */}
-                  <circle cx="250" cy="200" r="180" fill="#F5F3FF" opacity="0.5"/>
-                  <circle cx="250" cy="200" r="130" fill="#EDE9FE" opacity="0.5"/>
-                  
-                  {/* Main monitor */}
-                  <rect x="120" y="80" width="260" height="180" rx="12" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                  <rect x="120" y="80" width="260" height="30" rx="12" fill="#F3F4F6"/>
-                  <circle cx="140" cy="95" r="5" fill="#EF4444"/>
-                  <circle cx="155" cy="95" r="5" fill="#F59E0B"/>
-                  <circle cx="170" cy="95" r="5" fill="#10B981"/>
-                  
-                  {/* Website content mockup */}
-                  <rect x="135" y="120" width="230" height="20" rx="4" fill="#8B5CF6" opacity="0.2"/>
-                  <rect x="135" y="150" width="100" height="80" rx="6" fill="#DBEAFE"/>
-                  <rect x="245" y="150" width="120" height="12" rx="2" fill="#E5E7EB"/>
-                  <rect x="245" y="170" width="100" height="8" rx="2" fill="#F3F4F6"/>
-                  <rect x="245" y="185" width="110" height="8" rx="2" fill="#F3F4F6"/>
-                  <rect x="245" y="210" width="70" height="20" rx="4" fill="#8B5CF6"/>
-                  
-                  {/* Monitor stand */}
-                  <rect x="230" y="260" width="40" height="20" fill="#E5E7EB"/>
-                  <rect x="200" y="280" width="100" height="10" rx="5" fill="#D1D5DB"/>
-                  
-                  {/* Floating design tools */}
-                  <g transform="translate(40, 120)">
-                    <rect width="60" height="60" rx="12" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                    <rect x="15" y="15" width="30" height="30" rx="4" fill="#FECACA"/>
-                    <path d="M25 25 L35 25 L35 35 L25 35 Z" fill="#EF4444"/>
-                  </g>
-                  
-                  <g transform="translate(400, 100)">
-                    <rect width="60" height="60" rx="12" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                    <circle cx="30" cy="30" r="15" fill="#BBF7D0"/>
-                    <path d="M23 30 L28 35 L38 25" stroke="#059669" strokeWidth="3" fill="none" strokeLinecap="round"/>
-                  </g>
-                  
-                  <g transform="translate(50, 250)">
-                    <rect width="70" height="50" rx="10" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                    <rect x="10" y="15" width="50" height="8" rx="2" fill="#C4B5FD"/>
-                    <rect x="10" y="27" width="35" height="8" rx="2" fill="#E9D5FF"/>
-                  </g>
-                  
-                  <g transform="translate(380, 220)">
-                    <rect width="70" height="50" rx="10" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
-                    <circle cx="25" cy="25" r="12" fill="#DBEAFE"/>
-                    <rect x="42" y="18" width="18" height="6" rx="2" fill="#93C5FD"/>
-                    <rect x="42" y="28" width="14" height="6" rx="2" fill="#BFDBFE"/>
-                  </g>
-                  
-                  {/* Connection lines */}
-                  <path d="M100 150 L120 140" stroke="#C4B5FD" strokeWidth="2" strokeDasharray="4 2"/>
-                  <path d="M400 130 L380 140" stroke="#86EFAC" strokeWidth="2" strokeDasharray="4 2"/>
-                  <path d="M120 275 L135 250" stroke="#C4B5FD" strokeWidth="2" strokeDasharray="4 2"/>
-                  <path d="M380 245 L365 240" stroke="#93C5FD" strokeWidth="2" strokeDasharray="4 2"/>
-                  
-                  {/* Decorative elements */}
-                  <circle cx="70" cy="80" r="4" fill="#A78BFA"/>
-                  <circle cx="430" cy="180" r="5" fill="#86EFAC"/>
-                  <circle cx="100" cy="320" r="3" fill="#FCA5A5"/>
-                  <circle cx="400" cy="300" r="4" fill="#93C5FD"/>
-                </svg>
+                <WebsiteBrowserIllustration className="w-full h-auto" />
               </div>
 
               {/* Right: Content */}

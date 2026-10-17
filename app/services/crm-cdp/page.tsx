@@ -43,6 +43,7 @@ import {
   Server
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { CustomerProfileIllustration } from '@/components/illustrations/service-illustrations'
 
 export default function CRMCDPPage() {
   const { language } = useLanguage()
@@ -408,58 +409,7 @@ export default function CRMCDPPage() {
           <div className="grid lg:grid-cols-2 gap-10 items-center mb-16">
             {/* SVG Illustration */}
             <div className="relative">
-              <svg viewBox="0 0 500 400" className="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Background */}
-                <circle cx="250" cy="200" r="180" fill="#ECFDF5" opacity="0.5"/>
-                <circle cx="250" cy="200" r="120" fill="#D1FAE5" opacity="0.5"/>
-                
-                {/* Central CRM hub */}
-                <circle cx="250" cy="200" r="60" fill="white" stroke="#10B981" strokeWidth="3"/>
-                <text x="250" y="195" textAnchor="middle" fill="#10B981" fontSize="14" fontWeight="bold">CRM</text>
-                <text x="250" y="212" textAnchor="middle" fill="#6B7280" fontSize="10">Central Hub</text>
-                
-                {/* Connected nodes */}
-                <g>
-                  <circle cx="120" cy="120" r="35" fill="white" stroke="#3B82F6" strokeWidth="2"/>
-                  <text x="120" y="115" textAnchor="middle" fill="#3B82F6" fontSize="20">📧</text>
-                  <text x="120" y="135" textAnchor="middle" fill="#6B7280" fontSize="8">Email</text>
-                  <line x1="155" y1="155" x2="200" y2="160" stroke="#3B82F6" strokeWidth="2" strokeDasharray="4"/>
-                </g>
-                
-                <g>
-                  <circle cx="380" cy="120" r="35" fill="white" stroke="#8B5CF6" strokeWidth="2"/>
-                  <text x="380" y="115" textAnchor="middle" fill="#8B5CF6" fontSize="20">📱</text>
-                  <text x="380" y="135" textAnchor="middle" fill="#6B7280" fontSize="8">SMS/ZNS</text>
-                  <line x1="345" y1="155" x2="300" y2="160" stroke="#8B5CF6" strokeWidth="2" strokeDasharray="4"/>
-                </g>
-                
-                <g>
-                  <circle cx="100" cy="280" r="35" fill="white" stroke="#F59E0B" strokeWidth="2"/>
-                  <text x="100" y="275" textAnchor="middle" fill="#F59E0B" fontSize="20">📊</text>
-                  <text x="100" y="295" textAnchor="middle" fill="#6B7280" fontSize="8">Analytics</text>
-                  <line x1="135" y1="260" x2="195" y2="230" stroke="#F59E0B" strokeWidth="2" strokeDasharray="4"/>
-                </g>
-                
-                <g>
-                  <circle cx="400" cy="280" r="35" fill="white" stroke="#EF4444" strokeWidth="2"/>
-                  <text x="400" y="275" textAnchor="middle" fill="#EF4444" fontSize="20">🎯</text>
-                  <text x="400" y="295" textAnchor="middle" fill="#6B7280" fontSize="8">Ads</text>
-                  <line x1="365" y1="260" x2="305" y2="230" stroke="#EF4444" strokeWidth="2" strokeDasharray="4"/>
-                </g>
-                
-                <g>
-                  <circle cx="250" cy="350" r="35" fill="white" stroke="#06B6D4" strokeWidth="2"/>
-                  <text x="250" y="345" textAnchor="middle" fill="#06B6D4" fontSize="20">🌐</text>
-                  <text x="250" y="365" textAnchor="middle" fill="#6B7280" fontSize="8">Website</text>
-                  <line x1="250" y1="315" x2="250" y2="265" stroke="#06B6D4" strokeWidth="2" strokeDasharray="4"/>
-                </g>
-                
-                {/* Decorative elements */}
-                <circle cx="180" cy="80" r="5" fill="#10B981" opacity="0.5"/>
-                <circle cx="320" cy="80" r="4" fill="#8B5CF6" opacity="0.5"/>
-                <circle cx="450" cy="200" r="6" fill="#F59E0B" opacity="0.5"/>
-                <circle cx="50" cy="200" r="5" fill="#3B82F6" opacity="0.5"/>
-              </svg>
+              <CustomerProfileIllustration className="w-full h-auto" />
             </div>
 
             {/* Problems list */}
