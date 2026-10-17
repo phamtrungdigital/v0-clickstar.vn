@@ -57,7 +57,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   // Static-friendly: KHÔNG đọc cookie ở layout (cookie → ép dynamic toàn site).
-  // LanguageProvider tự đọc cookie cs-lang ở client khi mount để đổi sang EN nếu cần.
+  // LanguageProvider tự đọc cookie cs-lang ở client khi mount để đổi sang VI nếu khách đã chọn (mặc định EN).
   const [settings, teamMembers, chatbot, webContent] = await Promise.all([
     getSiteSettings(),
     getActiveTeamMembers(),
@@ -76,7 +76,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="vi" className="bg-background">
+    <html lang="en" className="bg-background">
       <body className={`${plusJakarta.variable} font-sans antialiased`}>
         {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
         <TrackingCode code={settings?.head_code} />

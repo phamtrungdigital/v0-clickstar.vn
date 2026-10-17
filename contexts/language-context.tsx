@@ -23,7 +23,7 @@ function writeCookie(lang: Language) {
 
 export function LanguageProvider({
   children,
-  initialLang = 'vi',
+  initialLang = 'en',
 }: {
   children: ReactNode
   initialLang?: Language
@@ -31,11 +31,11 @@ export function LanguageProvider({
   const [language, setLanguageState] = useState<Language>(initialLang)
   const router = useRouter()
 
-  // Trang giờ render tĩnh (SSR mặc định 'vi') → đọc cookie cs-lang ở client khi mount
-  // để đổi sang 'en' nếu user đã chọn. KHÔNG router.refresh ở đây (chỉ đổi state client).
+  // Trang giờ render tĩnh (SSR mặc định 'en') → đọc cookie cs-lang ở client khi mount
+  // để đổi sang 'vi' nếu khách đã tự chọn tiếng Việt. KHÔNG router.refresh ở đây (chỉ đổi state client).
   useEffect(() => {
     const m = document.cookie.match(/(?:^|;\s*)cs-lang=(en|vi)/)
-    const saved = (m?.[1] as Language) || 'vi'
+    const saved = (m?.[1] as Language) || 'en'
     if (saved !== language) setLanguageState(saved)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
