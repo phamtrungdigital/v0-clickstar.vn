@@ -223,7 +223,7 @@ export function AutomationChecklistIllustration({ className = 'w-full h-full', l
       <rect x="38" y="42" width="28" height="28" rx="8" fill={BLUE} />
       <path d="M52 49 L54 55 L60 56 L54 58 L52 64 L50 58 L44 56 L50 55 Z" fill="#ffffff" />
       <text x="76" y="54" fontSize="12.5" fontWeight="600" fill={INK}>Automation</text>
-      <circle cx="80" cy="64" r="3" fill="#248a3d" />
+      <circle cx="80" cy="64" r="3" fill="#1e6dda" />
       <text x="87" y="67.5" fontSize="10" fill={MUTED}>Running</text>
       {rows.map((r, i) => (
         <g key={r.y}>

@@ -93,9 +93,9 @@ const OPS_ICON: Record<OpsIcon, LucideIcon> = {
   docs: BookOpen,
 }
 const SEVERITY_STYLE = {
-  P1: 'bg-red-100 text-red-700',
-  P2: 'bg-amber-100 text-amber-700',
-  P3: 'bg-blue-50 text-[#1E5FCB]',
+  P1: 'bg-[#f5f5f7] text-[#1e6dda]',
+  P2: 'bg-[#f5f5f7] text-[#1e6dda]',
+  P3: 'bg-[#eaf2fd] text-[#1e6dda]',
 } as const
 
 export default function CustomSoftwarePage() {
@@ -104,7 +104,7 @@ export default function CustomSoftwarePage() {
   const footer = useFooterContent()
 
   return (
-    <div className="min-h-screen bg-white text-[#0B1220]">
+    <div className="min-h-screen bg-white text-[#272729]">
       <MainNav />
 
       <main>
@@ -117,20 +117,20 @@ export default function CustomSoftwarePage() {
                 <h1 className="text-[2rem] sm:text-[2.5rem] lg:text-[2.85rem] font-bold leading-[1.15] tracking-[-0.02em] max-w-[18ch]">
                   {tt(HERO.title)}
                 </h1>
-                <p className="mt-6 text-base sm:text-lg text-[#5B6576] leading-relaxed max-w-[60ch]">
+                <p className="mt-6 text-base sm:text-lg text-[#6e6e73] leading-relaxed max-w-[60ch]">
                   {tt(HERO.lede)}
                 </p>
                 <div className="mt-8 flex flex-wrap gap-3">
                   <Link
                     href={CONTACT_HREF}
-                    className="inline-flex items-center gap-2 rounded-[10px] bg-[#0B1220] hover:bg-[#1B2536] text-white font-semibold px-5 py-3.5 transition-colors"
+                    className="inline-flex items-center gap-2 rounded-[10px] bg-[#272729] hover:bg-[#272729] text-white font-semibold px-5 py-3.5 transition-colors"
                   >
                     {t('Đặt lịch trao đổi', 'Book a call')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <a
                     href="#quy-trinh"
-                    className="inline-flex items-center rounded-[10px] border border-[#D5D9E0] hover:border-[#0B1220] bg-white font-semibold px-5 py-3.5 transition-colors"
+                    className="inline-flex items-center rounded-[10px] border border-[#d2d2d7] hover:border-[#272729] bg-white font-semibold px-5 py-3.5 transition-colors"
                   >
                     {t('Xem quy trình làm việc', 'See how we work')}
                   </a>
@@ -139,16 +139,16 @@ export default function CustomSoftwarePage() {
               <CodeWindow />
             </div>
 
-            <dl className="mt-14 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 border-y border-[#E6E8EC]">
+            <dl className="mt-14 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 border-y border-[#e0e0e0]">
               {FACTS.map((f, i) => (
                 <div
                   key={i}
-                  className={`py-5 pr-4 ${i % 2 === 1 ? 'pl-4 border-l border-[#E6E8EC]' : ''} ${
-                    i >= 2 ? 'max-lg:border-t border-[#E6E8EC]' : ''
+                  className={`py-5 pr-4 ${i % 2 === 1 ? 'pl-4 border-l border-[#e0e0e0]' : ''} ${
+                    i >= 2 ? 'max-lg:border-t border-[#e0e0e0]' : ''
                   } ${i === 2 ? 'lg:pl-4 lg:border-l' : ''}`}
                 >
                   <dt className="text-[22px] font-bold tracking-[-0.02em]">{tt(f.value)}</dt>
-                  <dd className="text-sm text-[#5B6576]">{tt(f.label)}</dd>
+                  <dd className="text-sm text-[#6e6e73]">{tt(f.label)}</dd>
                 </div>
               ))}
             </dl>
@@ -163,13 +163,13 @@ export default function CustomSoftwarePage() {
               <H2>{tt(SIGNALS.title)}</H2>
               <Lede>{tt(SIGNALS.lede)}</Lede>
             </div>
-            <ol className="border-t border-[#E6E8EC]">
+            <ol className="border-t border-[#e0e0e0]">
               {SIGNALS.items.map((s, i) => (
-                <li key={i} className="grid grid-cols-[52px_1fr] gap-2 py-5 border-b border-[#E6E8EC]">
-                  <span className={`${MONO} text-[13px] text-[#1E5FCB] pt-1`}>{String(i + 1).padStart(2, '0')}</span>
+                <li key={i} className="grid grid-cols-[52px_1fr] gap-2 py-5 border-b border-[#e0e0e0]">
+                  <span className={`${MONO} text-[13px] text-[#1e6dda] pt-1`}>{String(i + 1).padStart(2, '0')}</span>
                   <div>
                     <h3 className="text-lg font-semibold tracking-[-0.01em]">{tt(s.title)}</h3>
-                    <p className="mt-1.5 text-[#5B6576]">{tt(s.body)}</p>
+                    <p className="mt-1.5 text-[#6e6e73]">{tt(s.body)}</p>
                   </div>
                 </li>
               ))}
@@ -178,17 +178,17 @@ export default function CustomSoftwarePage() {
         </Section>
 
         {/* ③ PHẠM VI */}
-        <Section className="bg-[#F6F7F9]">
+        <Section className="bg-[#f5f5f7]">
           <Kicker>{tt(SCOPE.kicker)}</Kicker>
           <H2>{tt(SCOPE.title)}</H2>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-[#E6E8EC]">
+          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-[#e0e0e0]">
             {SCOPE.items.map((s, i) => {
               const Icon = SCOPE_ICON[s.icon]
               return (
-                <div key={i} className="bg-white p-7 border-r border-b border-[#E6E8EC]">
-                  <Icon className="w-6 h-6 text-[#1E5FCB]" strokeWidth={1.6} />
+                <div key={i} className="bg-white p-7 border-r border-b border-[#e0e0e0]">
+                  <Icon className="w-6 h-6 text-[#1e6dda]" strokeWidth={1.6} />
                   <h3 className="mt-5 text-lg font-semibold tracking-[-0.01em]">{tt(s.title)}</h3>
-                  <p className="mt-2 text-[15px] text-[#5B6576] leading-relaxed">{tt(s.body)}</p>
+                  <p className="mt-2 text-[15px] text-[#6e6e73] leading-relaxed">{tt(s.body)}</p>
                 </div>
               )
             })}
@@ -204,7 +204,7 @@ export default function CustomSoftwarePage() {
         </Section>
 
         {/* ④ BẢO MẬT — nền tối để nhấn */}
-        <Section id="bao-mat" className="bg-[#0B1220] text-slate-200">
+        <Section id="bao-mat" className="bg-[#272729] text-slate-200">
           <Kicker dark>{tt(SECURITY.kicker)}</Kicker>
           <H2 className="text-white">{tt(SECURITY.title)}</H2>
           <Lede className="text-slate-400">{tt(SECURITY.lede)}</Lede>
@@ -213,15 +213,15 @@ export default function CustomSoftwarePage() {
             {SECURITY.controls.map((c, i) => {
               const Icon = CONTROL_ICON[c.icon]
               return (
-                <div key={i} className="bg-[#0B1220] p-7">
+                <div key={i} className="bg-[#272729] p-7">
                   <div className="flex items-center gap-3 text-white">
-                    <Icon className="w-[22px] h-[22px] text-[#7DB4FF]" strokeWidth={1.6} />
+                    <Icon className="w-[22px] h-[22px] text-[#4da3ff]" strokeWidth={1.6} />
                     <h3 className="text-[17px] font-semibold">{tt(c.title)}</h3>
                   </div>
                   <ul className="mt-4">
                     {c.items.map((it, j) => (
                       <li key={j} className="relative py-2 pl-6 text-[14.5px] text-slate-400 border-t border-dashed border-slate-800">
-                        <span className="absolute left-0.5 top-[15px] w-2 h-2 rounded-[2px] border-[1.5px] border-emerald-400" aria-hidden />
+                        <span className="absolute left-0.5 top-[15px] w-2 h-2 rounded-[2px] border-[1.5px] border-[#1e6dda]" aria-hidden />
                         {tt(it)}
                       </li>
                     ))}
@@ -246,15 +246,15 @@ export default function CustomSoftwarePage() {
           <Lede>{tt(OPERATIONS.lede)}</Lede>
 
           <div className="mt-12 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-            <div className="border-t border-[#E6E8EC]">
+            <div className="border-t border-[#e0e0e0]">
               {OPERATIONS.items.map((o, i) => {
                 const Icon = OPS_ICON[o.icon]
                 return (
-                  <div key={i} className="grid grid-cols-[26px_1fr] gap-4 py-5 border-b border-[#E6E8EC]">
-                    <Icon className="w-[22px] h-[22px] text-[#1E5FCB] mt-0.5" strokeWidth={1.6} />
+                  <div key={i} className="grid grid-cols-[26px_1fr] gap-4 py-5 border-b border-[#e0e0e0]">
+                    <Icon className="w-[22px] h-[22px] text-[#1e6dda] mt-0.5" strokeWidth={1.6} />
                     <div>
                       <h3 className="text-[17px] font-semibold">{tt(o.title)}</h3>
-                      <p className="mt-1 text-[15px] text-[#5B6576] leading-relaxed">{tt(o.body)}</p>
+                      <p className="mt-1 text-[15px] text-[#6e6e73] leading-relaxed">{tt(o.body)}</p>
                     </div>
                   </div>
                 )
@@ -273,7 +273,7 @@ export default function CustomSoftwarePage() {
                   </thead>
                   <tbody className="max-md:block">
                     {OPERATIONS.incident.rows.map((r) => (
-                      <tr key={r.level} className="max-md:block max-md:py-2 border-t border-[#E6E8EC]">
+                      <tr key={r.level} className="max-md:block max-md:py-2 border-t border-[#e0e0e0]">
                         <Td label={t('Mức độ', 'Severity')}>
                           <span className={`${MONO} inline-block text-[11.5px] font-semibold px-2 py-0.5 rounded-[5px] ${SEVERITY_STYLE[r.level]}`}>
                             {r.level}
@@ -292,7 +292,7 @@ export default function CustomSoftwarePage() {
               <TableCard title={tt(OPERATIONS.report.title)}>
                 <ul>
                   {OPERATIONS.report.items.map((it, i) => (
-                    <li key={i} className="px-5 py-3 border-t border-[#E6E8EC] text-[14.5px]">
+                    <li key={i} className="px-5 py-3 border-t border-[#e0e0e0] text-[14.5px]">
                       {tt(it)}
                     </li>
                   ))}
@@ -303,27 +303,27 @@ export default function CustomSoftwarePage() {
         </Section>
 
         {/* ⑥ QUY TRÌNH */}
-        <Section id="quy-trinh" className="bg-[#F6F7F9] scroll-mt-16">
+        <Section id="quy-trinh" className="bg-[#f5f5f7] scroll-mt-16">
           <Kicker>{tt(PROCESS.kicker)}</Kicker>
           <H2>{tt(PROCESS.title)}</H2>
           <Lede>{tt(PROCESS.lede)}</Lede>
 
-          <ol className="relative mt-12 grid gap-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-0 lg:before:content-[''] lg:before:absolute lg:before:top-4 lg:before:left-0 lg:before:right-0 lg:before:h-px lg:before:bg-[#D5D9E0]">
+          <ol className="relative mt-12 grid gap-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-0 lg:before:content-[''] lg:before:absolute lg:before:top-4 lg:before:left-0 lg:before:right-0 lg:before:h-px lg:before:bg-[#d2d2d7]">
             {PROCESS.phases.map((p, i) => (
               <li key={i} className="relative grid grid-cols-[44px_1fr] sm:block lg:pr-5">
-                <span className={`${MONO} relative inline-grid place-items-center w-8 h-8 rounded-lg bg-[#0B1220] text-white text-[12.5px]`}>
+                <span className={`${MONO} relative inline-grid place-items-center w-8 h-8 rounded-lg bg-[#272729] text-white text-[12.5px]`}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div className="sm:mt-4">
                   <h3 className="text-base font-semibold tracking-[-0.01em]">{tt(p.title)}</h3>
-                  <p className="mt-1.5 text-sm text-[#5B6576] leading-relaxed">{tt(p.body)}</p>
-                  <span className={`${MONO} block mt-2.5 text-xs text-emerald-700`}>{tt(p.gate)}</span>
+                  <p className="mt-1.5 text-sm text-[#6e6e73] leading-relaxed">{tt(p.body)}</p>
+                  <span className={`${MONO} block mt-2.5 text-xs text-[#1e6dda]`}>{tt(p.gate)}</span>
                 </div>
               </li>
             ))}
           </ol>
 
-          <div className="mt-12 rounded-2xl border border-[#E6E8EC] bg-white overflow-hidden">
+          <div className="mt-12 rounded-2xl border border-[#e0e0e0] bg-white overflow-hidden">
             <table className="w-full text-[14.5px] max-md:block">
               <thead className="max-md:hidden">
                 <tr>
@@ -335,7 +335,7 @@ export default function CustomSoftwarePage() {
               </thead>
               <tbody className="max-md:block">
                 {PROCESS.table.rows.map((r, i) => (
-                  <tr key={i} className="max-md:block max-md:py-2 border-t border-[#E6E8EC] first:border-t-0 md:first:border-t">
+                  <tr key={i} className="max-md:block max-md:py-2 border-t border-[#e0e0e0] first:border-t-0 md:first:border-t">
                     <Td className="font-semibold md:whitespace-nowrap">{tt(r.phase)}</Td>
                     <Td label={tt(PROCESS.table.head.receive)}>{tt(r.receive)}</Td>
                     <Td label={tt(PROCESS.table.head.prepare)}>{tt(r.prepare)}</Td>
@@ -353,13 +353,13 @@ export default function CustomSoftwarePage() {
         <Section>
           <Kicker>{tt(OWNERSHIP.kicker)}</Kicker>
           <H2>{tt(OWNERSHIP.title)}</H2>
-          <div className="mt-10 grid md:grid-cols-2 md:gap-x-12 border-t border-[#E6E8EC]">
+          <div className="mt-10 grid md:grid-cols-2 md:gap-x-12 border-t border-[#e0e0e0]">
             {OWNERSHIP.items.map((o, i) => (
-              <div key={i} className="grid grid-cols-[22px_1fr] gap-3.5 py-[18px] border-b border-[#E6E8EC]">
-                <Check className="w-5 h-5 text-emerald-700 mt-0.5" strokeWidth={2} />
+              <div key={i} className="grid grid-cols-[22px_1fr] gap-3.5 py-[18px] border-b border-[#e0e0e0]">
+                <Check className="w-5 h-5 text-[#1e6dda] mt-0.5" strokeWidth={2} />
                 <div>
                   <p className="font-semibold">{tt(o.title)}</p>
-                  <p className="text-[14.5px] text-[#5B6576]">{tt(o.body)}</p>
+                  <p className="text-[14.5px] text-[#6e6e73]">{tt(o.body)}</p>
                 </div>
               </div>
             ))}
@@ -369,25 +369,25 @@ export default function CustomSoftwarePage() {
             <Kicker>{tt(MODELS.kicker)}</Kicker>
             <H2>{tt(MODELS.title)}</H2>
             {/* Máy tính: bảng so sánh 3 cột. Điện thoại: mỗi hình thức là 1 khối. */}
-            <div className="mt-9 rounded-2xl border border-[#E6E8EC] overflow-hidden">
+            <div className="mt-9 rounded-2xl border border-[#e0e0e0] overflow-hidden">
               <table className="w-full text-[14.5px] max-md:hidden">
                 <thead>
                   <tr>
                     <th className="w-[14%]" />
                     {MODELS.columns.map((c, i) => (
-                      <th key={i} className={`text-left align-top px-5 pt-5 pb-4 ${c.recommended ? 'bg-[#F3F7FF]' : ''}`}>
+                      <th key={i} className={`text-left align-top px-5 pt-5 pb-4 ${c.recommended ? 'bg-[#eaf2fd]' : ''}`}>
                         <span className="block text-[15px] font-bold">{tt(c.name)}</span>
-                        <span className="block mt-1 text-[13px] font-normal text-[#5B6576]">{tt(c.fit)}</span>
+                        <span className="block mt-1 text-[13px] font-normal text-[#6e6e73]">{tt(c.fit)}</span>
                       </th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
                   {MODELS.rows.map((row) => (
-                    <tr key={row.key} className="border-t border-[#E6E8EC]">
-                      <td className="px-5 py-3.5 align-top font-semibold text-[#1F2937]">{tt(row.label)}</td>
+                    <tr key={row.key} className="border-t border-[#e0e0e0]">
+                      <td className="px-5 py-3.5 align-top font-semibold text-[#272729]">{tt(row.label)}</td>
                       {MODELS.columns.map((c, i) => (
-                        <td key={i} className={`px-5 py-3.5 align-top ${c.recommended ? 'bg-[#F3F7FF]' : ''}`}>
+                        <td key={i} className={`px-5 py-3.5 align-top ${c.recommended ? 'bg-[#eaf2fd]' : ''}`}>
                           {tt(c[row.key])}
                         </td>
                       ))}
@@ -395,15 +395,15 @@ export default function CustomSoftwarePage() {
                   ))}
                 </tbody>
               </table>
-              <div className="md:hidden divide-y divide-[#E6E8EC]">
+              <div className="md:hidden divide-y divide-[#e0e0e0]">
                 {MODELS.columns.map((c, i) => (
-                  <div key={i} className={`p-5 ${c.recommended ? 'bg-[#F3F7FF]' : ''}`}>
+                  <div key={i} className={`p-5 ${c.recommended ? 'bg-[#eaf2fd]' : ''}`}>
                     <p className="font-bold">{tt(c.name)}</p>
-                    <p className="text-[13px] text-[#5B6576]">{tt(c.fit)}</p>
+                    <p className="text-[13px] text-[#6e6e73]">{tt(c.fit)}</p>
                     <dl className="mt-3 space-y-2.5 text-[14.5px]">
                       {MODELS.rows.map((row) => (
                         <div key={row.key}>
-                          <dt className={`${MONO} text-[11px] uppercase tracking-[0.04em] text-[#5B6576]`}>{tt(row.label)}</dt>
+                          <dt className={`${MONO} text-[11px] uppercase tracking-[0.04em] text-[#6e6e73]`}>{tt(row.label)}</dt>
                           <dd>{tt(c[row.key])}</dd>
                         </div>
                       ))}
@@ -416,20 +416,20 @@ export default function CustomSoftwarePage() {
         </Section>
 
         {/* ⑧ CÔNG NGHỆ */}
-        <Section className="bg-[#F6F7F9] border-t border-[#E6E8EC]">
+        <Section className="bg-[#f5f5f7] border-t border-[#e0e0e0]">
           <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-24 items-start">
             <div>
               <Kicker>{tt(STACK.kicker)}</Kicker>
               <H2>{tt(STACK.title)}</H2>
               <Lede>{tt(STACK.lede)}</Lede>
             </div>
-            <div className="rounded-2xl border border-[#E6E8EC] bg-white overflow-hidden">
+            <div className="rounded-2xl border border-[#e0e0e0] bg-white overflow-hidden">
               <table className="w-full text-[14.5px]">
                 <tbody>
                   {STACK.rows.map((r, i) => (
-                    <tr key={i} className="border-t border-[#E6E8EC] first:border-t-0">
+                    <tr key={i} className="border-t border-[#e0e0e0] first:border-t-0">
                       <td className="px-5 py-3.5 w-[34%] font-semibold align-top">{tt(r.layer)}</td>
-                      <td className={`${MONO} px-5 py-3.5 text-[13.5px] text-[#1F2937]`}>{r.tech}</td>
+                      <td className={`${MONO} px-5 py-3.5 text-[13.5px] text-[#272729]`}>{r.tech}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -448,12 +448,12 @@ export default function CustomSoftwarePage() {
         {/* ⑩ CTA */}
         <section className="pb-20 lg:pb-28">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center rounded-[20px] border border-[#E6E8EC] bg-gradient-to-b from-white to-[#F6F7F9] p-7 sm:p-12">
+            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center rounded-[20px] border border-[#e0e0e0] bg-[#f5f5f7] p-7 sm:p-12">
               <div>
                 <h2 className="text-[26px] sm:text-[34px] font-bold leading-tight tracking-[-0.02em]">{tt(FINAL_CTA.title)}</h2>
-                <p className="mt-3 text-[#5B6576] max-w-[60ch]">{tt(FINAL_CTA.body)}</p>
+                <p className="mt-3 text-[#6e6e73] max-w-[60ch]">{tt(FINAL_CTA.body)}</p>
                 {(footer.contact_phone || footer.contact_email) && (
-                  <p className={`${MONO} mt-5 text-[13.5px] text-[#5B6576]`}>
+                  <p className={`${MONO} mt-5 text-[13.5px] text-[#6e6e73]`}>
                     {[footer.contact_phone && `hotline ${footer.contact_phone}`, footer.contact_email].filter(Boolean).join(' · ')}
                   </p>
                 )}
@@ -461,14 +461,14 @@ export default function CustomSoftwarePage() {
               <div className="flex flex-wrap gap-3 lg:justify-end">
                 <Link
                   href={CONTACT_HREF}
-                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#0B1220] hover:bg-[#1B2536] text-white font-semibold px-5 py-3.5 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#272729] hover:bg-[#272729] text-white font-semibold px-5 py-3.5 transition-colors"
                 >
                   {t('Đặt lịch trao đổi', 'Book a call')}
                   <ArrowRight className="w-4 h-4" />
                 </Link>
                 <Link
                   href={CONTACT_HREF}
-                  className="inline-flex items-center rounded-[10px] border border-[#D5D9E0] hover:border-[#0B1220] bg-white font-semibold px-5 py-3.5 transition-colors"
+                  className="inline-flex items-center rounded-[10px] border border-[#d2d2d7] hover:border-[#272729] bg-white font-semibold px-5 py-3.5 transition-colors"
                 >
                   {t('Gửi yêu cầu', 'Send a brief')}
                 </Link>
@@ -497,7 +497,7 @@ function Kicker({ children, dark = false }: { children: React.ReactNode; dark?: 
   return (
     <p
       className={`${MONO} mb-4 inline-flex items-center gap-2.5 text-[12.5px] uppercase tracking-[0.04em] ${
-        dark ? 'text-[#7DB4FF]' : 'text-[#1E5FCB]'
+        dark ? 'text-[#4da3ff]' : 'text-[#1e6dda]'
       }`}
     >
       <span className="w-[18px] h-[1.5px] bg-current" aria-hidden />
@@ -514,16 +514,16 @@ function H2({ children, className = '' }: { children: React.ReactNode; className
   )
 }
 
-function Lede({ children, className = 'text-[#5B6576]' }: { children: React.ReactNode; className?: string }) {
+function Lede({ children, className = 'text-[#6e6e73]' }: { children: React.ReactNode; className?: string }) {
   return <p className={`mt-4 text-base sm:text-lg leading-relaxed max-w-[60ch] ${className}`}>{children}</p>
 }
 
 function TableCard({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-[#E6E8EC] bg-white overflow-hidden">
+    <div className="rounded-2xl border border-[#e0e0e0] bg-white overflow-hidden">
       <div className="px-5 pt-[18px] pb-2.5">
         <p className="font-bold">{title}</p>
-        {sub && <p className="mt-0.5 text-[13.5px] text-[#5B6576]">{sub}</p>}
+        {sub && <p className="mt-0.5 text-[13.5px] text-[#6e6e73]">{sub}</p>}
       </div>
       {children}
     </div>
@@ -532,7 +532,7 @@ function TableCard({ title, sub, children }: { title: string; sub?: string; chil
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th className={`${MONO} text-left text-xs font-medium uppercase tracking-[0.04em] text-[#5B6576] bg-[#F6F7F9] px-5 py-3 border-t border-[#E6E8EC]`}>
+    <th className={`${MONO} text-left text-xs font-medium uppercase tracking-[0.04em] text-[#6e6e73] bg-[#f5f5f7] px-5 py-3 border-t border-[#e0e0e0]`}>
       {children}
     </th>
   )
@@ -543,7 +543,7 @@ function Td({ children, label, className = '' }: { children: React.ReactNode; la
   return (
     <td
       data-l={label}
-      className={`px-5 py-3.5 align-top max-md:block max-md:py-1 max-md:before:block max-md:before:content-[attr(data-l)] max-md:before:text-[11px] max-md:before:uppercase max-md:before:tracking-[0.04em] max-md:before:text-[#5B6576] max-md:before:font-normal ${className}`}
+      className={`px-5 py-3.5 align-top max-md:block max-md:py-1 max-md:before:block max-md:before:content-[attr(data-l)] max-md:before:text-[11px] max-md:before:uppercase max-md:before:tracking-[0.04em] max-md:before:text-[#6e6e73] max-md:before:font-normal ${className}`}
     >
       {children}
     </td>
@@ -582,7 +582,7 @@ function WorkShowcase() {
       <div
         role="tablist"
         aria-label={tt(WORK.title)}
-        className="flex lg:flex-col gap-2 lg:gap-0 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 lg:pb-0 lg:border-t border-[#E6E8EC] snap-x lg:sticky lg:top-24"
+        className="flex lg:flex-col gap-2 lg:gap-0 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 lg:pb-0 lg:border-t border-[#e0e0e0] snap-x lg:sticky lg:top-24"
       >
         {WORK.items.map((it, i) => {
           const on = i === active
@@ -597,16 +597,16 @@ function WorkShowcase() {
               onClick={() => select(i)}
               className={`snap-start shrink-0 text-left transition-colors max-lg:rounded-lg max-lg:border max-lg:px-3.5 max-lg:py-2.5 lg:grid lg:grid-cols-[34px_1fr] lg:py-4 lg:pl-4 lg:border-b lg:border-l-2 ${
                 on
-                  ? 'max-lg:border-[#0B1220] max-lg:bg-[#0B1220] max-lg:text-white lg:border-l-[#0B1220] lg:bg-[#F6F7F9]'
-                  : 'max-lg:border-[#E6E8EC] max-lg:hover:border-[#0B1220] lg:border-l-transparent lg:hover:bg-[#F6F7F9]'
-              } lg:border-b-[#E6E8EC]`}
+                  ? 'max-lg:border-[#272729] max-lg:bg-[#272729] max-lg:text-white lg:border-l-[#272729] lg:bg-[#f5f5f7]'
+                  : 'max-lg:border-[#e0e0e0] max-lg:hover:border-[#272729] lg:border-l-transparent lg:hover:bg-[#f5f5f7]'
+              } lg:border-b-[#e0e0e0]`}
             >
-              <span className={`${MONO} text-[12.5px] ${on ? 'max-lg:text-slate-300 lg:text-[#1E5FCB]' : 'text-[#5B6576]'} max-lg:mr-2`}>
+              <span className={`${MONO} text-[12.5px] ${on ? 'max-lg:text-slate-300 lg:text-[#1e6dda]' : 'text-[#6e6e73]'} max-lg:mr-2`}>
                 {String(i + 1).padStart(2, '0')}
               </span>
               <span className="max-lg:whitespace-nowrap">
                 <span className="text-[15px] font-semibold leading-snug">{tt(it.title)}</span>
-                <span className="hidden lg:block mt-0.5 text-[13px] text-[#5B6576]">{tt(it.sector)}</span>
+                <span className="hidden lg:block mt-0.5 text-[13px] text-[#6e6e73]">{tt(it.sector)}</span>
               </span>
             </button>
           )
@@ -634,7 +634,7 @@ function WorkShowcase() {
                     aria-label={tt(s.alt)}
                     onClick={() => setShot(k)}
                     className={`relative w-24 aspect-[16/10] rounded-md overflow-hidden border transition-opacity ${
-                      k === shot ? 'border-[#0B1220]' : 'border-[#E6E8EC] opacity-60 hover:opacity-100'
+                      k === shot ? 'border-[#272729]' : 'border-[#e0e0e0] opacity-60 hover:opacity-100'
                     }`}
                   >
                     <Image src={s.src} alt="" fill sizes="96px" className="object-cover object-top" />
@@ -643,29 +643,29 @@ function WorkShowcase() {
               </div>
             )}
 
-            <p className={`${MONO} mt-7 text-[12.5px] uppercase tracking-[0.04em] text-[#5B6576]`}>{tt(it.sector)}</p>
+            <p className={`${MONO} mt-7 text-[12.5px] uppercase tracking-[0.04em] text-[#6e6e73]`}>{tt(it.sector)}</p>
             <h3 className="mt-1.5 text-[22px] sm:text-2xl font-bold tracking-[-0.01em]">{tt(it.title)}</h3>
 
             <div className="mt-5 grid sm:grid-cols-2 gap-5 sm:gap-10">
               <div>
                 <p className="text-sm font-semibold">{tt(WORK.labels.problem)}</p>
-                <p className="mt-1.5 text-[15px] text-[#5B6576] leading-relaxed">{tt(it.problem)}</p>
+                <p className="mt-1.5 text-[15px] text-[#6e6e73] leading-relaxed">{tt(it.problem)}</p>
               </div>
               <div>
                 <p className="text-sm font-semibold">{tt(WORK.labels.built)}</p>
-                <p className="mt-1.5 text-[15px] text-[#5B6576] leading-relaxed">{tt(it.built)}</p>
+                <p className="mt-1.5 text-[15px] text-[#6e6e73] leading-relaxed">{tt(it.built)}</p>
               </div>
             </div>
 
-            <ul className="mt-6 grid sm:grid-cols-3 gap-x-6 border-t border-[#E6E8EC]">
+            <ul className="mt-6 grid sm:grid-cols-3 gap-x-6 border-t border-[#e0e0e0]">
               {it.points.map((p, k) => (
-                <li key={k} className="grid grid-cols-[20px_1fr] gap-2.5 py-3.5 text-[14.5px] max-sm:border-b border-[#E6E8EC]">
-                  <Check className="w-[18px] h-[18px] mt-0.5 text-emerald-700" strokeWidth={2} />
+                <li key={k} className="grid grid-cols-[20px_1fr] gap-2.5 py-3.5 text-[14.5px] max-sm:border-b border-[#e0e0e0]">
+                  <Check className="w-[18px] h-[18px] mt-0.5 text-[#1e6dda]" strokeWidth={2} />
                   {tt(p)}
                 </li>
               ))}
             </ul>
-            <p className={`${MONO} mt-3 text-[12.5px] text-[#5B6576]`}>{it.stack}</p>
+            <p className={`${MONO} mt-3 text-[12.5px] text-[#6e6e73]`}>{it.stack}</p>
           </div>
         ))}
       </div>
@@ -678,7 +678,7 @@ function WorkShowcase() {
           if (e.key === 'ArrowRight') step(1)
           if (e.key === 'ArrowLeft') step(-1)
         }}
-        className="m-auto p-0 bg-transparent max-w-[96vw] max-h-[96vh] overflow-visible backdrop:bg-[#0B1220]/92"
+        className="m-auto p-0 bg-transparent max-w-[96vw] max-h-[96vh] overflow-visible backdrop:bg-[#272729]/92"
       >
         {zoomed && (
           <div>
@@ -730,7 +730,7 @@ function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoo
 
   if (item.frame === 'phone') {
     return (
-      <div className="aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center gap-5 sm:gap-12 p-5 sm:p-8 rounded-xl border border-[#E6E8EC] bg-[#F6F7F9] overflow-hidden">
+      <div className="aspect-[4/3] sm:aspect-[16/10] flex items-center justify-center gap-5 sm:gap-12 p-5 sm:p-8 rounded-xl border border-[#e0e0e0] bg-[#f5f5f7] overflow-hidden">
         {item.shots.map((s, k) => (
           <button
             key={s.src}
@@ -756,11 +756,11 @@ function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoo
 
   const s = item.shots[shot]
   return (
-    <figure className="rounded-xl border border-[#E6E8EC] bg-white overflow-hidden shadow-[0_24px_48px_-28px_rgba(11,18,32,0.35)]">
-      <div className="flex items-center gap-1.5 px-3.5 h-8 bg-[#F6F7F9] border-b border-[#E6E8EC]" aria-hidden>
-        <i className="w-2.5 h-2.5 rounded-full bg-[#D5D9E0]" />
-        <i className="w-2.5 h-2.5 rounded-full bg-[#D5D9E0]" />
-        <i className="w-2.5 h-2.5 rounded-full bg-[#D5D9E0]" />
+    <figure className="rounded-xl border border-[#e0e0e0] bg-white overflow-hidden shadow-[0_24px_48px_-28px_rgba(11,18,32,0.35)]">
+      <div className="flex items-center gap-1.5 px-3.5 h-8 bg-[#f5f5f7] border-b border-[#e0e0e0]" aria-hidden>
+        <i className="w-2.5 h-2.5 rounded-full bg-[#d2d2d7]" />
+        <i className="w-2.5 h-2.5 rounded-full bg-[#d2d2d7]" />
+        <i className="w-2.5 h-2.5 rounded-full bg-[#d2d2d7]" />
       </div>
       <button
         type="button"
@@ -776,7 +776,7 @@ function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoo
           quality={90}
           className="object-cover object-top"
         />
-        <span className="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-md bg-[#0B1220]/85 text-white text-xs font-medium px-2.5 py-1.5 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
+        <span className="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-md bg-[#272729]/85 text-white text-xs font-medium px-2.5 py-1.5 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
           <Maximize2 className="w-3.5 h-3.5" />
           {zoomLabel}
         </span>
@@ -790,18 +790,18 @@ function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoo
 function CodeWindow() {
   const { t } = useLanguage()
   const [tab, setTab] = useState<'sql' | 'ts'>('sql')
-  const k = 'text-blue-300'
-  const s = 'text-green-300'
+  const k = 'text-[#1e6dda]'
+  const s = 'text-[#1e6dda]'
   const c = 'text-slate-500'
-  const f = 'text-amber-200'
-  const ty = 'text-pink-300'
+  const f = 'text-[#1e6dda]'
+  const ty = 'text-[#1e6dda]'
 
   return (
     <figure
-      className="min-w-0 rounded-[14px] bg-[#0B1220] text-slate-300 overflow-hidden shadow-[0_24px_48px_-16px_rgba(11,18,32,0.35)]"
+      className="min-w-0 rounded-[14px] bg-[#272729] text-slate-300 overflow-hidden shadow-[0_24px_48px_-16px_rgba(11,18,32,0.35)]"
       aria-label={t('Minh hoạ mã nguồn', 'Code sample')}
     >
-      <div className="flex items-center gap-0.5 px-2 bg-[#0F172A] border-b border-slate-800 overflow-x-auto" role="tablist">
+      <div className="flex items-center gap-0.5 px-2 bg-[#272729] border-b border-slate-800 overflow-x-auto" role="tablist">
         <span className="flex gap-1.5 pl-1.5 pr-2.5" aria-hidden>
           <i className="w-2.5 h-2.5 rounded-full bg-slate-700" />
           <i className="w-2.5 h-2.5 rounded-full bg-slate-700" />
@@ -815,7 +815,7 @@ function CodeWindow() {
             aria-selected={tab === id}
             onClick={() => setTab(id)}
             className={`${MONO} whitespace-nowrap px-3.5 py-3 text-[12.5px] border-b-2 transition-colors ${
-              tab === id ? 'text-slate-200 border-[#3687FC]' : 'text-slate-500 border-transparent hover:text-slate-300'
+              tab === id ? 'text-slate-200 border-[#1e6dda]' : 'text-slate-500 border-transparent hover:text-slate-300'
             }`}
           >
             {id === 'sql' ? 'policies.sql' : 'approve-order.ts'}
@@ -864,7 +864,7 @@ function CodeWindow() {
       <figcaption className={`${MONO} flex justify-between gap-3 px-4 py-2.5 border-t border-slate-800 text-xs text-slate-500`}>
         <span>TypeScript · PostgreSQL</span>
         <span>
-          <span className="text-green-400">●</span> {t('kiểm thử đạt', 'checks passed')}
+          <span className="text-[#1e6dda]">●</span> {t('kiểm thử đạt', 'checks passed')}
         </span>
       </figcaption>
     </figure>
@@ -877,11 +877,11 @@ function FaqList() {
   const { t } = useLanguage()
   const [open, setOpen] = useState<number | null>(0)
   return (
-    <div className="mt-10 max-w-[860px] border-t border-[#E6E8EC]">
+    <div className="mt-10 max-w-[860px] border-t border-[#e0e0e0]">
       {FAQ.items.map((item, i) => {
         const isOpen = open === i
         return (
-          <div key={i} className="border-b border-[#E6E8EC]">
+          <div key={i} className="border-b border-[#e0e0e0]">
             <button
               type="button"
               aria-expanded={isOpen}
@@ -890,13 +890,13 @@ function FaqList() {
             >
               <span>{t(item.q.vi, item.q.en)}</span>
               {isOpen ? (
-                <Minus className="w-5 h-5 mt-0.5 shrink-0 text-[#5B6576]" strokeWidth={1.6} />
+                <Minus className="w-5 h-5 mt-0.5 shrink-0 text-[#6e6e73]" strokeWidth={1.6} />
               ) : (
-                <Plus className="w-5 h-5 mt-0.5 shrink-0 text-[#5B6576]" strokeWidth={1.6} />
+                <Plus className="w-5 h-5 mt-0.5 shrink-0 text-[#6e6e73]" strokeWidth={1.6} />
               )}
             </button>
             {/* Luôn render câu trả lời (ẩn bằng CSS) để Google và bot AI đọc được cả câu đang đóng */}
-            <p className={`pb-5 pr-0 sm:pr-10 text-[#5B6576] leading-relaxed ${isOpen ? '' : 'hidden'}`}>{t(item.a.vi, item.a.en)}</p>
+            <p className={`pb-5 pr-0 sm:pr-10 text-[#6e6e73] leading-relaxed ${isOpen ? '' : 'hidden'}`}>{t(item.a.vi, item.a.en)}</p>
           </div>
         )
       })}

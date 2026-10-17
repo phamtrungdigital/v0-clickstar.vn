@@ -13,7 +13,7 @@ export function AdsHubScreenshots({ content }: { content: AdsHubScreenshotsConte
   return (
     <section
       data-cms-section="ads_hub_screenshots"
-      className="py-20 lg:py-28 bg-gradient-to-br from-slate-50 via-background to-primary/5"
+      className="py-20 lg:py-28 bg-[#f5f5f7]"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}

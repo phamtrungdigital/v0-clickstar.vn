@@ -90,7 +90,7 @@ export default function DigitalMarketingPage() {
       color: 'bg-[#f5f5f7]',
     },
     {
-      icon: <Search className="w-8 h-8 text-emerald-600" />,
+      icon: <Search className="w-8 h-8 text-[#1e6dda]" />,
       title: t('SEO & Content Marketing', 'SEO & Content Marketing'),
       description: t(
         'Tối ưu website để đứng top Google, xây dựng nội dung chất lượng thu hút khách hàng tự nhiên.',
@@ -186,7 +186,7 @@ export default function DigitalMarketingPage() {
         t('Launch chiến dịch pilot', 'Launch pilot campaigns'),
       ],
       duration: t('1-2 tuần', '1-2 weeks'),
-      color: 'bg-emerald-500',
+      color: 'bg-[#1e6dda]',
     },
     {
       step: '04',
@@ -405,12 +405,12 @@ export default function DigitalMarketingPage() {
                           {/* Problem */}
                           <div className="flex items-center gap-2 mb-2">
                             <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
-                            <p className="text-foreground font-semibold text-sm line-through decoration-rose-300">{item.problem}</p>
+                            <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                           </div>
                           
                           {/* Solution */}
                           <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                             <p className="text-muted-foreground text-sm">{item.solution}</p>
                           </div>
                         </div>
@@ -573,9 +573,9 @@ export default function DigitalMarketingPage() {
                   {/* Browser header */}
                   <div className="bg-[#f5f5f7] px-4 py-3 flex items-center gap-2 border-b border-border">
                     <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400" />
                       <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-green-400" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                     </div>
                     <div className="flex-1 flex justify-center">
                       <div className="bg-white rounded-lg px-4 py-1 text-sm text-gray-500">
@@ -592,7 +592,7 @@ export default function DigitalMarketingPage() {
                         <p className="text-sm text-muted-foreground">{t('Cập nhật 5 phút trước', 'Updated 5 minutes ago')}</p>
                       </div>
                       <div className="flex gap-2">
-                        <span className="px-3 py-1 bg-[#f5f5f7] text-emerald-700 text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
+                        <span className="px-3 py-1 bg-[#f5f5f7] text-[#1e6dda] text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
                       </div>
                     </div>
 
@@ -600,17 +600,17 @@ export default function DigitalMarketingPage() {
                       <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">{t('Chi tiêu', 'Spend')}</div>
                         <div className="text-xl font-semibold text-foreground">45.2M</div>
-                        <div className="text-xs text-emerald-600">{t('+12% vs tuần trước', '+12% vs last week')}</div>
+                        <div className="text-xs text-[#1e6dda]">{t('+12% vs tuần trước', '+12% vs last week')}</div>
                       </div>
                       <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">{t('Leads', 'Leads')}</div>
                         <div className="text-xl font-semibold text-foreground">324</div>
-                        <div className="text-xs text-emerald-600">{t('+28% vs tuần trước', '+28% vs last week')}</div>
+                        <div className="text-xs text-[#1e6dda]">{t('+28% vs tuần trước', '+28% vs last week')}</div>
                       </div>
                       <div className="bg-white rounded-[11px] p-4">
                         <div className="text-sm text-muted-foreground mb-1">ROAS</div>
                         <div className="text-xl font-semibold text-foreground">3.8x</div>
-                        <div className="text-xs text-emerald-600">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
+                        <div className="text-xs text-[#1e6dda]">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
                       </div>
                     </div>
 
@@ -634,7 +634,7 @@ export default function DigitalMarketingPage() {
                 {/* Floating notification */}
                 <div className="absolute -bottom-4 -right-4 bg-white rounded-[11px] p-4 flex items-center gap-3">
                   <div className="w-10 h-10 bg-[#f5f5f7] rounded-full flex items-center justify-center">
-                    <ThumbsUp className="w-5 h-5 text-emerald-600" />
+                    <ThumbsUp className="w-5 h-5 text-[#1e6dda]" />
                   </div>
                   <div>
                     <div className="text-sm font-semibold text-foreground">{t('Chiến dịch đạt KPI!', 'Campaign hit KPI!')}</div>

@@ -145,7 +145,7 @@ function CaseStudyCard({
         className="object-cover transition-transform duration-500 group-hover:scale-110"
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-[#f5f5f7] opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
         {study.tags.map((tag) => (
           <span

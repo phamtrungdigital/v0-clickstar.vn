@@ -37,19 +37,19 @@ type Outcome = { label: string; value: string }
 
 const TONE_STYLE: Record<Tone, { chip: string; icon: React.ReactNode }> = {
   risk: {
-    chip: 'bg-rose-50 text-rose-700 border-rose-200',
+    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
     icon: <Flame className="w-3.5 h-3.5" />,
   },
   warn: {
-    chip: 'bg-amber-50 text-amber-700 border-amber-200',
+    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
     icon: <AlertTriangle className="w-3.5 h-3.5" />,
   },
   info: {
-    chip: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
     icon: <Info className="w-3.5 h-3.5" />,
   },
   good: {
-    chip: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    chip: 'bg-[#f5f5f7] text-[#1e6dda] border-border',
     icon: <CheckCircle2 className="w-3.5 h-3.5" />,
   },
 }
@@ -699,13 +699,13 @@ export function AnalysisDemo() {
               aria-pressed={on}
               className={`text-left rounded-xl border p-3.5 transition-all duration-200 ${
                 on
-                  ? 'border-cyan-400 bg-gradient-to-br from-cyan-50 to-teal-50 shadow-md shadow-cyan-500/10'
-                  : 'border-border bg-white hover:border-cyan-200 hover:shadow-sm'
+                  ? 'border-[#1e6dda] bg-[#f5f5f7] shadow-md'
+                  : 'border-border bg-white hover:border-border hover:shadow-sm'
               }`}
             >
               <span
                 className={`inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
-                  on ? 'text-cyan-700' : 'text-muted-foreground'
+                  on ? 'text-[#1e6dda]' : 'text-muted-foreground'
                 }`}
               >
                 {sc.icon}
@@ -729,7 +729,7 @@ export function AnalysisDemo() {
                 <div className="min-w-0">
                   <span
                     className={`text-[10px] font-bold uppercase tracking-wider ${
-                      turn.who === 'sale' ? 'text-cyan-600' : 'text-slate-500'
+                      turn.who === 'sale' ? 'text-[#1e6dda]' : 'text-slate-500'
                     }`}
                   >
                     {turn.who === 'sale' ? t('Nhân viên', 'Agent') : t('Khách', 'Customer')}
@@ -775,7 +775,7 @@ export function AnalysisDemo() {
             <div className="space-y-2.5">
               {s.outcomes.map((o, i) => (
                 <div key={i} className="rounded-lg border border-border bg-slate-50 px-3 py-2.5">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-cyan-700 mb-1">{o.label}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-[#1e6dda] mb-1">{o.label}</p>
                   <p className="text-xs text-foreground leading-snug">{o.value}</p>
                 </div>
               ))}
@@ -790,10 +790,10 @@ export function AnalysisDemo() {
 function StepHeader({ n, icon, title }: { n: string; icon: React.ReactNode; title: string }) {
   return (
     <div className="flex items-center gap-2.5 px-4 py-3 border-b border-border bg-slate-50">
-      <span className="w-6 h-6 rounded-full bg-gradient-to-br from-cyan-500 to-teal-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
+      <span className="w-6 h-6 rounded-full bg-[#1e6dda] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
         {n}
       </span>
-      <span className="text-cyan-600">{icon}</span>
+      <span className="text-[#1e6dda]">{icon}</span>
       <span className="text-sm font-bold text-foreground">{title}</span>
     </div>
   )

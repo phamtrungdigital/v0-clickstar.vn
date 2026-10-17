@@ -58,7 +58,7 @@ export default async function ProjectDetailPage({
       <MainNav />
 
       {/* Hero */}
-      <section className="relative pt-10 pb-12 lg:pt-14 lg:pb-16 bg-gradient-to-br from-secondary/40 via-background to-background">
+      <section className="relative pt-10 pb-12 lg:pt-14 lg:pb-16 bg-[#f5f5f7]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <Link
             href="/projects"

@@ -179,9 +179,9 @@ export function PersonalizeBanner() {
   const styles = campaign.styles ?? {}
   const position = styles.position ?? 'bottom-right'
   const size = styles.size ?? 'default'
-  const gradientFrom = styles.gradient_from ?? '#1B7BFF'
-  const gradientTo = styles.gradient_to ?? '#0055d4'
-  const buttonColor = styles.button_color ?? '#FF6B35'
+  const gradientFrom = styles.gradient_from ?? '#1e6dda'
+  const gradientTo = styles.gradient_to ?? '#1e6dda'
+  const buttonColor = styles.button_color ?? '#1e6dda'
 
   const ctaHref = campaign.content.service_param
     ? `${campaign.content.cta_href}?service=${encodeURIComponent(campaign.content.service_param)}&utm_source=banner_personalize&utm_campaign=${encodeURIComponent(campaign.name)}`

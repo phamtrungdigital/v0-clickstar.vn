@@ -25,9 +25,9 @@ export function FloatingContact() {
       >
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M12 3C6.9 3 2.75 6.46 2.75 10.73c0 2.4 1.32 4.54 3.4 5.96-.14.98-.57 2.2-1.5 3.02-.26.23-.12.66.22.68 1.9.12 3.45-.66 4.46-1.4.98.26 2.02.4 3.17.4 5.1 0 9.25-3.46 9.25-7.66C21.25 6.46 17.1 3 12 3Z" />
-          <circle cx="8.3" cy="10.8" r="1.15" fill="#0068FF" />
-          <circle cx="12" cy="10.8" r="1.15" fill="#0068FF" />
-          <circle cx="15.7" cy="10.8" r="1.15" fill="#0068FF" />
+          <circle cx="8.3" cy="10.8" r="1.15" fill="#1e6dda" />
+          <circle cx="12" cy="10.8" r="1.15" fill="#1e6dda" />
+          <circle cx="15.7" cy="10.8" r="1.15" fill="#1e6dda" />
         </svg>
         <span className="fc-tip" role="tooltip">
           Chat Zalo<small>Nhắn tin tư vấn ngay</small>
@@ -70,35 +70,35 @@ export function FloatingContact() {
         }
         .fc-fab svg{position:relative;z-index:3;width:27px;height:27px;display:block}
         .fc-fab--zalo{
-          background:radial-gradient(130% 130% at 30% 20%, #3f90ff 0%, #0068FF 55%, #0050CC 100%);
-          box-shadow:0 10px 24px rgba(0,104,255,.42), inset 0 1px 0 rgba(255,255,255,.35);
+          background:radial-gradient(130% 130% at 30% 20%, #1e6dda 0%, #1e6dda 55%, #1859b8 100%);
+          box-shadow:0 10px 24px rgba(30,109,218,.42), inset 0 1px 0 rgba(255,255,255,.35);
         }
         .fc-fab--call{
-          background:radial-gradient(130% 130% at 30% 20%, #5aa0ff 0%, #3687FC 52%, #155CBD 100%);
-          box-shadow:0 10px 24px rgba(54,135,252,.45), inset 0 1px 0 rgba(255,255,255,.35);
+          background:radial-gradient(130% 130% at 30% 20%, #4da3ff 0%, #1e6dda 52%, #1859b8 100%);
+          box-shadow:0 10px 24px rgba(30,109,218,.45), inset 0 1px 0 rgba(255,255,255,.35);
         }
         .fc-fab:hover{transform:translateY(-3px) scale(1.06);filter:brightness(1.04)}
         .fc-fab:active{transform:translateY(-1px) scale(1.01)}
-        .fc-fab:focus-visible{box-shadow:0 0 0 3px #fff, 0 0 0 6px #3687FC, 0 10px 24px rgba(54,135,252,.4)}
+        .fc-fab:focus-visible{box-shadow:0 0 0 3px #fff, 0 0 0 6px #1e6dda, 0 10px 24px rgba(30,109,218,.4)}
         .fc-fab::before,.fc-fab::after{content:"";position:absolute;inset:0;border-radius:50%;z-index:1}
         .fc-fab::before{animation:fcPulse 2.6s ease-out infinite}
         .fc-fab--call::before{animation-delay:1.3s}
         .fc-fab::after{border:1px solid rgba(255,255,255,.18)}
         @keyframes fcPulse{
-          0%{box-shadow:0 0 0 0 rgba(54,135,252,.42)}
-          70%{box-shadow:0 0 0 14px rgba(54,135,252,0)}
-          100%{box-shadow:0 0 0 0 rgba(54,135,252,0)}
+          0%{box-shadow:0 0 0 0 rgba(30,109,218,.42)}
+          70%{box-shadow:0 0 0 14px rgba(30,109,218,0)}
+          100%{box-shadow:0 0 0 0 rgba(30,109,218,0)}
         }
         .fc-fab--zalo::before{animation-name:fcPulseZalo}
         @keyframes fcPulseZalo{
-          0%{box-shadow:0 0 0 0 rgba(0,104,255,.45)}
-          70%{box-shadow:0 0 0 14px rgba(0,104,255,0)}
-          100%{box-shadow:0 0 0 0 rgba(0,104,255,0)}
+          0%{box-shadow:0 0 0 0 rgba(30,109,218,.45)}
+          70%{box-shadow:0 0 0 14px rgba(30,109,218,0)}
+          100%{box-shadow:0 0 0 0 rgba(30,109,218,0)}
         }
         .fc-tip{
           position:absolute;left:calc(100% + 14px);top:50%;
           transform:translateY(-50%) translateX(-6px);
-          background:#0B2A57;color:#fff;white-space:nowrap;
+          background:#272729;color:#fff;white-space:nowrap;
           padding:9px 13px;border-radius:11px;font-size:13.5px;font-weight:600;line-height:1.2;
           box-shadow:0 10px 24px rgba(11,42,87,.25);
           opacity:0;visibility:hidden;pointer-events:none;
@@ -107,7 +107,7 @@ export function FloatingContact() {
         .fc-tip small{display:block;font-weight:500;font-size:11.5px;opacity:.72;margin-top:2px}
         .fc-tip::before{
           content:"";position:absolute;right:100%;top:50%;transform:translateY(-50%);
-          border:6px solid transparent;border-right-color:#0B2A57;
+          border:6px solid transparent;border-right-color:#272729;
         }
         .fc-fab:hover .fc-tip,.fc-fab:focus-visible .fc-tip{
           opacity:1;visibility:visible;transform:translateY(-50%) translateX(0);

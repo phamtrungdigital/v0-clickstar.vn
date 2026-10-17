@@ -71,8 +71,8 @@ export default function DashboardServicePage() {
     {
       title: t('Dashboard Quảng cáo', 'Advertising Dashboard'),
       description: t('Theo dõi hiệu quả quảng cáo đa nền tảng: Google, Meta, TikTok, Zalo', 'Track multi-platform ad performance: Google, Meta, TikTok, Zalo'),
-      color: 'from-blue-500 to-cyan-500',
-      bgColor: 'bg-blue-50',
+      color: 'from-[#1e6dda] to-[#1e6dda]',
+      bgColor: 'bg-[#eaf2fd]',
       metrics: [
         { label: 'ROAS', value: '4.2x' },
         { label: 'CPA', value: '-35%' },
@@ -89,8 +89,8 @@ export default function DashboardServicePage() {
     {
       title: t('Dashboard CRM & Sales', 'CRM & Sales Dashboard'),
       description: t('Quản lý pipeline bán hàng, theo dõi khách hàng từ lead đến chốt deal', 'Manage sales pipeline, track customers from lead to closed deal'),
-      color: 'from-emerald-500 to-teal-500',
-      bgColor: 'bg-emerald-50',
+      color: 'from-[#1e6dda] to-[#1e6dda]',
+      bgColor: 'bg-[#f5f5f7]',
       metrics: [
         { label: t('Tỷ lệ chốt', 'Close Rate'), value: '+45%' },
         { label: t('Thời gian', 'Cycle Time'), value: '-30%' },
@@ -107,8 +107,8 @@ export default function DashboardServicePage() {
     {
       title: t('Dashboard GA4 & Website', 'GA4 & Website Dashboard'),
       description: t('Phân tích hành vi người dùng, tối ưu conversion funnel', 'Analyze user behavior, optimize conversion funnel'),
-      color: 'from-orange-500 to-amber-500',
-      bgColor: 'bg-orange-50',
+      color: 'from-[#1e6dda] to-[#1e6dda]',
+      bgColor: 'bg-[#f5f5f7]',
       metrics: [
         { label: t('Conversion', 'Conversion'), value: '+52%' },
         { label: t('Bounce', 'Bounce'), value: '-40%' },
@@ -212,24 +212,24 @@ export default function DashboardServicePage() {
       
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Content */}
               <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
+                <div className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
                   <BarChart3 className="w-4 h-4" />
                   {t('DASHBOARD DỮ LIỆU', 'DATA DASHBOARD')}
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-tight mb-6">
                   {t('Biến dữ liệu thành', 'Transform data into')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('quyết định', 'decisions')}
                   </span>
                 </h1>
@@ -258,7 +258,7 @@ export default function DashboardServicePage() {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg hover:shadow-primary/25">
+                  <Button asChild size="lg" className="bg-[#1e6dda] text-white hover:shadow-lg hover:shadow-primary/25">
                     <Link href="/projects">
                       {t('Xem demo', 'View Demo')}
                       <Play className="w-4 h-4 ml-2" />
@@ -279,9 +279,9 @@ export default function DashboardServicePage() {
                   {/* Browser bar */}
                   <div className="flex items-center gap-2 mb-4">
                     <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                     </div>
                     <div className="flex-1 bg-white/10 rounded-full h-6 flex items-center px-3">
                       <span className="text-xs text-gray-400">dashboard.clickstar.vn</span>
@@ -293,15 +293,15 @@ export default function DashboardServicePage() {
                     {/* Top metrics */}
                     <div className="grid grid-cols-4 gap-2">
                       {[
-                        { label: t('Doanh thu', 'Revenue'), value: '₫2.4B', change: '+18%', color: 'text-emerald-400' },
-                        { label: t('Chi phí ADS', 'Ad Spend'), value: '₫180M', change: '-12%', color: 'text-blue-400' },
-                        { label: 'ROAS', value: '4.2x', change: '+25%', color: 'text-purple-400' },
-                        { label: t('Leads', 'Leads'), value: '1,247', change: '+32%', color: 'text-amber-400' }
+                        { label: t('Doanh thu', 'Revenue'), value: '₫2.4B', change: '+18%', color: 'text-[#1e6dda]' },
+                        { label: t('Chi phí ADS', 'Ad Spend'), value: '₫180M', change: '-12%', color: 'text-[#1e6dda]' },
+                        { label: 'ROAS', value: '4.2x', change: '+25%', color: 'text-[#1e6dda]' },
+                        { label: t('Leads', 'Leads'), value: '1,247', change: '+32%', color: 'text-[#1e6dda]' }
                       ].map((metric, i) => (
                         <div key={i} className="bg-slate-700/50 rounded-lg p-2">
                           <div className="text-[10px] text-slate-400">{metric.label}</div>
                           <div className={`text-sm font-bold ${metric.color}`}>{metric.value}</div>
-                          <div className="text-[10px] text-emerald-400">{metric.change}</div>
+                          <div className="text-[10px] text-[#1e6dda]">{metric.change}</div>
                         </div>
                       ))}
                     </div>
@@ -314,7 +314,7 @@ export default function DashboardServicePage() {
                       </div>
                       <div className="flex items-end gap-1 h-20">
                         {[40, 65, 45, 80, 60, 90, 75].map((h, i) => (
-                          <div key={i} className="flex-1 bg-gradient-to-t from-primary to-primary-dark rounded-t" style={{ height: `${h}%` }} />
+                          <div key={i} className="flex-1 bg-[#1e6dda] rounded-t" style={{ height: `${h}%` }} />
                         ))}
                       </div>
                     </div>
@@ -323,7 +323,7 @@ export default function DashboardServicePage() {
                     <div className="grid grid-cols-2 gap-2">
                       <div className="bg-slate-700/30 rounded-lg p-2">
                         <div className="flex items-center gap-2 mb-1">
-                          <Bot className="w-4 h-4 text-purple-400" />
+                          <Bot className="w-4 h-4 text-[#1e6dda]" />
                           <span className="text-xs text-slate-300">AI Insights</span>
                         </div>
                         <p className="text-[10px] text-slate-400 leading-relaxed">
@@ -332,11 +332,11 @@ export default function DashboardServicePage() {
                       </div>
                       <div className="bg-slate-700/30 rounded-lg p-2">
                         <div className="flex items-center gap-2 mb-1">
-                          <Activity className="w-4 h-4 text-emerald-400" />
+                          <Activity className="w-4 h-4 text-[#1e6dda]" />
                           <span className="text-xs text-slate-300">{t('Live', 'Live')}</span>
                         </div>
                         <div className="flex items-center gap-1">
-                          <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-[#1e6dda] animate-pulse" />
                           <span className="text-[10px] text-slate-400">{t('23 người online', '23 users online')}</span>
                         </div>
                       </div>
@@ -345,11 +345,11 @@ export default function DashboardServicePage() {
                 </div>
 
                 {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+                <div className="absolute -top-4 -right-4 bg-[#1e6dda] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
                   <Zap className="w-3 h-3" />
                   Real-time
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-purple-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
+                <div className="absolute -bottom-4 -left-4 bg-[#1e6dda] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1">
                   <Brain className="w-3 h-3" />
                   AI Powered
                 </div>
@@ -364,14 +364,14 @@ export default function DashboardServicePage() {
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left: Content */}
               <div>
-                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <Target className="w-4 h-4" />
                   {t('TẠI SAO CẦN DASHBOARD?', 'WHY DASHBOARD?')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6">
                   {t('Dữ liệu của bạn đang', 'Your data is')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-orange-500">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('nằm rải rác?', 'scattered everywhere?')}
                   </span>
                 </h2>
@@ -422,18 +422,18 @@ export default function DashboardServicePage() {
                     className="group relative bg-white rounded-2xl p-5 border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-amber-600 group-hover:scale-110 transition-transform">
+                      <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda] group-hover:scale-110 transition-transform">
                         {item.icon}
                       </div>
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
-                          <p className="text-foreground font-semibold text-sm line-through decoration-rose-300">{item.problem}</p>
+                          <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
+                          <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                         </div>
                         
                         <div className="flex items-start gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                           <p className="text-muted-foreground text-sm">{item.solution}</p>
                         </div>
                       </div>
@@ -524,19 +524,19 @@ export default function DashboardServicePage() {
         </section>
 
         {/* AI Integration Section */}
-        <section className="py-12 lg:py-16 bg-gradient-to-br from-purple-900 via-slate-900 to-slate-900 text-white overflow-hidden">
+        <section className="py-12 lg:py-16 bg-[#272729] text-white overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               {/* Content */}
               <div>
-                <span className="inline-flex items-center gap-2 bg-purple-500/20 text-purple-300 font-semibold text-sm px-5 py-2.5 rounded-full mb-6 backdrop-blur">
+                <span className="inline-flex items-center gap-2 bg-[#1e6dda]/20 text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6 backdrop-blur">
                   <Brain className="w-4 h-4" />
                   {t('TÍCH HỢP AI', 'AI INTEGRATION')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
                   {t('Phân tích nâng cao với', 'Advanced analytics with')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     Claude 4.7
                   </span>
                 </h2>
@@ -551,14 +551,14 @@ export default function DashboardServicePage() {
                 {/* AI Demo */}
                 <div className="bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700 p-4 mb-6">
                   <div className="flex items-center gap-2 mb-3">
-                    <Bot className="w-5 h-5 text-purple-400" />
+                    <Bot className="w-5 h-5 text-[#1e6dda]" />
                     <span className="text-sm font-medium text-slate-300">AI Assistant</span>
-                    <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded-full">Claude 4.7</span>
+                    <span className="text-xs bg-[#1e6dda]/20 text-[#1e6dda] px-2 py-0.5 rounded-full">Claude 4.7</span>
                   </div>
                   <div className="bg-slate-700/50 rounded-lg p-3 mb-3">
                     <p className="text-sm text-slate-300 italic">{t('"Phân tích hiệu quả quảng cáo tháng này"', '"Analyze this month\'s ad performance"')}</p>
                   </div>
-                  <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
+                  <div className="bg-[#1e6dda]/10 border border-[#1e6dda]/20 rounded-lg p-3">
                     <p className="text-sm text-slate-200 leading-relaxed">
                       {t(
                         '📊 Tổng chi phí: ₫180M | ROAS: 4.2x\n\n💡 Insight: Google Ads đang có CPA thấp nhất (₫45K). Đề xuất tăng 20% ngân sách để tối ưu conversion.',
@@ -568,7 +568,7 @@ export default function DashboardServicePage() {
                   </div>
                 </div>
 
-                <Button asChild size="lg" className="bg-purple-500 hover:bg-purple-600 text-white">
+                <Button asChild size="lg" className="bg-[#1e6dda] hover:bg-[#1e6dda] text-white">
                   <Link href="/contact?service=Dashboard%20d%E1%BB%AF%20li%E1%BB%87u">
                     {t('Trải nghiệm AI ngay', 'Experience AI Now')}
                     <Sparkles className="w-4 h-4 ml-2" />
@@ -583,7 +583,7 @@ export default function DashboardServicePage() {
                     key={index}
                     className="bg-slate-800/50 backdrop-blur rounded-xl border border-slate-700 p-5 hover:bg-slate-800/70 transition-colors"
                   >
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center text-purple-400 mb-4">
+                    <div className="w-12 h-12 rounded-xl bg-[#1e6dda] flex items-center justify-center text-[#1e6dda] mb-4">
                       {feature.icon}
                     </div>
                     <h4 className="font-bold text-white mb-2">{feature.title}</h4>
@@ -603,8 +603,8 @@ export default function DashboardServicePage() {
               <div className="order-2 lg:order-1">
                 <div className="bg-slate-900 rounded-2xl p-8 text-white">
                   <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-emerald-400" />
+                    <div className="w-12 h-12 rounded-xl bg-[#1e6dda]/20 flex items-center justify-center">
+                      <Shield className="w-6 h-6 text-[#1e6dda]" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold">{t('Bảo mật cấp doanh nghiệp', 'Enterprise-grade Security')}</h3>
@@ -615,7 +615,7 @@ export default function DashboardServicePage() {
                   <div className="grid grid-cols-2 gap-4">
                     {securityFeatures.map((feature, index) => (
                       <div key={index} className="bg-slate-800/50 rounded-xl p-4">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-3">
+                        <div className="w-8 h-8 rounded-lg bg-[#1e6dda]/10 flex items-center justify-center text-[#1e6dda] mb-3">
                           {feature.icon}
                         </div>
                         <h4 className="font-semibold text-sm text-white mb-1">{feature.title}</h4>
@@ -641,14 +641,14 @@ export default function DashboardServicePage() {
 
               {/* Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <Zap className="w-4 h-4" />
                   {t('AN TOÀN & REAL-TIME', 'SECURE & REAL-TIME')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground leading-tight mb-6">
                   {t('Dữ liệu bảo mật,', 'Secure data,')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-500">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('cập nhật tức thì', 'instant updates')}
                   </span>
                 </h2>
@@ -679,7 +679,7 @@ export default function DashboardServicePage() {
                     }
                   ].map((item, index) => (
                     <div key={index} className="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-                      <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                      <div className="w-10 h-10 rounded-lg bg-[#f5f5f7] flex items-center justify-center text-[#1e6dda]">
                         {item.icon}
                       </div>
                       <div>
@@ -709,7 +709,7 @@ export default function DashboardServicePage() {
 
             <div className="relative">
               {/* Timeline line */}
-              <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/20 via-primary to-primary/20 -translate-y-1/2" />
+              <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-[#f5f5f7] -translate-y-1/2" />
               
               <div className="grid lg:grid-cols-5 gap-6">
                 {processSteps.map((step, index) => (
@@ -732,7 +732,7 @@ export default function DashboardServicePage() {
         </section>
 
         {/* CTA Section */}
-        <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-blue-600 to-purple-600">
+        <section id="contact" className="py-12 lg:py-16 bg-[#1e6dda]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
               {t('Bứt phá với dữ liệu ngay hôm nay', 'Break through with data today')}

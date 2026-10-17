@@ -329,12 +329,12 @@ export default function AIIntegrationPage() {
       <MainNav />
       <main>
         {/* Hero Section - Blue theme matching homepage */}
-        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-[#f5f5f7] overflow-hidden">
           {/* Blue gradient orbs - matching banner */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
-            <div className="absolute top-1/2 right-10 w-32 h-32 bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-2xl" />
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute top-1/2 right-10 w-32 h-32 bg-[#f5f5f7] rounded-full blur-2xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -348,7 +348,7 @@ export default function AIIntegrationPage() {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
                   {t('Tích hợp', 'Integrate')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     AI
                   </span>{' '}
                   {t('vào Hoạt động Kinh doanh', 'into Your Business Operations')}
@@ -361,7 +361,7 @@ export default function AIIntegrationPage() {
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">
                   <Link
                     href="#consultation"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
                   >
                     {t('Nhận tư vấn 1-1 miễn phí', 'Get a free 1-on-1 consultation')}
                     <ArrowRight className="w-5 h-5" />
@@ -414,13 +414,13 @@ export default function AIIntegrationPage() {
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { name: 'Content', icon: FileText, color: 'from-primary to-primary-dark' },
-                      { name: t('Hình ảnh', 'Images'), icon: ImageIcon, color: 'from-accent to-pink-400' },
-                      { name: 'Video', icon: Video, color: 'from-red-500 to-orange-400' },
-                      { name: t('Dữ liệu', 'Data'), icon: BarChart3, color: 'from-emerald-500 to-teal-400' },
-                      { name: 'Chatbot', icon: MessageSquare, color: 'from-violet-500 to-purple-400' },
-                      { name: t('Quảng cáo', 'Ads'), icon: Target, color: 'from-amber-500 to-yellow-400' },
+                      { name: t('Hình ảnh', 'Images'), icon: ImageIcon, color: 'from-accent to-[#1e6dda]' },
+                      { name: 'Video', icon: Video, color: 'from-[#1e6dda] to-[#1e6dda]' },
+                      { name: t('Dữ liệu', 'Data'), icon: BarChart3, color: 'from-[#1e6dda] to-[#1e6dda]' },
+                      { name: 'Chatbot', icon: MessageSquare, color: 'from-[#1e6dda] to-[#1e6dda]' },
+                      { name: t('Quảng cáo', 'Ads'), icon: Target, color: 'from-[#1e6dda] to-[#1e6dda]' },
                       { name: 'Email', icon: Mail, color: 'from-primary-dark to-primary' },
-                      { name: 'CRM', icon: Users, color: 'from-indigo-500 to-blue-400' }
+                      { name: 'CRM', icon: Users, color: 'from-[#1e6dda] to-[#1e6dda]' }
                     ].map((item, i) => (
                       <div 
                         key={i} 
@@ -441,7 +441,7 @@ export default function AIIntegrationPage() {
                 {/* Floating badge */}
                 <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
+                    <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
                       <Zap className="w-4 h-4 text-white" />
                     </div>
                     <div>
@@ -522,7 +522,7 @@ export default function AIIntegrationPage() {
               {useCases.map((useCase, index) => (
                 <div 
                   key={index} 
-                  className="bg-gradient-to-br from-secondary to-white rounded-2xl p-6 hover:shadow-lg transition-all border border-primary/10 group"
+                  className="bg-[#f5f5f7] rounded-2xl p-6 hover:shadow-lg transition-all border border-primary/10 group"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all">
@@ -602,11 +602,11 @@ export default function AIIntegrationPage() {
         </section>
 
         {/* Process Section - Light style like hero */}
-        <section className="relative py-16 lg:py-20 bg-gradient-to-br from-secondary via-white to-background-soft overflow-hidden">
+        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-gradient-to-br from-primary-dark/10 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -626,7 +626,7 @@ export default function AIIntegrationPage() {
               {integrationProcess.map((step, index) => (
                 <div key={index} className="relative h-full">
                   <div className="bg-white border border-border rounded-2xl p-6 h-full hover:shadow-lg transition-all">
-                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                       {step.step}
                     </div>
                     <div className="pt-4">
@@ -682,7 +682,7 @@ export default function AIIntegrationPage() {
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-[#f5f5f7]" />
                     <span className="absolute top-3 left-3 text-xs bg-white text-primary font-medium px-2 py-1 rounded shadow-sm">
                       {article.category}
                     </span>
@@ -717,15 +717,15 @@ export default function AIIntegrationPage() {
         </section>
 
         {/* Final CTA - Light style like hero */}
-        <section className="relative py-16 lg:py-20 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/25">
+            <div className="w-16 h-16 bg-[#1e6dda] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/25">
               <Rocket className="w-8 h-8 text-white" />
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -737,7 +737,7 @@ export default function AIIntegrationPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
+                className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
               >
                 {t('Bắt đầu ngay', 'Get started')}
                 <ArrowRight className="w-5 h-5" />

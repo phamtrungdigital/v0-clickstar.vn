@@ -92,13 +92,13 @@ function TranscriptPanel({ label, className = '' }: { label: string; className?:
       {/* flex-1 để panel giãn đầy chiều cao cột → 2 cột desktop đều nhau */}
       <div className="p-4 space-y-3 flex-1">
         {TRANSCRIPT.map((line, i) => (
-          <div key={i} className={`text-[11px] sm:text-xs font-mono leading-relaxed ${line.flag ? 'rounded-md bg-rose-500/10 border border-rose-500/30 p-2 -mx-1' : ''}`}>
+          <div key={i} className={`text-[11px] sm:text-xs font-mono leading-relaxed ${line.flag ? 'rounded-md bg-[#1e6dda]/10 border border-[#1e6dda]/30 p-2 -mx-1' : ''}`}>
             <span className="text-slate-500">[{line.t}]</span>{' '}
-            <span className={line.who === 'NV' ? 'text-cyan-400 font-semibold' : 'text-teal-300 font-semibold'}>
+            <span className={line.who === 'NV' ? 'text-[#1e6dda] font-semibold' : 'text-[#1e6dda] font-semibold'}>
               {line.who === 'NV' ? t('NV', 'Agent') : t('KH', 'Customer')}
             </span>
             <span className="text-slate-500"> : </span>
-            <span className={`${line.flag ? 'text-rose-200' : 'text-slate-300'} break-words`}>
+            <span className={`${line.flag ? 'text-[#1e6dda]' : 'text-slate-300'} break-words`}>
               {t(line.text.vi, line.text.en)}
             </span>
           </div>
@@ -174,7 +174,7 @@ function ColumnHeader({ eyebrow, note, accent = false }: { eyebrow: string; note
     <div className="mb-3 min-h-[44px]">
       <p
         className={`text-xs font-semibold uppercase tracking-wider ${
-          accent ? 'text-cyan-600' : 'text-muted-foreground'
+          accent ? 'text-[#1e6dda]' : 'text-muted-foreground'
         }`}
       >
         {eyebrow}
@@ -196,10 +196,10 @@ function ResultCards({
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
       {/* Card A — AI phân tích */}
-      <div className="rounded-2xl bg-white border border-border shadow-lg shadow-cyan-500/5 p-5">
+      <div className="rounded-2xl bg-white border border-border shadow-lg p-5">
         <div className="flex items-center gap-2 mb-4">
-          <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-100 to-teal-100 flex items-center justify-center flex-shrink-0">
-            <Sparkles className="w-4 h-4 text-cyan-600" />
+          <span className="w-8 h-8 rounded-lg bg-[#f5f5f7] flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-4 h-4 text-[#1e6dda]" />
           </span>
           <h3 className="font-bold text-foreground">{t('AI phân tích', 'AI analysis')}</h3>
         </div>
@@ -217,37 +217,37 @@ function ResultCards({
             <span className="text-xs font-medium text-muted-foreground">
               {t('Điểm chất lượng cuộc gọi', 'Call quality score')}
             </span>
-            <span className="text-lg font-extrabold text-cyan-600">82/100</span>
+            <span className="text-lg font-extrabold text-[#1e6dda]">82/100</span>
           </div>
           <div className="h-2 rounded-full bg-slate-100 overflow-hidden">
-            <div className="h-full w-[82%] rounded-full bg-gradient-to-r from-cyan-500 to-teal-500" />
+            <div className="h-full w-[82%] rounded-full bg-[#1e6dda]" />
           </div>
         </div>
 
         <ul className="space-y-1.5 mb-4">
           {SCORE_CRITERIA.map((c) => (
             <li key={c.vi} className="flex items-center gap-2 text-xs text-muted-foreground">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-[#1e6dda] flex-shrink-0" />
               <span className="break-words">{t(c.vi, c.en)}</span>
             </li>
           ))}
         </ul>
 
         {/* Cảnh báo tuân thủ */}
-        <div className="rounded-xl bg-rose-50 border border-rose-200 p-3">
+        <div className="rounded-xl bg-[#f5f5f7] border border-border p-3">
           <div className="flex items-start gap-2">
-            <ShieldAlert className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
+            <ShieldAlert className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-rose-700">
+              <p className="text-xs font-semibold text-[#1e6dda]">
                 {t('Cảnh báo tuân thủ — phút 05:33', 'Compliance alert — 05:33')}
               </p>
-              <p className="text-xs text-rose-600/90 mt-0.5 break-words">
+              <p className="text-xs text-[#1e6dda]/90 mt-0.5 break-words">
                 {t(
                   'Phát hiện cam kết rủi ro: “chắc chắn ra sổ trong quý này”',
                   'Risky promise detected: “the title deed will definitely be issued this quarter”'
                 )}
               </p>
-              <span className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-rose-700">
+              <span className="inline-flex items-center gap-1 mt-2 text-[11px] font-medium text-[#1e6dda]">
                 <Play className="w-3 h-3" />
                 {t('Nghe lại từ 05:33', 'Replay from 05:33')}
               </span>
@@ -257,10 +257,10 @@ function ResultCards({
       </div>
 
       {/* Card B — CRM tự điền */}
-      <div className="rounded-2xl bg-white border border-border shadow-lg shadow-cyan-500/5 p-5">
+      <div className="rounded-2xl bg-white border border-border shadow-lg p-5">
         <div className="flex items-center gap-2 mb-4">
-          <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-100 to-teal-100 flex items-center justify-center flex-shrink-0">
-            <Database className="w-4 h-4 text-cyan-600" />
+          <span className="w-8 h-8 rounded-lg bg-[#f5f5f7] flex items-center justify-center flex-shrink-0">
+            <Database className="w-4 h-4 text-[#1e6dda]" />
           </span>
           <div className="min-w-0">
             <h3 className="font-bold text-foreground">{t('Hồ sơ CRM tự điền', 'CRM record auto-filled')}</h3>
@@ -277,7 +277,7 @@ function ResultCards({
               <span className="text-xs text-muted-foreground flex-shrink-0">{t(f.label.vi, f.label.en)}</span>
               <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground text-right min-w-0">
                 <span className="truncate">{t(f.value.vi, f.value.en)}</span>
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1e6dda] flex-shrink-0" />
               </span>
             </div>
           ))}
@@ -290,7 +290,7 @@ function ResultCards({
               {t('Tư vấn → Hẹn gặp', 'Consulting → Meeting scheduled')}
             </span>
           </p>
-          <p className="text-xs text-emerald-600 font-medium">
+          <p className="text-xs text-[#1e6dda] font-medium">
             {t('✓ Đã tạo task nhắc sale trước 1 ngày', '✓ Reminder task created 1 day ahead')}
           </p>
         </div>

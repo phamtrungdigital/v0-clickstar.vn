@@ -85,7 +85,7 @@ export function CapabilityPopup() {
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[70] bg-[#0b1c33]/55 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
+        <Dialog.Overlay className="fixed inset-0 z-[70] bg-[#272729]/55 backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0" />
         <Dialog.Content
           aria-describedby={undefined}
           className="fixed left-1/2 top-1/2 z-[70] flex w-[calc(100vw-24px)] max-w-[880px] max-h-[90dvh] -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl bg-white shadow-2xl outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 md:flex-row"
@@ -98,7 +98,7 @@ export function CapabilityPopup() {
           </Dialog.Close>
 
           {/* Cột trái: panel xanh thương hiệu */}
-          <div className="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#155CBD] to-[#3687FC] px-6 py-7 text-white md:w-[44%] md:px-8 md:py-9">
+          <div className="relative shrink-0 overflow-hidden bg-[#f5f5f7] px-6 py-7 text-white md:w-[44%] md:px-8 md:py-9">
             <div
               aria-hidden
               className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10"
@@ -151,9 +151,9 @@ export function CapabilityPopup() {
                   return (
                     <li
                       key={c.vi}
-                      className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white p-3 transition-colors hover:border-primary/40 hover:bg-[#F5F9FF]"
+                      className="flex items-start gap-3 rounded-xl border border-slate-200/80 bg-white p-3 transition-colors hover:border-primary/40 hover:bg-[#eaf2fd]"
                     >
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#E8F1FF] text-[#155CBD]">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#eaf2fd] text-[#1859b8]">
                         <Icon className="h-[18px] w-[18px]" />
                       </span>
                       <span className="min-w-0">

@@ -7,41 +7,41 @@
 :root {
   /* Modern SaaS Color Palette */
   --background: #ffffff;
-  --background-soft: #EEF3FF;
-  --foreground: #1a1a2e;
+  --background-soft: #f5f5f7;
+  --foreground: #1d1d1f;
   --card: #ffffff;
-  --card-foreground: #1a1a2e;
+  --card-foreground: #1d1d1f;
   --popover: #ffffff;
-  --popover-foreground: #1a1a2e;
+  --popover-foreground: #1d1d1f;
   
   /* Primary Blue — Clickstar Growth OS brand */
-  --primary: #3687FC;
-  --primary-dark: #1E6DDB;
+  --primary: #1e6dda;
+  --primary-dark: #1859b8;
   --primary-foreground: #ffffff;
   
   /* Secondary */
-  --secondary: #EEF3FF;
-  --secondary-foreground: #1a1a2e;
+  --secondary: #f5f5f7;
+  --secondary-foreground: #1d1d1f;
   
   /* Accent Pink/Red for CTAs */
-  --accent: #FF5A7A;
+  --accent: #1e6dda;
   --accent-foreground: #ffffff;
   
-  --muted: #f4f6f8;
-  --muted-foreground: #64748b;
+  --muted: #f5f5f7;
+  --muted-foreground: #6e6e73;
   
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #3687FC;
+  --border: #e0e0e0;
+  --input: #e0e0e0;
+  --ring: #0071e3;
 
-  --chart-1: #3687FC;
-  --chart-2: #1E6DDB;
-  --chart-3: #FF5A7A;
-  --chart-4: #10b981;
-  --chart-5: #f59e0b;
+  --chart-1: #1e6dda;
+  --chart-2: #1859b8;
+  --chart-3: #4da3ff;
+  --chart-4: #6e6e73;
+  --chart-5: #a1a1a6;
   
   /* Border radius - pill style */
   --radius: 0.75rem;

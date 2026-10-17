@@ -18,7 +18,7 @@ export function PricingSetupAddons({ content }: { content: PricingSetupAddonsCon
         <div className="text-center max-w-3xl mx-auto mb-12">
           <span
             data-cms-field="eyebrow"
-            className="inline-flex items-center gap-2 bg-amber-100 text-amber-700 font-semibold text-sm px-4 py-2 rounded-full mb-5"
+            className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-4 py-2 rounded-full mb-5"
           >
             <Settings className="w-4 h-4" />
             {t(content.eyebrow.vi, content.eyebrow.en)}

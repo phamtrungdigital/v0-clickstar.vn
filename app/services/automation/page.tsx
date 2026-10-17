@@ -232,11 +232,11 @@ export default function AIAutomationPage() {
       <MainNav />
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -250,7 +250,7 @@ export default function AIAutomationPage() {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
                   {t('Tự động hóa với', 'Automate everything with')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-dark">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     AI Automation
                   </span>
                 </h1>
@@ -262,7 +262,7 @@ export default function AIAutomationPage() {
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
+                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
                   >
                     {t('Tư vấn miễn phí', 'Free consultation')}
                     <ArrowRight className="w-5 h-5" />
@@ -316,7 +316,7 @@ export default function AIAutomationPage() {
                   {/* Floating elements around robot */}
                   <div className="absolute -top-4 -right-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#D97757] to-[#C4653F] rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-xs">C</span>
                       </div>
                       <span className="text-xs font-medium text-foreground">Claude</span>
@@ -325,7 +325,7 @@ export default function AIAutomationPage() {
                   
                   <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#10A37F] to-[#0D8F6F] rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-xs">GPT</span>
                       </div>
                       <span className="text-xs font-medium text-foreground">GPT-4o</span>
@@ -334,7 +334,7 @@ export default function AIAutomationPage() {
                   
                   <div className="absolute top-1/2 -right-8 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#EA4B71] to-[#FF6B6B] rounded-lg flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
                         <span className="text-white font-bold text-[10px]">N8N</span>
                       </div>
                       <span className="text-xs font-medium text-foreground">N8N</span>
@@ -380,11 +380,11 @@ export default function AIAutomationPage() {
         </section>
 
         {/* Automation Flow Diagram - Light */}
-        <section id="workflow" className="relative py-16 lg:py-20 bg-gradient-to-br from-secondary via-white to-background-soft overflow-hidden">
+        <section id="workflow" className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-gradient-to-br from-primary-dark/10 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -408,10 +408,10 @@ export default function AIAutomationPage() {
             {/* Flow explanation */}
             <div className="grid md:grid-cols-4 gap-4">
               {[
-                { icon: Globe, title: 'Input Triggers', desc: 'Webhook, Schedule, Events', color: 'from-amber-500 to-orange-400' },
+                { icon: Globe, title: 'Input Triggers', desc: 'Webhook, Schedule, Events', color: 'from-[#1e6dda] to-[#1e6dda]' },
                 { icon: Brain, title: 'AI Processing', desc: t('Claude + GPT phân tích', 'Claude + GPT analysis'), color: 'from-primary to-primary-dark' },
-                { icon: Workflow, title: 'N8N Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration'), color: 'from-pink-500 to-rose-400' },
-                { icon: Rocket, title: 'Auto Actions', desc: t('Thực thi tự động', 'Automated execution'), color: 'from-emerald-500 to-teal-400' }
+                { icon: Workflow, title: 'N8N Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration'), color: 'from-[#1e6dda] to-[#1e6dda]' },
+                { icon: Rocket, title: 'Auto Actions', desc: t('Thực thi tự động', 'Automated execution'), color: 'from-[#1e6dda] to-[#1e6dda]' }
               ].map((item, i) => (
                 <div key={i} className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm text-center">
                   <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-lg flex items-center justify-center mx-auto mb-3`}>
@@ -444,7 +444,7 @@ export default function AIAutomationPage() {
               {automationUseCases.map((useCase, index) => (
                 <div 
                   key={index} 
-                  className="bg-gradient-to-br from-secondary to-white rounded-2xl p-6 border border-primary/10 hover:shadow-lg transition-all"
+                  className="bg-[#f5f5f7] rounded-2xl p-6 border border-primary/10 hover:shadow-lg transition-all"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
@@ -523,11 +523,11 @@ export default function AIAutomationPage() {
         </section>
 
         {/* Process - Light */}
-        <section className="relative py-16 lg:py-20 bg-gradient-to-br from-secondary via-white to-background-soft overflow-hidden">
+        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-gradient-to-br from-primary/15 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-gradient-to-br from-primary-dark/10 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -547,7 +547,7 @@ export default function AIAutomationPage() {
               {automationProcess.map((step, index) => (
                 <div key={index} className="relative h-full">
                   <div className="bg-white border border-border rounded-2xl p-6 h-full hover:shadow-lg transition-all">
-                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-r from-primary to-primary-dark rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                       {step.step}
                     </div>
                     <div className="pt-4">
@@ -571,11 +571,11 @@ export default function AIAutomationPage() {
         </section>
 
         {/* Final CTA - Light */}
-        <section className="relative py-16 lg:py-20 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -591,7 +591,7 @@ export default function AIAutomationPage() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-primary to-primary-dark text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
+                className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
               >
                 {t('Bắt đầu ngay', 'Get started')}
                 <ArrowRight className="w-5 h-5" />

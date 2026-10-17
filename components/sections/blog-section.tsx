@@ -8,12 +8,12 @@ import type { BlogContent } from '@/lib/cms/types'
 
 const tagColors: Record<string, string> = {
   AI: 'bg-primary/10 text-primary',
-  Marketing: 'bg-emerald-100 text-emerald-700',
-  Dashboard: 'bg-purple-100 text-purple-700',
-  Data: 'bg-amber-100 text-amber-700',
-  CRM: 'bg-rose-100 text-rose-700',
-  CDP: 'bg-cyan-100 text-cyan-700',
-  Website: 'bg-indigo-100 text-indigo-700',
+  Marketing: 'bg-[#f5f5f7] text-[#1e6dda]',
+  Dashboard: 'bg-[#f5f5f7] text-[#1e6dda]',
+  Data: 'bg-[#f5f5f7] text-[#1e6dda]',
+  CRM: 'bg-[#f5f5f7] text-[#1e6dda]',
+  CDP: 'bg-[#f5f5f7] text-[#1e6dda]',
+  Website: 'bg-[#f5f5f7] text-[#1e6dda]',
 }
 
 export function BlogSection({ content }: { content: BlogContent }) {

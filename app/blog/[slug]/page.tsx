@@ -161,7 +161,7 @@ export default async function BlogPostPage({
 
               {/* End of article CTA */}
               <div className="mt-12 pt-8 border-t border-border">
-                <div className="bg-gradient-to-br from-primary/5 to-background border border-primary/20 rounded-2xl p-6 lg:p-8 text-center">
+                <div className="bg-[#f5f5f7] border border-primary/20 rounded-2xl p-6 lg:p-8 text-center">
                   <h3 className="text-xl font-extrabold text-foreground mb-2">
                     {t('Cần tư vấn cụ thể cho doanh nghiệp?', 'Need tailored advice for your business?')}
                   </h3>
@@ -203,7 +203,7 @@ export default async function BlogPostPage({
                       href={zaloUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 bg-[#0068FF] hover:bg-[#0055d4] rounded-lg text-sm font-semibold transition-colors"
+                      className="flex items-center gap-2 px-3 py-2 bg-[#1e6dda] hover:bg-[#1e6dda] rounded-lg text-sm font-semibold transition-colors"
                     >
                       <MessageCircle className="w-4 h-4" />
                       {t('Chat Zalo', 'Chat on Zalo')}

@@ -342,30 +342,30 @@ export default function WebsiteDesignPage() {
   ]
 
   const colorMap: Record<string, string> = {
-    blue: 'from-blue-500 to-blue-600',
-    emerald: 'from-emerald-500 to-emerald-600',
-    purple: 'from-purple-500 to-purple-600',
-    amber: 'from-amber-500 to-amber-600',
-    rose: 'from-rose-500 to-rose-600',
-    orange: 'from-orange-500 to-orange-600'
+    blue: 'from-[#1e6dda] to-[#1e6dda]',
+    emerald: 'from-[#1e6dda] to-[#1e6dda]',
+    purple: 'from-[#1e6dda] to-[#1e6dda]',
+    amber: 'from-[#1e6dda] to-[#1e6dda]',
+    rose: 'from-[#1e6dda] to-[#1e6dda]',
+    orange: 'from-[#1e6dda] to-[#1e6dda]'
   }
 
   const bgColorMap: Record<string, string> = {
-    blue: 'bg-blue-50 group-hover:bg-blue-100',
-    emerald: 'bg-emerald-50 group-hover:bg-emerald-100',
-    purple: 'bg-purple-50 group-hover:bg-purple-100',
-    amber: 'bg-amber-50 group-hover:bg-amber-100',
-    rose: 'bg-rose-50 group-hover:bg-rose-100',
-    orange: 'bg-orange-50 group-hover:bg-orange-100'
+    blue: 'bg-[#eaf2fd] group-hover:bg-[#eaf2fd]',
+    emerald: 'bg-[#f5f5f7] group-hover:bg-[#f5f5f7]',
+    purple: 'bg-[#f5f5f7] group-hover:bg-[#f5f5f7]',
+    amber: 'bg-[#f5f5f7] group-hover:bg-[#f5f5f7]',
+    rose: 'bg-[#f5f5f7] group-hover:bg-[#f5f5f7]',
+    orange: 'bg-[#f5f5f7] group-hover:bg-[#f5f5f7]'
   }
 
   const textColorMap: Record<string, string> = {
-    blue: 'text-blue-600',
-    emerald: 'text-emerald-600',
-    purple: 'text-purple-600',
-    amber: 'text-amber-600',
-    rose: 'text-rose-600',
-    orange: 'text-orange-600'
+    blue: 'text-[#1e6dda]',
+    emerald: 'text-[#1e6dda]',
+    purple: 'text-[#1e6dda]',
+    amber: 'text-[#1e6dda]',
+    rose: 'text-[#1e6dda]',
+    orange: 'text-[#1e6dda]'
   }
 
   return (
@@ -373,30 +373,30 @@ export default function WebsiteDesignPage() {
       <MainNav />
       <main>
         {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
+        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
           {/* Gradient orbs */}
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-gradient-to-br from-primary-dark/15 to-primary/10 rounded-full blur-3xl" />
+            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
           </div>
           {/* Background decoration */}
           <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-200/30 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
+            <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#f5f5f7]/30 rounded-full blur-3xl" />
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#eaf2fd]/30 rounded-full blur-3xl" />
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Content */}
               <div>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg shadow-purple-500/25">
+                <div className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
                   <Globe className="w-4 h-4" />
                   {t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
                   {t('Website ', 'Website ')}<br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('chuyển đổi cao', 'that converts')}
                   </span>
                 </h1>
@@ -428,7 +428,7 @@ export default function WebsiteDesignPage() {
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
                   >
                     {t('Nhận báo giá miễn phí', 'Get free quote')}
                     <ArrowRight className="w-5 h-5" />
@@ -449,18 +449,18 @@ export default function WebsiteDesignPage() {
                   {/* Browser mockup */}
                   <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-t-xl">
                     <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-red-400" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                      <div className="w-3 h-3 rounded-full bg-green-400" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                     </div>
                     <div className="flex-1 flex justify-center">
                       <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-muted-foreground flex items-center gap-2 border">
-                        <Shield className="w-3 h-3 text-green-500" />
+                        <Shield className="w-3 h-3 text-[#1e6dda]" />
                         yourwebsite.com
                       </div>
                     </div>
                   </div>
-                  <div className="aspect-[4/3] bg-gradient-to-br from-purple-100 to-blue-100 rounded-b-xl overflow-hidden">
+                  <div className="aspect-[4/3] bg-[#eaf2fd] rounded-b-xl overflow-hidden">
                     <Image quality={95}
                       src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1600&h=1200&fit=crop"
                       alt="Website Design Preview"
@@ -475,24 +475,24 @@ export default function WebsiteDesignPage() {
                 {/* Floating elements */}
                 <div className="absolute -left-4 top-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                      <Gauge className="w-5 h-5 text-green-600" />
+                    <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
+                      <Gauge className="w-5 h-5 text-[#1e6dda]" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">PageSpeed</div>
-                      <div className="text-lg font-bold text-green-600">98/100</div>
+                      <div className="text-lg font-bold text-[#1e6dda]">98/100</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="absolute -right-4 bottom-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <Smartphone className="w-5 h-5 text-purple-600" />
+                    <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
+                      <Smartphone className="w-5 h-5 text-[#1e6dda]" />
                     </div>
                     <div>
                       <div className="text-xs text-muted-foreground">Mobile</div>
-                      <div className="text-lg font-bold text-purple-600">100%</div>
+                      <div className="text-lg font-bold text-[#1e6dda]">100%</div>
                     </div>
                   </div>
                 </div>
@@ -502,7 +502,7 @@ export default function WebsiteDesignPage() {
         </section>
 
         {/* Problems & Solutions */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left: SVG Illustration */}
@@ -512,14 +512,14 @@ export default function WebsiteDesignPage() {
 
               {/* Right: Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
+                <span className="inline-flex items-center gap-2 bg-[#eaf2fd] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
                   <Target className="w-4 h-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </span>
                 
                 <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6">
                   {t('Website của bạn', 'Is your website')}{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600">
+                  <span className="text-transparent bg-clip-text bg-[#1e6dda]">
                     {t('đang mất khách?', 'losing customers?')}
                   </span>
                 </h2>
@@ -536,26 +536,26 @@ export default function WebsiteDesignPage() {
                   {problems.map((item, index) => (
                     <div
                       key={index}
-                      className="group relative bg-white rounded-2xl p-5 border border-border hover:border-purple-200 hover:shadow-xl hover:shadow-purple-500/5 transition-all duration-300"
+                      className="group relative bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-xl transition-all duration-300"
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
+                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#eaf2fd] flex items-center justify-center text-[#1e6dda] group-hover:scale-110 transition-transform">
                           {item.icon}
                         </div>
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-2">
-                            <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0" />
-                            <p className="text-foreground font-semibold text-sm line-through decoration-rose-300">{item.problem}</p>
+                            <XCircle className="w-4 h-4 text-[#1e6dda] flex-shrink-0" />
+                            <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
                           </div>
                           
                           <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                            <CheckCircle2 className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                             <p className="text-muted-foreground text-sm">{item.solution}</p>
                           </div>
                         </div>
                         
-                        <ArrowUpRight className="w-5 h-5 text-purple-500 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                        <ArrowUpRight className="w-5 h-5 text-[#1e6dda] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </div>
                     </div>
                   ))}
@@ -574,7 +574,7 @@ export default function WebsiteDesignPage() {
                 {t('QUY TRÌNH LÀM VIỆC', 'OUR PROCESS')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-                {t('Quy trình ', 'Transparent ')}<span className="text-purple-400">{t('minh bạch', 'process')}</span>
+                {t('Quy trình ', 'Transparent ')}<span className="text-[#1e6dda]">{t('minh bạch', 'process')}</span>
               </h2>
               <p className="text-lg text-gray-400 max-w-2xl mx-auto">
                 {t(
@@ -589,23 +589,23 @@ export default function WebsiteDesignPage() {
               {processSteps.map((step, index) => (
                 <div
                   key={index}
-                  className="group relative bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-purple-500/30 transition-all duration-300"
+                  className="group relative bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-[#1e6dda]/30 transition-all duration-300"
                 >
                   {/* Step number */}
-                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
+                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
                     {step.step}
                   </div>
                   
                   <div className="pt-4">
                     {/* Icon */}
-                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-[#1e6dda] mb-4 group-hover:scale-110 transition-transform">
                       {step.icon}
                     </div>
                     
                     {/* Title & Duration */}
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-xl font-bold text-white">{step.title}</h3>
-                      <span className="text-xs text-purple-400 bg-purple-500/20 px-2 py-1 rounded-full">
+                      <span className="text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded-full">
                         {step.duration}
                       </span>
                     </div>
@@ -627,7 +627,7 @@ export default function WebsiteDesignPage() {
             </div>
 
             {/* Portal Preview */}
-            <div className="mt-16 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-3xl p-8 lg:p-12 border border-white/10">
+            <div className="mt-16 bg-[#1e6dda] rounded-3xl p-8 lg:p-12 border border-white/10">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div>
                   <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
@@ -647,7 +647,7 @@ export default function WebsiteDesignPage() {
                       t('Lịch sử thay đổi đầy đủ', 'Complete change history'),
                     ].map((item, i) => (
                       <li key={i} className="flex items-center gap-3 text-gray-300">
-                        <CheckCircle2 className="w-5 h-5 text-purple-400 flex-shrink-0" />
+                        <CheckCircle2 className="w-5 h-5 text-[#1e6dda] flex-shrink-0" />
                         {item}
                       </li>
                     ))}
@@ -656,25 +656,25 @@ export default function WebsiteDesignPage() {
                 <div className="relative">
                   <div className="bg-gray-900 rounded-xl p-4 border border-white/10">
                     <div className="flex items-center gap-2 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
                       <span className="ml-2 text-xs text-gray-500">portal.clickstar.vn</span>
                     </div>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-3">
-                          <Figma className="w-5 h-5 text-purple-400" />
+                          <Figma className="w-5 h-5 text-[#1e6dda]" />
                           <span className="text-sm text-white">{t('UI Design - Homepage', 'UI Design - Homepage')}</span>
                         </div>
-                        <span className="text-xs text-green-400 bg-green-500/20 px-2 py-1 rounded">{t('Đã duyệt', 'Approved')}</span>
+                        <span className="text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded">{t('Đã duyệt', 'Approved')}</span>
                       </div>
                       <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-3">
-                          <Code2 className="w-5 h-5 text-blue-400" />
+                          <Code2 className="w-5 h-5 text-[#1e6dda]" />
                           <span className="text-sm text-white">{t('Development Sprint 2', 'Development Sprint 2')}</span>
                         </div>
-                        <span className="text-xs text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded">{t('Đang làm', 'In Progress')}</span>
+                        <span className="text-xs text-[#1e6dda] bg-[#1e6dda]/20 px-2 py-1 rounded">{t('Đang làm', 'In Progress')}</span>
                       </div>
                       <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
                         <div className="flex items-center gap-3">
@@ -748,15 +748,15 @@ export default function WebsiteDesignPage() {
         </section>
 
         {/* SEO & Ads Add-ons */}
-        <section className="py-12 lg:py-16 bg-gradient-to-b from-slate-50 to-white">
+        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
+              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1e6dda] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
                 <Sparkles className="w-4 h-4" />
                 {t('DỊCH VỤ BỔ SUNG', 'ADD-ON SERVICES')}
               </span>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('SEO & Ads ', 'SEO & Ads ')}<span className="text-emerald-600">{t('tích hợp sẵn', 'ready to go')}</span>
+                {t('SEO & Ads ', 'SEO & Ads ')}<span className="text-[#1e6dda]">{t('tích hợp sẵn', 'ready to go')}</span>
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 {t(
@@ -770,9 +770,9 @@ export default function WebsiteDesignPage() {
               {addOnServices.map((service, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-2xl p-8 border border-border hover:shadow-xl hover:border-emerald-200 transition-all duration-300 group"
+                  className="bg-white rounded-2xl p-8 border border-border hover:shadow-xl hover:border-border transition-all duration-300 group"
                 >
-                  <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 mb-6 group-hover:scale-110 transition-transform">
+                  <div className="w-14 h-14 bg-[#f5f5f7] rounded-xl flex items-center justify-center text-[#1e6dda] mb-6 group-hover:scale-110 transition-transform">
                     {service.icon}
                   </div>
                   
@@ -782,7 +782,7 @@ export default function WebsiteDesignPage() {
                   <div className="space-y-3">
                     {service.features.map((feature, i) => (
                       <div key={i} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
+                        <CheckCircle2 className="w-5 h-5 text-[#1e6dda] flex-shrink-0" />
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </div>
                     ))}
@@ -832,22 +832,22 @@ export default function WebsiteDesignPage() {
                     {/* Metrics */}
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <div className="text-lg font-bold text-emerald-600">{item.metrics.conversion}</div>
+                        <div className="text-lg font-bold text-[#1e6dda]">{item.metrics.conversion}</div>
                         <div className="text-xs text-muted-foreground">Conversion</div>
                       </div>
                       <div>
-                        <div className="text-lg font-bold text-blue-600">{item.metrics.speed}</div>
+                        <div className="text-lg font-bold text-[#1e6dda]">{item.metrics.speed}</div>
                         <div className="text-xs text-muted-foreground">PageSpeed</div>
                       </div>
                       <div>
-                        <div className="text-lg font-bold text-purple-600">{item.metrics.bounce}</div>
+                        <div className="text-lg font-bold text-[#1e6dda]">{item.metrics.bounce}</div>
                         <div className="text-xs text-muted-foreground">Bounce Rate</div>
                       </div>
                     </div>
                   </div>
                   
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8">
+                  <div className="absolute inset-0 bg-[#272729] opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8">
                     <button className="flex items-center gap-2 bg-white text-foreground font-semibold px-6 py-3 rounded-full">
                       {t('Xem chi tiết', 'View details')}
                       <ArrowRight className="w-4 h-4" />
@@ -870,7 +870,7 @@ export default function WebsiteDesignPage() {
         </section>
 
         {/* CTA Section */}
-        <section id="contact" className="py-12 lg:py-16 bg-gradient-to-br from-purple-600 to-blue-600">
+        <section id="contact" className="py-12 lg:py-16 bg-[#1e6dda]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
               {cta.heading[language]}

@@ -58,7 +58,7 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
                 onClick={() => setActiveId(group.id)}
                 className={`relative inline-flex items-center gap-2 px-5 py-2.5 lg:px-6 lg:py-3 rounded-full text-sm lg:text-base font-semibold transition-all duration-200 ${
                   isActive
-                    ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-lg shadow-primary/30 scale-105'
+                    ? 'bg-[#1e6dda] text-white shadow-lg shadow-primary/30 scale-105'
                     : 'bg-white text-foreground border border-border hover:border-primary/40 hover:shadow-md hover:-translate-y-0.5'
                 }`}
               >
@@ -66,7 +66,7 @@ export function PricingGroupedTiers({ content }: { content: PricingGroupedTiersC
                 {group.badge?.vi && (
                   <span
                     className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-amber-100 text-amber-700'
+                      isActive ? 'bg-white/20 text-white' : 'bg-[#f5f5f7] text-[#1e6dda]'
                     }`}
                   >
                     {t(group.badge.vi, group.badge.en)}
@@ -113,7 +113,7 @@ export function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
             }`}
           >
             {tier.popular && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 bg-[#1e6dda] text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg whitespace-nowrap">
                 <Sparkles className="w-3.5 h-3.5" />
                 {t('Phổ biến nhất', 'Most popular')}
               </div>
@@ -142,7 +142,7 @@ export function PricingGroupTiers({ group }: { group: PricingTierGroup }) {
             <ul className="space-y-2.5 mb-8">
               {tier.features.map((f, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm">
-                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <Check className="w-4 h-4 text-[#1e6dda] flex-shrink-0 mt-0.5" />
                   <span className="text-foreground">{t(f.vi, f.en)}</span>
                 </li>
               ))}

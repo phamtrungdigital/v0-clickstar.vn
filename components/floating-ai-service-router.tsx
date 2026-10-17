@@ -306,11 +306,11 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
       }`}
     >
       <div className="mx-auto max-w-5xl px-3 pb-3 lg:pb-4">
-        <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-2xl shadow-2xl shadow-primary/30 border border-white/10 backdrop-blur-xl overflow-hidden">
+        <div className="relative bg-[#272729] rounded-2xl shadow-2xl shadow-primary/30 border border-white/10 backdrop-blur-xl overflow-hidden">
           {/* Decorative glow */}
           <div className="absolute -top-32 -left-20 w-80 h-80 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -top-20 -right-20 w-72 h-72 bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary to-transparent" />
+          <div className="absolute -top-20 -right-20 w-72 h-72 bg-[#1e6dda]/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-0 left-0 right-0 h-px bg-[#1e6dda]" />
 
           {/* Top bar */}
           <div className="relative flex items-center justify-between px-4 lg:px-5 pt-3 pb-2">
@@ -321,17 +321,17 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
                   <span className="text-[10px] font-bold uppercase tracking-widest text-primary/90">
                     {copy.badge}
                   </span>
-                  <span className="hidden sm:flex items-center text-[9px] text-emerald-400 font-bold">
-                    <span className="w-1 h-1 bg-emerald-400 rounded-full mr-1 animate-pulse" />
+                  <span className="hidden sm:flex items-center text-[9px] text-[#1e6dda] font-bold">
+                    <span className="w-1 h-1 bg-[#1e6dda] rounded-full mr-1 animate-pulse" />
                     LIVE
                   </span>
                   {showCountdown && (
                     <span
                       className={`flex items-center gap-1 text-[9px] font-mono font-bold tabular-nums transition-colors duration-300 ${
                         urgent
-                          ? 'text-red-400 animate-pulse'
+                          ? 'text-[#1e6dda] animate-pulse'
                           : warning
-                            ? 'text-amber-400'
+                            ? 'text-[#1e6dda]'
                             : 'text-white/50'
                       }`}
                     >
@@ -420,12 +420,12 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
               {/* Final CTA after max turns */}
               {hasReachedMax && !loading && (
                 <div className="relative px-4 lg:px-5 pb-2 pt-1">
-                  <div className="bg-gradient-to-r from-primary/15 to-orange-500/15 border border-primary/30 rounded-lg p-2.5 flex items-center justify-between gap-3">
+                  <div className="bg-[#1e6dda] border border-primary/30 rounded-lg p-2.5 flex items-center justify-between gap-3">
                     <div className="text-[11px] text-white/80 flex-1 min-w-0">{copy.finalHint}</div>
                     <Link
                       href={buildContactHref()}
                       onClick={() => setDismissed()}
-                      className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-primary to-primary-dark text-white text-xs font-bold rounded-full hover:scale-105 transition-transform"
+                      className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 bg-[#1e6dda] text-white text-xs font-bold rounded-full hover:scale-105 transition-transform"
                     >
                       {copy.contactCta}
                       <ArrowUp className="w-3 h-3 rotate-45" />
@@ -463,7 +463,7 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
             <button
               type="submit"
               disabled={loading || hasReachedMax}
-              className="group flex items-center justify-center gap-1.5 px-4 lg:px-5 py-2.5 lg:py-3 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/40 text-white text-sm font-bold rounded-full transition-all hover:scale-[1.02] shrink-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              className="group flex items-center justify-center gap-1.5 px-4 lg:px-5 py-2.5 lg:py-3 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/40 text-white text-sm font-bold rounded-full transition-all hover:scale-[1.02] shrink-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -520,7 +520,7 @@ function RouterIcon({
   urgent: boolean
   warning: boolean
 }) {
-  const ringColor = urgent ? '#ef4444' : warning ? '#f59e0b' : '#1B7BFF'
+  const ringColor = urgent ? '#1e6dda' : warning ? '#1e6dda' : '#1e6dda'
   const glowColor = urgent ? 'shadow-red-500/60' : warning ? 'shadow-amber-500/50' : 'shadow-primary/40'
   // r=17, circumference ≈ 106.81
   const R = 17
@@ -531,7 +531,7 @@ function RouterIcon({
     <div className="relative w-9 h-9 shrink-0">
       {/* Avatar */}
       <div
-        className={`absolute inset-0.5 rounded-full bg-gradient-to-br from-primary via-purple-500 to-orange-500 flex items-center justify-center shadow-lg transition-shadow duration-300 ${glowColor} ${
+        className={`absolute inset-0.5 rounded-full bg-[#1e6dda] flex items-center justify-center shadow-lg transition-shadow duration-300 ${glowColor} ${
           urgent ? 'animate-pulse' : ''
         }`}
       >
@@ -591,7 +591,7 @@ function ChatBubble({
   if (message.role === 'user') {
     return (
       <div className="flex justify-end animate-in fade-in slide-in-from-right-2 duration-300">
-        <div className="max-w-[80%] bg-gradient-to-br from-primary to-primary-dark text-white text-sm px-3.5 py-2 rounded-2xl rounded-br-sm shadow-md">
+        <div className="max-w-[80%] bg-[#1e6dda] text-white text-sm px-3.5 py-2 rounded-2xl rounded-br-sm shadow-md">
           {message.text}
         </div>
       </div>
@@ -691,7 +691,7 @@ function AiBubble({
 function SmartLink({ link }: { link: LinkItem }) {
   const isExternal = link.href.startsWith('tel:') || link.href.startsWith('mailto:')
   const className =
-    'inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-primary/20 to-orange-500/20 hover:from-primary/30 hover:to-orange-500/30 border border-primary/40 hover:border-primary/60 text-white text-xs font-semibold rounded-full transition-all hover:scale-[1.02]'
+    'inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#1e6dda] hover:from-primary/30 hover:to-[#1e6dda]/30 border border-primary/40 hover:border-primary/60 text-white text-xs font-semibold rounded-full transition-all hover:scale-[1.02]'
 
   if (isExternal) {
     return (
