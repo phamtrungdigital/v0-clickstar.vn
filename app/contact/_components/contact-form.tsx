@@ -23,7 +23,7 @@ const INITIAL_STATE: ContactFormState = { status: 'idle' }
 
 // Link tới văn bản Quy định bảo vệ dữ liệu cá nhân của Click Star. Để trống thì
 // cụm chữ hiển thị không có liên kết (điền URL khi có văn bản chính thức).
-const PRIVACY_POLICY_URL = ''
+const PRIVACY_POLICY_URL = '/blog/quy-dinh-bao-ve-du-lieu-ca-nhan'
 
 export function ContactForm({ defaultService }: { defaultService?: string }) {
   const { t } = useLanguage()
