@@ -8,17 +8,6 @@
  */
 
 import Link from 'next/link'
-import {
-  Megaphone,
-  Globe,
-  BarChart3,
-  Sparkles,
-  Workflow,
-  Database,
-  AudioLines,
-  Code2,
-  ArrowRight,
-} from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
@@ -29,160 +18,140 @@ export default function ServicesIndexPage() {
   const services = [
     {
       href: '/services/digital-marketing',
-      icon: <Megaphone className="w-7 h-7" />,
       title: t('Digital Marketing', 'Digital Marketing'),
       desc: t(
         'SEO, Google Ads, Facebook Ads, TikTok Ads và chiến lược đa kênh để tạo dòng khách hàng tiềm năng đều đặn.',
         'SEO, Google Ads, Facebook Ads, TikTok Ads and multi-channel strategy for a steady flow of qualified leads.'
       ),
-      color: 'from-blue-500 to-blue-600',
-      soft: 'from-blue-50 to-blue-100 text-blue-600',
     },
     {
       href: '/services/website',
-      icon: <Globe className="w-7 h-7" />,
       title: t('Thiết kế Website', 'Website Design'),
       desc: t(
         'Website chuẩn SEO, tối ưu tốc độ và tỷ lệ chuyển đổi, từ landing page tới thương mại điện tử.',
         'SEO-ready websites optimised for speed and conversion, from landing pages to e-commerce.'
       ),
-      color: 'from-purple-500 to-purple-600',
-      soft: 'from-purple-50 to-purple-100 text-purple-600',
     },
     {
       href: '/services/dashboard',
-      icon: <BarChart3 className="w-7 h-7" />,
       title: t('Dashboard dữ liệu', 'Data Dashboard'),
       desc: t(
         'Gom dữ liệu rời rạc về một chỗ, báo cáo thời gian thực và theo dõi KPI cho ban lãnh đạo.',
         'Unify scattered data, deliver real-time reporting and KPI tracking for leadership.'
       ),
-      color: 'from-emerald-500 to-emerald-600',
-      soft: 'from-emerald-50 to-emerald-100 text-emerald-600',
     },
     {
       href: '/services/ai-integration',
-      icon: <Sparkles className="w-7 h-7" />,
       title: t('Tích hợp AI', 'AI Integration'),
       desc: t(
         'Đưa AI vào quy trình sẵn có: chatbot, phân tích dữ liệu, trợ lý nội bộ cho từng phòng ban.',
         'Bring AI into existing workflows: chatbots, data analysis and internal assistants per department.'
       ),
-      color: 'from-amber-500 to-amber-600',
-      soft: 'from-amber-50 to-amber-100 text-amber-600',
     },
     {
       href: '/services/automation',
-      icon: <Workflow className="w-7 h-7" />,
       title: t('AI Automation', 'AI Automation'),
       desc: t(
         'Tự động hoá quy trình lặp lại: chăm sóc lead, email theo hành vi, luồng phê duyệt nội bộ.',
         'Automate repetitive work: lead nurturing, behaviour-based email and internal approval flows.'
       ),
-      color: 'from-rose-500 to-rose-600',
-      soft: 'from-rose-50 to-rose-100 text-rose-600',
     },
     {
       href: '/services/crm-cdp',
-      icon: <Database className="w-7 h-7" />,
       title: t('CRM & CDP', 'CRM & CDP'),
       desc: t(
         'Quản lý khách hàng tập trung, hợp nhất hồ sơ đa kênh và cá nhân hoá theo hành trình mua hàng.',
         'Centralised customer management, unified cross-channel profiles and journey-based personalisation.'
       ),
-      color: 'from-indigo-500 to-indigo-600',
-      soft: 'from-indigo-50 to-indigo-100 text-indigo-600',
     },
     {
       href: '/services/speech-insight-ai',
-      icon: <AudioLines className="w-7 h-7" />,
       title: t('Phân tích cuộc gọi AI', 'AI Call Analytics'),
       desc: t(
         'Call to Text: chuyển 100% cuộc gọi thành văn bản, chấm điểm chất lượng theo kịch bản riêng và tự động điền dữ liệu vào CRM. Không phải đổi tổng đài.',
         'Call to Text: turn 100% of calls into text, score them against your own playbook and auto-fill your CRM. No phone system change required.'
       ),
-      color: 'from-cyan-500 to-teal-500',
-      soft: 'from-cyan-50 to-teal-100 text-cyan-600',
       badge: t('MỚI', 'NEW'),
     },
     {
       href: '/services/custom-software',
-      icon: <Code2 className="w-7 h-7" />,
       title: t('Phần mềm theo yêu cầu', 'Custom Software'),
       desc: t(
         'Thiết kế, lập trình và vận hành phần mềm riêng theo nghiệp vụ: bảo mật theo OWASP, môi trường thử tách biệt, bàn giao 100% mã nguồn.',
         'Software designed, built and operated around your workflows: OWASP-grade security, separate staging, 100% of the source code handed over.'
       ),
-      color: 'from-slate-700 to-slate-900',
-      soft: 'from-slate-100 to-slate-200 text-slate-700',
       badge: t('MỚI', 'NEW'),
     },
   ]
 
   return (
-    <>
+    <div className="theme-apple">
       <MainNav />
       <main>
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-gradient-to-br from-background-soft via-white to-secondary overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-primary/20 to-primary-dark/10 rounded-full blur-3xl" />
-          </div>
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-              {t('Giải pháp ', 'Solutions for ')}
-              <span className="text-primary">{t('chuyển đổi số toàn diện', 'end-to-end digital growth')}</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t(
-                'Tám dịch vụ kết nối thành một hệ thống: thu hút khách hàng, chuyển đổi, quản lý dữ liệu và tối ưu liên tục bằng AI.',
-                'Eight services that connect into one system: attract customers, convert them, manage the data and keep optimising with AI.'
-              )}
-            </p>
+        {/* Khối sáng: tiêu đề */}
+        <section className="ap-tile ap-light">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h1 className="ap-hero-title">
+                {t('Giải pháp chuyển đổi số toàn diện', 'Solutions for end-to-end digital growth')}
+              </h1>
+              <p className="ap-lead max-w-[760px]">
+                {t(
+                  'Tám dịch vụ kết nối thành một hệ thống: thu hút khách hàng, chuyển đổi, quản lý dữ liệu và tối ưu liên tục bằng AI.',
+                  'Eight services that connect into one system: attract customers, convert them, manage the data and keep optimising with AI.'
+                )}
+              </p>
+            </div>
           </div>
         </section>
 
-        <section className="py-12 lg:py-16 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Khối xám nhạt: lưới dịch vụ */}
+        <section className="ap-tile ap-parchment" style={{ paddingTop: 'clamp(32px, 5vw, 56px)' }}>
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 auto-rows-fr">
               {services.map((s) => (
                 <Link
                   key={s.href}
                   href={s.href}
-                  className="group relative bg-white rounded-2xl p-6 border border-border hover:shadow-xl transition-all duration-300 flex flex-col"
+                  className="group bg-white border border-border rounded-[18px] p-6 flex flex-col gap-1.5 h-full min-w-0 text-left transition-colors hover:border-[#1e6dda]"
                 >
-                  {s.badge && (
-                    <span className="absolute top-5 right-5 text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white">
-                      {s.badge}
-                    </span>
-                  )}
-                  <div
-                    className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${s.soft} flex items-center justify-center mb-5 group-hover:scale-110 transition-transform`}
-                  >
-                    {s.icon}
-                  </div>
-                  <h2 className="text-xl font-bold text-foreground mb-2">{s.title}</h2>
-                  <p className="text-muted-foreground text-sm flex-1">{s.desc}</p>
-                  <span className="inline-flex items-center gap-2 text-sm font-semibold text-primary mt-5 group-hover:gap-3 transition-all">
-                    {t('Xem chi tiết', 'Learn more')}
-                    <ArrowRight className="w-4 h-4" />
-                  </span>
+                  <h2 className="text-[21px] leading-tight font-semibold tracking-[0.01em] text-foreground flex items-center gap-2">
+                    {s.title}
+                    {s.badge && (
+                      <span className="text-[11px] font-semibold uppercase tracking-wide px-2 py-0.5 rounded-full bg-[#1e6dda] text-white">
+                        {s.badge}
+                      </span>
+                    )}
+                  </h2>
+                  <p className="text-[17px] leading-[1.47] text-foreground mt-1 flex-1">{s.desc}</p>
+                  <span className="ap-link text-[15px] pt-3">{t('Xem chi tiết', 'Learn more')}</span>
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
 
-            <div className="text-center mt-12">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
-              >
-                {t('Nhận tư vấn miễn phí', 'Get a free consultation')}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+        {/* Khối tối: kêu gọi hành động */}
+        <section className="ap-tile ap-dark">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h2 className="ap-display">{t('Chưa biết bắt đầu từ đâu?', 'Not sure where to start?')}</h2>
+              <p className="ap-lead max-w-[680px]">
+                {t(
+                  'Kể cho chúng tôi mục tiêu của anh/chị, chúng tôi sẽ đề xuất dịch vụ phù hợp.',
+                  'Tell us your goal and we will recommend the right service.'
+                )}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href="/contact" className="ap-btn ap-btn-primary">
+                  {t('Nhận tư vấn miễn phí', 'Get a free consultation')}
+                </Link>
+              </div>
             </div>
           </div>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
