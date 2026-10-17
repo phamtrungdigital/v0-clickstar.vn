@@ -3,10 +3,10 @@ import type { I18n } from '@/lib/cms/types'
 
 export type Lang = 'vi' | 'en'
 
-/** Read the cs-lang cookie on the server. Defaults to 'vi'. */
+/** Read the cs-lang cookie on the server. Defaults to 'en' (chỉ 'vi' khi khách tự chọn tiếng Việt). */
 export async function getServerLang(): Promise<Lang> {
   const store = await cookies()
-  return store.get('cs-lang')?.value === 'en' ? 'en' : 'vi'
+  return store.get('cs-lang')?.value === 'vi' ? 'vi' : 'en'
 }
 
 /** Build a `t(vi, en)` function for a given language. */
