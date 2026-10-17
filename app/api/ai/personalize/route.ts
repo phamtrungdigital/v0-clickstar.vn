@@ -43,13 +43,14 @@ export async function POST(req: Request) {
 
   const { interests, recent_pages, prompt_hint } = parsed.data
 
-  // Get AI config via RPC (SECURITY DEFINER bypasses RLS for anon)
+  // Cờ bật/tắt + model đọc qua RPC (không trả khoá). Khoá Anthropic chỉ nằm ở
+  // biến môi trường server — KHÔNG đi qua DB/RPC công khai.
   const supabase = await createClient()
-  const { data: cfg } = await supabase.rpc('get_personalize_ai_config').single<{
-    api_key: string | null
+  const { data: status } = await supabase.rpc('get_personalize_ai_status').single<{
     model: string
     enabled: boolean
   }>()
+  const cfg = status ? { ...status, api_key: process.env.ANTHROPIC_API_KEY ?? null } : null
 
   if (!cfg?.enabled || !cfg.api_key) {
     return Response.json(fallback(interests), { status: 200 })
