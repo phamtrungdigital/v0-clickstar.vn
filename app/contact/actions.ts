@@ -2,6 +2,7 @@
 
 import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/service'
 import { z } from 'zod'
 import { getServerLang, makeT } from '@/lib/i18n/server'
 import { sendLeadNotification } from '@/lib/email/send-lead-notification'
@@ -151,11 +152,18 @@ export async function submitContactForm(
       service: parsed.data.service || null,
     })
     if (res.ok) {
-      // Ghi ngược qua RPC SECURITY DEFINER (anon không có quyền UPDATE bảng leads)
-      await supabase.rpc('mark_lead_crm_synced', {
+      // Ghi ngược qua RPC SECURITY DEFINER — chỉ service_role được gọi (anon đã bị
+      // thu hồi, tránh ai cũng đánh dấu lead đã đồng bộ).
+      const service = createServiceClient()
+      if (!service) {
+        console.error('[contact] thiếu SUPABASE_SERVICE_ROLE_KEY — không ghi được crm_customer_id')
+        return
+      }
+      const { error: markErr } = await service.rpc('mark_lead_crm_synced', {
         p_lead_id: leadId,
         p_crm_customer_id: res.customerId,
       })
+      if (markErr) console.error('[contact] mark_lead_crm_synced failed:', markErr.message)
     } else {
       console.error('[contact] CRM push skipped/failed:', res.reason)
     }
