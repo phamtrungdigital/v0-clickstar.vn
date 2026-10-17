@@ -1,5 +1,4 @@
 import nextDynamic from 'next/dynamic'
-import { TopBanner } from '@/components/layout/top-banner'
 import { MainNav } from '@/components/layout/main-nav'
 import { HeroSection } from '@/components/sections/hero-section'
 import { ServicesSection } from '@/components/sections/services-section'
@@ -11,8 +10,6 @@ import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
 import { ClientLogos } from '@/components/sections/client-logos'
 import { LogoMarquee } from '@/components/sections/logo-marquee'
-import { CodeTerminal } from '@/components/sections/code-terminal'
-import { AiServiceRouter } from '@/components/sections/ai-service-router'
 import { Footer } from '@/components/layout/footer'
 // EditModeOverlay moved to app/layout.tsx — covers all pages now
 import { getPublishedPage } from '@/lib/cms/queries'
@@ -79,7 +76,8 @@ function renderSection(section: Section) {
     case 'logo_marquee':
       return <LogoMarquee key={section.id} content={section.content} />
     case 'code_terminal':
-      return <CodeTerminal key={section.id} content={section.content} />
+      // Khối terminal không nằm trong thiết kế mới của trang chủ
+      return null
   }
 }
 
@@ -88,15 +86,13 @@ export default async function Home() {
   if (!page) notFound()
 
   return (
-    <div className="min-h-screen">
-      <TopBanner />
+    <div className="min-h-screen theme-apple">
+      {/* Theo mockup Apple: bỏ banner khuyến mãi, ô hỏi AI giữa trang và khối terminal khỏi dòng chính.
+          AI vẫn có nút nổi (FloatingAiServiceRouter); muốn bật lại banner/ô AI chỉ cần thêm lại 2 dòng này. */}
       <MainNav />
 
-      {page.sections.map((section, idx) => (
-        <div key={section.id}>
-          {renderSection(section)}
-          {idx === 0 && <AiServiceRouter />}
-        </div>
+      {page.sections.map((section) => (
+        <div key={section.id}>{renderSection(section)}</div>
       ))}
 
       <Footer />
