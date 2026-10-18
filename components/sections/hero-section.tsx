@@ -10,7 +10,10 @@ import type { HeroContent } from '@/lib/cms/types'
  * Mọi trường CMS (badge, heading, description, cta, support, image) vẫn sửa được như cũ.
  */
 export function HeroSection({ content }: { content: HeroContent }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  // Ảnh SVG có chữ tiếng Việt: dùng bản tiếng Anh khi site ở EN (chỉ các ảnh đã có bản -en)
+  const EN_VARIANT: Record<string, string> = { '/images/clickstar-data-flow.svg': '/images/clickstar-data-flow-en.svg' }
+  const imageSrc = language === 'en' ? (EN_VARIANT[content.image_src] ?? content.image_src) : content.image_src
 
   return (
     <section data-cms-section="hero" className="ap-tile ap-light">
@@ -49,7 +52,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
         <div className="ap-product ap-product-shadow max-w-[760px] mt-10 sm:mt-14">
           <InlineSvgImage
             cmsField="image"
-            src={content.image_src}
+            src={imageSrc}
             alt={t(content.image_alt.vi, content.image_alt.en)}
             className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
           />

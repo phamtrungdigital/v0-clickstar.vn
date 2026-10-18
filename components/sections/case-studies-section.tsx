@@ -121,6 +121,9 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
   )
 }
 
+/** Thẻ (tag) trong CMS là chuỗi một ngôn ngữ; thẻ tiếng Việt cần bản EN khi site ở EN. Thẻ lạ giữ nguyên. */
+const TAG_EN: Record<string, string> = { 'Marketing đa kênh': 'Multi-channel marketing' }
+
 function CaseStudyCard({
   study,
   title,
@@ -132,6 +135,7 @@ function CaseStudyCard({
   category: string
   itemIndex: number
 }) {
+  const { language } = useLanguage()
   const inner = (
     <div
       data-cms-field="item"
@@ -152,7 +156,7 @@ function CaseStudyCard({
             key={tag}
             className="px-3 py-1 bg-white/90 backdrop-blur-sm text-foreground text-xs font-medium rounded-full"
           >
-            {tag}
+            {language === 'en' ? (TAG_EN[tag] ?? tag) : tag}
           </span>
         ))}
       </div>

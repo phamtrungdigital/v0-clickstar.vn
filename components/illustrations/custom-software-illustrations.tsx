@@ -120,10 +120,10 @@ function Tag({ x, y, text, accent = false }: { x: number; y: number; text: strin
 /* -------------------------------------------------------------------------- */
 /* 1. Kiến trúc tham chiếu                                                     */
 /* -------------------------------------------------------------------------- */
-export function ArchitectureDiagram({ className = 'w-full h-auto', label = 'Reference architecture', t }: Props) {
+export function ArchitectureDiagram({ className = 'w-full h-auto', label, t }: Props) {
   const id = 'cs-arch'
   return (
-    <svg viewBox="0 0 960 560" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
+    <svg viewBox="0 0 960 560" className={className} role="img" aria-label={label ?? t('Kiến trúc tham chiếu', 'Reference architecture')} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
       <Defs id={id} />
       <Sheet w={960} h={560} id={id} title={t('KIẾN TRÚC THAM CHIẾU', 'REFERENCE ARCHITECTURE')} sub={t('mô hình triển khai mặc định', 'default deployment model')} />
 
@@ -208,7 +208,7 @@ export function ArchitectureDiagram({ className = 'w-full h-auto', label = 'Refe
 /* -------------------------------------------------------------------------- */
 /* 2. Một yêu cầu đi qua 6 chốt kiểm tra                                        */
 /* -------------------------------------------------------------------------- */
-export function RequestFlowDiagram({ className = 'w-full h-auto', label = 'Request path with six checkpoints', t }: Props) {
+export function RequestFlowDiagram({ className = 'w-full h-auto', label, t }: Props) {
   const id = 'cs-flow'
   const steps = [
     { n: '01', a: t('Lớp biên', 'Edge'), code: 'TLS · rate-limit', stop: t('dò mật khẩu, lưu lượng bất thường', 'brute force, abusive traffic') },
@@ -222,7 +222,7 @@ export function RequestFlowDiagram({ className = 'w-full h-auto', label = 'Reque
   const bw = 136
   const gap = 16
   return (
-    <svg viewBox="0 0 960 300" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
+    <svg viewBox="0 0 960 300" className={className} role="img" aria-label={label ?? t('Một yêu cầu đi qua sáu chốt kiểm tra', 'Request path with six checkpoints')} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
       <Defs id={id} />
       <Sheet w={960} h={300} id={id} title={t('LUỒNG MỘT YÊU CẦU', 'REQUEST PATH')} sub={t('6 chốt, thứ tự cố định', '6 checkpoints, fixed order')} />
 
@@ -263,10 +263,10 @@ export function RequestFlowDiagram({ className = 'w-full h-auto', label = 'Reque
 /* -------------------------------------------------------------------------- */
 /* 3. Đường đi của AI: từ đầu vào đến hệ thống ghi nhận                          */
 /* -------------------------------------------------------------------------- */
-export function AiPipelineDiagram({ className = 'w-full h-auto', label = 'AI processing pipeline', t }: Props) {
+export function AiPipelineDiagram({ className = 'w-full h-auto', label, t }: Props) {
   const id = 'cs-ai'
   return (
-    <svg viewBox="0 0 960 440" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
+    <svg viewBox="0 0 960 440" className={className} role="img" aria-label={label ?? t('Đường đi xử lý của AI', 'AI processing pipeline')} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
       <Defs id={id} />
       <Sheet w={960} h={440} id={id} title={t('ĐƯỜNG ĐI CỦA AI', 'AI PROCESSING PATH')} sub={t('mọi lượt gọi đi qua máy chủ', 'every call goes via the server')} />
 
@@ -328,7 +328,7 @@ export function AiPipelineDiagram({ className = 'w-full h-auto', label = 'AI pro
 /* -------------------------------------------------------------------------- */
 /* 4. Đường phát hành: từ nhánh code đến vận hành, có đường quay lui              */
 /* -------------------------------------------------------------------------- */
-export function ReleasePipelineDiagram({ className = 'w-full h-auto', label = 'Release pipeline', t }: Props) {
+export function ReleasePipelineDiagram({ className = 'w-full h-auto', label, t }: Props) {
   const id = 'cs-rel'
   const stages = [
     { a: t('Nhánh tính năng', 'Feature branch'), b: 'git · commit' },
@@ -341,7 +341,7 @@ export function ReleasePipelineDiagram({ className = 'w-full h-auto', label = 'R
   const w = 160
   const gap = 30
   return (
-    <svg viewBox="0 0 960 250" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
+    <svg viewBox="0 0 960 250" className={className} role="img" aria-label={label ?? t('Đường phát hành', 'Release pipeline')} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
       <Defs id={id} />
       <Sheet w={960} h={250} id={id} title={t('ĐƯỜNG PHÁT HÀNH', 'RELEASE PIPELINE')} sub={t('mỗi thay đổi đi qua cả 5 bước', 'every change passes all 5 steps')} />
       {stages.map((s, i) => {

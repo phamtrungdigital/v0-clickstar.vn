@@ -97,7 +97,7 @@ function Glyph({ kind, cx, cy, color = INK }: { kind: 'phone' | 'laptop' | 'chat
 /* -------------------------------------------------------------------------- */
 export function IdentityResolutionIllustration({
   className = 'w-full h-auto',
-  label = 'Anonymous visitors become one identified profile',
+  label,
   t,
 }: Props) {
   const chips = [
@@ -112,7 +112,7 @@ export function IdentityResolutionIllustration({
     { a: t('Để lại số điện thoại', 'Shared phone number'), w: t('Hôm nay', 'Today'), known: true },
   ]
   return (
-    <svg viewBox="0 0 520 600" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 520 600" className={className} role="img" aria-label={label ?? t('Nhiều ID ẩn danh được gộp thành một hồ sơ khách đã định danh', 'Anonymous visitors become one identified profile')} xmlns="http://www.w3.org/2000/svg">
       <defs>
         <Shadow id="ap-sh-idr" />
         <Arrow id="ap-ar-idr" />
@@ -193,7 +193,7 @@ export function IdentityResolutionIllustration({
 /* -------------------------------------------------------------------------- */
 export function UnifiedDataIllustration({
   className = 'w-full h-auto',
-  label = 'Many sources become one customer record',
+  label,
   t,
 }: Props) {
   const sources = [
@@ -214,7 +214,7 @@ export function UnifiedDataIllustration({
   ]
   const sx = (i: number) => 20 + i * 122 + 56
   return (
-    <svg viewBox="0 0 520 520" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 520 520" className={className} role="img" aria-label={label ?? t('Nhiều nguồn dữ liệu hợp nhất thành một hồ sơ khách hàng', 'Many sources become one customer record')} xmlns="http://www.w3.org/2000/svg">
       <defs>
         <Shadow id="ap-sh-udi" />
         <Arrow id="ap-ar-udi" />
@@ -286,7 +286,7 @@ export function UnifiedDataIllustration({
 /* -------------------------------------------------------------------------- */
 export function FollowUpFlowIllustration({
   className = 'w-full h-auto',
-  label = 'Lead scoring and follow-up flow',
+  label,
   t,
 }: Props) {
   const tiers = [
@@ -316,7 +316,7 @@ export function FollowUpFlowIllustration({
     },
   ]
   return (
-    <svg viewBox="0 0 520 580" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 520 580" className={className} role="img" aria-label={label ?? t('Chấm điểm khách và luồng chăm sóc theo nhóm Nóng, Ấm, Lạnh', 'Lead scoring and follow-up flow')} xmlns="http://www.w3.org/2000/svg">
       <defs>
         <Shadow id="ap-sh-fuf" />
         <Arrow id="ap-ar-fuf" />
@@ -370,7 +370,7 @@ export function FollowUpFlowIllustration({
 /* -------------------------------------------------------------------------- */
 export function JourneyRailIllustration({
   className = 'w-full h-auto',
-  label = 'Customer journey from anonymous to identified',
+  label,
   t,
 }: Props) {
   const stages = [
@@ -382,7 +382,7 @@ export function JourneyRailIllustration({
   ]
   const nx = (i: number) => 96 + i * 192
   return (
-    <svg viewBox="0 0 960 240" className={className} role="img" aria-label={label} xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 960 240" className={className} role="img" aria-label={label ?? t('Hành trình khách hàng từ ẩn danh đến đã định danh', 'Customer journey from anonymous to identified')} xmlns="http://www.w3.org/2000/svg">
       <text x="210" y="26" fontSize="13" fontWeight="600" fill={MUTED} textAnchor="middle">{t('Khách ẩn danh · chưa biết là ai', 'Anonymous · identity unknown')}</text>
       <path d="M40 52 v-8 h340 v8" fill="none" stroke={GREY} strokeWidth="1.5" strokeDasharray="5 4" />
       <text x="654" y="26" fontSize="13" fontWeight="600" fill={BLUE_DEEP} textAnchor="middle">{t('Khách đã định danh · có hồ sơ trong CRM', 'Identified · has a CRM profile')}</text>

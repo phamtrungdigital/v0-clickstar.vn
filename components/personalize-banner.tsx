@@ -31,6 +31,11 @@ const MATCH_CACHE_TTL = 60 * 1000 // 60s — refresh campaign config
 const AI_CACHE_KEY = 'cs_ai_msg_cache_v1'
 const AI_CACHE_TTL = 60 * 60 * 1000 // 1h — AI message stable per browsing pattern
 
+// Nội dung chiến dịch trong DB chỉ có một ngôn ngữ (tiếng Việt). Khi site ở EN dùng bản dựng sẵn này.
+const EN_FALLBACK_MESSAGE = 'Click Star can help you find the right solution. Book a free 60-minute consultation.'
+const EN_HEADER = 'Suggested for you'
+const EN_CTA = 'Book a free consultation'
+
 function renderIcon(name: string, className: string) {
   const Icon = (Icons as unknown as Record<string, LucideIcon>)[name] ?? Icons.Sparkles
   return <Icon className={className} />
@@ -39,7 +44,7 @@ function renderIcon(name: string, className: string) {
 export function PersonalizeBanner() {
   useTrackPage()
 
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const pathname = usePathname()
   const [campaign, setCampaign] = useState<PersonalizeCampaign | null>(null)
   const [aiMessage, setAiMessage] = useState<string | null>(null)
@@ -86,7 +91,8 @@ export function PersonalizeBanner() {
         if (camp.content.use_ai) {
           // Try AI cache (key = campaign.id + interests hash)
           const interests = ctx.visited_pages.slice(-10).join('|')
-          const aiCacheKey = `${AI_CACHE_KEY}:${camp.id}:${interests}`
+          const aiCacheKey = `${AI_CACHE_KEY}:${language}:${camp.id}:${interests}`
+          const fallbackMsg = language === 'en' ? EN_FALLBACK_MESSAGE : camp.content.fallback_message
           try {
             const cached = sessionStorage.getItem(aiCacheKey)
             if (cached) {
@@ -107,19 +113,20 @@ export function PersonalizeBanner() {
                 interests: ctx.visited_pages.slice(-5),
                 recent_pages: ctx.visited_pages.slice(-5),
                 prompt_hint: camp.content.ai_prompt_hint || '',
+                lang: language,
               }),
             })
             const json = (await res.json()) as Partial<AiMessageResponse>
-            const msg = json.message || camp.content.fallback_message
+            const msg = json.message || fallbackMsg
             setAiMessage(msg)
             try {
               sessionStorage.setItem(aiCacheKey, JSON.stringify({ message: msg, ts: Date.now() }))
             } catch {}
           } catch {
-            setAiMessage(camp.content.fallback_message)
+            setAiMessage(fallbackMsg)
           }
         } else {
-          setAiMessage(camp.content.fallback_message)
+          setAiMessage(language === 'en' ? EN_FALLBACK_MESSAGE : camp.content.fallback_message)
         }
 
         showBanner()
@@ -156,7 +163,7 @@ export function PersonalizeBanner() {
         showMatched(camp)
       })
       .catch(() => {})
-  }, [pathname])
+  }, [pathname, language])
 
   // Auto-dismiss timer — runs when banner becomes visible
   useEffect(() => {
@@ -244,7 +251,7 @@ export function PersonalizeBanner() {
             <div>
               <div className="text-white font-bold text-sm leading-tight">Click Star</div>
               <div className="text-[10px] uppercase tracking-widest text-white font-semibold">
-                {campaign.content.header_label}
+                {language === 'en' ? EN_HEADER : campaign.content.header_label}
               </div>
             </div>
           </div>
@@ -267,7 +274,7 @@ export function PersonalizeBanner() {
             className="group flex items-center justify-center gap-2 w-full text-white text-sm font-bold py-3 px-5 rounded-full transition-all hover:shadow-lg"
             style={{ backgroundColor: buttonColor, boxShadow: `0 4px 14px ${buttonColor}50` }}
           >
-            {campaign.content.cta_label}
+            {language === 'en' ? EN_CTA : campaign.content.cta_label}
             <Icons.ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
 
