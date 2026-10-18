@@ -142,7 +142,7 @@ export default async function BlogPostPage({
                 </p>
               )}
 
-              <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:scroll-mt-24 prose-p:leading-relaxed prose-img:rounded-xl prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
+              <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:scroll-mt-24 prose-p:leading-relaxed prose-p:text-justify prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-xl prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
                 <ReactMarkdown
                   components={{
                     h2: ({ children }) => {

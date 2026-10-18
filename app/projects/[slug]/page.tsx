@@ -126,7 +126,7 @@ export default async function ProjectDetailPage({
       {project.body_vi && (
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <article className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:leading-relaxed prose-img:rounded-xl prose-a:text-primary hover:prose-a:underline">
+            <article className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-justify prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-xl prose-a:text-primary hover:prose-a:underline">
               <ReactMarkdown>{project.body_vi}</ReactMarkdown>
             </article>
           </div>
