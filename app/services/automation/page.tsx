@@ -52,20 +52,6 @@ const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string
   )
 }
 
-// Small Robot Icon SVG
-const SmallRobotSVG = ({ className = "w-6 h-6" }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect x="4" y="6" width="16" height="12" rx="3" fill="currentColor" />
-    <circle cx="9" cy="11" r="2" fill="white" />
-    <circle cx="15" cy="11" r="2" fill="white" />
-    <rect x="8" y="15" width="8" height="2" rx="1" fill="white" opacity="0.5" />
-    <line x1="12" y1="6" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    <circle cx="12" cy="2" r="1.5" fill="currentColor" />
-    <rect x="2" y="10" width="2" height="6" rx="1" fill="currentColor" />
-    <rect x="20" y="10" width="2" height="6" rx="1" fill="currentColor" />
-  </svg>
-)
-
 // Automation benefits
 const automationBenefits = [
   {
@@ -228,384 +214,257 @@ export default function AIAutomationPage() {
   const { t } = useLanguage()
 
   return (
-    <>
+    <div className="theme-apple">
       <MainNav />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-[#1859b8] px-4 py-2 rounded-full mb-6 shadow-sm">
-                  <Bot className="w-4 h-4" />
-                  <span className="text-sm font-medium">AI Automation 2026</span>
-                </div>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-                  <span className="text-[#1859b8]">
-                    AI Automation
-                  </span>
-                </h1>
-
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  {t('Tự động hóa quy trình với Claude, GPT và n8n.', 'Automate your workflows with Claude, GPT and n8n.')}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
-                  >
-                    {t('Tư vấn miễn phí', 'Free consultation')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="#workflow"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-[#1859b8] font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
-                  >
-                    <Play className="w-5 h-5" />
-                    {t('Xem workflow', 'See the workflow')}
-                  </Link>
-                </div>
-
-                {/* Quick stats */}
-                <div className="flex flex-wrap gap-6">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Clock className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">80%</p>
-                      <p className="text-xs text-muted-foreground">{t('Tiết kiệm thời gian', 'Time saved')}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Zap className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">24/7</p>
-                      <p className="text-xs text-muted-foreground">{t('Hoạt động liên tục', 'Always on')}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Star className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">100+</p>
-                      <p className="text-xs text-muted-foreground">{t('Workflows đã triển khai', 'Workflows deployed')}</p>
-                    </div>
-                  </div>
-                </div>
+        {/* Hero: khối trắng, căn giữa, thẻ danh sách việc tự động làm ảnh sản phẩm */}
+        <section className="ap-tile ap-light">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">AI Automation 2026</p>
+              <h1 className="ap-hero-title">AI Automation</h1>
+              <p className="ap-lead max-w-[760px]">
+                {t('Tự động hóa quy trình với Claude, GPT và n8n.', 'Automate your workflows with Claude, GPT and n8n.')}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href="/contact" className="ap-btn ap-btn-primary">
+                  {t('Tư vấn miễn phí', 'Free consultation')}
+                </Link>
+                <Link href="#workflow" className="ap-btn ap-btn-ghost">
+                  {t('Xem workflow', 'See the workflow')}
+                </Link>
               </div>
+            </div>
 
-              {/* Right - Robot Illustration */}
-              <div className="relative flex items-center justify-center">
-                <div className="relative w-72 h-72 md:w-80 md:h-80">
-                  <RobotSVG />
-                  
-                  {/* Floating elements around robot */}
-                  <div className="absolute -top-4 -right-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">C</span>
-                      </div>
-                      <span className="text-xs font-medium text-foreground">Claude</span>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '3.5s', animationDelay: '0.5s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-xs">GPT</span>
-                      </div>
-                      <span className="text-xs font-medium text-foreground">GPT-4o</span>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute top-1/2 -right-8 bg-white rounded-xl p-3 shadow-lg border border-slate-100 animate-bounce" style={{ animationDuration: '4s', animationDelay: '1s' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold text-[10px]">N8N</span>
-                      </div>
-                      <span className="text-xs font-medium text-foreground">N8N</span>
-                    </div>
-                  </div>
+            <div className="mt-12 grid grid-cols-3 gap-6">
+              {[
+                { v: '80%', l: t('Tiết kiệm thời gian', 'Time saved') },
+                { v: '24/7', l: t('Hoạt động liên tục', 'Always on') },
+                { v: '100+', l: t('Workflows đã triển khai', 'Workflows deployed') },
+              ].map((x) => (
+                <div key={x.l}>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
-              </div>
+              ))}
+            </div>
+
+            <div className="mx-auto mt-14 max-w-[560px]">
+              <RobotSVG className="h-auto w-full" />
             </div>
           </div>
         </section>
 
-        {/* Why Automation - Dark */}
-        <section className="py-16 lg:py-20 bg-foreground">
+        {/* Tại sao cần automation: khối tối */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                <SmallRobotSVG className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+                <Bot className="h-4 w-4" />
                 {t('TẠI SAO CẦN AUTOMATION', 'WHY AUTOMATION')}
               </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('Tự động hóa là', 'Automation is')} <span className="text-[#1859b8]">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+                {t('Tự động hóa là', 'Automation is')} <span className="text-[#7db8ff]">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
               </h2>
-              <p className="text-[#515154] max-w-2xl mx-auto">
-                {t('Doanh nghiệp không tự động hóa sẽ lãng phí thời gian vào các tác vụ lặp lại, bỏ lỡ cơ hội tận dụng sức mạnh của công nghệ AI.', "Businesses that don't automate waste time on repetitive work — and miss the chance to harness the power of AI.")}
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
+                {t(
+                  'Doanh nghiệp không tự động hóa sẽ lãng phí thời gian vào các tác vụ lặp lại, bỏ lỡ cơ hội tận dụng sức mạnh của công nghệ AI.',
+                  "Businesses that don't automate waste time on repetitive work — and miss the chance to harness the power of AI."
+                )}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3">
               {automationBenefits.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-primary/30 transition-all group"
-                >
-                  <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-all">
-                    <item.icon className="w-6 h-6 text-[#1859b8] group-hover:text-white transition-colors" />
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-7">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                    <item.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{t(item.title.vi, item.title.en)}</h3>
-                  <p className="text-[#515154] text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-white">{t(item.title.vi, item.title.en)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#d2d2d7]">{t(item.description.vi, item.description.en)}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Automation Flow Diagram - Light */}
-        <section id="workflow" className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
+        {/* Sơ đồ automation: khối xám nhạt */}
+        <section id="workflow" className="py-16 lg:py-24 bg-[#f5f5f7] scroll-mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Workflow className="h-4 w-4" />
                 Workflow Automation
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Sơ đồ Automation với AI', 'The AI automation flow')}
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
                 {t('Kết hợp N8N, Claude, GPT và các công cụ khác thành một hệ thống tự động hóa hoàn chỉnh', 'N8N, Claude, GPT and more — combined into one complete automation system')}
               </p>
             </div>
 
-            {/* Flow Diagram */}
-            <div className="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-primary/10 mb-12">
-              <AutomationFlowSVG className="w-full h-auto" />
+            <div className="mb-8 overflow-x-auto rounded-[18px] border border-[#d2d2d7] bg-white p-4 sm:p-8">
+              <div className="min-w-[560px]">
+                <AutomationFlowSVG className="w-full h-auto" />
+              </div>
             </div>
 
-            {/* Flow explanation */}
-            <div className="grid md:grid-cols-4 gap-4">
+            <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { icon: Globe, title: 'Input Triggers', desc: 'Webhook, Schedule, Events', color: 'from-[#1e6dda] to-[#1e6dda]' },
-                { icon: Brain, title: 'AI Processing', desc: t('Claude + GPT phân tích', 'Claude + GPT analysis'), color: 'from-primary to-primary-dark' },
-                { icon: Workflow, title: 'N8N Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration'), color: 'from-[#1e6dda] to-[#1e6dda]' },
-                { icon: Rocket, title: 'Auto Actions', desc: t('Thực thi tự động', 'Automated execution'), color: 'from-[#1e6dda] to-[#1e6dda]' }
+                { icon: Globe, title: 'Input Triggers', desc: 'Webhook, Schedule, Events' },
+                { icon: Brain, title: 'AI Processing', desc: t('Claude + GPT phân tích', 'Claude + GPT analysis') },
+                { icon: Workflow, title: 'N8N Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration') },
+                { icon: Rocket, title: 'Auto Actions', desc: t('Thực thi tự động', 'Automated execution') },
               ].map((item, i) => (
-                <div key={i} className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm text-center">
-                  <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-lg flex items-center justify-center mx-auto mb-3`}>
-                    <item.icon className="w-5 h-5 text-white" />
+                <div key={i} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-6">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                    <item.icon className="h-5 w-5 text-white" />
                   </div>
-                  <h4 className="font-bold text-foreground text-sm mb-1">{item.title}</h4>
-                  <p className="text-xs text-muted-foreground">{item.desc}</p>
+                  <h3 className="mt-4 text-lg font-semibold text-[#1d1d1f]">{item.title}</h3>
+                  <p className="mt-1 text-[15px] text-[#515154]">{item.desc}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Use Cases - White */}
-        <section className="py-16 lg:py-20 bg-white">
+        {/* Ứng dụng: khối trắng */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Sparkles className="h-4 w-4" />
                 Use Cases
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Ứng dụng AI Automation', 'AI Automation in action')}
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
                 {t('Các trường hợp sử dụng phổ biến của AI Automation trong doanh nghiệp', 'The most common AI automation use cases for business')}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:gap-6">
               {automationUseCases.map((useCase, index) => (
-                <div 
-                  key={index} 
-                  className="bg-[#f5f5f7] rounded-2xl p-6 border border-primary/10 hover:shadow-lg transition-all"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                      <useCase.icon className="w-6 h-6 text-[#1859b8]" />
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7 sm:p-8">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                      <useCase.icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-[#1859b8]">{useCase.stats}</p>
-                      <p className="text-xs text-muted-foreground">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
+                      <p className="text-[32px] font-semibold leading-none tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
+                      <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">{t(useCase.title.vi, useCase.title.en)}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{t(useCase.description.vi, useCase.description.en)}</p>
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{t(useCase.title.vi, useCase.title.en)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{t(useCase.description.vi, useCase.description.en)}</p>
 
-                  {/* Flow steps */}
-                  <div className="flex flex-wrap items-center gap-2">
+                  <ol className="mt-auto flex flex-wrap items-center gap-x-1.5 gap-y-2 pt-6">
                     {useCase.flow.map((step, i) => (
-                      <div key={i} className="flex items-center gap-2">
-                        <span className="text-xs bg-primary/10 text-[#144c97] px-2 py-1 rounded-full whitespace-nowrap">
-                          {t(step.vi, step.en)}
-                        </span>
-                        {i < useCase.flow.length - 1 && (
-                          <ChevronRight className="w-3 h-3 text-muted-foreground" />
-                        )}
-                      </div>
+                      <li key={i} className="flex items-center gap-1.5">
+                        <span className="rounded-full bg-[#eaf2fd] px-3 py-1 text-[13px] font-medium text-[#1859b8]">{t(step.vi, step.en)}</span>
+                        {i < useCase.flow.length - 1 && <ChevronRight className="h-4 w-4 text-[#86868b]" aria-hidden />}
+                      </li>
                     ))}
-                  </div>
+                  </ol>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Tools Ecosystem - Dark */}
-        <section className="py-16 lg:py-20 bg-foreground">
+        {/* Công nghệ: khối tối */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                <Layers className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+                <Layers className="h-4 w-4" />
                 TECH STACK
               </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('Công nghệ', 'Our')} <span className="text-[#1859b8]">{t('Automation', 'Automation stack')}</span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+                {t('Công nghệ', 'Our')} <span className="text-[#7db8ff]">{t('Automation', 'Automation stack')}</span>
               </h2>
-              <p className="text-[#515154] max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
                 {t('Bộ công cụ automation và AI hàng đầu được ClickStar sử dụng', 'The leading automation and AI toolkit ClickStar builds with')}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3">
               {automationTools.map((tool, index) => (
-                <div key={index} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-primary/30 transition-all group">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-sm shrink-0">
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-white p-2">
                       {tool.logo ? (
-                        <Image quality={95}
-                          src={tool.logo}
-                          alt={tool.name}
-                          width={28}
-                          height={28}
-                          className="w-full h-full object-contain"
-                        />
+                        <Image quality={95} src={tool.logo} alt={tool.name} width={28} height={28} className="h-full w-full object-contain" />
                       ) : (
-                        <Webhook className="w-6 h-6 text-[#1859b8]" />
+                        <Webhook className="h-6 w-6 text-[#1859b8]" />
                       )}
                     </div>
                     <div>
-                      <h3 className="font-bold text-white">{tool.name}</h3>
-                      <p className="text-xs text-[#515154]">{tool.category}</p>
+                      <h3 className="text-lg font-semibold leading-tight text-white">{tool.name}</h3>
+                      <p className="text-[13px] text-[#d2d2d7]">{tool.category}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-[#515154]">{t(tool.description.vi, tool.description.en)}</p>
+                  <p className="mt-4 text-[15px] leading-relaxed text-[#d2d2d7]">{t(tool.description.vi, tool.description.en)}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Process - Light */}
-        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
+        {/* Quy trình: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Settings className="h-4 w-4" />
                 {t('Quy trình', 'Our process')}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Triển khai AI Automation', 'Deploying AI Automation')}
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
                 {t('4 bước để xây dựng hệ thống automation cho doanh nghiệp', '4 steps to build your business automation system')}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-4">
               {automationProcess.map((step, index) => (
-                <div key={index} className="relative h-full">
-                  <div className="bg-white border border-border rounded-2xl p-6 h-full hover:shadow-lg transition-all">
-                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                      {step.step}
-                    </div>
-                    <div className="pt-4">
-                      <h3 className="text-lg font-bold text-foreground mb-2">{t(step.title.vi, step.title.en)}</h3>
-                      <p className="text-muted-foreground text-sm mb-4">{t(step.description.vi, step.description.en)}</p>
-                      <span className="inline-flex items-center gap-1 text-xs text-[#144c97] font-medium bg-primary/10 px-2 py-1 rounded-full">
-                        <Clock className="w-3 h-3" />
-                        {t(step.duration.vi, step.duration.en)}
-                      </span>
-                    </div>
-                  </div>
-                  {index < automationProcess.length - 1 && (
-                    <div className="hidden lg:flex items-center justify-center absolute top-0 -right-5 h-full w-10 z-10 pointer-events-none">
-                      <ChevronRight className="w-6 h-6 text-[#1859b8]/40" />
-                    </div>
-                  )}
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1e6dda] text-[15px] font-semibold text-white">{step.step}</span>
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{t(step.title.vi, step.title.en)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{t(step.description.vi, step.description.en)}</p>
+                  <span className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-full bg-[#eaf2fd] px-3 py-1 text-[13px] font-medium text-[#1859b8]">
+                    <Clock className="h-3.5 w-3.5" />
+                    {t(step.duration.vi, step.duration.en)}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Final CTA - Light */}
-        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="w-20 h-20 mx-auto mb-6">
-              <RobotSVG />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {t('Sẵn sàng tự động hóa?', 'Ready to automate?')}
-            </h2>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {t('Để AI và automation làm việc thay bạn. Liên hệ ngay để được tư vấn giải pháp phù hợp với doanh nghiệp.', 'Let AI and automation do the work for you. Get in touch for a solution tailored to your business.')}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
-              >
-                {t('Bắt đầu ngay', 'Get started')}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href="/services/ai-integration"
-                className="inline-flex items-center gap-2 bg-white text-foreground font-medium px-8 py-4 rounded-full hover:bg-secondary transition-all border border-border shadow-sm"
-              >
-                {t('Xem dịch vụ AI', 'Explore AI services')}
-              </Link>
+        {/* Kêu gọi hành động: khối tối */}
+        <section className="ap-tile ap-dark">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h2 className="ap-display max-w-[820px]">{t('Sẵn sàng tự động hóa?', 'Ready to automate?')}</h2>
+              <p className="ap-lead max-w-[680px]">
+                {t(
+                  'Để AI và automation làm việc thay bạn. Liên hệ ngay để được tư vấn giải pháp phù hợp với doanh nghiệp.',
+                  'Let AI and automation do the work for you. Get in touch for a solution tailored to your business.'
+                )}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href="/contact" className="ap-btn ap-btn-primary">{t('Bắt đầu ngay', 'Get started')}</Link>
+                <Link href="/services/ai-integration" className="ap-btn ap-btn-ghost">{t('Xem dịch vụ AI', 'Explore AI services')}</Link>
+              </div>
             </div>
           </div>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }

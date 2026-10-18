@@ -5,6 +5,7 @@ import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import Link from 'next/link'
 import Image from 'next/image'
+import { AiWorkspaceIllustration } from '@/components/illustrations/ai-service-illustrations'
 import { 
   Sparkles, 
   Brain, 
@@ -325,218 +326,130 @@ export default function AIIntegrationPage() {
   const { t } = useLanguage()
 
   return (
-    <>
+    <div className="theme-apple">
       <MainNav />
       <main>
-        {/* Hero Section - Blue theme matching homepage */}
-        <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 bg-[#f5f5f7] overflow-hidden">
-          {/* Blue gradient orbs - matching banner */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute top-1/2 right-10 w-32 h-32 bg-[#f5f5f7] rounded-full blur-2xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-primary/20 text-[#1859b8] px-4 py-2 rounded-full mb-6 shadow-sm">
-                  <Sparkles className="w-4 h-4" />
-                  <span className="text-sm font-medium">{t('Công nghệ AI tiên tiến nhất 2026', 'The most advanced AI technology of 2026')}</span>
-                </div>
-
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-                  {t('Tích hợp', 'Integrate')}{' '}
-                  <span className="text-[#1859b8]">
-                    AI
-                  </span>{' '}
-                </h1>
-
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  {t('AI cho marketing, nội dung và phân tích dữ liệu.', 'AI for marketing, content and data analysis.')}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                  <Link
-                    href="#consultation"
-                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all"
-                  >
-                    {t('Nhận tư vấn 1-1 miễn phí', 'Get a free 1-on-1 consultation')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="#use-cases"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-secondary text-[#1859b8] font-medium px-8 py-4 rounded-full transition-all border border-primary/20 shadow-sm"
-                  >
-                    <Play className="w-5 h-5" />
-                    {t('Xem use cases', 'Explore use cases')}
-                  </Link>
-                </div>
-
-                {/* Quick stats */}
-                <div className="flex flex-wrap gap-6">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <TrendingUp className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">40%</p>
-                      <p className="text-xs text-muted-foreground">{t('Tăng năng suất', 'Productivity gain')}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Users className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">500+</p>
-                      <p className="text-xs text-muted-foreground">{t('Doanh nghiệp', 'Businesses served')}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                      <Star className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-bold text-foreground">4.9/5</p>
-                      <p className="text-xs text-muted-foreground">{t('Đánh giá', 'Rating')}</p>
-                    </div>
-                  </div>
-                </div>
+        {/* Hero: khối trắng, căn giữa, ảnh sản phẩm là cửa sổ làm việc với AI */}
+        <section className="ap-tile ap-light">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                {t('Công nghệ AI tiên tiến nhất 2026', 'The most advanced AI technology of 2026')}
+              </p>
+              <h1 className="ap-hero-title">{t('Tích hợp AI', 'Integrate AI')}</h1>
+              <p className="ap-lead max-w-[760px]">
+                {t('AI cho marketing, nội dung và phân tích dữ liệu.', 'AI for marketing, content and data analysis.')}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href="#consultation" className="ap-btn ap-btn-primary">
+                  {t('Nhận tư vấn 1-1 miễn phí', 'Get a free 1-on-1 consultation')}
+                </Link>
+                <Link href="#use-cases" className="ap-btn ap-btn-ghost">
+                  {t('Xem use cases', 'Explore use cases')}
+                </Link>
               </div>
+            </div>
 
-              {/* Right - AI Applications Grid */}
-              <div className="relative">
-                <div className="bg-white/70 backdrop-blur-sm border border-primary/10 rounded-3xl p-6 shadow-xl">
-                  <p className="text-sm font-semibold text-[#1859b8] mb-4 uppercase tracking-wider">AI Applications</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    {[
-                      { name: 'Content', icon: FileText, color: 'from-primary to-primary-dark' },
-                      { name: t('Hình ảnh', 'Images'), icon: ImageIcon, color: 'from-accent to-[#1e6dda]' },
-                      { name: 'Video', icon: Video, color: 'from-[#1e6dda] to-[#1e6dda]' },
-                      { name: t('Dữ liệu', 'Data'), icon: BarChart3, color: 'from-[#1e6dda] to-[#1e6dda]' },
-                      { name: 'Chatbot', icon: MessageSquare, color: 'from-[#1e6dda] to-[#1e6dda]' },
-                      { name: t('Quảng cáo', 'Ads'), icon: Target, color: 'from-[#1e6dda] to-[#1e6dda]' },
-                      { name: 'Email', icon: Mail, color: 'from-primary-dark to-primary' },
-                      { name: 'CRM', icon: Users, color: 'from-[#1e6dda] to-[#1e6dda]' }
-                    ].map((item, i) => (
-                      <div 
-                        key={i} 
-                        className="flex items-center gap-3 bg-white rounded-xl p-4 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer"
-                      >
-                        <div className={`w-10 h-10 bg-gradient-to-br ${item.color} rounded-lg flex items-center justify-center`}>
-                          <item.icon className="w-5 h-5 text-white" />
-                        </div>
-                        <div>
-                          <p className="text-foreground font-medium text-sm">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">AI Powered</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+            <div className="mt-12 grid grid-cols-3 gap-6">
+              {[
+                { v: '40%', l: t('Tăng năng suất', 'Productivity gain') },
+                { v: '500+', l: t('Doanh nghiệp', 'Businesses served') },
+                { v: '4.9/5', l: t('Đánh giá', 'Rating') },
+              ].map((x) => (
+                <div key={x.l}>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
-                
-                {/* Floating badge */}
-                <div className="absolute -bottom-4 -left-4 bg-white rounded-xl p-3 shadow-lg border border-slate-100">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 bg-[#1e6dda] rounded-lg flex items-center justify-center">
-                      <Zap className="w-4 h-4 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-foreground">AI Ready</p>
-                      <p className="text-[10px] text-muted-foreground">{t('Triển khai nhanh', 'Fast deployment')}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              ))}
+            </div>
+
+            <div className="mx-auto mt-14 max-w-[620px]">
+              <AiWorkspaceIllustration t={t} />
             </div>
           </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="py-12 bg-white border-y border-border">
+        {/* Số liệu chuyển đổi: khối xám nhạt */}
+        <section className="py-14 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
               {transformationStats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <p className="text-3xl md:text-4xl font-bold text-[#1859b8]">{stat.value}</p>
-                  <p className="text-sm text-foreground font-medium mt-1">{t(stat.label.vi, stat.label.en)}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t(stat.desc.vi, stat.desc.en)}</p>
+                <div key={index} className="rounded-[18px] border border-[#d2d2d7] bg-white p-6 text-center">
+                  <p className="text-[40px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-[#1859b8]">{stat.value}</p>
+                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#1d1d1f]">{t(stat.label.vi, stat.label.en)}</p>
+                  <p className="mt-1 text-[13px] leading-snug text-[#515154]">{t(stat.desc.vi, stat.desc.en)}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Why AI Section - Dark theme */}
-        <section className="py-16 lg:py-20 bg-foreground">
+        {/* Tại sao cần AI: khối tối */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                <Zap className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+                <Zap className="h-4 w-4" />
                 {t('TẠI SAO CẦN AI', 'WHY AI')}
               </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('AI đang thay đổi', 'AI is changing')} <span className="text-[#1859b8]">{t('cuộc chơi', 'the game')}</span> {t('kinh doanh', 'in business')}
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+                {t('AI đang thay đổi', 'AI is changing')} <span className="text-[#7db8ff]">{t('cuộc chơi', 'the game')}</span> {t('kinh doanh', 'in business')}
               </h2>
-              <p className="text-[#515154] max-w-2xl mx-auto">
-                {t('Doanh nghiệp không tích hợp AI sẽ bị tụt hậu. AI không thay thế con người, nhưng người dùng AI sẽ thay thế những người không dùng.', "Businesses that skip AI will fall behind. AI won't replace people — but people who use AI will replace those who don't.")}
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
+                {t(
+                  'Doanh nghiệp không tích hợp AI sẽ bị tụt hậu. AI không thay thế con người, nhưng người dùng AI sẽ thay thế những người không dùng.',
+                  "Businesses that skip AI will fall behind. AI won't replace people — but people who use AI will replace those who don't."
+                )}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3">
               {whyAIBenefits.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-primary/30 transition-all group"
-                >
-                  <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-primary transition-all">
-                    <item.icon className="w-6 h-6 text-[#1859b8] group-hover:text-white transition-colors" />
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-7">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                    <item.icon className="h-6 w-6 text-white" />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">{t(item.title.vi, item.title.en)}</h3>
-                  <p className="text-[#515154] text-sm leading-relaxed">{t(item.description.vi, item.description.en)}</p>
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-white">{t(item.title.vi, item.title.en)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#d2d2d7]">{t(item.description.vi, item.description.en)}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Use Cases Section */}
-        <section id="use-cases" className="py-16 lg:py-20 bg-white">
+        {/* Ứng dụng AI: khối trắng */}
+        <section id="use-cases" className="py-16 lg:py-24 bg-white scroll-mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Sparkles className="h-4 w-4" />
                 {t('Ứng dụng AI', 'AI in action')}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('AI có thể làm gì cho doanh nghiệp bạn?', 'What can AI do for your business?')}
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
                 {t('ClickStar tích hợp AI vào mọi khía cạnh của hoạt động marketing và kinh doanh', 'ClickStar brings AI into every corner of your marketing and business operations')}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
               {useCases.map((useCase, index) => (
-                <div 
-                  key={index} 
-                  className="bg-[#f5f5f7] rounded-2xl p-6 hover:shadow-lg transition-all border border-primary/10 group"
-                >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary transition-all">
-                      <useCase.icon className="w-6 h-6 text-[#1859b8] group-hover:text-white transition-colors" />
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                      <useCase.icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="text-right">
-                      <p className="text-2xl font-bold text-[#1859b8]">{useCase.stats}</p>
-                      <p className="text-xs text-muted-foreground">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
+                      <p className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
+                      <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>
-                  <h3 className="text-lg font-bold text-foreground mb-2">{t(useCase.title.vi, useCase.title.en)}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{t(useCase.description.vi, useCase.description.en)}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{t(useCase.title.vi, useCase.title.en)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{t(useCase.description.vi, useCase.description.en)}</p>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-5">
                     {useCase.features.map((feature, i) => (
-                      <span key={i} className="text-xs bg-primary/5 text-[#1859b8] px-2 py-1 rounded-full">
+                      <span key={i} className="rounded-full bg-[#eaf2fd] px-3 py-1 text-[13px] font-medium text-[#1859b8]">
                         {t(feature.vi, feature.en)}
                       </span>
                     ))}
@@ -547,49 +460,44 @@ export default function AIIntegrationPage() {
           </div>
         </section>
 
-        {/* AI Ecosystem Section - Dark theme */}
-        <section className="py-16 lg:py-20 bg-foreground">
+        {/* Hệ sinh thái AI: khối tối, logo trên ô trắng */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                <Brain className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+                <Brain className="h-4 w-4" />
                 {t('HỆ SINH THÁI AI', 'THE AI ECOSYSTEM')}
               </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-                {t('Công cụ AI', "The world's")} <span className="text-[#1859b8]">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+                {t('Công cụ AI', "The world's")} <span className="text-[#7db8ff]">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
               </h2>
-              <p className="text-[#515154] max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
                 {t('ClickStar làm việc với các nền tảng AI mạnh nhất để mang lại kết quả tối ưu cho doanh nghiệp', 'ClickStar works with the most powerful AI platforms to deliver the best results for your business')}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-4">
               {aiEcosystem.map((tool, index) => (
-                <div key={index} className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-5 hover:bg-white/10 hover:border-primary/30 transition-all group">
-                  <div className="flex items-center gap-3 mb-4">
-                    {/* Real AI Logos */}
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1.5 shadow-sm shrink-0">
-                      <Image quality={95}
-                        src={tool.logo}
-                        alt={tool.name}
-                        width={28}
-                        height={28}
-                        className="w-full h-full object-contain"
-                      />
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-white p-2">
+                      <Image quality={95} src={tool.logo} alt={tool.name} width={28} height={28} className="h-full w-full object-contain" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-white">{tool.name}</h3>
-                      <p className="text-xs text-[#515154]">{tool.provider}</p>
+                      <h3 className="text-lg font-semibold leading-tight text-white">{tool.name}</h3>
+                      <p className="text-[13px] text-[#d2d2d7]">{tool.provider}</p>
                     </div>
                   </div>
-                  <span className="inline-block text-xs bg-primary/20 text-[#1859b8] px-2 py-0.5 rounded mb-3">
+                  <span className="mt-4 inline-flex w-fit rounded-full border border-white/30 px-2.5 py-0.5 text-xs font-medium text-white">
                     {t(tool.category.vi, tool.category.en)}
                   </span>
-                  <p className="text-sm text-[#515154] mb-4">{t(tool.description.vi, tool.description.en)}</p>
-                  <ul className="space-y-1">
+                  <p className="mt-3 text-[15px] leading-relaxed text-[#d2d2d7]">{t(tool.description.vi, tool.description.en)}</p>
+                  <ul className="mt-auto space-y-2 pt-5">
                     {tool.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-xs text-[#515154]">
-                        <CheckCircle2 className="w-3 h-3 text-[#1859b8]" />
+                      <li key={i} className="flex items-center gap-2.5 text-[14px] text-white">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1e6dda]">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-white" />
+                        </span>
                         {t(feature.vi, feature.en)}
                       </li>
                     ))}
@@ -600,158 +508,106 @@ export default function AIIntegrationPage() {
           </div>
         </section>
 
-        {/* Process Section - Light style like hero */}
-        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 right-1/4 w-[350px] h-[350px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-10 left-1/4 w-[250px] h-[250px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <span className="inline-block text-[#1859b8] font-semibold text-sm uppercase tracking-wider mb-3">
+        {/* Quy trình: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Layers className="h-4 w-4" />
                 {t('Quy trình', 'Our process')}
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Quy trình tích hợp AI', 'The AI integration process')}
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
                 {t('4 bước đơn giản để đưa AI vào hoạt động kinh doanh của bạn', '4 simple steps to bring AI into your business')}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-4">
               {integrationProcess.map((step, index) => (
-                <div key={index} className="relative h-full">
-                  <div className="bg-white border border-border rounded-2xl p-6 h-full hover:shadow-lg transition-all">
-                    <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                      {step.step}
-                    </div>
-                    <div className="pt-4">
-                      <h3 className="text-lg font-bold text-foreground mb-2">{t(step.title.vi, step.title.en)}</h3>
-                      <p className="text-muted-foreground text-sm mb-4">{t(step.description.vi, step.description.en)}</p>
-                      <span className="inline-flex items-center gap-1 text-xs text-[#144c97] font-medium bg-primary/10 px-2 py-1 rounded-full">
-                        <Clock className="w-3 h-3" />
-                        {t(step.duration.vi, step.duration.en)}
-                      </span>
-                    </div>
-                  </div>
-                  {index < integrationProcess.length - 1 && (
-                    <div className="hidden lg:flex items-center justify-center absolute top-0 -right-5 h-full w-10 z-10 pointer-events-none">
-                      <ChevronRight className="w-6 h-6 text-[#1859b8]/40" />
-                    </div>
-                  )}
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1e6dda] text-[15px] font-semibold text-white">{step.step}</span>
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{t(step.title.vi, step.title.en)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{t(step.description.vi, step.description.en)}</p>
+                  <span className="mt-auto inline-flex w-fit items-center gap-1.5 rounded-full bg-[#eaf2fd] px-3 py-1 text-[13px] font-medium text-[#1859b8]">
+                    <Clock className="h-3.5 w-3.5" />
+                    {t(step.duration.vi, step.duration.en)}
+                  </span>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Latest AI Articles - Dark theme */}
-        <section className="py-16 lg:py-20 bg-foreground">
+        {/* Bài viết mới: khối trắng */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-10">
+            <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                  <FileText className="w-4 h-4" />
+                <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                  <FileText className="h-4 w-4" />
                   {t('TIN TỨC AI', 'AI NEWS')}
                 </span>
-                <h2 className="text-3xl md:text-4xl font-bold text-white">
+                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Bài viết', 'Our')} <span className="text-[#1859b8]">{t('mới nhất', 'latest')}</span> {t('về AI', 'AI articles')}
                 </h2>
               </div>
-              <Link 
-                href="/blog"
-                className="hidden md:inline-flex items-center gap-2 text-white hover:text-primary font-medium"
-              >
+              <Link href="/blog" className="ap-link hidden items-center gap-2 font-semibold md:inline-flex">
                 {t('Xem tất cả', 'View all')}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-4">
               {aiArticles.map((article, index) => (
-                <article key={index} className="bg-white/5 backdrop-blur rounded-xl overflow-hidden hover:bg-white/10 transition-all group border border-white/10">
+                <article key={index} className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-[#d2d2d7] bg-white">
                   <div className="relative aspect-video overflow-hidden">
-                    <Image quality={95}
-                      src={article.image}
-                      alt={t(article.title.vi, article.title.en)}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <span className="absolute top-3 left-3 text-xs bg-white text-[#1859b8] font-medium px-2 py-1 rounded shadow-sm">
-                      {article.category}
-                    </span>
+                    <Image quality={95} src={article.image} alt={t(article.title.vi, article.title.en)} fill className="object-cover transition-transform duration-500 group-hover:scale-105" sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw" />
+                    <span className="absolute left-3 top-3 rounded-full bg-white px-2.5 py-1 text-xs font-semibold text-[#1859b8]">{article.category}</span>
                   </div>
-                  <div className="p-4">
-                    <div className="flex items-center gap-3 text-xs text-[#515154] mb-2">
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="flex items-center gap-2.5 text-[13px] text-[#515154]">
                       <span>{article.date}</span>
-                      <span className="w-1 h-1 bg-gray-500 rounded-full" />
+                      <span className="h-1 w-1 rounded-full bg-[#86868b]" />
                       <span>{t(article.readTime.vi, article.readTime.en)}</span>
                     </div>
-                    <h3 className="font-bold text-white mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-                      {t(article.title.vi, article.title.en)}
-                    </h3>
-                    <p className="text-sm text-[#515154] line-clamp-2">
-                      {t(article.excerpt.vi, article.excerpt.en)}
-                    </p>
+                    <h3 className="mt-2 line-clamp-2 text-[17px] font-semibold leading-snug text-[#1d1d1f]">{t(article.title.vi, article.title.en)}</h3>
+                    <p className="mt-2 line-clamp-3 text-[14.5px] leading-relaxed text-[#515154]">{t(article.excerpt.vi, article.excerpt.en)}</p>
                   </div>
                 </article>
               ))}
             </div>
 
-            <div className="text-center mt-8 md:hidden">
-              <Link 
-                href="/blog"
-                className="inline-flex items-center gap-2 text-white hover:text-primary font-medium"
-              >
+            <div className="mt-8 text-center md:hidden">
+              <Link href="/blog" className="ap-link inline-flex items-center gap-2 font-semibold">
                 {t('Xem tất cả bài viết', 'View all articles')}
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
         </section>
 
-        {/* Final CTA - Light style like hero */}
-        <section className="relative py-16 lg:py-20 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[300px] h-[300px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="w-16 h-16 bg-[#1e6dda] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-primary/25">
-              <Rocket className="w-8 h-8 text-white" />
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {t('Sẵn sàng bứt phá với AI?', 'Ready to break through with AI?')}
-            </h2>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-              {t('Đừng để đối thủ đi trước. Bắt đầu hành trình chuyển đổi AI ngay hôm nay với sự hỗ trợ từ đội ngũ chuyên gia ClickStar.', "Don't let competitors get ahead. Start your AI transformation today with the support of ClickStar's expert team.")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold px-8 py-4 rounded-full hover:shadow-lg hover:shadow-primary/25 transition-all"
-              >
-                {t('Bắt đầu ngay', 'Get started')}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href="/pricing"
-                className="inline-flex items-center gap-2 bg-white text-foreground font-medium px-8 py-4 rounded-full hover:bg-secondary transition-all border border-border shadow-sm"
-              >
-                {t('Xem bảng giá', 'View pricing')}
-              </Link>
+        {/* Kêu gọi hành động: khối tối */}
+        <section id="consultation" className="ap-tile ap-dark scroll-mt-16">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h2 className="ap-display max-w-[820px]">{t('Sẵn sàng bứt phá với AI?', 'Ready to break through with AI?')}</h2>
+              <p className="ap-lead max-w-[680px]">
+                {t(
+                  'Đừng để đối thủ đi trước. Bắt đầu hành trình chuyển đổi AI ngay hôm nay với sự hỗ trợ từ đội ngũ chuyên gia ClickStar.',
+                  "Don't let competitors get ahead. Start your AI transformation today with the support of ClickStar's expert team."
+                )}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href="/contact" className="ap-btn ap-btn-primary">{t('Bắt đầu ngay', 'Get started')}</Link>
+                <Link href="/pricing" className="ap-btn ap-btn-ghost">{t('Xem bảng giá', 'View pricing')}</Link>
+              </div>
             </div>
           </div>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
