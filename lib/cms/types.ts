@@ -126,6 +126,8 @@ export type CaseStudyItem = {
   tags: string[]
   category: I18n
   href?: string
+  /** Ảnh là giao diện phần mềm (không phải ảnh chụp thật): hiện trong khung trên nền tối để chữ luôn đọc rõ. */
+  mockup?: boolean
 }
 
 export type CaseStudiesContent = {

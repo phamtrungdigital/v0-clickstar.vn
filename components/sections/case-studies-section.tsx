@@ -136,7 +136,36 @@ function CaseStudyCard({
   itemIndex: number
 }) {
   const { language } = useLanguage()
-  const inner = (
+  const tags = study.tags.map((tag) => (language === 'en' ? (TAG_EN[tag] ?? tag) : tag))
+  const inner = study.mockup ? (
+    <div
+      data-cms-field="item"
+      data-cms-item-index={itemIndex}
+      className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-gradient-to-b from-[#2b2b2e] to-[#1d1d1f]"
+    >
+      <div className="absolute inset-x-4 top-4 bottom-[92px] overflow-hidden rounded-xl bg-white shadow-[0_18px_40px_-12px_rgba(0,0,0,0.6)]">
+        <Image
+          quality={95}
+          src={study.image}
+          alt={title}
+          fill
+          className="object-cover object-left-top transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
+        <div className="absolute left-3 top-3 flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <span key={tag} className="rounded-full bg-[#1d1d1f]/85 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-4 pt-3">
+        <p className="mb-1 text-sm text-[#d2d2d7]">{category}</p>
+        <h3 className="line-clamp-2 text-lg font-bold leading-snug text-white transition-colors duration-200 group-hover:text-[#7db8ff]">{title}</h3>
+      </div>
+    </div>
+  ) : (
     <div
       data-cms-field="item"
       data-cms-item-index={itemIndex}
@@ -151,12 +180,12 @@ function CaseStudyCard({
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-        {study.tags.map((tag) => (
+        {tags.map((tag) => (
           <span
             key={tag}
             className="px-3 py-1 bg-white/90 backdrop-blur-sm text-foreground text-xs font-medium rounded-full"
           >
-            {language === 'en' ? (TAG_EN[tag] ?? tag) : tag}
+            {tag}
           </span>
         ))}
       </div>
