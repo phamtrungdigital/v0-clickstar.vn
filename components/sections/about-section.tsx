@@ -6,6 +6,7 @@ import { Play, X, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { useInView, useCountUp } from '@/lib/hooks/use-reveal'
 import type { AboutContent, AboutTimelineItem, I18n } from '@/lib/cms/types'
+import { splitTimeline, type TimelineEntry } from '@/lib/cms/timeline'
 
 /**
  * "About Us" trên trang chủ (18/10/2026, phương án A do anh chọn): nền tối, tiêu đề + mô tả từ CMS,
@@ -19,12 +20,12 @@ import type { AboutContent, AboutTimelineItem, I18n } from '@/lib/cms/types'
  */
 
 const CSS = `
-@keyframes cs-draw { from { width: 0 } to { width: 100% } }
+@keyframes cs-draw { from { width: 0 } to { width: var(--to, 100%) } }
 @keyframes cs-ping2 { from { transform: scale(1); opacity: .7 } to { transform: scale(2.1); opacity: 0 } }
 .cs-line { width: 0 }
 .cs-in .cs-line { animation: cs-draw 2.6s ease-out .3s forwards }
 .cs-ping { position: absolute; inset: 0; border-radius: 9999px; border: 2px solid #1e6dda; animation: cs-ping2 2.6s ease-out infinite }
-@media (prefers-reduced-motion: reduce) { .cs-line { width: 100% !important; animation: none !important } .cs-ping { animation: none } }
+@media (prefers-reduced-motion: reduce) { .cs-line { width: var(--to, 100%) !important; animation: none !important } .cs-ping { animation: none } }
 `
 
 function parseStat(raw: string) {
@@ -42,6 +43,80 @@ function Counter({ value, run }: { value: string; run: boolean }) {
       {n}
       {p.suf}
     </>
+  )
+}
+
+/** Một mốc: năm, tiêu đề, mô tả. `soft` là mốc định hướng (chữ nhạt hơn). */
+function MilestoneItem({ it, now, soft }: { it: TimelineEntry; now?: boolean; soft?: boolean }) {
+  const { t } = useLanguage()
+  return (
+    <li className="relative pt-0 xl:pt-9">
+      <span
+        className={`absolute left-0 top-0 hidden h-5 w-5 rounded-full border-2 xl:block ${
+          soft
+            ? 'border-dashed border-[#7d7d85] bg-[#272729]'
+            : now
+              ? 'border-[#7db8ff] bg-[#7db8ff] shadow-[0_0_0_6px_rgba(125,184,255,0.18)]'
+              : 'border-[#7db8ff] bg-[#272729]'
+        }`}
+      />
+      <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-[28px] font-semibold leading-none tracking-[-0.03em] ${soft ? 'text-[#b0b0b6]' : 'text-white'}`}>
+        {it.year}
+        {now && (
+          <span className="rounded-full bg-[#1e6dda] px-1.5 py-0.5 text-[9px] font-semibold uppercase leading-none tracking-[0.06em] text-white">
+            {t('Hiện nay', 'Now')}
+          </span>
+        )}
+      </p>
+      <h3 className={`mt-2 text-[15px] font-semibold ${soft ? 'text-[#e5e5ea]' : 'text-white'}`}>{t(it.title.vi, it.title.en)}</h3>
+      <p className="mt-1.5 text-[13.5px] leading-snug text-[#b0b0b6]">{t(it.description.vi, it.description.en)}</p>
+    </li>
+  )
+}
+
+function Milestones({ items, rise }: { items: AboutTimelineItem[]; rise: string }) {
+  const { t } = useLanguage()
+  const { past, future } = splitTimeline(items)
+  const nowAt = past.length - 1
+  // Vị trí cột thứ k trên lưới n cột cách nhau 16px: k * (100% + 16px) / n
+  const col = (k: number, n: number) => `calc(${k} * (100% + 16px) / ${n})`
+  return (
+    <div className={`relative mt-14 lg:mt-20 ${rise}`} style={{ transitionDelay: '350ms' }}>
+      {past.length > 0 && (
+        <div className="relative">
+          <div className="absolute left-0 right-0 top-[9px] hidden h-[2px] bg-[#4a4a4f] xl:block" />
+          <div
+            className="cs-line absolute left-0 top-[9px] hidden h-[2px] bg-[#7db8ff] xl:block"
+            style={{ ['--to' as string]: nowAt > 0 ? `calc(${col(nowAt, past.length)} + 10px)` : '10px' } as React.CSSProperties}
+          />
+          <ol
+            className="m-0 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4 xl:gap-4 xl:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]"
+            style={{ ['--n' as string]: past.length } as React.CSSProperties}
+          >
+            {past.map((it, i) => (
+              <MilestoneItem key={it.index} it={it} now={i === nowAt} />
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {future.length > 0 && (
+        <div className="relative mt-12 xl:mt-14">
+          <p className="mb-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#7db8ff]">
+            {t('Định hướng', 'Direction')} {future[0].year}
+            {future.length > 1 ? ` - ${future[future.length - 1].year}` : ''}
+          </p>
+          <div className="relative">
+            <div className="absolute left-0 right-0 top-[9px] hidden border-t-2 border-dashed border-[#4a4a4f] xl:block" />
+            <ol className="m-0 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4 xl:gap-4">
+              {future.map((it) => (
+                <MilestoneItem key={it.index} it={it} soft />
+              ))}
+            </ol>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -113,7 +188,7 @@ export function AboutSection({
             <dl data-cms-field="stats" className={`grid grid-cols-3 gap-3 ${rise}`} style={{ transitionDelay: '150ms' }}>
               {stats.map((s, i) => (
                 <div key={i} className="rounded-[18px] bg-[#1d1d1f] p-4 sm:p-5">
-                  <dt className="text-[34px] sm:text-[46px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-white">
+                  <dt className="text-[34px] sm:text-[42px] lg:text-[32px] xl:text-[42px] 2xl:text-[46px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-white">
                     <Counter value={s.v} run={seen} />
                   </dt>
                   <dd className="mt-2 text-[13px] leading-snug text-[#b0b0b6]">{t(s.l.vi, s.l.en)}</dd>
@@ -173,28 +248,8 @@ export function AboutSection({
             </ul>
           )}
 
-          {/* Mốc phát triển */}
-          {timeline && timeline.length > 0 && (
-            <div className={`relative mt-14 lg:mt-20 ${rise}`} style={{ transitionDelay: '350ms' }}>
-              <div className="relative">
-                <div className="absolute left-0 right-0 top-[9px] hidden h-[2px] bg-[#4a4a4f] lg:block" />
-                <div className="cs-line absolute left-0 top-[9px] hidden h-[2px] bg-[#7db8ff] lg:block" />
-                <ol
-                  className="m-0 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:gap-4 lg:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]"
-                  style={{ ['--n' as string]: timeline.length } as React.CSSProperties}
-                >
-                  {timeline.map((it, i) => (
-                    <li key={i} className="relative pt-0 lg:pt-9">
-                      <span className="absolute left-0 top-0 hidden h-5 w-5 rounded-full border-2 border-[#7db8ff] bg-[#272729] lg:block" />
-                      <p className="text-[28px] font-semibold leading-none tracking-[-0.03em] text-white">{it.year}</p>
-                      <h3 className="mt-2 text-[15px] font-semibold text-white">{t(it.title.vi, it.title.en)}</h3>
-                      <p className="mt-1.5 text-[13.5px] leading-snug text-[#b0b0b6]">{t(it.description.vi, it.description.en)}</p>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </div>
-          )}
+          {/* Mốc phát triển: mốc đã qua có đường vẽ dần tới "Hiện nay", mốc định hướng nằm riêng bên dưới */}
+          {timeline && timeline.length > 0 && <Milestones items={timeline} rise={rise} />}
 
           {industries && industries.length > 0 && (
             <ul className={`m-0 mt-10 flex list-none flex-wrap gap-2 p-0 ${rise}`} style={{ transitionDelay: '450ms' }}>
