@@ -29,7 +29,6 @@ const BRAND: Record<string, string> = {
   supabase: '#3ECF8E',
   vercel: '#9a9aa0',
   nextdotjs: '#9a9aa0',
-  n8n: '#EA4B71',
   huggingface: '#FFB000',
   openai: '#10A37F',
   claude: '#D97757',
