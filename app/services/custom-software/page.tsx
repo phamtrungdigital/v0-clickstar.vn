@@ -2,11 +2,12 @@
 
 /**
  * Trang dịch vụ "Phần mềm theo yêu cầu" (Custom software development).
- * Anh Trung duyệt bản demo HTML 3/10/2026: phong cách công ty kỹ thuật, KHÔNG dấu hiệu AI
- * (không emoji, không chữ gradient, không hiệu ứng phát sáng), nhấn Bảo mật + Vận hành.
+ * Bản dựng lại 18/10/2026 theo concept Apple của cả site, giữ giọng "công ty kỹ thuật" đã duyệt 3/10:
+ * KHÔNG emoji, KHÔNG chữ gradient, KHÔNG hiệu ứng phát sáng; nhãn kỹ thuật dùng chữ đơn cách.
+ * Thêm phần bằng chứng: mã nguồn thật, kiến trúc, đường đi của AI, đội ngũ (dữ liệu ở ./_data/proof.ts).
  *
- * Nội dung (song ngữ) nằm ở ./_data/content.ts — sửa chữ ở đó, file này chỉ lo bố cục.
- * Mọi chuỗi hiển thị đi qua t(vi, en).
+ * Nội dung (song ngữ) nằm ở ./_data/content.ts và ./_data/proof.ts — sửa chữ ở đó, file này chỉ lo
+ * bố cục. Mọi chuỗi hiển thị đi qua t(vi, en).
  */
 
 import { useRef, useState } from 'react'
@@ -20,11 +21,14 @@ import {
   ChevronLeft,
   ChevronRight,
   Code2,
+  Cpu,
   FileSearch,
+  Gauge,
   GitBranch,
   KeyRound,
   LayoutGrid,
   LineChart,
+  ListChecks,
   Lock,
   Maximize2,
   Minus,
@@ -32,6 +36,7 @@ import {
   Plus,
   RotateCcw,
   ScrollText,
+  Search,
   Server,
   ShieldCheck,
   Smartphone,
@@ -44,6 +49,12 @@ import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
 import { useFooterContent } from '@/contexts/web-content-context'
 import type { I18n } from '@/lib/cms/types'
+import {
+  AiPipelineDiagram,
+  ArchitectureDiagram,
+  ReleasePipelineDiagram,
+  RequestFlowDiagram,
+} from '@/components/illustrations/custom-software-illustrations'
 import {
   FACTS,
   FAQ,
@@ -64,6 +75,7 @@ import {
   type ScopeIcon,
   type WorkItem,
 } from './_data/content'
+import { AI, ARCH, EVIDENCE, EXCERPTS, FLOW, STATS, STATS_NOTE, TEAM, type Excerpt, type Lang } from './_data/proof'
 
 const CONTACT_HREF = `/contact?service=${encodeURIComponent(SERVICE_LABEL)}`
 
@@ -92,11 +104,15 @@ const OPS_ICON: Record<OpsIcon, LucideIcon> = {
   backup: RotateCcw,
   docs: BookOpen,
 }
+const AI_ICON: LucideIcon[] = [Cpu, Search, ListChecks, Lock, Gauge]
 const SEVERITY_STYLE = {
-  P1: 'bg-[#f5f5f7] text-[#1859b8]',
-  P2: 'bg-[#f5f5f7] text-[#1859b8]',
-  P3: 'bg-[#eaf2fd] text-[#1859b8]',
+  P1: 'bg-[#1e6dda] text-white',
+  P2: 'bg-[#eaf2fd] text-[#1859b8]',
+  P3: 'bg-[#f5f5f7] text-[#1d1d1f]',
 } as const
+
+const BTN_PRIMARY = 'inline-flex items-center gap-2 rounded-full bg-[#1e6dda] px-6 py-3 text-[15px] font-semibold text-white transition-transform active:scale-95'
+const BTN_GHOST = 'inline-flex items-center rounded-full border border-[#1e6dda] bg-white px-6 py-3 text-[15px] font-semibold text-[#1859b8] transition-transform active:scale-95'
 
 export default function CustomSoftwarePage() {
   const { t } = useLanguage()
@@ -104,68 +120,126 @@ export default function CustomSoftwarePage() {
   const footer = useFooterContent()
 
   return (
-    <div className="min-h-screen bg-white text-[#272729]">
+    <div className="theme-apple min-h-screen bg-white text-[#1d1d1f]">
       <MainNav />
 
       <main>
         {/* ① HERO */}
-        <section className="pt-16 lg:pt-24">
+        <section className="pt-14 pb-16 lg:pt-20 lg:pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-10 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.02fr] gap-10 lg:gap-14 items-center">
               <div className="min-w-0">
                 <Kicker>{tt(HERO.kicker)}</Kicker>
-                <h1 className="text-[2rem] sm:text-[2.5rem] lg:text-[2.85rem] font-bold leading-[1.15] tracking-[-0.02em] max-w-[18ch]">
+                <h1 className="text-[2.25rem] sm:text-[3rem] lg:text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.03em] text-[#1d1d1f] text-balance">
                   {tt(HERO.title)}
                 </h1>
-                <p className="mt-6 text-base sm:text-lg text-[#515154] leading-relaxed max-w-[60ch]">
-                  {tt(HERO.lede)}
-                </p>
+                <p className="mt-6 text-lg sm:text-xl text-[#515154] leading-relaxed max-w-[34ch]">{tt(HERO.lede)}</p>
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Link
-                    href={CONTACT_HREF}
-                    className="inline-flex items-center gap-2 rounded-[10px] bg-[#272729] hover:bg-[#272729] text-white font-semibold px-5 py-3.5 transition-colors"
-                  >
+                  <Link href={CONTACT_HREF} className={BTN_PRIMARY}>
                     {t('Đặt lịch trao đổi', 'Book a call')}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
-                  <a
-                    href="#quy-trinh"
-                    className="inline-flex items-center rounded-[10px] border border-[#d2d2d7] hover:border-[#272729] bg-white font-semibold px-5 py-3.5 transition-colors"
-                  >
-                    {t('Xem quy trình làm việc', 'See how we work')}
+                  <a href="#ma-nguon" className={BTN_GHOST}>
+                    {t('Xem mã nguồn thật', 'See real code')}
                   </a>
                 </div>
               </div>
-              <CodeWindow />
+              <HeroCode />
             </div>
 
-            <dl className="mt-14 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 border-y border-[#e0e0e0]">
+            <dl className="mt-14 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 border-y border-[#d2d2d7]">
               {FACTS.map((f, i) => (
                 <div
                   key={i}
-                  className={`py-5 pr-4 ${i % 2 === 1 ? 'pl-4 border-l border-[#e0e0e0]' : ''} ${
-                    i >= 2 ? 'max-lg:border-t border-[#e0e0e0]' : ''
+                  className={`py-6 pr-4 ${i % 2 === 1 ? 'pl-4 border-l border-[#d2d2d7]' : ''} ${
+                    i >= 2 ? 'max-lg:border-t border-[#d2d2d7]' : ''
                   } ${i === 2 ? 'lg:pl-4 lg:border-l' : ''}`}
                 >
-                  <dt className="text-[22px] font-bold tracking-[-0.02em]">{tt(f.value)}</dt>
-                  <dd className="text-sm text-[#515154]">{tt(f.label)}</dd>
+                  <dt className="text-[26px] font-semibold tracking-[-0.02em] text-[#1d1d1f]">{tt(f.value)}</dt>
+                  <dd className="mt-0.5 text-sm text-[#515154]">{tt(f.label)}</dd>
                 </div>
               ))}
             </dl>
           </div>
         </section>
 
-        {/* ② KHI NÀO NÊN LÀM */}
-        <Section>
-          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-24 items-start">
+        {/* ② MÃ NGUỒN THẬT — khối tối */}
+        <Section id="ma-nguon" tone="dark" className="scroll-mt-16">
+          <Kicker dark>{tt(EVIDENCE.kicker)}</Kicker>
+          <H2 dark>{tt(EVIDENCE.title)}</H2>
+          <Lede dark>{tt(EVIDENCE.lede)}</Lede>
+          <EvidenceTabs />
+
+          <dl className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/15 border border-white/15 rounded-[14px] overflow-hidden">
+            {STATS.map((s) => (
+              <div key={s.value + s.label.vi} className="bg-[#1d1d1f] p-5 sm:p-6">
+                <dt className="text-[34px] font-semibold tracking-[-0.02em] text-white tabular-nums">{s.value}</dt>
+                <dd className="mt-1 text-sm leading-snug text-[#d2d2d7]">{tt(s.label)}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className={`${MONO} mt-3 text-[12px] text-[#a1a1a6]`}>{tt(STATS_NOTE)}</p>
+
+          <div className="mt-16">
+            <h3 className="text-2xl sm:text-3xl font-semibold tracking-[-0.01em] text-white">{tt(FLOW.title)}</h3>
+            <p className="mt-3 max-w-[64ch] text-base sm:text-lg text-[#d2d2d7] leading-relaxed">{tt(FLOW.lede)}</p>
+            <Sheet minWidth={860} hint={t('Vuốt ngang để xem đủ sơ đồ', 'Swipe sideways to see the full diagram')}>
+              <RequestFlowDiagram t={t} />
+            </Sheet>
+          </div>
+        </Section>
+
+        {/* ③ KIẾN TRÚC */}
+        <Section id="kien-truc" className="scroll-mt-16">
+          <Kicker>{tt(ARCH.kicker)}</Kicker>
+          <H2>{tt(ARCH.title)}</H2>
+          <Lede>{tt(ARCH.lede)}</Lede>
+          <Sheet minWidth={860} hint={t('Vuốt ngang để xem đủ sơ đồ', 'Swipe sideways to see the full diagram')}>
+            <ArchitectureDiagram t={t} />
+          </Sheet>
+
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-5">
+            {ARCH.principles.map((p, i) => (
+              <div key={i} className="rounded-[18px] border border-[#d2d2d7] bg-white p-6">
+                <span className={`${MONO} text-[13px] text-[#1859b8]`}>{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="mt-3 text-lg font-semibold tracking-[-0.01em]">{tt(p.title)}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{tt(p.body)}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14 grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-16 items-start">
+            <div>
+              <Kicker>{tt(STACK.kicker)}</Kicker>
+              <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.18] tracking-[-0.02em]">{tt(STACK.title)}</h3>
+              <p className="mt-3 text-base text-[#515154] leading-relaxed max-w-[48ch]">{tt(STACK.lede)}</p>
+            </div>
+            <div className="rounded-[18px] border border-[#d2d2d7] bg-white overflow-hidden">
+              <table className="w-full text-[14.5px]">
+                <tbody>
+                  {STACK.rows.map((r, i) => (
+                    <tr key={i} className="border-t border-[#e0e0e0] first:border-t-0">
+                      <td className="px-5 py-3.5 w-[36%] font-semibold align-top">{tt(r.layer)}</td>
+                      <td className={`${MONO} px-5 py-3.5 text-[13.5px] text-[#1d1d1f]`}>{r.tech}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </Section>
+
+        {/* ④ KHI NÀO NÊN LÀM */}
+        <Section tone="soft">
+          <div className="grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-24 items-start">
             <div>
               <Kicker>{tt(SIGNALS.kicker)}</Kicker>
               <H2>{tt(SIGNALS.title)}</H2>
               <Lede>{tt(SIGNALS.lede)}</Lede>
             </div>
-            <ol className="border-t border-[#e0e0e0]">
+            <ol className="border-t border-[#d2d2d7]">
               {SIGNALS.items.map((s, i) => (
-                <li key={i} className="grid grid-cols-[52px_1fr] gap-2 py-5 border-b border-[#e0e0e0]">
+                <li key={i} className="grid grid-cols-[52px_1fr] gap-2 py-5 border-b border-[#d2d2d7]">
                   <span className={`${MONO} text-[13px] text-[#1859b8] pt-1`}>{String(i + 1).padStart(2, '0')}</span>
                   <div>
                     <h3 className="text-lg font-semibold tracking-[-0.01em]">{tt(s.title)}</h3>
@@ -177,16 +251,18 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
-        {/* ③ PHẠM VI */}
-        <Section className="bg-[#f5f5f7]">
+        {/* ⑤ PHẠM VI */}
+        <Section>
           <Kicker>{tt(SCOPE.kicker)}</Kicker>
           <H2>{tt(SCOPE.title)}</H2>
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-[#e0e0e0]">
+          <div className="mt-12 grid auto-rows-fr grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {SCOPE.items.map((s, i) => {
               const Icon = SCOPE_ICON[s.icon]
               return (
-                <div key={i} className="bg-white p-7 border-r border-b border-[#e0e0e0]">
-                  <Icon className="w-6 h-6 text-[#1859b8]" strokeWidth={1.6} />
+                <div key={i} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                    <Icon className="w-6 h-6 text-white" strokeWidth={1.7} />
+                  </div>
                   <h3 className="mt-5 text-lg font-semibold tracking-[-0.01em]">{tt(s.title)}</h3>
                   <p className="mt-2 text-[15px] text-[#515154] leading-relaxed">{tt(s.body)}</p>
                 </div>
@@ -195,33 +271,122 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
-        {/* ③b DỰ ÁN ĐÃ LÀM — ẩn tên khách, ảnh từ bản chạy thử */}
-        <Section id="du-an" className="scroll-mt-16">
+        {/* ⑥ AI — khối tối */}
+        <Section id="ai" tone="dark" className="scroll-mt-16">
+          <Kicker dark>{tt(AI.kicker)}</Kicker>
+          <H2 dark>{tt(AI.title)}</H2>
+          <Lede dark>{tt(AI.lede)}</Lede>
+          <div className="mt-6 flex flex-wrap gap-2.5">
+            {AI.providers.map((p) => (
+              <span key={p} className={`${MONO} rounded-md border border-white/30 px-3 py-1.5 text-[12.5px] text-white`}>
+                {p}
+              </span>
+            ))}
+          </div>
+
+          <Sheet minWidth={860} hint={t('Vuốt ngang để xem đủ sơ đồ', 'Swipe sideways to see the full diagram')}>
+            <AiPipelineDiagram t={t} />
+          </Sheet>
+
+          <div className="mt-8 grid auto-rows-fr grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {AI.items.map((it, i) => {
+              const Icon = AI_ICON[i]
+              return (
+                <div key={i} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-6">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[#1e6dda]">
+                    <Icon className="w-5 h-5 text-white" strokeWidth={1.8} />
+                  </div>
+                  <h3 className="mt-5 text-lg font-semibold leading-snug text-white">{tt(it.title)}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#d2d2d7]">{tt(it.body)}</p>
+                </div>
+              )
+            })}
+            <div className="flex h-full flex-col rounded-[18px] border border-[#1e6dda] bg-[#1d1d1f] p-6">
+              <p className={`${MONO} text-[12.5px] uppercase tracking-[0.04em] text-[#7db8ff]`}>{tt(AI.live.title)}</p>
+              <ul className="mt-4 space-y-3.5">
+                {AI.live.items.map((it, i) => (
+                  <li key={i} className="grid grid-cols-[20px_1fr] gap-2.5 text-[15px] leading-snug text-white">
+                    <Check className="w-[18px] h-[18px] mt-0.5 text-[#7db8ff]" strokeWidth={2} />
+                    {tt(it)}
+                  </li>
+                ))}
+              </ul>
+              <Link href="/services/speech-insight-ai" className="mt-auto pt-6 inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#7db8ff]">
+                {tt(AI.live.link)}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </Section>
+
+        {/* ⑦ DỰ ÁN ĐÃ LÀM — ẩn tên khách, ảnh dựng lại từ dữ liệu mẫu */}
+        <Section id="du-an" tone="soft" className="scroll-mt-16">
           <Kicker>{tt(WORK.kicker)}</Kicker>
           <H2>{tt(WORK.title)}</H2>
           <Lede>{tt(WORK.lede)}</Lede>
           <WorkShowcase />
         </Section>
 
-        {/* ④ BẢO MẬT — nền tối để nhấn */}
-        <Section id="bao-mat" className="bg-[#272729] text-slate-200">
-          <Kicker dark>{tt(SECURITY.kicker)}</Kicker>
-          <H2 className="text-white">{tt(SECURITY.title)}</H2>
-          <Lede className="text-[#515154]">{tt(SECURITY.lede)}</Lede>
+        {/* ⑧ ĐỘI NGŨ */}
+        <Section id="doi-ngu" className="scroll-mt-16">
+          <Kicker>{tt(TEAM.kicker)}</Kicker>
+          <H2>{tt(TEAM.title)}</H2>
+          <Lede>{tt(TEAM.lede)}</Lede>
 
-          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-slate-800 border border-slate-800 rounded-2xl overflow-hidden">
+          <dl className="mt-10 grid grid-cols-1 sm:grid-cols-3 border-y border-[#d2d2d7]">
+            {TEAM.stats.map((s, i) => (
+              <div key={s.value} className={`py-6 sm:px-6 ${i === 0 ? 'sm:pl-0' : 'sm:border-l border-[#d2d2d7]'} ${i > 0 ? 'max-sm:border-t border-[#d2d2d7]' : ''}`}>
+                <dt className="text-[40px] font-semibold tracking-[-0.03em] leading-none text-[#1d1d1f]">{s.value}</dt>
+                <dd className="mt-2 text-[15px] leading-snug text-[#515154] max-w-[32ch]">{tt(s.label)}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-10 grid auto-rows-fr grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {TEAM.roles.map((r, i) => (
+              <div key={i} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-6">
+                <span className={`${MONO} text-[13px] text-[#1859b8]`}>{String(i + 1).padStart(2, '0')}</span>
+                <h3 className="mt-3 text-lg font-semibold tracking-[-0.01em]">{tt(r.title)}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{tt(r.body)}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-14">
+            <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.18] tracking-[-0.02em]">{tt(TEAM.practices.title)}</h3>
+            <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 md:gap-x-12 border-t border-[#d2d2d7]">
+              {TEAM.practices.items.map((it, i) => (
+                <li key={i} className="grid grid-cols-[24px_1fr] gap-3 py-4 border-b border-[#d2d2d7] text-[15px] leading-snug">
+                  <Check className="w-5 h-5 mt-0.5 text-[#1859b8]" strokeWidth={2} />
+                  {tt(it)}
+                </li>
+              ))}
+            </ul>
+            <Sheet minWidth={860} hint={t('Vuốt ngang để xem đủ sơ đồ', 'Swipe sideways to see the full diagram')}>
+              <ReleasePipelineDiagram t={t} />
+            </Sheet>
+          </div>
+        </Section>
+
+        {/* ⑨ BẢO MẬT — khối tối */}
+        <Section id="bao-mat" tone="dark" className="scroll-mt-16">
+          <Kicker dark>{tt(SECURITY.kicker)}</Kicker>
+          <H2 dark>{tt(SECURITY.title)}</H2>
+          <Lede dark>{tt(SECURITY.lede)}</Lede>
+
+          <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/15 border border-white/15 rounded-[18px] overflow-hidden">
             {SECURITY.controls.map((c, i) => {
               const Icon = CONTROL_ICON[c.icon]
               return (
-                <div key={i} className="bg-[#272729] p-7">
+                <div key={i} className="bg-[#1d1d1f] p-7">
                   <div className="flex items-center gap-3 text-white">
-                    <Icon className="w-[22px] h-[22px] text-[#7db8ff]" strokeWidth={1.6} />
+                    <Icon className="w-[22px] h-[22px] text-[#7db8ff]" strokeWidth={1.7} />
                     <h3 className="text-[17px] font-semibold">{tt(c.title)}</h3>
                   </div>
                   <ul className="mt-4">
                     {c.items.map((it, j) => (
-                      <li key={j} className="relative py-2 pl-6 text-[14.5px] text-[#515154] border-t border-dashed border-slate-800">
-                        <span className="absolute left-0.5 top-[15px] w-2 h-2 rounded-[2px] border-[1.5px] border-[#1e6dda]" aria-hidden />
+                      <li key={j} className="relative py-2.5 pl-6 text-[15px] leading-snug text-[#d2d2d7] border-t border-dashed border-white/20">
+                        <span className="absolute left-0.5 top-[17px] w-2 h-2 rounded-[2px] border-[1.5px] border-[#7db8ff]" aria-hidden />
                         {tt(it)}
                       </li>
                     ))}
@@ -232,26 +397,26 @@ export default function CustomSoftwarePage() {
           </div>
           <div className="mt-7 flex flex-wrap gap-2.5">
             {SECURITY.standards.map((s, i) => (
-              <span key={i} className={`${MONO} text-[12.5px] text-[#d2d2d7] border border-slate-700 rounded-md px-2.5 py-1.5`}>
+              <span key={i} className={`${MONO} text-[12.5px] text-white border border-white/30 rounded-md px-2.5 py-1.5`}>
                 {tt(s)}
               </span>
             ))}
           </div>
         </Section>
 
-        {/* ⑤ VẬN HÀNH */}
+        {/* ⑩ VẬN HÀNH */}
         <Section id="van-hanh">
           <Kicker>{tt(OPERATIONS.kicker)}</Kicker>
           <H2>{tt(OPERATIONS.title)}</H2>
           <Lede>{tt(OPERATIONS.lede)}</Lede>
 
-          <div className="mt-12 grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-            <div className="border-t border-[#e0e0e0]">
+          <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+            <div className="border-t border-[#d2d2d7]">
               {OPERATIONS.items.map((o, i) => {
                 const Icon = OPS_ICON[o.icon]
                 return (
-                  <div key={i} className="grid grid-cols-[26px_1fr] gap-4 py-5 border-b border-[#e0e0e0]">
-                    <Icon className="w-[22px] h-[22px] text-[#1859b8] mt-0.5" strokeWidth={1.6} />
+                  <div key={i} className="grid grid-cols-[26px_1fr] gap-4 py-5 border-b border-[#d2d2d7]">
+                    <Icon className="w-[22px] h-[22px] text-[#1859b8] mt-0.5" strokeWidth={1.7} />
                     <div>
                       <h3 className="text-[17px] font-semibold">{tt(o.title)}</h3>
                       <p className="mt-1 text-[15px] text-[#515154] leading-relaxed">{tt(o.body)}</p>
@@ -302,16 +467,16 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
-        {/* ⑥ QUY TRÌNH */}
-        <Section id="quy-trinh" className="bg-[#f5f5f7] scroll-mt-16">
+        {/* ⑪ QUY TRÌNH */}
+        <Section id="quy-trinh" tone="soft" className="scroll-mt-16">
           <Kicker>{tt(PROCESS.kicker)}</Kicker>
           <H2>{tt(PROCESS.title)}</H2>
           <Lede>{tt(PROCESS.lede)}</Lede>
 
-          <ol className="relative mt-12 grid gap-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-0 lg:before:content-[''] lg:before:absolute lg:before:top-4 lg:before:left-0 lg:before:right-0 lg:before:h-px lg:before:bg-[#d2d2d7]">
+          <ol className="relative mt-12 grid gap-8 sm:grid-cols-3 lg:grid-cols-6 lg:gap-0 lg:before:content-[''] lg:before:absolute lg:before:top-4 lg:before:left-0 lg:before:right-0 lg:before:h-px lg:before:bg-[#86868b]">
             {PROCESS.phases.map((p, i) => (
               <li key={i} className="relative grid grid-cols-[44px_1fr] sm:block lg:pr-5">
-                <span className={`${MONO} relative inline-grid place-items-center w-8 h-8 rounded-lg bg-[#272729] text-white text-[12.5px]`}>
+                <span className={`${MONO} relative inline-grid place-items-center w-8 h-8 rounded-lg bg-[#1d1d1f] text-white text-[12.5px]`}>
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div className="sm:mt-4">
@@ -323,7 +488,7 @@ export default function CustomSoftwarePage() {
             ))}
           </ol>
 
-          <div className="mt-12 rounded-2xl border border-[#e0e0e0] bg-white overflow-hidden">
+          <div className="mt-12 rounded-[18px] border border-[#d2d2d7] bg-white overflow-hidden">
             <table className="w-full text-[14.5px] max-md:block">
               <thead className="max-md:hidden">
                 <tr>
@@ -349,13 +514,13 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
-        {/* ⑦ QUYỀN SỞ HỮU + HÌNH THỨC HỢP TÁC */}
+        {/* ⑫ QUYỀN SỞ HỮU + HÌNH THỨC HỢP TÁC */}
         <Section>
           <Kicker>{tt(OWNERSHIP.kicker)}</Kicker>
           <H2>{tt(OWNERSHIP.title)}</H2>
-          <div className="mt-10 grid md:grid-cols-2 md:gap-x-12 border-t border-[#e0e0e0]">
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 md:gap-x-12 border-t border-[#d2d2d7]">
             {OWNERSHIP.items.map((o, i) => (
-              <div key={i} className="grid grid-cols-[22px_1fr] gap-3.5 py-[18px] border-b border-[#e0e0e0]">
+              <div key={i} className="grid grid-cols-[22px_1fr] gap-3.5 py-[18px] border-b border-[#d2d2d7]">
                 <Check className="w-5 h-5 text-[#1859b8] mt-0.5" strokeWidth={2} />
                 <div>
                   <p className="font-semibold">{tt(o.title)}</p>
@@ -369,14 +534,14 @@ export default function CustomSoftwarePage() {
             <Kicker>{tt(MODELS.kicker)}</Kicker>
             <H2>{tt(MODELS.title)}</H2>
             {/* Máy tính: bảng so sánh 3 cột. Điện thoại: mỗi hình thức là 1 khối. */}
-            <div className="mt-9 rounded-2xl border border-[#e0e0e0] overflow-hidden">
+            <div className="mt-9 rounded-[18px] border border-[#d2d2d7] overflow-hidden">
               <table className="w-full text-[14.5px] max-md:hidden">
                 <thead>
                   <tr>
                     <th className="w-[14%]" />
                     {MODELS.columns.map((c, i) => (
                       <th key={i} className={`text-left align-top px-5 pt-5 pb-4 ${c.recommended ? 'bg-[#eaf2fd]' : ''}`}>
-                        <span className="block text-[15px] font-bold">{tt(c.name)}</span>
+                        <span className="block text-[15px] font-semibold">{tt(c.name)}</span>
                         <span className="block mt-1 text-[13px] font-normal text-[#515154]">{tt(c.fit)}</span>
                       </th>
                     ))}
@@ -385,7 +550,7 @@ export default function CustomSoftwarePage() {
                 <tbody>
                   {MODELS.rows.map((row) => (
                     <tr key={row.key} className="border-t border-[#e0e0e0]">
-                      <td className="px-5 py-3.5 align-top font-semibold text-[#272729]">{tt(row.label)}</td>
+                      <td className="px-5 py-3.5 align-top font-semibold text-[#1d1d1f]">{tt(row.label)}</td>
                       {MODELS.columns.map((c, i) => (
                         <td key={i} className={`px-5 py-3.5 align-top ${c.recommended ? 'bg-[#eaf2fd]' : ''}`}>
                           {tt(c[row.key])}
@@ -398,7 +563,7 @@ export default function CustomSoftwarePage() {
               <div className="md:hidden divide-y divide-[#e0e0e0]">
                 {MODELS.columns.map((c, i) => (
                   <div key={i} className={`p-5 ${c.recommended ? 'bg-[#eaf2fd]' : ''}`}>
-                    <p className="font-bold">{tt(c.name)}</p>
+                    <p className="font-semibold">{tt(c.name)}</p>
                     <p className="text-[13px] text-[#515154]">{tt(c.fit)}</p>
                     <dl className="mt-3 space-y-2.5 text-[14.5px]">
                       {MODELS.rows.map((row) => (
@@ -415,64 +580,32 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
-        {/* ⑧ CÔNG NGHỆ */}
-        <Section className="bg-[#f5f5f7] border-t border-[#e0e0e0]">
-          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-24 items-start">
-            <div>
-              <Kicker>{tt(STACK.kicker)}</Kicker>
-              <H2>{tt(STACK.title)}</H2>
-              <Lede>{tt(STACK.lede)}</Lede>
-            </div>
-            <div className="rounded-2xl border border-[#e0e0e0] bg-white overflow-hidden">
-              <table className="w-full text-[14.5px]">
-                <tbody>
-                  {STACK.rows.map((r, i) => (
-                    <tr key={i} className="border-t border-[#e0e0e0] first:border-t-0">
-                      <td className="px-5 py-3.5 w-[34%] font-semibold align-top">{tt(r.layer)}</td>
-                      <td className={`${MONO} px-5 py-3.5 text-[13.5px] text-[#272729]`}>{r.tech}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </Section>
-
-        {/* ⑨ FAQ */}
-        <Section>
+        {/* ⑬ FAQ */}
+        <Section tone="soft">
           <Kicker>{tt(FAQ.kicker)}</Kicker>
           <H2>{tt(FAQ.title)}</H2>
           <FaqList />
         </Section>
 
-        {/* ⑩ CTA */}
-        <section className="pb-20 lg:pb-28">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-8 items-center rounded-[20px] border border-[#e0e0e0] bg-[#f5f5f7] p-7 sm:p-12">
-              <div>
-                <h2 className="text-[26px] sm:text-[34px] font-bold leading-tight tracking-[-0.02em]">{tt(FINAL_CTA.title)}</h2>
-                <p className="mt-3 text-[#515154] max-w-[60ch]">{tt(FINAL_CTA.body)}</p>
-                {(footer.contact_phone || footer.contact_email) && (
-                  <p className={`${MONO} mt-5 text-[13.5px] text-[#515154]`}>
-                    {[footer.contact_phone && `hotline ${footer.contact_phone}`, footer.contact_email].filter(Boolean).join(' · ')}
-                  </p>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-3 lg:justify-end">
-                <Link
-                  href={CONTACT_HREF}
-                  className="inline-flex items-center gap-2 rounded-[10px] bg-[#272729] hover:bg-[#272729] text-white font-semibold px-5 py-3.5 transition-colors"
-                >
+        {/* ⑭ CTA */}
+        <section className="ap-tile ap-dark">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h2 className="ap-display max-w-[820px]">{tt(FINAL_CTA.title)}</h2>
+              <p className="ap-lead max-w-[680px]">{tt(FINAL_CTA.body)}</p>
+              <div className="ap-cta-row mt-2">
+                <Link href={CONTACT_HREF} className="ap-btn ap-btn-primary">
                   {t('Đặt lịch trao đổi', 'Book a call')}
-                  <ArrowRight className="w-4 h-4" />
                 </Link>
-                <Link
-                  href={CONTACT_HREF}
-                  className="inline-flex items-center rounded-[10px] border border-[#d2d2d7] hover:border-[#272729] bg-white font-semibold px-5 py-3.5 transition-colors"
-                >
+                <Link href={CONTACT_HREF} className="ap-btn ap-btn-ghost">
                   {t('Gửi yêu cầu', 'Send a brief')}
                 </Link>
               </div>
+              {(footer.contact_phone || footer.contact_email) && (
+                <p className={`${MONO} mt-2 text-[13.5px] text-[#d2d2d7]`}>
+                  {[footer.contact_phone && `hotline ${footer.contact_phone}`, footer.contact_email].filter(Boolean).join(' · ')}
+                </p>
+              )}
             </div>
           </div>
         </section>
@@ -485,9 +618,12 @@ export default function CustomSoftwarePage() {
 
 /* ───────────────────────── Khối dùng chung ───────────────────────── */
 
-function Section({ id, className = '', children }: { id?: string; className?: string; children: React.ReactNode }) {
+type Tone = 'white' | 'soft' | 'dark'
+
+function Section({ id, tone = 'white', className = '', children }: { id?: string; tone?: Tone; className?: string; children: React.ReactNode }) {
+  const bg = tone === 'dark' ? 'bg-[#272729] text-white' : tone === 'soft' ? 'bg-[#f5f5f7]' : 'bg-white'
   return (
-    <section id={id} className={`py-16 sm:py-24 lg:py-28 ${className}`}>
+    <section id={id} className={`py-16 sm:py-24 lg:py-28 ${bg} ${className}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div>
     </section>
   )
@@ -506,23 +642,35 @@ function Kicker({ children, dark = false }: { children: React.ReactNode; dark?: 
   )
 }
 
-function H2({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+function H2({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <h2 className={`text-[28px] sm:text-[34px] lg:text-[42px] font-bold leading-[1.18] tracking-[-0.02em] max-w-[22ch] ${className}`}>
+    <h2 className={`text-[28px] sm:text-[36px] lg:text-[44px] font-semibold leading-[1.15] tracking-[-0.025em] max-w-[22ch] text-balance ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
       {children}
     </h2>
   )
 }
 
-function Lede({ children, className = 'text-[#515154]' }: { children: React.ReactNode; className?: string }) {
-  return <p className={`mt-4 text-base sm:text-lg leading-relaxed max-w-[60ch] ${className}`}>{children}</p>
+function Lede({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+  return <p className={`mt-4 text-base sm:text-lg leading-relaxed max-w-[62ch] ${dark ? 'text-[#d2d2d7]' : 'text-[#515154]'}`}>{children}</p>
+}
+
+/** Tờ bản vẽ: nền trắng, viền mảnh; trên màn hình hẹp cuộn ngang để chữ trong hình đủ lớn. */
+function Sheet({ children, minWidth, hint, className = 'mt-8' }: { children: React.ReactNode; minWidth: number; hint: string; className?: string }) {
+  return (
+    <div className={`${className} min-w-0`}>
+      <div className="rounded-[14px] border border-[#d2d2d7] bg-white overflow-x-auto [-webkit-overflow-scrolling:touch]">
+        <div style={{ minWidth }}>{children}</div>
+      </div>
+      <p className="mt-2 text-xs text-[#86868b] sm:hidden">{hint}</p>
+    </div>
+  )
 }
 
 function TableCard({ title, sub, children }: { title: string; sub?: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-2xl border border-[#e0e0e0] bg-white overflow-hidden">
+    <div className="rounded-[18px] border border-[#d2d2d7] bg-white overflow-hidden">
       <div className="px-5 pt-[18px] pb-2.5">
-        <p className="font-bold">{title}</p>
+        <p className="font-semibold">{title}</p>
         {sub && <p className="mt-0.5 text-[13.5px] text-[#515154]">{sub}</p>}
       </div>
       {children}
@@ -547,6 +695,150 @@ function Td({ children, label, className = '' }: { children: React.ReactNode; la
     >
       {children}
     </td>
+  )
+}
+
+/* ───────────────────────── Khung mã nguồn ───────────────────────── */
+
+const SQL_KW =
+  'create|or|replace|function|returns|language|security|definer|set|search_path|as|select|into|from|where|if|then|end|raise|exception|using|errcode|begin|for|in|loop|continue|policy|on|to|with|check|all|exists|is|not|and|null|stable|alter|table|enable|row|level|revoke|insert|update|delete|public|authenticated|integer|jsonb|uuid|text|boolean|plpgsql|sql'
+const TS_KW = 'export|function|const|let|var|if|else|return|null|string|async|await|new|type|import|from|true|false|undefined'
+
+/** Tô màu cú pháp gọn, đủ cho SQL và TypeScript; màu theo bảng 1 xanh + xám của site. */
+function highlightLine(line: string, lang: Lang): React.ReactNode[] {
+  const comment = lang === 'sql' ? '--[^\\n]*' : '//[^\\n]*'
+  const kw = lang === 'sql' ? SQL_KW : TS_KW
+  const re = new RegExp(`(${comment})|("[^"\\n]*"|'[^'\\n]*')|\\b(${kw})\\b|\\b([A-Za-z_][A-Za-z0-9_]*)(?=\\()`, lang === 'sql' ? 'gi' : 'g')
+  const out: React.ReactNode[] = []
+  let last = 0
+  let m: RegExpExecArray | null
+  let k = 0
+  while ((m = re.exec(line))) {
+    if (m.index > last) out.push(line.slice(last, m.index))
+    if (m[1]) out.push(<span key={k++} className="text-[#a1a1a6]">{m[1]}</span>)
+    else if (m[2]) out.push(<span key={k++} className="text-[#f5f5f7]">{m[2]}</span>)
+    else if (m[3]) out.push(<span key={k++} className="text-[#7db8ff]">{m[3]}</span>)
+    else out.push(<span key={k++} className="font-medium text-white">{m[4]}</span>)
+    last = m.index + m[0].length
+    if (m[0].length === 0) re.lastIndex++
+  }
+  if (last < line.length) out.push(line.slice(last))
+  return out
+}
+
+function CodeBlock({ code, lang }: { code: string; lang: Lang }) {
+  const lines = code.split('\n')
+  return (
+    <pre className={`${MONO} m-0 overflow-x-auto px-0 py-4 text-[12.5px] sm:text-[13px] leading-[1.75] text-[#d2d2d7]`}>
+      <code className="block min-w-max">
+        {lines.map((ln, i) => (
+          <div key={i} className="flex">
+            <span className="w-11 shrink-0 select-none pr-4 text-right text-[#86868b]" aria-hidden>
+              {i + 1}
+            </span>
+            <span className="whitespace-pre pr-6">{ln ? highlightLine(ln, lang) : ' '}</span>
+          </div>
+        ))}
+      </code>
+    </pre>
+  )
+}
+
+function WindowBar({ children }: { children?: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-0.5 overflow-x-auto border-b border-white/15 bg-[#1d1d1f] px-2" role="tablist">
+      <span className="flex gap-1.5 pl-1.5 pr-2.5" aria-hidden>
+        <i className="h-2.5 w-2.5 rounded-full bg-[#515154]" />
+        <i className="h-2.5 w-2.5 rounded-full bg-[#515154]" />
+        <i className="h-2.5 w-2.5 rounded-full bg-[#515154]" />
+      </span>
+      {children}
+    </div>
+  )
+}
+
+/** Khung code ở đầu trang: 2 đoạn mã thật ngắn nhất */
+function HeroCode() {
+  const { t } = useLanguage()
+  const ids = ['rls', 'token']
+  const list = EXCERPTS.filter((e) => ids.includes(e.id))
+  const [tab, setTab] = useState(0)
+  const ex = list[tab]
+  return (
+    <figure className="min-w-0 overflow-hidden rounded-[14px] bg-[#1d1d1f] shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0]" aria-label={t('Mã nguồn thật', 'Real source code')}>
+      <WindowBar>
+        {list.map((e, i) => (
+          <button
+            key={e.id}
+            type="button"
+            role="tab"
+            aria-selected={tab === i}
+            onClick={() => setTab(i)}
+            className={`${MONO} whitespace-nowrap border-b-2 px-3.5 py-3 text-[12.5px] transition-colors ${
+              tab === i ? 'border-[#7db8ff] text-white' : 'border-transparent text-[#a1a1a6] hover:text-white'
+            }`}
+          >
+            {e.file.split('/').pop()}
+          </button>
+        ))}
+      </WindowBar>
+      <div className="max-h-[420px] overflow-y-auto">
+        <CodeBlock code={t(ex.code.vi, ex.code.en)} lang={ex.lang} />
+      </div>
+      <figcaption className={`${MONO} flex justify-between gap-3 border-t border-white/15 px-4 py-2.5 text-xs text-[#a1a1a6]`}>
+        <span>{t(ex.repo.vi, ex.repo.en)}</span>
+        <span>{t('trích, rút gọn', 'excerpt, trimmed')}</span>
+      </figcaption>
+    </figure>
+  )
+}
+
+/** Bốn đoạn mã thật, mỗi đoạn kèm lý do nó tồn tại */
+function EvidenceTabs() {
+  const { t } = useLanguage()
+  const [active, setActive] = useState(0)
+  const ex: Excerpt = EXCERPTS[active]
+  return (
+    <div className="mt-10 grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-6 lg:gap-8 items-start">
+      <div role="tablist" aria-label={t(EVIDENCE.title.vi, EVIDENCE.title.en)} className="flex lg:flex-col gap-2 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 pb-1 lg:pb-0">
+        {EXCERPTS.map((e, i) => {
+          const on = i === active
+          return (
+            <button
+              key={e.id}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              onClick={() => setActive(i)}
+              className={`shrink-0 rounded-[12px] border px-4 py-3 text-left transition-colors lg:w-full ${
+                on ? 'border-[#7db8ff] bg-[#1d1d1f]' : 'border-white/20 hover:border-white/50'
+              }`}
+            >
+              <span className={`${MONO} block text-[12.5px] ${on ? 'text-[#7db8ff]' : 'text-[#a1a1a6]'}`}>{String(i + 1).padStart(2, '0')}</span>
+              <span className={`${MONO} mt-0.5 block whitespace-nowrap text-[13px] ${on ? 'text-white' : 'text-[#d2d2d7]'}`}>{e.file.split('/').pop()}</span>
+              <span className="mt-1 hidden text-[13px] leading-snug text-[#a1a1a6] lg:block">{t(e.repo.vi, e.repo.en)}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      <div className="min-w-0">
+        <figure className="overflow-hidden rounded-[14px] bg-[#1d1d1f] border border-white/15">
+          <div className="flex items-center justify-between gap-3 border-b border-white/15 px-4 py-2.5">
+            <span className={`${MONO} min-w-0 truncate text-[12.5px] text-white`}>{ex.file}</span>
+            <span className={`${MONO} shrink-0 text-xs text-[#a1a1a6]`}>{t(EVIDENCE.from.vi, EVIDENCE.from.en)}: {t(ex.repo.vi, ex.repo.en)}</span>
+          </div>
+          <CodeBlock code={t(ex.code.vi, ex.code.en)} lang={ex.lang} />
+        </figure>
+        <div className="mt-4 grid grid-cols-[22px_1fr] gap-3 rounded-[14px] border border-[#1e6dda] bg-[#1d1d1f] p-5">
+          <ShieldCheck className="mt-0.5 h-5 w-5 text-[#7db8ff]" strokeWidth={1.8} />
+          <div>
+            <p className={`${MONO} text-[12px] uppercase tracking-[0.04em] text-[#7db8ff]`}>{t(EVIDENCE.proves.vi, EVIDENCE.proves.en)}</p>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-white">{t(ex.proves.vi, ex.proves.en)}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -781,92 +1073,6 @@ function ShotFrame({ item, shot, onZoom }: { item: WorkItem; shot: number; onZoo
           {zoomLabel}
         </span>
       </button>
-    </figure>
-  )
-}
-
-/* ───────────────────────── Khung code ở hero ───────────────────────── */
-
-function CodeWindow() {
-  const { t } = useLanguage()
-  const [tab, setTab] = useState<'sql' | 'ts'>('sql')
-  const k = 'text-[#1859b8]'
-  const s = 'text-[#1859b8]'
-  const c = 'text-[#515154]'
-  const f = 'text-[#1859b8]'
-  const ty = 'text-[#1859b8]'
-
-  return (
-    <figure
-      className="min-w-0 rounded-[14px] bg-[#272729] text-[#d2d2d7] overflow-hidden shadow-[0_24px_48px_-16px_rgba(11,18,32,0.35)]"
-      aria-label={t('Minh hoạ mã nguồn', 'Code sample')}
-    >
-      <div className="flex items-center gap-0.5 px-2 bg-[#272729] border-b border-slate-800 overflow-x-auto" role="tablist">
-        <span className="flex gap-1.5 pl-1.5 pr-2.5" aria-hidden>
-          <i className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-          <i className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-          <i className="w-2.5 h-2.5 rounded-full bg-slate-700" />
-        </span>
-        {(['sql', 'ts'] as const).map((id) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            aria-selected={tab === id}
-            onClick={() => setTab(id)}
-            className={`${MONO} whitespace-nowrap px-3.5 py-3 text-[12.5px] border-b-2 transition-colors ${
-              tab === id ? 'text-slate-200 border-[#1e6dda]' : 'text-[#515154] border-transparent hover:text-slate-300'
-            }`}
-          >
-            {id === 'sql' ? 'policies.sql' : 'approve-order.ts'}
-          </button>
-        ))}
-      </div>
-
-      <pre className={`${MONO} m-0 px-4 sm:px-5 pt-5 pb-6 text-xs sm:text-[13px] leading-[1.75] overflow-x-auto`}>
-        {tab === 'sql' ? (
-          <code>
-            <span className={c}>-- {t('Mỗi chi nhánh chỉ đọc được dữ liệu của chính mình', 'Each branch can only read its own data')}</span>
-            {'\n'}
-            <span className={k}>alter table</span> orders <span className={k}>enable row level security</span>;{'\n\n'}
-            <span className={k}>create policy</span> <span className={s}>&quot;branch_isolation&quot;</span> <span className={k}>on</span> orders
-            {'\n  '}
-            <span className={k}>for select using</span> ({'\n    '}branch_id <span className={k}>=</span>{' '}
-            <span className={f}>current_branch_id</span>(){'\n  '});{'\n\n'}
-            <span className={c}>
-              -- {t('Nhật ký chỉ được ghi thêm, không ai sửa hay xoá được', 'Audit log is append-only: no one can edit or delete')}
-            </span>
-            {'\n'}
-            <span className={k}>revoke update, delete on</span> audit_log <span className={k}>from</span> <span className={k}>public</span>;
-          </code>
-        ) : (
-          <code>
-            <span className={k}>export async function</span> <span className={f}>approveOrder</span>(id: <span className={ty}>string</span>) {'{'}
-            {'\n  '}
-            <span className={c}>// {t('Kiểm tra quyền ở máy chủ, không tin giao diện', 'Authorise on the server, never trust the client')}</span>
-            {'\n  '}
-            <span className={k}>const</span> user <span className={k}>=</span> <span className={k}>await</span>{' '}
-            <span className={f}>requireRole</span>(<span className={s}>&apos;manager&apos;</span>){'\n\n  '}
-            <span className={k}>const</span> order <span className={k}>=</span> <span className={k}>await</span> db.order.
-            <span className={f}>update</span>({'{'}
-            {'\n    '}where: {'{'} id, branchId: user.branchId {'}'},{'\n    '}data: {'{'} status:{' '}
-            <span className={s}>&apos;approved&apos;</span>, approvedBy: user.id {'}'},{'\n  '}
-            {'})'}
-            {'\n\n  '}
-            <span className={k}>await</span> audit.<span className={f}>log</span>({'{'} actor: user.id, action:{' '}
-            <span className={s}>&apos;order.approve&apos;</span>, target: id {'}'}){'\n  '}
-            <span className={k}>return</span> order{'\n'}
-            {'}'}
-          </code>
-        )}
-      </pre>
-
-      <figcaption className={`${MONO} flex justify-between gap-3 px-4 py-2.5 border-t border-slate-800 text-xs text-[#515154]`}>
-        <span>TypeScript · PostgreSQL</span>
-        <span>
-          <span className="text-[#1859b8]">●</span> {t('kiểm thử đạt', 'checks passed')}
-        </span>
-      </figcaption>
     </figure>
   )
 }
