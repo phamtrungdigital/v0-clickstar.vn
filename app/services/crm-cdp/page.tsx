@@ -44,6 +44,13 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { CustomerProfileIllustration } from '@/components/illustrations/service-illustrations'
+import {
+  CrmVsCdpSection,
+  JourneySection,
+  StorySection,
+  UnifiedSection,
+  FollowFlowSection,
+} from './_components/journey-sections'
 
 export default function CRMCDPPage() {
   const { language } = useLanguage()
@@ -244,13 +251,13 @@ export default function CRMCDPPage() {
               <h1 className="ap-hero-title">{t('Quản trị & Thấu hiểu Khách hàng', 'Manage & Understand Customers')}</h1>
               <p className="ap-lead max-w-[780px]">
                 {t(
-                  'Triển khai CRM để quản lý khách hàng hiệu quả, kết hợp CDP để thấu hiểu hành vi và tối ưu trải nghiệm. Đồng bộ dữ liệu xuyên suốt từ marketing đến bán hàng và chăm sóc.',
-                  'Deploy CRM for effective customer management, combined with CDP to understand behavior and optimize experience. Synchronize data throughout from marketing to sales and care.'
+                  'CDP nhận ra khách ngay từ lần ghé đầu tiên, kể cả khi họ chưa để lại thông tin. CRM giúp đội sales chăm sóc và chốt đơn. Hai hệ thống dùng chung một hồ sơ khách, nên dữ liệu đi liền mạch từ quảng cáo đến hợp đồng và chăm sóc sau bán.',
+                  'The CDP recognizes customers from their very first visit, even before they share any details. The CRM helps your sales team nurture and close. Both share a single customer profile, so data flows seamlessly from ad click to contract and after-sales care.'
                 )}
               </p>
               <div className="ap-cta-row mt-2">
                 <Link href="/contact" className="ap-btn ap-btn-primary">{t('Tư vấn triển khai', 'Get Consultation')}</Link>
-                <Link href="#crm" className="ap-btn ap-btn-ghost">{t('Tìm hiểu CRM', 'Learn about CRM')}</Link>
+                <Link href="#journey" className="ap-btn ap-btn-ghost">{t('Xem hành trình khách hàng', 'See the customer journey')}</Link>
               </div>
             </div>
 
@@ -321,113 +328,10 @@ export default function CRMCDPPage() {
           </div>
         </section>
 
-        {/* CRM: khối xám nhạt */}
-        <section id="crm" className="py-16 lg:py-24 bg-[#f5f5f7]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
-                <Users className="h-4 w-4" />
-                CRM - CUSTOMER RELATIONSHIP MANAGEMENT
-              </span>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
-                {t('Quản trị quan hệ', 'Customer Relationship')}{' '}
-                <span className="text-[#1859b8]">{t('Khách hàng', 'Management')}</span>
-              </h2>
-              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
-                {t(
-                  'Triển khai hệ thống CRM hoàn chỉnh, tuỳ biến theo quy trình kinh doanh, đi vào vận hành ngay.',
-                  'Deploy a complete CRM system, customized to business processes, ready for operation.'
-                )}
-              </p>
-            </div>
-
-            <div className="mb-14 grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
-              <div>
-                <CustomerProfileIllustration className="h-auto w-full" />
-              </div>
-              <div>
-                <h3 className="mb-6 text-2xl font-semibold leading-snug text-[#1d1d1f]">
-                  {t('Vấn đề & Giải pháp CRM', 'CRM Problems & Solutions')}
-                </h3>
-                <div className="space-y-4">
-                  {crmProblems.map((item, index) => (
-                    <div key={index} className="flex items-start gap-4 rounded-[18px] border border-[#d2d2d7] bg-white p-5">
-                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#eaf2fd] text-[#1859b8]">
-                        {item.icon}
-                      </div>
-                      <div className="min-w-0 flex-1 space-y-3">
-                        <div>
-                          <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">{t('Vấn đề', 'Problem')}</span>
-                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
-                        </div>
-                        <div>
-                          <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">{t('Giải pháp', 'Solution')}</span>
-                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid auto-rows-fr gap-6 md:grid-cols-2 lg:gap-8">
-              {crmFeatures.map((feature, index) => (
-                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7 sm:p-8">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
-                    {feature.icon}
-                  </div>
-                  <h3 className="mt-5 text-2xl font-semibold leading-snug text-[#1d1d1f]">{feature.title}</h3>
-                  <p className="mt-2 text-[17px] leading-relaxed text-[#515154]">{feature.description}</p>
-                  <div className="my-5 h-px w-full bg-[#e0e0e0]" />
-                  <ul className="space-y-3">
-                    {feature.features.map((f, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-[#1859b8]" />
-                        </span>
-                        <span className="text-base text-[#1d1d1f]">{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Kênh chăm sóc tự động: khối trắng */}
-        <section className="py-16 lg:py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 text-center">
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
-                {t('Kênh chăm sóc tự động', 'Automated Care Channels')}
-              </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-[#515154]">
-                {t(
-                  'Tích hợp đa kênh để chăm sóc khách hàng 24/7 theo kịch bản đã thiết lập',
-                  'Multi-channel integration for 24/7 customer care based on preset scenarios'
-                )}
-              </p>
-            </div>
-            <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {[
-                { icon: <Mail />, title: 'Email Marketing', desc: t('Drip campaigns, newsletters', 'Drip campaigns, newsletters') },
-                { icon: <MessageSquare />, title: 'Zalo ZNS', desc: t('Thông báo giao dịch', 'Transaction notifications') },
-                { icon: <Smartphone />, title: 'SMS Brandname', desc: t('OTP, promotions', 'OTP, promotions') },
-                { icon: <Globe />, title: 'Web Push', desc: t('Thông báo real-time', 'Real-time notifications') },
-              ].map((channel, i) => (
-                <div key={i} className="flex h-full flex-col items-center rounded-[18px] border border-[#d2d2d7] bg-white p-7 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
-                    {channel.icon}
-                  </div>
-                  <h3 className="mt-5 text-lg font-semibold text-[#1d1d1f]">{channel.title}</h3>
-                  <p className="mt-1 text-[15px] text-[#515154]">{channel.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <CrmVsCdpSection />
+        <JourneySection />
+        <StorySection />
+        <UnifiedSection />
 
         {/* CDP: khối tối */}
         <section id="cdp" className="py-16 lg:py-24 bg-[#272729] text-white">
@@ -524,8 +428,118 @@ export default function CRMCDPPage() {
           </div>
         </section>
 
-        {/* Tích hợp: khối trắng */}
+        {/* CRM: khối trắng */}
+        <section id="crm" className="py-16 lg:py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Users className="h-4 w-4" />
+                CRM - CUSTOMER RELATIONSHIP MANAGEMENT
+              </span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+                {t('Quản trị quan hệ', 'Customer Relationship')}{' '}
+                <span className="text-[#1859b8]">{t('Khách hàng', 'Management')}</span>
+              </h2>
+              <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
+                {t(
+                  'Triển khai hệ thống CRM hoàn chỉnh, tuỳ biến theo quy trình kinh doanh, đi vào vận hành ngay.',
+                  'Deploy a complete CRM system, customized to business processes, ready for operation.'
+                )}
+              </p>
+            </div>
+
+            <div className="mb-14 grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+              <div>
+                <CustomerProfileIllustration className="h-auto w-full" />
+              </div>
+              <div>
+                <h3 className="mb-6 text-2xl font-semibold leading-snug text-[#1d1d1f]">
+                  {t('Vấn đề & Giải pháp CRM', 'CRM Problems & Solutions')}
+                </h3>
+                <div className="space-y-4">
+                  {crmProblems.map((item, index) => (
+                    <div key={index} className="flex items-start gap-4 rounded-[18px] border border-[#d2d2d7] bg-white p-5">
+                      <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#eaf2fd] text-[#1859b8]">
+                        {item.icon}
+                      </div>
+                      <div className="min-w-0 flex-1 space-y-3">
+                        <div>
+                          <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">{t('Vấn đề', 'Problem')}</span>
+                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
+                        </div>
+                        <div>
+                          <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">{t('Giải pháp', 'Solution')}</span>
+                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="grid auto-rows-fr gap-6 md:grid-cols-2 lg:gap-8">
+              {crmFeatures.map((feature, index) => (
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7 sm:p-8">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
+                    {feature.icon}
+                  </div>
+                  <h3 className="mt-5 text-2xl font-semibold leading-snug text-[#1d1d1f]">{feature.title}</h3>
+                  <p className="mt-2 text-[17px] leading-relaxed text-[#515154]">{feature.description}</p>
+                  <div className="my-5 h-px w-full bg-[#e0e0e0]" />
+                  <ul className="space-y-3">
+                    {feature.features.map((f, i) => (
+                      <li key={i} className="flex items-center gap-3">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-[#1859b8]" />
+                        </span>
+                        <span className="text-base text-[#1d1d1f]">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <FollowFlowSection />
+
+        {/* Kênh chăm sóc tự động: khối trắng */}
         <section className="py-16 lg:py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-12 text-center">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
+                {t('Kênh chăm sóc tự động', 'Automated Care Channels')}
+              </h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-[#515154]">
+                {t(
+                  'Tích hợp đa kênh để chăm sóc khách hàng 24/7 theo kịch bản đã thiết lập',
+                  'Multi-channel integration for 24/7 customer care based on preset scenarios'
+                )}
+              </p>
+            </div>
+            <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { icon: <Mail />, title: 'Email Marketing', desc: t('Drip campaigns, newsletters', 'Drip campaigns, newsletters') },
+                { icon: <MessageSquare />, title: 'Zalo ZNS', desc: t('Thông báo giao dịch', 'Transaction notifications') },
+                { icon: <Smartphone />, title: 'SMS Brandname', desc: t('OTP, promotions', 'OTP, promotions') },
+                { icon: <Globe />, title: 'Web Push', desc: t('Thông báo real-time', 'Real-time notifications') },
+              ].map((channel, i) => (
+                <div key={i} className="flex h-full flex-col items-center rounded-[18px] border border-[#d2d2d7] bg-white p-7 text-center">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
+                    {channel.icon}
+                  </div>
+                  <h3 className="mt-5 text-lg font-semibold text-[#1d1d1f]">{channel.title}</h3>
+                  <p className="mt-1 text-[15px] text-[#515154]">{channel.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Tích hợp: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
               <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
@@ -588,8 +602,8 @@ export default function CRMCDPPage() {
           </div>
         </section>
 
-        {/* Kết hợp Website UX/UI: khối xám nhạt */}
-        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
+        {/* Kết hợp Website UX/UI: khối trắng */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
