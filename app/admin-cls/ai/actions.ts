@@ -1,5 +1,6 @@
 'use server'
 
+import { AI_MODULE_ENABLED, AI_MODULE_OFF_MESSAGE } from '@/lib/ai/module-flag'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import {
@@ -41,6 +42,7 @@ export type SaveAiSettingsInput = {
 }
 
 export async function saveAiSettings(input: SaveAiSettingsInput) {
+  if (!AI_MODULE_ENABLED) return { error: AI_MODULE_OFF_MESSAGE }
   const supabase = await createClient()
   const {
     data: { user },
@@ -70,6 +72,7 @@ export type GenerateResult = { text?: string; error?: string }
 
 /** Inline ✨ AI on field — uses inline_* config */
 export async function generateText(input: GenerateInput): Promise<GenerateResult> {
+  if (!AI_MODULE_ENABLED) return { error: AI_MODULE_OFF_MESSAGE }
   const supabase = await createClient()
   const {
     data: { user },
@@ -132,6 +135,7 @@ export async function testProviderApiKey(
   provider: AiProvider,
   apiKey: string
 ): Promise<{ ok?: boolean; message?: string; error?: string }> {
+  if (!AI_MODULE_ENABLED) return { error: AI_MODULE_OFF_MESSAGE }
   if (!apiKey?.trim()) return { error: 'Chưa nhập API key' }
 
   try {
@@ -165,6 +169,7 @@ export async function testProviderApiKey(
 export async function testOpenAiImagesApi(
   apiKey: string
 ): Promise<{ ok?: boolean; message?: string; error?: string }> {
+  if (!AI_MODULE_ENABLED) return { error: AI_MODULE_OFF_MESSAGE }
   if (!apiKey?.trim()) return { error: 'Chưa nhập OpenAI API key' }
 
   try {
@@ -186,6 +191,7 @@ export async function testOpenAiImagesApi(
 }
 
 export async function testImageConnection(): Promise<{ url?: string; error?: string }> {
+  if (!AI_MODULE_ENABLED) return { error: AI_MODULE_OFF_MESSAGE }
   // Quick test: generate a tiny test image
   const supabase = await createClient()
   const {

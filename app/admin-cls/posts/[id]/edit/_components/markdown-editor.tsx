@@ -1,5 +1,6 @@
 'use client'
 
+import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import { useState } from 'react'
 import { Sparkles, Eye, Pencil, Columns2 } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
@@ -70,6 +71,7 @@ export function MarkdownEditor({
             <ModeBtn active={mode === 'split'} onClick={() => setMode('split')} icon={<Columns2 className="w-3 h-3" />} label="Split" />
             <ModeBtn active={mode === 'preview'} onClick={() => setMode('preview')} icon={<Eye className="w-3 h-3" />} label="Preview" />
           </div>
+          {AI_MODULE_ENABLED && (
           <button
             type="button"
             onClick={() => setAiOpen((v) => !v)}
@@ -83,6 +85,7 @@ export function MarkdownEditor({
             <Sparkles className="w-3 h-3" />
             AI
           </button>
+          )}
         </div>
       </div>
 

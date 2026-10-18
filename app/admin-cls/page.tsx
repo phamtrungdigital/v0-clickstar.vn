@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import Link from 'next/link'
 import {
   Users,
@@ -165,7 +166,7 @@ export default async function AdminDashboard() {
             <QuickAction href="/admin-cls/posts/new" icon={<Plus className="w-4 h-4" />} label="Viết bài mới" orange />
             <QuickAction href="/admin-cls/pages/home/edit" icon={<Edit3 className="w-4 h-4" />} label="Sửa trang chủ" />
             <QuickAction href="/admin-cls/users/new" icon={<UserPlus className="w-4 h-4" />} label="Thêm admin user" />
-            <QuickAction href="/admin-cls/ai" icon={<Activity className="w-4 h-4" />} label="AI Assistant" />
+            <QuickAction href="/admin-cls/ai" icon={<Activity className="w-4 h-4" />} label={AI_MODULE_ENABLED ? 'AI Assistant' : 'Chatbot website'} />
             <QuickAction href="/" icon={<ExternalLink className="w-4 h-4" />} label="Xem website public" external />
           </div>
         </div>

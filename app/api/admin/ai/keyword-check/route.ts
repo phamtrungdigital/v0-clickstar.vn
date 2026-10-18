@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED, aiModuleOffResponse } from '@/lib/ai/module-flag'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
@@ -13,6 +14,7 @@ export type DuplicateMatch = {
 }
 
 export async function POST(req: Request) {
+  if (!AI_MODULE_ENABLED) return aiModuleOffResponse()
   try {
     const { keyword, excludePostId } = (await req.json()) as {
       keyword?: string

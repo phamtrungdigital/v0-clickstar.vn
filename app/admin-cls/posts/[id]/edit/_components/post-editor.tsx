@@ -1,5 +1,6 @@
 'use client'
 
+import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
@@ -95,6 +96,7 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
         </div>
 
         <div className="flex items-center gap-2">
+          {AI_MODULE_ENABLED && (
           <AiWholePost
             onApply={(p) => {
               setDraft((prev) => ({
@@ -110,6 +112,8 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               setStatus('dirty')
             }}
           />
+          )}
+          {AI_MODULE_ENABLED && (
           <AutoTranslate
             title={draft.title}
             excerpt={draft.excerpt}
@@ -130,6 +134,7 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               setStatus('dirty')
             }}
           />
+          )}
           <LangSwitcher />
 
           {status === 'saved' && (
@@ -213,10 +218,12 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               value={draft.content}
               onChange={(v) => update('content', v)}
             />
+            {AI_MODULE_ENABLED && (
             <BodyImageReplacer
               content={draft.content}
               onContentChange={(next) => update('content', next)}
             />
+            )}
           </div>
         </div>
 
@@ -260,11 +267,13 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
                 Cover image
               </h2>
+              {AI_MODULE_ENABLED && (
               <AiCoverImage
                 postTitle={draft.title.vi || draft.title.en}
                 tags={draft.tags}
                 onApply={(url) => update('cover_image', url)}
               />
+              )}
             </div>
             <ImagePicker
               label=""

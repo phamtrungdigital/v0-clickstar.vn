@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED, aiModuleOffResponse } from '@/lib/ai/module-flag'
 import { createClient } from '@/lib/supabase/server'
 import type { AiSettings, BlogStyle } from '@/lib/ai/settings'
 import { STYLE_PROMPT_HINTS } from '@/lib/ai/settings'
@@ -34,6 +35,7 @@ function extractJson(text: string): string {
 // Streaming SSE response so we don't hit Vercel Hobby's 10s function timeout.
 // While bytes keep flowing, Vercel keeps the function alive (up to 5 min).
 export async function POST(req: Request) {
+  if (!AI_MODULE_ENABLED) return aiModuleOffResponse()
   const encoder = new TextEncoder()
   const send = (controller: ReadableStreamDefaultController, type: string, payload: any) => {
     controller.enqueue(
