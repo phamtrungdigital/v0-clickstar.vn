@@ -13,7 +13,7 @@ import { LogoMarquee } from '@/components/sections/logo-marquee'
 import { Footer } from '@/components/layout/footer'
 // EditModeOverlay moved to app/layout.tsx — covers all pages now
 import { getPublishedPage } from '@/lib/cms/queries'
-import type { Section } from '@/lib/cms/types'
+import { getSection, type AboutTimelineItem, type I18n, type Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 
@@ -48,7 +48,9 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-function renderSection(section: Section) {
+type AboutExtra = { timeline?: AboutTimelineItem[]; industries?: I18n[] }
+
+function renderSection(section: Section, extra: AboutExtra) {
   if (!section.enabled) return null
   switch (section.type) {
     case 'hero':
@@ -56,7 +58,7 @@ function renderSection(section: Section) {
     case 'services':
       return <ServicesSection key={section.id} content={section.content} />
     case 'about':
-      return <AboutSection key={section.id} content={section.content} />
+      return <AboutSection key={section.id} content={section.content} timeline={extra.timeline} industries={extra.industries} />
     case 'stats':
       return <StatsSection key={section.id} content={section.content} />
     case 'case_studies':
@@ -82,8 +84,13 @@ function renderSection(section: Section) {
 }
 
 export default async function Home() {
-  const page = await getPublishedPage('home')
+  const [page, aboutPage] = await Promise.all([getPublishedPage('home'), getPublishedPage('about')])
   if (!page) notFound()
+  // Khối About ở trang chủ dùng lại mốc phát triển và ngành nghề của trang Giới thiệu (một nguồn nhập liệu)
+  const extra: AboutExtra = {
+    timeline: getSection(aboutPage, 'about_timeline')?.content.items,
+    industries: getSection(aboutPage, 'about_story')?.content.industries,
+  }
 
   return (
     <div className="min-h-screen theme-apple">
@@ -92,7 +99,7 @@ export default async function Home() {
       <MainNav />
 
       {page.sections.map((section) => (
-        <div key={section.id}>{renderSection(section)}</div>
+        <div key={section.id}>{renderSection(section, extra)}</div>
       ))}
 
       <Footer />
