@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 
 export async function bulkDeletePosts(ids: string[]): Promise<{ ok?: number; error?: string }> {
@@ -18,6 +18,8 @@ export async function bulkDeletePosts(ids: string[]): Promise<{ ok?: number; err
   if (error) return { error: error.message }
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
+  revalidatePath('/')
+  updateTag('posts')
   return { ok: count ?? ids.length }
 }
 
@@ -44,5 +46,7 @@ export async function bulkSetStatus(
   if (error) return { error: error.message }
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
+  revalidatePath('/')
+  updateTag('posts')
   return { ok: count ?? ids.length }
 }
