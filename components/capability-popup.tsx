@@ -1,7 +1,9 @@
 'use client'
 
 // Popup "Hồ sơ năng lực Click Star" hiện khi khách vào TRANG CHỦ.
-// - Hiện 1 lần/phiên (sessionStorage), trễ 1,5s; thêm ?popup=1 để xem lại khi test.
+// - Hiện 1 lần/phiên (sessionStorage), khi khách ĐÃ CUỘN QUA 50% chiều dài trang (anh Trung chốt
+//   18/10/2026, thay cho bản hiện sau 1,5 giây). Thêm ?popup=1 để bỏ qua "đã xem" khi test, vẫn
+//   phải cuộn tới 50%.
 // - Song ngữ theo ngôn ngữ site (useLanguage). Số liệu + 8 nhóm năng lực lấy từ hồ sơ
 //   năng lực chính thức của Click Star (không phải số minh hoạ).
 // - Dùng Radix Dialog cho focus-trap/Esc/bấm nền để đóng. Không chứa tên khách hàng
@@ -26,7 +28,8 @@ import {
 import { useLanguage } from '@/contexts/language-context'
 
 const SEEN_KEY = 'cs_capability_popup_seen_v1'
-const SHOW_DELAY_MS = 1500
+/** Tỉ lệ cuộn (0 đến 1) của trang thì popup hiện */
+const SCROLL_TRIGGER = 0.5
 
 type Cap = { icon: React.ComponentType<{ className?: string }>; vi: string; en: string; descVi: string; descEn: string }
 
@@ -69,13 +72,33 @@ export function CapabilityPopup() {
         if (sessionStorage.getItem(SEEN_KEY) === '1') return
       } catch {}
     }
-    const timer = window.setTimeout(() => {
+    let done = false
+    let raf = 0
+    const progress = () => {
+      const doc = document.documentElement
+      const max = doc.scrollHeight - window.innerHeight
+      return max <= 0 ? 0 : window.scrollY / max
+    }
+    const check = () => {
+      raf = 0
+      if (done || progress() < SCROLL_TRIGGER) return
+      done = true
+      window.removeEventListener('scroll', onScroll)
       setOpen(true)
       try {
         sessionStorage.setItem(SEEN_KEY, '1')
       } catch {}
-    }, force ? 700 : SHOW_DELAY_MS)
-    return () => window.clearTimeout(timer)
+    }
+    // gộp các lượt cuộn vào một khung hình để không tính toán dày
+    const onScroll = () => {
+      if (!raf) raf = window.requestAnimationFrame(check)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    check() // trang mở sẵn ở vị trí đã cuộn (nút Back, tải lại)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (raf) window.cancelAnimationFrame(raf)
+    }
   }, [isHome, mounted])
 
   if (!isHome || !mounted) return null
