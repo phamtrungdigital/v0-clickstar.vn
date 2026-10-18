@@ -697,14 +697,14 @@ export function AnalysisDemo() {
               type="button"
               onClick={() => setActive(i)}
               aria-pressed={on}
-              className={`text-left rounded-xl border p-3.5 transition-all duration-200 ${
+              className={`min-w-0 text-left rounded-xl border p-3.5 transition-all duration-200 ${
                 on
                   ? 'border-[#1e6dda] bg-[#f5f5f7] shadow-md'
                   : 'border-border bg-white hover:border-border hover:shadow-sm'
               }`}
             >
               <span
-                className={`inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
+                className={`inline-flex max-w-full items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider mb-1.5 ${
                   on ? 'text-[#1859b8]' : 'text-muted-foreground'
                 }`}
               >
