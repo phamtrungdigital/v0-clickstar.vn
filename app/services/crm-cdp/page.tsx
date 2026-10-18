@@ -247,12 +247,12 @@ export default function CRMCDPPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">CRM &amp; CDP</p>
-              <h1 className="ap-hero-title">{t('Quản trị & Thấu hiểu Khách hàng', 'Manage & Understand Customers')}</h1>
+              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">{t('Quản trị & thấu hiểu khách hàng', 'Manage & understand customers')}</p>
+              <h1 className="ap-hero-title">CRM &amp; CDP</h1>
               <p className="ap-lead max-w-[780px]">
                 {t(
-                  'CDP nhận ra khách ngay từ lần ghé đầu tiên, kể cả khi họ chưa để lại thông tin. CRM giúp đội sales chăm sóc và chốt đơn. Hai hệ thống dùng chung một hồ sơ khách, nên dữ liệu đi liền mạch từ quảng cáo đến hợp đồng và chăm sóc sau bán.',
-                  'The CDP recognizes customers from their very first visit, even before they share any details. The CRM helps your sales team nurture and close. Both share a single customer profile, so data flows seamlessly from ad click to contract and after-sales care.'
+                  'Nhận ra khách từ lần ghé đầu tiên, chăm sóc đến khi ký hợp đồng.',
+                  'Recognize customers from their first visit and serve them through to the contract.'
                 )}
               </p>
               <div className="ap-cta-row mt-2">

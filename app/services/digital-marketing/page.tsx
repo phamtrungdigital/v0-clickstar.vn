@@ -295,13 +295,13 @@ export default function DigitalMarketingPage() {
               </p>
 
               <h1 className="ap-hero-title">
-                {t('Tăng trưởng doanh thu với Digital Marketing', 'Grow revenue with Digital Marketing')}
+                Digital Marketing
               </h1>
 
               <p className="ap-lead max-w-[760px]">
                 {t(
-                  'Chiến lược marketing đa kênh được thiết kế riêng cho doanh nghiệp của bạn. Từ quảng cáo Google, Facebook đến SEO - chúng tôi giúp bạn tiếp cận đúng khách hàng với chi phí tối ưu.',
-                  'Multi-channel marketing strategy designed specifically for your business. From Google, Facebook ads to SEO - we help you reach the right customers at optimal cost.'
+                  'Google, Facebook và SEO: đúng khách hàng, chi phí hợp lý.',
+                  'Google, Facebook and SEO: the right customers, a sensible cost.'
                 )}
               </p>
 

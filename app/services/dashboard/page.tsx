@@ -236,8 +236,8 @@ export default function DashboardServicePage() {
 
                 <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed mb-8 max-w-xl">
                   {t(
-                    'Dashboard thông minh tích hợp AI, giúp bạn nắm bắt toàn bộ hoạt động kinh doanh trong một màn hình.',
-                    'AI-integrated smart dashboard helps you capture all business activities in one screen.'
+                    'Toàn bộ hoạt động kinh doanh trên một màn hình.',
+                    'Your whole business on one screen.'
                   )}
                 </p>
 

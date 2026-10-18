@@ -405,10 +405,10 @@ export default function SpeechInsightAiPage() {
                   {t('CALL TO TEXT · PHÂN TÍCH CUỘC GỌI BẰNG AI', 'CALL TO TEXT · AI CALL ANALYTICS')}
                 </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-                  {t('Biến mọi cuộc gọi thành ', 'Turn every call into ')}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6 text-balance">
+                  {t('Dữ liệu từ ', 'Data from ')}
                   <span className="text-[#1859b8]">
-                    {t('dữ liệu bán hàng', 'sales data')}
+                    {t('mọi cuộc gọi', 'every call')}
                   </span>
                 </h1>
 
@@ -421,8 +421,8 @@ export default function SpeechInsightAiPage() {
 
                 <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-xl">
                   {t(
-                    'Speech Insight AI là giải pháp Call to Text: kết nối tổng đài sẵn có, tự chuyển 100% cuộc gọi thành văn bản tiếng Việt rồi trích xuất nhu cầu – ngân sách – lý do từ chối sau mỗi cuộc gọi.',
-                    'Speech Insight AI is a Call-to-Text solution: it connects to your existing phone system, turns 100% of calls into Vietnamese text, then extracts needs, budget and objections after every call.'
+                    'Call to Text: kết nối tổng đài sẵn có, 100% cuộc gọi thành văn bản.',
+                    'Call to Text: connects to your phone system, 100% of calls become text.'
                   )}
                 </p>
 

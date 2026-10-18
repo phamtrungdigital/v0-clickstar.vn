@@ -46,8 +46,8 @@ export default async function BlogList() {
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {t(
-                'Cập nhật xu hướng, mẹo hay và insight từ các chuyên gia của ClickStar',
-                'Stay updated with trends, tips and insights from ClickStar experts'
+                'Xu hướng, mẹo hay và insight từ chuyên gia ClickStar.',
+                'Trends, tips and insights from ClickStar experts.'
               )}
             </p>
           </div>

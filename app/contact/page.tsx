@@ -54,13 +54,13 @@ export default async function ContactPage({
               {t('Tư vấn miễn phí', 'Free consultation')}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance">
-              {t('Để Click Star đồng hành', 'Let Click Star power')}{' '}
-              <span className="text-[#1859b8]">{t('cùng bạn chuyển đổi số', 'your digital transformation')}</span>
+              {t('Liên hệ', 'Contact')}{' '}
+              <span className="text-[#1859b8]">Click Star</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
               {t(
-                'Điền form bên dưới hoặc liên hệ trực tiếp qua hotline, Zalo. Đội ngũ chuyên gia sẽ phản hồi trong vòng 24 giờ làm việc.',
-                'Fill in the form below or reach us directly via hotline or Zalo. Our experts will get back to you within 24 business hours.',
+                'Phản hồi trong vòng 24 giờ làm việc.',
+                'We reply within 24 business hours.',
               )}
             </p>
           </div>

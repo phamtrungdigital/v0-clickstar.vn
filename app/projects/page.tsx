@@ -34,13 +34,13 @@ export default async function ProjectsPage() {
               Case Studies
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground leading-tight mb-4 text-balance">
-              {t('Những dự án', 'Success stories')}{' '}
-              <span className="text-[#1859b8]">{t('Click Star đã đồng hành', 'Click Star has delivered')}</span>
+              {t('Dự án', 'Featured')}{' '}
+              <span className="text-[#1859b8]">{t('tiêu biểu', 'projects')}</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl">
               {t(
-                'Từ E-commerce, Giáo dục đến Y tế và F&B — chúng tôi giúp doanh nghiệp đạt kết quả thực tế qua chuyển đổi số toàn diện.',
-                'From e-commerce and education to healthcare and F&B — we help businesses achieve real results through end-to-end digital transformation.',
+                'E-commerce, Giáo dục, Y tế và F&B.',
+                'E-commerce, education, healthcare and F&B.',
               )}
             </p>
           </div>
