@@ -9,6 +9,7 @@ const InputSchema = z.object({
   interests: z.array(z.string()).max(10),
   recent_pages: z.array(z.string()).max(15),
   prompt_hint: z.string().max(500).optional().default(''),
+  lang: z.enum(['vi', 'en']).optional().default('vi'),
 })
 
 type PersonalizeResponse = {
@@ -42,7 +43,8 @@ export async function POST(req: Request) {
     return Response.json({ error: 'invalid_input' }, { status: 400 })
   }
 
-  const { interests, recent_pages, prompt_hint } = parsed.data
+  const { interests, recent_pages, prompt_hint, lang } = parsed.data
+  const en = lang === 'en'
 
   // Khoá Anthropic do admin nhập ở /admin-cls/ai (bảng ai_settings, RLS chỉ admin).
   // Route chạy phía server nên đọc bằng service role — KHÔNG còn RPC công khai trả khoá.
@@ -73,12 +75,24 @@ export async function POST(req: Request) {
   }
 
   if (!cfg?.enabled || !cfg.api_key) {
-    return Response.json(fallback(interests), { status: 200 })
+    return Response.json(fallback(interests, lang), { status: 200 })
   }
 
   const topService = SERVICE_LABELS[interests[0]] || 'Tư vấn tổng thể'
 
-  const systemPrompt = `Bạn là trợ lý sales của Click Star Digital — agency Marketing & AI.
+  const systemPromptEn = `You are a sales assistant for Click Star Digital, a Marketing & AI agency.
+The visitor has just browsed service pages and is about to leave. Write ONE short greeting in English (under 140 characters) that suggests the right service and hooks them to book a consultation.
+
+RULES:
+- Tone: professional but friendly, refer to the company as "Click Star" (never "I" or "we").
+- Focus on the 1-2 TOP interest services (do not list everything).
+- No emoji.
+- Stress the USP: "free consultation", "60 minutes", "find the right solution".
+
+Return EXACTLY this JSON:
+{"message": "greeting under 140 chars", "recommended_service": "${topService}", "cta_label": "Book a free consultation"}`
+
+  const systemPromptVi = `Bạn là trợ lý sales của Click Star Digital — agency Marketing & AI.
 Khách vừa xem các trang dịch vụ rồi rời khỏi. Em viết 1 câu greeting tiếng Việt ngắn (dưới 140 ký tự) gợi ý dịch vụ phù hợp + hook để đặt lịch tư vấn.
 
 QUY TẮC:
@@ -89,13 +103,22 @@ QUY TẮC:
 
 Trả về JSON CHÍNH XÁC:
 {"message": "câu greeting <140 chars", "recommended_service": "${topService}", "cta_label": "Đặt lịch tư vấn miễn phí"}`
+  const systemPrompt = en ? systemPromptEn : systemPromptVi
 
-  const userPrompt = `Khách vừa xem:
+  const userPromptEn = `The visitor just viewed:
+- Top interests: ${interests.slice(0, 3).map((i) => SERVICE_LABELS[i] || i).join(', ')}
+- Recent pages: ${recent_pages.slice(-5).join(' → ')}
+${prompt_hint ? `\nHint from the campaign admin: ${prompt_hint}` : ''}
+
+Write the most compelling JSON greeting.`
+
+  const userPromptVi = `Khách vừa xem:
 - Top interest: ${interests.slice(0, 3).map((i) => SERVICE_LABELS[i] || i).join(', ')}
 - Trang gần đây: ${recent_pages.slice(-5).join(' → ')}
 ${prompt_hint ? `\nGợi ý từ campaign admin: ${prompt_hint}` : ''}
 
 Viết JSON greeting hấp dẫn nhất.`
+  const userPrompt = en ? userPromptEn : userPromptVi
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -116,7 +139,7 @@ Viết JSON greeting hấp dẫn nhất.`
 
     if (!res.ok) {
       console.error('[personalize] Anthropic API error:', res.status)
-      return Response.json(fallback(interests), { status: 200 })
+      return Response.json(fallback(interests, lang), { status: 200 })
     }
 
     const json = await res.json()
@@ -124,16 +147,16 @@ Viết JSON greeting hấp dẫn nhất.`
 
     // Extract JSON from response (may be wrapped in markdown)
     const jsonMatch = text.match(/\{[\s\S]*?\}/)
-    if (!jsonMatch) return Response.json(fallback(interests), { status: 200 })
+    if (!jsonMatch) return Response.json(fallback(interests, lang), { status: 200 })
 
     const parsed = JSON.parse(jsonMatch[0]) as Partial<PersonalizeResponse>
-    if (!parsed.message) return Response.json(fallback(interests), { status: 200 })
+    if (!parsed.message) return Response.json(fallback(interests, lang), { status: 200 })
 
     return Response.json(
       {
         message: parsed.message.slice(0, 200),
         recommended_service: parsed.recommended_service || topService,
-        cta_label: parsed.cta_label || 'Đặt lịch tư vấn miễn phí',
+        cta_label: parsed.cta_label || (en ? 'Book a free consultation' : 'Đặt lịch tư vấn miễn phí'),
       },
       {
         status: 200,
@@ -142,12 +165,12 @@ Viết JSON greeting hấp dẫn nhất.`
     )
   } catch (e) {
     console.error('[personalize] error:', e)
-    return Response.json(fallback(interests), { status: 200 })
+    return Response.json(fallback(interests, lang), { status: 200 })
   }
 }
 
 /** Rule-based fallback khi AI fail hoặc disabled */
-function fallback(interests: string[]): PersonalizeResponse {
+function fallback(interests: string[], lang: 'vi' | 'en' = 'vi'): PersonalizeResponse {
   const topInterest = interests[0] || 'marketing'
   const service = SERVICE_LABELS[topInterest] || 'Tư vấn tổng thể'
   const messages: Record<string, string> = {
@@ -160,9 +183,20 @@ function fallback(interests: string[]): PersonalizeResponse {
     dashboard: `Dashboard real-time cho doanh nghiệp data-driven — Click Star có gói tích hợp ERP/CRM. Tư vấn miễn phí?`,
     pricing: `Anh vừa xem bảng giá — Click Star có thể custom gói phù hợp ngân sách. Đặt lịch tư vấn 60 phút miễn phí?`,
   }
+  const messagesEn: Record<string, string> = {
+    marketing: 'Click Star runs multi-platform Digital Marketing built around your business. Book a free 60-minute consultation?',
+    website: 'Click Star designs high-converting websites with real-time dashboards. Get a free consultation on the right package?',
+    ai: 'Bring AI into your workflows: Click Star can set up Claude or GPT in 2 to 4 weeks. Free consultation?',
+    automation: 'Automate your workflows with n8n and AI agents. Click Star has a setup package that fits. Book a consultation?',
+    crm: 'A CRM and CDP that unify your customer data. Click Star recommends the right fit for your industry.',
+    crm_cdp: 'A CRM and CDP that unify your customer data. Click Star recommends the right fit for your industry.',
+    dashboard: 'Real-time dashboards for data-driven teams. Click Star can integrate your ERP and CRM. Free consultation?',
+    pricing: 'You just viewed our pricing. Click Star can tailor a package to your budget. Book a free 60-minute consultation?',
+  }
+  const en = lang === 'en'
   return {
-    message: messages[topInterest] || messages.pricing,
+    message: (en ? messagesEn : messages)[topInterest] || (en ? messagesEn : messages).pricing,
     recommended_service: service,
-    cta_label: 'Đặt lịch tư vấn miễn phí',
+    cta_label: en ? 'Book a free consultation' : 'Đặt lịch tư vấn miễn phí',
   }
 }

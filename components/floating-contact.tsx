@@ -3,8 +3,10 @@
 // Nút liên hệ nổi GÓC TRÁI DƯỚI: 2 nút tròn Zalo + Hotline, cả hai về 0383 406 735.
 // - Zalo mở zalo.me; Hotline bấm gọi (tel:). Số hotline hiện ở tooltip khi rê chuột
 //   (KHÔNG có chip số luôn hiện — theo yêu cầu).
+// - Chữ trong nút và tooltip đổi theo ngôn ngữ site (VI/EN); số hotline giữ nguyên.
 // - Hiện trên mọi trang công khai, ẩn ở khu admin. z-index dưới popup hồ sơ (modal che được).
 import { usePathname } from 'next/navigation'
+import { useLanguage } from '@/contexts/language-context'
 
 const PHONE = '0383406735'
 const PHONE_DISPLAY = '0383 406 735'
@@ -12,16 +14,17 @@ const ZALO_URL = 'https://zalo.me/0383406735'
 
 export function FloatingContact() {
   const pathname = usePathname()
+  const { t } = useLanguage()
   if (pathname?.startsWith('/admin-cls')) return null
 
   return (
-    <div className="fc-widget" role="region" aria-label="Liên hệ nhanh">
+    <div className="fc-widget" role="region" aria-label={t('Liên hệ nhanh', 'Quick contact')}>
       <a
         className="fc-fab fc-fab--zalo"
         href={ZALO_URL}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat Zalo với Click Star"
+        aria-label={t('Chat Zalo với Click Star', 'Chat with Click Star on Zalo')}
       >
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M12 3C6.9 3 2.75 6.46 2.75 10.73c0 2.4 1.32 4.54 3.4 5.96-.14.98-.57 2.2-1.5 3.02-.26.23-.12.66.22.68 1.9.12 3.45-.66 4.46-1.4.98.26 2.02.4 3.17.4 5.1 0 9.25-3.46 9.25-7.66C21.25 6.46 17.1 3 12 3Z" />
@@ -30,11 +33,12 @@ export function FloatingContact() {
           <circle cx="15.7" cy="10.8" r="1.15" fill="#1e6dda" />
         </svg>
         <span className="fc-tip" role="tooltip">
-          Chat Zalo<small>Nhắn tin tư vấn ngay</small>
+          {t('Chat Zalo', 'Chat on Zalo')}
+          <small>{t('Nhắn tin tư vấn ngay', 'Message us for advice')}</small>
         </span>
       </a>
 
-      <a className="fc-fab fc-fab--call" href={`tel:${PHONE}`} aria-label={`Gọi hotline ${PHONE_DISPLAY}`}>
+      <a className="fc-fab fc-fab--call" href={`tel:${PHONE}`} aria-label={t(`Gọi hotline ${PHONE_DISPLAY}`, `Call hotline ${PHONE_DISPLAY}`)}>
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -47,7 +51,8 @@ export function FloatingContact() {
           <path d="M6.5 3.5h3l1.3 4-2 1.4a12.5 12.5 0 0 0 5.3 5.3l1.4-2 4 1.3v3a1.7 1.7 0 0 1-1.85 1.7C11.2 21.1 2.9 12.8 2.3 5.35A1.7 1.7 0 0 1 4 3.5h2.5Z" />
         </svg>
         <span className="fc-tip" role="tooltip">
-          Gọi Hotline<small>{PHONE_DISPLAY}</small>
+          {t('Gọi Hotline', 'Call hotline')}
+          <small>{PHONE_DISPLAY}</small>
         </span>
       </a>
 
