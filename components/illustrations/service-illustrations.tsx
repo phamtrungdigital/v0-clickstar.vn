@@ -158,7 +158,7 @@ export function CustomerProfileIllustration({ className = 'w-full h-auto', label
   )
 }
 
-/** Automation: luồng 4 cột Kích hoạt, n8n, mô hình AI, Hành động */
+/** Automation: luồng 4 cột Kích hoạt, nền tảng Click Star, mô hình AI, Hành động */
 export function AutomationWorkflowIllustration({
   className = 'w-full h-auto',
   label = 'Automation workflow',
@@ -200,8 +200,8 @@ export function AutomationWorkflowIllustration({
         )),
       )}
       <rect x="166" y="96" width="128" height="172" rx="18" fill={BLUE} />
-      <text x="230" y="178" fontSize="28" fontWeight="600" fill="#ffffff" textAnchor="middle" letterSpacing="-0.5">n8n</text>
-      <text x="230" y="200" fontSize="12" fill="#ffffff" fillOpacity="0.85" textAnchor="middle">Workflow engine</text>
+      <text x="230" y="174" fontSize="22" fontWeight="600" fill="#ffffff" textAnchor="middle" letterSpacing="-0.4">Click Star</text>
+      <text x="230" y="198" fontSize="12" fill="#ffffff" fillOpacity="0.85" textAnchor="middle">Automation engine</text>
       <text x="300" y="312" fontSize="12" fill={MUTED} textAnchor="middle">{caption}</text>
     </svg>
   )

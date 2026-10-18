@@ -147,7 +147,7 @@ export function ArchitectureDiagram({ className = 'w-full h-auto', label, t }: P
       <Tag x={444} y={146} text="RBAC" accent />
       <Tag x={496} y={146} text="zod" accent />
       <Tag x={538} y={146} text="audit" accent />
-      <Node x={432} y={196} w={200} h={64} title={t('Tác vụ nền', 'Background jobs')} sub="cron · queue · n8n" />
+      <Node x={432} y={196} w={200} h={64} title={t('Tác vụ nền', 'Background jobs')} sub="cron · queue · workflow" />
       <Node x={432} y={280} w={200} h={64} title={t('Mô-đun AI', 'AI module')} sub={t('chỉ gọi từ máy chủ', 'server-side calls only')} />
 
       {/* Dữ liệu */}

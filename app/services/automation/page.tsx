@@ -40,7 +40,7 @@ const RobotSVG = ({ className = "w-full h-full" }: { className?: string }) => (
   <AutomationChecklistIllustration className={className} />
 )
 
-// Sơ đồ luồng: Kích hoạt, n8n, mô hình AI, Hành động
+// Sơ đồ luồng: Kích hoạt, nền tảng Click Star, mô hình AI, Hành động
 const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string }) => {
   const { t } = useLanguage()
   return (
@@ -145,40 +145,46 @@ const automationUseCases = [
 // Automation tools ecosystem
 const automationTools = [
   {
-    name: 'N8N',
+    name: 'Click Star Automation',
     category: 'Workflow Engine',
-    description: { vi: 'Nền tảng automation no-code/low-code mạnh mẽ', en: 'A powerful no-code/low-code automation platform' },
-    logo: '/images/automation/n8n.svg',
+    description: { vi: 'Nền tảng automation do Click Star tự phát triển, vận hành và bảo trì', en: 'Automation platform built, run and maintained in-house by Click Star' },
+    logo: null,
+    icon: Workflow,
   },
   {
     name: 'Claude',
     category: 'AI Agent',
     description: { vi: 'Xử lý ngôn ngữ tự nhiên, phân tích sâu', en: 'Natural-language processing and deep analysis' },
     logo: '/images/ai-tools/claude.svg',
+    icon: null,
   },
   {
     name: 'GPT-4o',
     category: 'AI Agent',
     description: { vi: 'Sáng tạo content, đa năng', en: 'Creative content, all-round capability' },
     logo: '/images/ai-tools/openai.svg',
+    icon: null,
   },
   {
     name: 'Zapier',
     category: 'Integration',
     description: { vi: 'Kết nối 5000+ ứng dụng', en: 'Connects 5,000+ apps' },
     logo: '/images/automation/zapier.svg',
+    icon: null,
   },
   {
     name: 'Make',
     category: 'Integration',
     description: { vi: 'Visual automation builder', en: 'Visual automation builder' },
     logo: '/images/automation/make.svg',
+    icon: null,
   },
   {
     name: 'Webhook',
     category: 'Trigger',
     description: { vi: 'Real-time event triggers', en: 'Real-time event triggers' },
-    logo: null, // dùng lucide Webhook icon vì không có brand logo
+    logo: null, // không có brand logo nên dùng icon lucide
+    icon: Webhook,
   }
 ]
 
@@ -199,7 +205,7 @@ const automationProcess = [
   {
     step: '03',
     title: { vi: 'Xây dựng & Kết nối', en: 'Build & Connect' },
-    description: { vi: 'Setup N8N, tích hợp AI, kết nối các nền tảng', en: 'Set up N8N, integrate AI and connect your platforms' },
+    description: { vi: 'Triển khai trên nền tảng Click Star, tích hợp AI, kết nối các nền tảng', en: 'Deploy on the Click Star platform, integrate AI and connect your platforms' },
     duration: { vi: '2-3 tuần', en: '2-3 weeks' }
   },
   {
@@ -224,7 +230,7 @@ export default function AIAutomationPage() {
               <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">AI Automation 2026</p>
               <h1 className="ap-hero-title">AI Automation</h1>
               <p className="ap-lead max-w-[760px]">
-                {t('Tự động hóa quy trình với Claude, GPT và n8n.', 'Automate your workflows with Claude, GPT and n8n.')}
+                {t('Tự động hóa quy trình với nền tảng Click Star, Claude và GPT.', 'Automate your workflows with the Click Star platform, Claude and GPT.')}
               </p>
               <div className="ap-cta-row mt-2">
                 <Link href="/contact" className="ap-btn ap-btn-primary">
@@ -300,7 +306,7 @@ export default function AIAutomationPage() {
                 {t('Sơ đồ Automation với AI', 'The AI automation flow')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
-                {t('Kết hợp N8N, Claude, GPT và các công cụ khác thành một hệ thống tự động hóa hoàn chỉnh', 'N8N, Claude, GPT and more — combined into one complete automation system')}
+                {t('Nền tảng Click Star kết hợp Claude, GPT và các công cụ khác thành một hệ thống tự động hóa hoàn chỉnh', 'The Click Star platform combines Claude, GPT and more into one complete automation system')}
               </p>
             </div>
 
@@ -314,7 +320,7 @@ export default function AIAutomationPage() {
               {[
                 { icon: Globe, title: 'Input Triggers', desc: 'Webhook, Schedule, Events' },
                 { icon: Brain, title: 'AI Processing', desc: t('Claude + GPT phân tích', 'Claude + GPT analysis') },
-                { icon: Workflow, title: 'N8N Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration') },
+                { icon: Workflow, title: 'Click Star Orchestration', desc: t('Điều phối workflow', 'Workflow orchestration') },
                 { icon: Rocket, title: 'Auto Actions', desc: t('Thực thi tự động', 'Automated execution') },
               ].map((item, i) => (
                 <div key={i} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-6">
@@ -397,9 +403,9 @@ export default function AIAutomationPage() {
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[12px] bg-white p-2">
                       {tool.logo ? (
                         <Image quality={95} src={tool.logo} alt={tool.name} width={28} height={28} className="h-full w-full object-contain" />
-                      ) : (
-                        <Webhook className="h-6 w-6 text-[#1859b8]" />
-                      )}
+                      ) : tool.icon ? (
+                        <tool.icon className="h-6 w-6 text-[#1859b8]" />
+                      ) : null}
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold leading-tight text-white">{tool.name}</h3>
