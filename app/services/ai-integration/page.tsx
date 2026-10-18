@@ -351,11 +351,10 @@ export default function AIIntegrationPage() {
                   <span className="text-[#1859b8]">
                     AI
                   </span>{' '}
-                  {t('vào Hoạt động Kinh doanh', 'into Your Business Operations')}
                 </h1>
 
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  {t('AI đang thay đổi cách doanh nghiệp vận hành. ClickStar giúp bạn tích hợp AI vào marketing, content, phân tích dữ liệu - tăng hiệu suất gấp nhiều lần với chi phí tối ưu.', 'AI is transforming how businesses run. ClickStar helps you bring AI into marketing, content and data analysis — multiplying output at an optimized cost.')}
+                  {t('AI cho marketing, nội dung và phân tích dữ liệu.', 'AI for marketing, content and data analysis.')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">

@@ -93,12 +93,12 @@ export default function ServicesIndexPage() {
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
               <h1 className="ap-hero-title">
-                {t('Giải pháp chuyển đổi số toàn diện', 'Solutions for end-to-end digital growth')}
+                {t('Dịch vụ chuyển đổi số', 'Digital growth services')}
               </h1>
               <p className="ap-lead max-w-[760px]">
                 {t(
-                  'Tám dịch vụ kết nối thành một hệ thống: thu hút khách hàng, chuyển đổi, quản lý dữ liệu và tối ưu liên tục bằng AI.',
-                  'Eight services that connect into one system: attract customers, convert them, manage the data and keep optimising with AI.'
+                  'Tám dịch vụ, một hệ thống tăng trưởng.',
+                  'Eight services. One growth system.'
                 )}
               </p>
             </div>

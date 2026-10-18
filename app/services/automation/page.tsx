@@ -249,14 +249,13 @@ export default function AIAutomationPage() {
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight tracking-tight">
-                  {t('Tự động hóa với', 'Automate everything with')}{' '}
                   <span className="text-[#1859b8]">
                     AI Automation
                   </span>
                 </h1>
 
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  {t('Kết hợp sức mạnh của Claude, GPT, N8N và các công nghệ AI hàng đầu để tự động hóa mọi quy trình kinh doanh. Tiết kiệm thời gian, tối ưu chi phí, tận dụng xu hướng công nghệ lớn.', 'Combine the power of Claude, GPT, N8N and leading AI technologies to automate every business process. Save time, cut costs and ride the biggest wave in tech.')}
+                  {t('Tự động hóa quy trình với Claude, GPT và n8n.', 'Automate your workflows with Claude, GPT and n8n.')}
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-10">

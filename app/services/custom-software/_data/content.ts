@@ -25,12 +25,12 @@ export const SERVICE_LABEL = 'Phần mềm theo yêu cầu'
 export const HERO = {
   kicker: { vi: 'Phát triển phần mềm theo yêu cầu', en: 'Custom software development' },
   title: {
-    vi: 'Phần mềm riêng cho doanh nghiệp, an toàn từ bản thiết kế đến ngày vận hành.',
-    en: 'Software built for your business, secure from the first design to day-to-day operation.',
+    vi: 'Phần mềm riêng cho doanh nghiệp',
+    en: 'Software built for your business',
   },
   lede: {
-    vi: 'Click Star khảo sát quy trình thực tế, thiết kế, lập trình và vận hành hệ thống theo đúng nghiệp vụ của doanh nghiệp. Mọi thay đổi đều chạy trên môi trường thử để bạn kiểm tra trước. Mã nguồn và dữ liệu thuộc về doanh nghiệp.',
-    en: 'We study how your business actually runs, then design, build and operate a system around it. Every change goes to a staging environment for your review first. You own the source code and the data.',
+    vi: 'Khảo sát, thiết kế, lập trình và vận hành theo đúng nghiệp vụ của bạn.',
+    en: 'We study, design, build and run it around how your business works.',
   },
 }
 

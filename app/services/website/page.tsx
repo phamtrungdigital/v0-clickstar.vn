@@ -382,8 +382,8 @@ export default function WebsiteDesignPage() {
               </h1>
               <p className="ap-lead max-w-[760px]">
                 {t(
-                  'Thiết kế website chuyên nghiệp, tối ưu trải nghiệm người dùng và tỷ lệ chuyển đổi. Từ concept đến launch, chúng tôi đồng hành cùng bạn.',
-                  'Professional website design, optimized user experience and conversion rate. From concept to launch, we accompany you.'
+                  'Thiết kế chuyên nghiệp, từ concept đến ngày ra mắt.',
+                  'Professional design, from concept to launch.'
                 )}
               </p>
               <div className="ap-cta-row mt-2">
