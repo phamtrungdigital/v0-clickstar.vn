@@ -7,16 +7,6 @@ import { useLanguage } from '@/contexts/language-context'
 import type { BlogContent } from '@/lib/cms/types'
 import type { LatestPost } from '@/lib/cms/posts'
 
-const tagColors: Record<string, string> = {
-  AI: 'bg-primary/10 text-[#1859b8]',
-  Marketing: 'bg-[#f5f5f7] text-[#1859b8]',
-  Dashboard: 'bg-[#f5f5f7] text-[#1859b8]',
-  Data: 'bg-[#f5f5f7] text-[#1859b8]',
-  CRM: 'bg-[#f5f5f7] text-[#1859b8]',
-  CDP: 'bg-[#f5f5f7] text-[#1859b8]',
-  Website: 'bg-[#f5f5f7] text-[#1859b8]',
-}
-
 type CardPost = {
   key: string
   href: string
@@ -110,9 +100,7 @@ export function BlogSection({ content, posts }: { content: BlogContent; posts?: 
                     {post.tags.map((tag) => (
                       <span
                         key={tag}
-                        className={`text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm ${
-                          tagColors[tag] || 'bg-white/90 text-foreground'
-                        }`}
+                        className="text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm bg-white/90 text-foreground"
                       >
                         {tag}
                       </span>
