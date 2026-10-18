@@ -437,36 +437,41 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
-        {/* Services Detail */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* Dịch vụ chi tiết: lưới 2x2, thẻ trắng viền rõ, đều chiều cao */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
+            <div className="text-center mb-12 lg:mb-14">
+              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#515154]">
                 <Zap className="w-4 h-4" />
                 {t('DỊCH VỤ CHI TIẾT', 'DETAILED SERVICES')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1d1d1f] leading-[1.15] tracking-[-0.005em]">
                 {t('Giải pháp', 'Solutions')}{' '}
                 <span className="text-[#1859b8]">{t('toàn diện', 'comprehensive')}</span>
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-6 lg:gap-8 auto-rows-fr">
               {services.map((service, index) => (
                 <div
                   key={index}
-                  className={`${service.color} rounded-[18px] p-8 transition-all duration-300 group`}
+                  className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7 sm:p-9"
                 >
-                  <div className="w-16 h-16 bg-white rounded-[18px] flex items-center justify-center mb-6 transition-transform">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
                     {service.icon}
                   </div>
-                  <h3 className="text-2xl font-semibold text-foreground mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground mb-6">{service.description}</p>
-                  <ul className="space-y-3">
+                  <h3 className="mt-6 text-2xl font-semibold leading-tight tracking-[0.005em] text-[#1d1d1f]">
+                    {service.title}
+                  </h3>
+                  <p className="mt-2 text-[17px] leading-relaxed text-[#515154]">{service.description}</p>
+                  <div className="my-6 h-px w-full bg-[#e0e0e0]" />
+                  <ul className="space-y-3.5">
                     {service.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-[#1859b8] flex-shrink-0" />
-                        <span className="text-foreground">{feature}</span>
+                        <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
+                          <Check className="h-3.5 w-3.5 text-[#1859b8]" strokeWidth={3} />
+                        </span>
+                        <span className="text-base text-[#1d1d1f]">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -476,19 +481,19 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
-        {/* Process Steps */}
-        <section className="pt-12 pb-20 lg:pt-16 lg:pb-28 bg-[#272729] text-white">
+        {/* Quy trình triển khai: 5 thẻ đều nhau trên khối tối, đường nối qua các số bước */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
+            <div className="text-center mb-12 lg:mb-14">
               <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#d2d2d7]">
                 <Rocket className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.15] tracking-[-0.005em] text-white">
                 {t('Quy trình làm việc', 'Working process')}{' '}
-                <span className="text-[#1859b8]">{t('minh bạch', 'transparent')}</span>
+                <span className="text-[#7db8ff]">{t('minh bạch', 'transparent')}</span>
               </h2>
-              <p className="text-lg text-[#515154] max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-2xl text-lg text-[#d2d2d7]">
                 {t(
                   '5 bước triển khai rõ ràng, bạn theo dõi được tiến độ mọi lúc qua Portal.',
                   '5 clear implementation steps, track progress anytime via Portal.'
@@ -497,29 +502,29 @@ export default function DigitalMarketingPage() {
             </div>
 
             <div className="relative">
-              {/* Connection line */}
-              <div className="hidden lg:block absolute top-24 left-0 right-0 h-1 bg-[#1e6dda]" />
+              {/* Đường nối các số bước (chỉ hiện khi đủ 5 cột) */}
+              <div className="pointer-events-none absolute left-7 right-[calc(20%-44px)] top-7 hidden h-px bg-white/30 xl:block" aria-hidden="true" />
 
-              <div className="grid lg:grid-cols-5 gap-8">
+              <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 xl:grid-cols-5">
                 {processSteps.map((step, index) => (
-                  <div key={index} className="relative">
-                    {/* Step number */}
-                    <div className={`w-12 h-12 ${step.color} rounded-full flex items-center justify-center text-white font-semibold text-lg mb-6 mx-auto lg:mx-0 relative z-10`}>
+                  <div key={index} className="relative flex h-full flex-col">
+                    <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full bg-[#1e6dda] text-xl font-semibold text-white ring-[6px] ring-[#272729]">
                       {step.step}
                     </div>
 
-                    <div className="bg-white/5 backdrop-blur rounded-[18px] p-6 h-full">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                        <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-[#d2d2d7]">
-                          {step.duration}
-                        </span>
-                      </div>
-                      <p className="text-[#515154] text-sm mb-4">{step.description}</p>
-                      <ul className="space-y-2">
+                    <div className="mt-5 flex flex-1 flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-6">
+                      <span className="inline-flex w-fit items-center rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">
+                        {step.duration}
+                      </span>
+                      <h3 className="mt-4 text-xl font-semibold leading-snug text-white xl:min-h-[3.25rem]">{step.title}</h3>
+                      <p className="mt-3 text-[15px] leading-relaxed text-[#d2d2d7] xl:min-h-[6.5rem]">{step.description}</p>
+                      <div className="my-5 h-px w-full bg-white/20" />
+                      <ul className="space-y-3">
                         {step.tasks.map((task, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-[#d2d2d7]">
-                            <Check className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
+                          <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-snug text-[#f5f5f7]">
+                            <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1e6dda]">
+                              <Check className="h-3 w-3 text-white" strokeWidth={3} />
+                            </span>
                             {task}
                           </li>
                         ))}
