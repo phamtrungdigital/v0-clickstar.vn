@@ -847,7 +847,7 @@ export default function WebsiteDesignPage() {
                   </div>
                   
                   {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-[#272729] opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8">
                     <button className="flex items-center gap-2 bg-white text-foreground font-semibold px-6 py-3 rounded-full">
                       {t('Xem chi tiết', 'View details')}
                       <ArrowRight className="w-4 h-4" />
