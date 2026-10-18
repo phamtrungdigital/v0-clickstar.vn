@@ -369,193 +369,112 @@ export default function WebsiteDesignPage() {
   }
 
   return (
-    <>
+    <div className="theme-apple">
       <MainNav />
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
-          {/* Gradient orbs */}
-          <div className="absolute inset-0">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-          {/* Background decoration */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#f5f5f7]/30 rounded-full blur-3xl" />
-            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#eaf2fd]/30 rounded-full blur-3xl" />
-          </div>
+        {/* Hero: khối trắng, căn giữa, cửa sổ trình duyệt làm ảnh sản phẩm */}
+        <section className="ap-tile ap-light">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">{t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}</p>
+              <h1 className="ap-hero-title">
+                {t('Website chuyển đổi cao', 'Website that converts')}
+              </h1>
+              <p className="ap-lead max-w-[760px]">
+                {t(
+                  'Thiết kế website chuyên nghiệp, tối ưu trải nghiệm người dùng và tỷ lệ chuyển đổi. Từ concept đến launch, chúng tôi đồng hành cùng bạn.',
+                  'Professional website design, optimized user experience and conversion rate. From concept to launch, we accompany you.'
+                )}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href="/contact" className="ap-btn ap-btn-primary">
+                  {t('Nhận báo giá miễn phí', 'Get free quote')}
+                </Link>
+                <Link href="#portfolio" className="ap-btn ap-btn-ghost">
+                  {t('Xem Portfolio', 'View Portfolio')}
+                </Link>
+              </div>
+            </div>
 
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              {/* Content */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
-                  <Globe className="w-4 h-4" />
-                  {t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}
+            <div className="mt-12 grid grid-cols-3 gap-6">
+              {[
+                { v: '200+', l: t('Dự án hoàn thành', 'Projects completed') },
+                { v: '95+', l: t('Điểm PageSpeed', 'PageSpeed Score') },
+                { v: '3x', l: t('Tăng Conversion', 'Conversion increase') },
+              ].map((x) => (
+                <div key={x.l}>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
+              ))}
+            </div>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6">
-                  {t('Website ', 'Website ')}<br />
-                  <span className="text-[#1859b8]">
-                    {t('chuyển đổi cao', 'that converts')}
-                  </span>
-                </h1>
-
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                  {t(
-                    'Thiết kế website chuyên nghiệp, tối ưu trải nghiệm người dùng và tỷ lệ chuyển đổi. Từ concept đến launch, chúng tôi đồng hành cùng bạn.',
-                    'Professional website design, optimized user experience and conversion rate. From concept to launch, we accompany you.'
-                  )}
-                </p>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-6 mb-10">
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">200+</div>
-                    <div className="text-sm text-muted-foreground">{t('Dự án hoàn thành', 'Projects completed')}</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">95+</div>
-                    <div className="text-sm text-muted-foreground">{t('Điểm PageSpeed', 'PageSpeed Score')}</div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">3x</div>
-                    <div className="text-sm text-muted-foreground">{t('Tăng Conversion', 'Conversion increase')}</div>
-                  </div>
+            <div className="mx-auto mt-14 max-w-[860px] overflow-hidden rounded-[18px] border border-[#d2d2d7] bg-white text-left shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0]">
+              <div className="flex items-center gap-2 border-b border-[#e0e0e0] bg-[#f5f5f7] px-4 py-3">
+                <div className="flex gap-1.5">
+                  <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                  <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                  <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
                 </div>
-
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
-                  >
-                    {t('Nhận báo giá miễn phí', 'Get free quote')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="#portfolio"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-foreground font-semibold px-8 py-4 rounded-full border border-border transition-all duration-300"
-                  >
-                    <Eye className="w-5 h-5" />
-                    {t('Xem Portfolio', 'View Portfolio')}
-                  </Link>
+                <div className="flex flex-1 justify-center">
+                  <div className="flex items-center gap-2 rounded-lg bg-white px-4 py-1 text-xs text-[#515154]">
+                    <Shield className="h-3 w-3 text-[#1859b8]" />
+                    yourwebsite.com
+                  </div>
                 </div>
               </div>
-
-              {/* Hero Visual */}
-              <div className="relative">
-                <div className="relative bg-white rounded-2xl shadow-2xl p-2 border border-border">
-                  {/* Browser mockup */}
-                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-t-xl">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                    </div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-muted-foreground flex items-center gap-2 border">
-                        <Shield className="w-3 h-3 text-[#1859b8]" />
-                        yourwebsite.com
-                      </div>
-                    </div>
-                  </div>
-                  <div className="aspect-[4/3] bg-[#eaf2fd] rounded-b-xl overflow-hidden">
-                    <Image quality={95}
-                      src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1600&h=1200&fit=crop"
-                      alt="Website Design Preview"
-                      width={800}
-                      height={600}
-                      className="w-full h-full object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  </div>
-                </div>
-
-                {/* Floating elements */}
-                <div className="absolute -left-4 top-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
-                      <Gauge className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground">PageSpeed</div>
-                      <div className="text-lg font-bold text-[#1859b8]">98/100</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="absolute -right-4 bottom-1/4 bg-white rounded-xl shadow-lg p-3 border border-border">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 bg-[#f5f5f7] rounded-lg flex items-center justify-center">
-                      <Smartphone className="w-5 h-5 text-[#1859b8]" />
-                    </div>
-                    <div>
-                      <div className="text-xs text-muted-foreground">Mobile</div>
-                      <div className="text-lg font-bold text-[#1859b8]">100%</div>
-                    </div>
-                  </div>
-                </div>
+              <div className="aspect-[16/9] bg-[#eaf2fd]">
+                <Image
+                  quality={95}
+                  src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1600&h=1200&fit=crop"
+                  alt="Website Design Preview"
+                  width={1280}
+                  height={720}
+                  className="h-full w-full object-cover"
+                  sizes="(max-width: 1024px) 100vw, 860px"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Problems & Solutions */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* Vấn đề và giải pháp */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              {/* Left: SVG Illustration */}
-              <div className="relative order-2 lg:order-1">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="order-2 lg:order-1">
                 <WebsiteBrowserIllustration className="w-full h-auto" />
               </div>
-
-              {/* Right: Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-[#eaf2fd] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
-                  <Target className="w-4 h-4" />
+                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                  <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </span>
-                
-                <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-6">
+                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Website của bạn', 'Is your website')}{' '}
-                  <span className="text-[#1859b8]">
-                    {t('đang mất khách?', 'losing customers?')}
-                  </span>
+                  <span className="text-[#1859b8]">{t('đang mất khách?', 'losing customers?')}</span>
                 </h2>
-                
-                <p className="text-lg text-muted-foreground leading-relaxed mb-10">
+                <p className="mt-5 text-lg leading-relaxed text-[#515154]">
                   {t(
                     'Một website không tối ưu có thể khiến bạn mất đến 70% khách hàng tiềm năng. Hãy để chúng tôi giúp bạn.',
                     'An unoptimized website can cost you up to 70% of potential customers. Let us help you.'
                   )}
                 </p>
-
-                {/* Problems & Solutions List */}
-                <div className="space-y-4">
+                <div className="mt-8 space-y-4">
                   {problems.map((item, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-xl transition-all duration-300"
-                    >
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#eaf2fd] flex items-center justify-center text-[#1859b8] group-hover:scale-110 transition-transform">
-                          {item.icon}
+                    <div key={index} className="flex items-start gap-4 rounded-[18px] border border-[#d2d2d7] bg-white p-5">
+                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#eaf2fd] text-[#1859b8]">
+                        {item.icon}
+                      </div>
+                      <div className="min-w-0 flex-1 space-y-3">
+                        <div>
+                          <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">{t('Vấn đề', 'Problem')}</span>
+                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
                         </div>
-                        
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-2">
-                            <XCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0" />
-                            <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
-                          </div>
-                          
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
-                            <p className="text-muted-foreground text-sm">{item.solution}</p>
-                          </div>
+                        <div>
+                          <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">{t('Giải pháp', 'Solution')}</span>
+                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
                         </div>
-                        
-                        <ArrowUpRight className="w-5 h-5 text-[#1859b8] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </div>
                     </div>
                   ))}
@@ -565,18 +484,19 @@ export default function WebsiteDesignPage() {
           </div>
         </section>
 
-        {/* Process Steps */}
-        <section className="py-12 lg:py-16 bg-foreground text-background">
+        {/* Quy trình: khối tối, 6 thẻ đều nhau, Portal theo dõi dự án bên dưới */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                <Layers className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#d2d2d7]">
+                <Layers className="h-4 w-4" />
                 {t('QUY TRÌNH LÀM VIỆC', 'OUR PROCESS')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-                {t('Quy trình ', 'Transparent ')}<span className="text-[#1859b8]">{t('minh bạch', 'process')}</span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+                {t('Quy trình ', 'Transparent ')}
+                <span className="text-[#7db8ff]">{t('minh bạch', 'process')}</span>
               </h2>
-              <p className="text-lg text-[#d2d2d7] max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-2xl text-lg text-[#d2d2d7]">
                 {t(
                   '6 bước rõ ràng từ khám phá đến bàn giao, bạn luôn nắm được tiến độ qua portal riêng.',
                   '6 clear steps from discovery to delivery, you always track progress through your dedicated portal.'
@@ -584,125 +504,99 @@ export default function WebsiteDesignPage() {
               </p>
             </div>
 
-            {/* Process Timeline */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3">
               {processSteps.map((step, index) => (
-                <div
-                  key={index}
-                  className="group relative bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-[#1e6dda]/30 transition-all duration-300"
-                >
-                  {/* Step number */}
-                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                    {step.step}
-                  </div>
-                  
-                  <div className="pt-4">
-                    {/* Icon */}
-                    <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-[#1859b8] mb-4 group-hover:scale-110 transition-transform">
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-7">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda] [&>svg]:h-6 [&>svg]:w-6 [&>svg]:text-white">
                       {step.icon}
                     </div>
-                    
-                    {/* Title & Duration */}
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-xl font-bold text-white">{step.title}</h3>
-                      <span className="text-xs text-[#8cc4ff] bg-[#4da3ff]/15 px-2 py-1 rounded-full">
-                        {step.duration}
+                    <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-medium text-white">{step.duration}</span>
+                  </div>
+                  <div className="mt-5 text-sm font-medium tabular-nums text-[#7db8ff]">{t('Bước', 'Step')} {step.step}</div>
+                  <h3 className="mt-1 text-xl font-semibold leading-snug text-white">{step.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[#d2d2d7]">{step.description}</p>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-5">
+                    {step.deliverables.map((item, i) => (
+                      <span key={i} className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs text-[#f5f5f7]">
+                        {item}
                       </span>
-                    </div>
-                    
-                    {/* Description */}
-                    <p className="text-[#d2d2d7] text-sm mb-4">{step.description}</p>
-                    
-                    {/* Deliverables */}
-                    <div className="flex flex-wrap gap-2">
-                      {step.deliverables.map((item, i) => (
-                        <span key={i} className="text-xs text-[#c7c7cc] bg-white/5 px-2 py-1 rounded">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* Portal Preview */}
-            <div className="mt-16 bg-[#1e6dda] rounded-3xl p-8 lg:p-12 border border-white/10">
-              <div className="grid lg:grid-cols-2 gap-8 items-center">
-                <div>
-                  <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4">
-                    {t('Portal theo dõi dự án', 'Project Tracking Portal')}
-                  </h3>
-                  <p className="text-white mb-6">
-                    {t(
-                      'Truy cập portal riêng để xem tiến độ real-time, phê duyệt design, và giao tiếp trực tiếp với team.',
-                      'Access your dedicated portal to see real-time progress, approve designs, and communicate directly with the team.'
-                    )}
-                  </p>
-                  <ul className="space-y-3">
-                    {[
-                      t('Theo dõi tiến độ real-time', 'Real-time progress tracking'),
-                      t('Phê duyệt design trực tuyến', 'Online design approval'),
-                      t('Chat trực tiếp với team', 'Direct chat with team'),
-                      t('Lịch sử thay đổi đầy đủ', 'Complete change history'),
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-center gap-3 text-white">
-                        <CheckCircle2 className="w-5 h-5 text-[#1859b8] flex-shrink-0" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+            {/* Portal theo dõi dự án */}
+            <div className="mt-14 grid items-center gap-8 rounded-[18px] border border-white/20 bg-[#1d1d1f] p-7 sm:p-10 lg:grid-cols-2 lg:gap-12">
+              <div>
+                <h3 className="text-2xl font-semibold leading-snug text-white lg:text-3xl">
+                  {t('Portal theo dõi dự án', 'Project Tracking Portal')}
+                </h3>
+                <p className="mt-4 text-[17px] leading-relaxed text-[#d2d2d7]">
+                  {t(
+                    'Truy cập portal riêng để xem tiến độ real-time, phê duyệt design, và giao tiếp trực tiếp với team.',
+                    'Access your dedicated portal to see real-time progress, approve designs, and communicate directly with the team.'
+                  )}
+                </p>
+                <ul className="mt-6 space-y-3.5">
+                  {[
+                    t('Theo dõi tiến độ real-time', 'Real-time progress tracking'),
+                    t('Phê duyệt design trực tuyến', 'Online design approval'),
+                    t('Chat trực tiếp với team', 'Direct chat with team'),
+                    t('Lịch sử thay đổi đầy đủ', 'Complete change history'),
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-center gap-3 text-base text-white">
+                      <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#1e6dda]">
+                        <CheckCircle2 className="h-4 w-4 text-white" />
+                      </span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="overflow-hidden rounded-[14px] border border-white/20 bg-[#272729]">
+                <div className="flex items-center gap-2 border-b border-white/15 px-4 py-3">
+                  <div className="h-3 w-3 rounded-full bg-white/30" />
+                  <div className="h-3 w-3 rounded-full bg-white/30" />
+                  <div className="h-3 w-3 rounded-full bg-white/30" />
+                  <span className="ml-2 text-xs text-[#d2d2d7]">portal.clickstar.vn</span>
                 </div>
-                <div className="relative">
-                  <div className="bg-gray-900 rounded-xl p-4 border border-white/10">
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <span className="ml-2 text-xs text-[#c7c7cc]">portal.clickstar.vn</span>
+                <div className="space-y-3 p-4">
+                  {[
+                    { icon: <Figma className="h-5 w-5" />, name: t('UI Design - Homepage', 'UI Design - Homepage'), tag: t('Đã duyệt', 'Approved'), on: true },
+                    { icon: <Code2 className="h-5 w-5" />, name: t('Development Sprint 2', 'Development Sprint 2'), tag: t('Đang làm', 'In Progress'), on: true },
+                    { icon: <BarChart3 className="h-5 w-5" />, name: t('SEO Setup', 'SEO Setup'), tag: t('Chờ', 'Pending'), on: false },
+                  ].map((row) => (
+                    <div key={row.name} className="flex items-center justify-between gap-3 rounded-[10px] bg-white/10 p-3">
+                      <div className="flex min-w-0 items-center gap-3 text-white">
+                        <span className={row.on ? 'text-[#7db8ff]' : 'text-[#d2d2d7]'}>{row.icon}</span>
+                        <span className="truncate text-sm">{row.name}</span>
+                      </div>
+                      <span className={`flex-shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${row.on ? 'bg-[#1e6dda] text-white' : 'bg-white/15 text-white'}`}>
+                        {row.tag}
+                      </span>
                     </div>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
-                        <div className="flex items-center gap-3">
-                          <Figma className="w-5 h-5 text-[#1859b8]" />
-                          <span className="text-sm text-white">{t('UI Design - Homepage', 'UI Design - Homepage')}</span>
-                        </div>
-                        <span className="text-xs text-[#8cc4ff] bg-[#4da3ff]/15 px-2 py-1 rounded">{t('Đã duyệt', 'Approved')}</span>
-                      </div>
-                      <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
-                        <div className="flex items-center gap-3">
-                          <Code2 className="w-5 h-5 text-[#1859b8]" />
-                          <span className="text-sm text-white">{t('Development Sprint 2', 'Development Sprint 2')}</span>
-                        </div>
-                        <span className="text-xs text-[#8cc4ff] bg-[#4da3ff]/15 px-2 py-1 rounded">{t('Đang làm', 'In Progress')}</span>
-                      </div>
-                      <div className="flex items-center justify-between bg-white/5 rounded-lg p-3">
-                        <div className="flex items-center gap-3">
-                          <BarChart3 className="w-5 h-5 text-[#d2d2d7]" />
-                          <span className="text-sm text-white">{t('SEO Setup', 'SEO Setup')}</span>
-                        </div>
-                        <span className="text-xs text-[#d2d2d7] bg-white/5 px-2 py-1 rounded">{t('Chờ', 'Pending')}</span>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Website Types */}
-        <section className="py-12 lg:py-16 bg-background">
+        {/* Loại website */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Layers className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Layers className="h-4 w-4" />
                 {t('LOẠI WEBSITE', 'WEBSITE TYPES')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('Mẫu website ', 'Website templates for ')}<span className="text-[#1859b8]">{t('chuyển đổi cao', 'high conversion')}</span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+                {t('Mẫu website ', 'Website templates for ')}
+                <span className="text-[#1859b8]">{t('chuyển đổi cao', 'high conversion')}</span>
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-2xl text-lg text-[#515154]">
                 {t(
                   'Dù bạn cần website doanh nghiệp, e-commerce hay landing page, chúng tôi đều có giải pháp phù hợp.',
                   'Whether you need a corporate website, e-commerce or landing page, we have the right solution.'
@@ -710,55 +604,44 @@ export default function WebsiteDesignPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-6 md:grid-cols-2 lg:grid-cols-3">
               {websiteTypes.map((type, index) => (
-                <div
-                  key={index}
-                  className={`group relative bg-white rounded-2xl p-6 border border-border hover:shadow-xl transition-all duration-300 ${bgColorMap[type.color]}`}
-                >
-                  {/* Icon */}
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[type.color]} flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform shadow-lg`}>
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
                     {type.icon}
                   </div>
-                  
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-foreground mb-2">{type.title}</h3>
-                  
-                  {/* Description */}
-                  <p className="text-muted-foreground text-sm mb-5">{type.description}</p>
-                  
-                  {/* Features */}
-                  <ul className="space-y-2">
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{type.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{type.description}</p>
+                  <div className="my-5 h-px w-full bg-[#e0e0e0]" />
+                  <ul className="space-y-3">
                     {type.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <CheckCircle2 className={`w-4 h-4 ${textColorMap[type.color]} flex-shrink-0`} />
-                        {feature}
+                      <li key={i} className="flex items-center gap-3">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-[#1859b8]" />
+                        </span>
+                        <span className="text-[15px] text-[#1d1d1f]">{feature}</span>
                       </li>
                     ))}
                   </ul>
-                  
-                  {/* Arrow */}
-                  <div className={`absolute top-6 right-6 w-10 h-10 rounded-full bg-gradient-to-br ${colorMap[type.color]} flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity`}>
-                    <ArrowRight className="w-5 h-5 text-white" />
-                  </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* SEO & Ads Add-ons */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* Dịch vụ bổ sung */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Sparkles className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Sparkles className="h-4 w-4" />
                 {t('DỊCH VỤ BỔ SUNG', 'ADD-ON SERVICES')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('SEO & Ads ', 'SEO & Ads ')}<span className="text-[#1859b8]">{t('tích hợp sẵn', 'ready to go')}</span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+                {t('SEO & Ads ', 'SEO & Ads ')}
+                <span className="text-[#1859b8]">{t('tích hợp sẵn', 'ready to go')}</span>
               </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="mx-auto mt-5 max-w-2xl text-lg text-[#515154]">
                 {t(
                   'Website được tối ưu SEO từ đầu và sẵn sàng cho các chiến dịch quảng cáo.',
                   'Website optimized for SEO from the start and ready for advertising campaigns.'
@@ -766,137 +649,106 @@ export default function WebsiteDesignPage() {
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid auto-rows-fr gap-6 lg:grid-cols-3 lg:gap-8">
               {addOnServices.map((service, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl p-8 border border-border hover:shadow-xl hover:border-border transition-all duration-300 group"
-                >
-                  <div className="w-14 h-14 bg-[#f5f5f7] rounded-xl flex items-center justify-center text-[#1859b8] mb-6 group-hover:scale-110 transition-transform">
+                <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-8">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-[14px] bg-[#1e6dda] [&>svg]:h-7 [&>svg]:w-7 [&>svg]:text-white">
                     {service.icon}
                   </div>
-                  
-                  <h3 className="text-xl font-bold text-foreground mb-3">{service.title}</h3>
-                  <p className="text-muted-foreground mb-6">{service.description}</p>
-                  
-                  <div className="space-y-3">
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{service.title}</h3>
+                  <p className="mt-2 text-base leading-relaxed text-[#515154]">{service.description}</p>
+                  <div className="my-5 h-px w-full bg-[#e0e0e0]" />
+                  <ul className="space-y-3">
                     {service.features.map((feature, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-[#1859b8] flex-shrink-0" />
-                        <span className="text-sm text-muted-foreground">{feature}</span>
-                      </div>
+                      <li key={i} className="flex items-center gap-3">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-[#1859b8]" />
+                        </span>
+                        <span className="text-[15px] text-[#1d1d1f]">{feature}</span>
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Portfolio */}
-        <section id="portfolio" className="py-12 lg:py-16 bg-background">
+        {/* Dự án tiêu biểu */}
+        <section id="portfolio" className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-primary/10 text-[#144c97] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Star className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Star className="h-4 w-4" />
                 {t('DỰ ÁN TIÊU BIỂU', 'FEATURED PROJECTS')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-6">
-                {t('Kết quả ', 'Results ')}<span className="text-[#1859b8]">{t('thực tế', 'that speak')}</span>
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+                {t('Kết quả ', 'Results ')}
+                <span className="text-[#1859b8]">{t('thực tế', 'that speak')}</span>
               </h2>
             </div>
 
-            <div className="grid lg:grid-cols-3 gap-8">
+            <div className="grid auto-rows-fr gap-6 lg:grid-cols-3 lg:gap-8">
               {portfolioItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="group relative bg-white rounded-2xl overflow-hidden border border-border hover:shadow-2xl transition-all duration-300"
-                >
-                  {/* Image */}
-                  <div className="aspect-[16/10] overflow-hidden">
-                    <Image quality={95}
+                <div key={index} className="flex h-full flex-col overflow-hidden rounded-[18px] border border-[#d2d2d7] bg-white">
+                  <div className="aspect-[16/10] overflow-hidden bg-[#e0e0e0]">
+                    <Image
+                      quality={95}
                       src={item.image}
                       alt={item.title}
                       width={800}
                       height={500}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="h-full w-full object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
-                  
-                  {/* Content */}
-                  <div className="p-6">
-                    <span className="text-xs text-[#1859b8] font-semibold uppercase tracking-wider">{item.category}</span>
-                    <h3 className="text-xl font-bold text-foreground mt-2 mb-4">{item.title}</h3>
-                    
-                    {/* Metrics */}
-                    <div className="grid grid-cols-3 gap-4">
-                      <div>
-                        <div className="text-lg font-bold text-[#1859b8]">{item.metrics.conversion}</div>
-                        <div className="text-xs text-muted-foreground">Conversion</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-[#1859b8]">{item.metrics.speed}</div>
-                        <div className="text-xs text-muted-foreground">PageSpeed</div>
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold text-[#1859b8]">{item.metrics.bounce}</div>
-                        <div className="text-xs text-muted-foreground">Bounce Rate</div>
-                      </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-[#1859b8]">{item.category}</span>
+                    <h3 className="mt-2 text-xl font-semibold leading-snug text-[#1d1d1f]">{item.title}</h3>
+                    <div className="mt-auto grid grid-cols-3 gap-3 pt-6">
+                      {[
+                        { v: item.metrics.conversion, l: 'Conversion' },
+                        { v: item.metrics.speed, l: 'PageSpeed' },
+                        { v: item.metrics.bounce, l: 'Bounce Rate' },
+                      ].map((m) => (
+                        <div key={m.l} className="rounded-[12px] bg-[#f5f5f7] p-3 text-center">
+                          <div className="text-lg font-semibold tabular-nums text-[#1859b8]">{m.v}</div>
+                          <div className="mt-0.5 text-xs text-[#515154]">{m.l}</div>
+                        </div>
+                      ))}
                     </div>
-                  </div>
-                  
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-8">
-                    <button className="flex items-center gap-2 bg-white text-foreground font-semibold px-6 py-3 rounded-full">
-                      {t('Xem chi tiết', 'View details')}
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="text-center mt-12">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
-              >
+            <div className="mt-12 text-center">
+              <Link href="/projects" className="ap-link inline-flex items-center gap-2 font-semibold">
                 {t('Xem tất cả dự án', 'View all projects')}
-                <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section id="contact" className="py-12 lg:py-16 bg-[#1e6dda]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
-              {cta.heading[language]}
-            </h2>
-            <p className="text-xl text-white mb-10 max-w-2xl mx-auto">{cta.description[language]}</p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href={cta.primary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white text-[#1859b8] font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
-              >
-                <Settings className="w-5 h-5" />
-                {cta.primary.label[language]}
-              </Link>
-              <Link
-                href={cta.secondary.href}
-                className="inline-flex items-center justify-center gap-2 bg-[#1859b8] text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all border border-white/30"
-              >
-                {cta.secondary.label[language]}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
+        {/* CTA */}
+        <section id="contact" className="ap-tile ap-dark">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <h2 className="ap-display max-w-[820px]">{cta.heading[language]}</h2>
+              <p className="ap-lead max-w-[680px]">{cta.description[language]}</p>
+              <div className="ap-cta-row mt-2">
+                <Link href={cta.primary.href} className="ap-btn ap-btn-primary">
+                  {cta.primary.label[language]}
+                </Link>
+                <Link href={cta.secondary.href} className="ap-btn ap-btn-ghost">
+                  {cta.secondary.label[language]}
+                </Link>
+              </div>
             </div>
           </div>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
   )
 }
