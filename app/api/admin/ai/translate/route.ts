@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED, aiModuleOffResponse } from '@/lib/ai/module-flag'
 import { createClient } from '@/lib/supabase/server'
 import type { AiSettings } from '@/lib/ai/settings'
 
@@ -9,6 +10,7 @@ export const dynamic = 'force-dynamic'
 // Uses INLINE model config (recommend Haiku/4o-mini — fast + cheap for translation).
 // Returns single JSON via SSE — fields populated per requested keys.
 export async function POST(req: Request) {
+  if (!AI_MODULE_ENABLED) return aiModuleOffResponse()
   const encoder = new TextEncoder()
   const send = (
     controller: ReadableStreamDefaultController,

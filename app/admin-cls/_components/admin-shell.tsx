@@ -1,5 +1,6 @@
 'use client'
 
+import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -72,7 +73,7 @@ const sidebarItems = [
     items: [
       { label: 'Người dùng', href: '/admin-cls/users', icon: Users },
       { label: 'Phân quyền', href: '/admin-cls/roles', icon: Shield },
-      { label: 'AI Assistant', href: '/admin-cls/ai', icon: Sparkles },
+      { label: AI_MODULE_ENABLED ? 'AI Assistant' : 'Chatbot website', href: '/admin-cls/ai', icon: Sparkles },
       { label: 'Cài đặt', href: '/admin-cls/settings', icon: Settings },
     ],
   },

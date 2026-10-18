@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED, aiModuleOffResponse } from '@/lib/ai/module-flag'
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { generateWithAnthropic, generateWithOpenAI } from '@/lib/ai/providers'
@@ -29,6 +30,7 @@ function extractJson(text: string): string {
 }
 
 export async function POST(req: Request) {
+  if (!AI_MODULE_ENABLED) return aiModuleOffResponse()
   try {
     const body = (await req.json()) as {
       topic?: string

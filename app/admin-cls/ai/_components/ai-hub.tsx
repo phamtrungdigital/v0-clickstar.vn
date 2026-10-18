@@ -10,11 +10,16 @@ import type { ChatbotSettings } from '@/lib/cms/chatbot-shared'
 export function AiHub({
   aiInitial,
   chatbotInitial,
+  aiEnabled,
 }: {
   aiInitial: AiSettings | null
   chatbotInitial: ChatbotSettings | null
+  aiEnabled: boolean
 }) {
   const [tab, setTab] = useState<'cms' | 'chatbot'>('cms')
+
+  // Module AI tắt: chỉ hiện cấu hình chatbot website, không có tab Trợ lý CMS
+  if (!aiEnabled) return <ChatbotSettingsForm initial={chatbotInitial} />
 
   return (
     <div className="space-y-3">

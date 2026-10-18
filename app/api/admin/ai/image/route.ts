@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED, aiModuleOffResponse } from '@/lib/ai/module-flag'
 import { createClient } from '@/lib/supabase/server'
 import { generateImageWithOpenAI } from '@/lib/ai/providers'
 import type { AiSettings } from '@/lib/ai/settings'
@@ -10,6 +11,7 @@ export const dynamic = 'force-dynamic'
 // heartbeat events every 3s to keep the connection alive past Vercel's
 // non-streaming 10s function limit.
 export async function POST(req: Request) {
+  if (!AI_MODULE_ENABLED) return aiModuleOffResponse()
   const encoder = new TextEncoder()
   const send = (controller: ReadableStreamDefaultController, type: string, payload: any) => {
     controller.enqueue(

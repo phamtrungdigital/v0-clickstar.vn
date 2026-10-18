@@ -1,5 +1,6 @@
 'use client'
 
+import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import { useState } from 'react'
 import { Sparkles } from 'lucide-react'
 import type { I18n } from '@/lib/cms/types'
@@ -33,6 +34,7 @@ export function I18nInput({ label, value, onChange, multiline, rows = 3, pageCon
             {flag} {lang.toUpperCase()}
           </span>
         </label>
+        {AI_MODULE_ENABLED && (
         <button
           type="button"
           onClick={() => setAiOpen((v) => !v)}
@@ -46,6 +48,7 @@ export function I18nInput({ label, value, onChange, multiline, rows = 3, pageCon
           <Sparkles className="w-3 h-3" />
           AI
         </button>
+        )}
       </div>
       {multiline ? (
         <textarea
@@ -102,7 +105,7 @@ export function TextInput({
         <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
           {label}
         </label>
-        {enableAi && (
+        {enableAi && AI_MODULE_ENABLED && (
           <button
             type="button"
             onClick={() => setAiOpen((v) => !v)}
@@ -127,7 +130,7 @@ export function TextInput({
       />
       {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}
 
-      {enableAi && aiOpen && (
+      {enableAi && AI_MODULE_ENABLED && aiOpen && (
         <AiCompose
           fieldLabel={label}
           currentValue={value}

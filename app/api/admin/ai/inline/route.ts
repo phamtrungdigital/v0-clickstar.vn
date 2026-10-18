@@ -1,3 +1,4 @@
+import { AI_MODULE_ENABLED, aiModuleOffResponse } from '@/lib/ai/module-flag'
 import { createClient } from '@/lib/supabase/server'
 import type { AiSettings, BlogStyle } from '@/lib/ai/settings'
 import { STYLE_PROMPT_HINTS } from '@/lib/ai/settings'
@@ -10,6 +11,7 @@ export const dynamic = 'force-dynamic'
 // Replaces server-action-based generateText so we can stream + bypass
 // non-streaming function timeouts.
 export async function POST(req: Request) {
+  if (!AI_MODULE_ENABLED) return aiModuleOffResponse()
   const encoder = new TextEncoder()
   const send = (
     controller: ReadableStreamDefaultController,
