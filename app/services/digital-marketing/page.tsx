@@ -354,82 +354,57 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
-{/* Problems & Solutions */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+{/* Vấn đề và giải pháp: khối trắng, ảnh minh họa SVG bên trái, 4 thẻ bên phải */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              {/* Left: SVG Illustration */}
-              <div className="relative order-2 lg:order-1">
-                <div className="relative">
-                  {/* Main SVG Illustration */}
-                  <MarketingGrowthIllustration className="w-full h-auto" />
-                </div>
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+              <div className="order-2 lg:order-1">
+                <MarketingGrowthIllustration className="w-full h-auto" />
               </div>
 
-              {/* Right: Content */}
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
-                  <Target className="w-4 h-4" />
+                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                  <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </span>
-                
-                <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold text-foreground leading-tight mb-6">
+                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Doanh nghiệp của bạn đang', 'Is your business')}{' '}
-                  <span className="text-[#1859b8]">
-                    {t('gặp khó khăn?', 'struggling?')}
-                  </span>
+                  <span className="text-[#1859b8]">{t('gặp khó khăn?', 'struggling?')}</span>
                 </h2>
-                
-                <p className="text-lg text-muted-foreground leading-relaxed mb-10">
+                <p className="mt-5 text-lg leading-relaxed text-[#515154]">
                   {t(
                     'Chúng tôi hiểu những thách thức bạn đang đối mặt và có giải pháp cụ thể cho từng vấn đề.',
                     'We understand the challenges you face and have specific solutions for each problem.'
                   )}
                 </p>
 
-                {/* Problems & Solutions List */}
-                <div className="space-y-5">
+                <div className="mt-8 space-y-4">
                   {problems.map((item, index) => (
-                    <div
-                      key={index}
-                      className="group relative bg-white rounded-[18px] p-5 border border-border hover:border-primary/30 transition-all duration-300"
-                    >
-                      <div className="flex items-start gap-4">
-                        {/* Icon */}
-                        <div className="flex-shrink-0 w-12 h-12 rounded-[11px] bg-[#f5f5f7] flex items-center justify-center text-[#1859b8] transition-transform">
-                          {item.icon}
+                    <div key={index} className="flex items-start gap-4 rounded-[18px] border border-[#d2d2d7] bg-white p-5">
+                      <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-[12px] bg-[#eaf2fd] text-[#1859b8]">
+                        {item.icon}
+                      </div>
+                      <div className="min-w-0 flex-1 space-y-3">
+                        <div>
+                          <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">
+                            {t('Vấn đề', 'Problem')}
+                          </span>
+                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
                         </div>
-                        
-                        {/* Content */}
-                        <div className="flex-1 min-w-0">
-                          {/* Problem */}
-                          <div className="flex items-center gap-2 mb-2">
-                            <XCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0" />
-                            <p className="text-foreground font-semibold text-sm line-through decoration-[#1e6dda]">{item.problem}</p>
-                          </div>
-                          
-                          {/* Solution */}
-                          <div className="flex items-start gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
-                            <p className="text-muted-foreground text-sm">{item.solution}</p>
-                          </div>
+                        <div>
+                          <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">
+                            {t('Giải pháp', 'Solution')}
+                          </span>
+                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
                         </div>
-                        
-                        {/* Arrow indicator */}
-                        <ArrowUpRight className="w-5 h-5 text-[#1859b8] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
                       </div>
                     </div>
                   ))}
                 </div>
-                
-                {/* CTA */}
-                <div className="mt-10">
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
-                  >
+
+                <div className="mt-8">
+                  <Link href="/contact" className="ap-link inline-flex items-center gap-2 font-semibold">
                     {t('Tìm hiểu giải pháp cho doanh nghiệp của bạn', 'Find solutions for your business')}
-                    <ArrowRight className="w-5 h-5" />
                   </Link>
                 </div>
               </div>
@@ -537,113 +512,87 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
-        {/* Portal Features */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* Portal: khối trắng, 4 tính năng bên trái, cửa sổ Portal bên phải */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
-                  <Settings className="w-4 h-4" />
+                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                  <Settings className="h-4 w-4" />
                   {t('CLICKSTAR PORTAL', 'CLICKSTAR PORTAL')}
                 </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
+                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                   {t('Theo dõi chiến dịch', 'Track campaigns')}{' '}
                   <span className="text-[#1859b8]">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8">
+                <p className="mt-5 text-lg leading-relaxed text-[#515154]">
                   {t(
                     'Portal riêng cho khách hàng với đầy đủ tính năng: dashboard real-time, báo cáo tự động, chat với team, và approval workflow.',
                     'Dedicated client portal with full features: real-time dashboard, automated reports, team chat, and approval workflow.'
                   )}
                 </p>
 
-                <div className="grid sm:grid-cols-2 gap-4">
+                <div className="mt-8 grid auto-rows-fr gap-4 sm:grid-cols-2">
                   {portalFeatures.map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3 bg-white rounded-[11px] p-4">
-                      <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div key={index} className="flex h-full flex-col rounded-[18px] border border-[#d2d2d7] bg-white p-5">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[#1e6dda] [&>svg]:h-6 [&>svg]:w-6 [&>svg]:text-white">
                         {feature.icon}
                       </div>
-                      <div>
-                        <h4 className="font-semibold text-foreground">{feature.title}</h4>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                      </div>
+                      <h4 className="mt-4 text-[17px] font-semibold leading-snug text-[#1d1d1f]">{feature.title}</h4>
+                      <p className="mt-1.5 text-[15px] leading-relaxed text-[#515154]">{feature.description}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Portal Preview */}
-              <div className="relative">
-                <div className="bg-white rounded-[18px] overflow-hidden border border-border">
-                  {/* Browser header */}
-                  <div className="bg-[#f5f5f7] px-4 py-3 flex items-center gap-2 border-b border-border">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                    </div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="bg-white rounded-lg px-4 py-1 text-sm text-[#515154]">
-                        portal.clickstar.vn
-                      </div>
-                    </div>
+              {/* Cửa sổ Portal: ảnh sản phẩm, bóng đổ duy nhất của khối */}
+              <div className="rounded-[18px] border border-[#d2d2d7] bg-white overflow-hidden shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0]">
+                <div className="flex items-center gap-2 border-b border-[#e0e0e0] bg-[#f5f5f7] px-4 py-3">
+                  <div className="flex gap-1.5">
+                    <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                    <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                    <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
                   </div>
-
-                  {/* Dashboard preview */}
-                  <div className="p-6 bg-[#f5f5f7]">
-                    <div className="flex items-center justify-between mb-6">
-                      <div>
-                        <h4 className="font-semibold text-foreground">{t('Dashboard Overview', 'Dashboard Overview')}</h4>
-                        <p className="text-sm text-muted-foreground">{t('Cập nhật 5 phút trước', 'Updated 5 minutes ago')}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <span className="px-3 py-1 bg-[#f5f5f7] text-[#1859b8] text-sm rounded-full">{t('Đang chạy', 'Running')}</span>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-4 mb-6">
-                      <div className="bg-white rounded-[11px] p-4">
-                        <div className="text-sm text-muted-foreground mb-1">{t('Chi tiêu', 'Spend')}</div>
-                        <div className="text-xl font-semibold text-foreground">45.2M</div>
-                        <div className="text-xs text-[#1859b8]">{t('+12% vs tuần trước', '+12% vs last week')}</div>
-                      </div>
-                      <div className="bg-white rounded-[11px] p-4">
-                        <div className="text-sm text-muted-foreground mb-1">{t('Leads', 'Leads')}</div>
-                        <div className="text-xl font-semibold text-foreground">324</div>
-                        <div className="text-xs text-[#1859b8]">{t('+28% vs tuần trước', '+28% vs last week')}</div>
-                      </div>
-                      <div className="bg-white rounded-[11px] p-4">
-                        <div className="text-sm text-muted-foreground mb-1">ROAS</div>
-                        <div className="text-xl font-semibold text-foreground">3.8x</div>
-                        <div className="text-xs text-[#1859b8]">{t('+0.5 vs tuần trước', '+0.5 vs last week')}</div>
-                      </div>
-                    </div>
-
-                    {/* Chart placeholder */}
-                    <div className="bg-white rounded-[11px] p-4">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="font-semibold text-foreground">{t('Hiệu suất theo ngày', 'Daily Performance')}</span>
-                        <LineChart className="w-5 h-5 text-muted-foreground" />
-                      </div>
-                      <div className="h-32 flex items-end justify-between gap-2">
-                        {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
-                          <div key={i} className="flex-1 bg-primary/20 rounded-t" style={{ height: `${h}%` }}>
-                            <div className="w-full bg-[#1e6dda] rounded-t" style={{ height: `${h * 0.7}%` }} />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                  <div className="flex flex-1 justify-center">
+                    <div className="rounded-lg bg-white px-4 py-1 text-sm text-[#515154]">portal.clickstar.vn</div>
                   </div>
                 </div>
 
-                {/* Floating notification */}
-                <div className="absolute -bottom-4 -right-4 bg-white rounded-[11px] p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#f5f5f7] rounded-full flex items-center justify-center">
-                    <ThumbsUp className="w-5 h-5 text-[#1859b8]" />
+                <div className="bg-[#f5f5f7] p-5 sm:p-6">
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <div>
+                      <h4 className="text-base font-semibold text-[#1d1d1f]">{t('Dashboard Overview', 'Dashboard Overview')}</h4>
+                      <p className="text-sm text-[#515154]">{t('Cập nhật 5 phút trước', 'Updated 5 minutes ago')}</p>
+                    </div>
+                    <span className="rounded-full bg-[#1e6dda] px-3 py-1 text-sm text-white">{t('Đang chạy', 'Running')}</span>
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold text-foreground">{t('Chiến dịch đạt KPI!', 'Campaign hit KPI!')}</div>
-                    <div className="text-xs text-muted-foreground">{t('Vừa xong', 'Just now')}</div>
+
+                  <div className="mb-4 grid grid-cols-3 gap-3">
+                    {[
+                      { k: t('Chi tiêu', 'Spend'), v: '45.2M', d: t('+12% vs tuần trước', '+12% vs last week') },
+                      { k: t('Leads', 'Leads'), v: '324', d: t('+28% vs tuần trước', '+28% vs last week') },
+                      { k: 'ROAS', v: '3.8x', d: t('+0.5 vs tuần trước', '+0.5 vs last week') },
+                    ].map((m) => (
+                      <div key={m.k} className="min-w-0 rounded-[12px] border border-[#e0e0e0] bg-white p-3.5">
+                        <div className="text-sm text-[#515154]">{m.k}</div>
+                        <div className="mt-0.5 text-xl font-semibold tabular-nums text-[#1d1d1f]">{m.v}</div>
+                        <div className="mt-0.5 text-xs font-medium text-[#1859b8]">{m.d}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="rounded-[12px] border border-[#e0e0e0] bg-white p-4">
+                    <div className="mb-4 flex items-center justify-between">
+                      <span className="text-sm font-semibold text-[#1d1d1f]">{t('Hiệu suất theo ngày', 'Daily Performance')}</span>
+                      <LineChart className="h-5 w-5 text-[#515154]" />
+                    </div>
+                    <div className="flex h-32 items-end justify-between gap-2">
+                      {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
+                        <div key={i} className="flex flex-1 items-end rounded-t bg-[#eaf2fd]" style={{ height: `${h}%` }}>
+                          <div className="w-full rounded-t bg-[#1e6dda]" style={{ height: `${h * 0.7}%` }} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -651,46 +600,44 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
-        {/* Case Studies */}
-        <section id="case-studies" className="py-12 lg:py-16 bg-background">
+        {/* Case studies: khối xám nhạt, 3 thẻ đều nhau, ảnh có lớp phủ tối để nhãn đọc rõ */}
+        <section id="case-studies" className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-muted-foreground">
-                <TrendingUp className="w-4 h-4" />
+            <div className="mb-12 text-center lg:mb-14">
+              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <TrendingUp className="h-4 w-4" />
                 {t('CASE STUDIES', 'CASE STUDIES')}
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-foreground mb-6">
+              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Kết quả', 'Results')}{' '}
                 <span className="text-[#1859b8]">{t('thực tế', 'in action')}</span>
               </h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid auto-rows-fr gap-6 md:grid-cols-3 lg:gap-8">
               {caseStudies.map((study, index) => (
-                <div
-                  key={index}
-                  className="group bg-white rounded-[18px] overflow-hidden border border-border transition-all duration-300"
-                >
-                  <div className="relative h-48 bg-[#f5f5f7]">
-                    <Image quality={95}
+                <div key={index} className="flex h-full flex-col overflow-hidden rounded-[18px] border border-[#d2d2d7] bg-white">
+                  <div className="relative h-52 bg-[#e0e0e0]">
+                    <Image
+                      quality={95}
                       src={study.logo}
                       alt={study.industry}
                       fill
-                      className="object-cover transition-transform duration-500"
+                      className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
-                    <div className="absolute inset-0 bg-[#f5f5f7]" />
-                    <span className="absolute bottom-4 left-4 bg-white/90 text-foreground text-sm font-normal px-3 py-1 rounded-full">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+                    <span className="absolute bottom-4 left-4 rounded-full bg-white px-3 py-1 text-sm font-medium text-[#1d1d1f]">
                       {study.industry}
                     </span>
                   </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-foreground mb-4">{study.title}</h3>
-                    <div className="flex gap-4">
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-xl font-semibold leading-snug text-[#1d1d1f]">{study.title}</h3>
+                    <div className="mt-auto flex gap-3 pt-6">
                       {study.metrics.map((metric, idx) => (
-                        <div key={idx} className="flex-1 bg-secondary/50 rounded-[11px] p-3 text-center">
-                          <div className="text-lg font-semibold text-[#1859b8]">{metric.value}</div>
-                          <div className="text-xs text-muted-foreground">{metric.label}</div>
+                        <div key={idx} className="flex-1 rounded-[12px] bg-[#f5f5f7] p-3.5 text-center">
+                          <div className="text-2xl font-semibold tabular-nums tracking-tight text-[#1859b8]">{metric.value}</div>
+                          <div className="mt-0.5 text-[13px] text-[#515154]">{metric.label}</div>
                         </div>
                       ))}
                     </div>
@@ -699,13 +646,9 @@ export default function DigitalMarketingPage() {
               ))}
             </div>
 
-            <div className="text-center mt-12">
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all"
-              >
+            <div className="mt-12 text-center">
+              <Link href="/projects" className="ap-link inline-flex items-center gap-2 font-semibold">
                 {t('Xem tất cả case studies', 'View all case studies')}
-                <ArrowUpRight className="w-5 h-5" />
               </Link>
             </div>
           </div>
