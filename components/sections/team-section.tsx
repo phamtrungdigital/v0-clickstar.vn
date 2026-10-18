@@ -8,25 +8,30 @@ import { useTeamMembers } from '@/contexts/team-members-context'
 import type { TeamContent, TeamMemberItem } from '@/lib/cms/types'
 import type { TeamMember } from '@/lib/cms/team-members-types'
 
-/** Vai trò kỹ thuật: gom vào khối "Công nghệ & kỹ thuật". Theo từ khoá trong chức danh nên thêm người mới ở admin là tự vào đúng khối. */
-const TECH_ROLE_RE = /(software|web|app\b|develop|engineer|machine|\bai\b|technolog|data|devops|security|architect|analyst|kỹ sư|lập trình|công nghệ|phân tích)/i
+/**
+ * Vị trí cắt ảnh: mặt luôn nằm ở nửa trên khung, vùng chữ chỉ che phần thân.
+ * Ảnh chân dung dọc của đội đều chụp từ ngực trở lên nên 18% là đủ để lấy trọn đầu và tóc.
+ */
+const FACE_POS = '50% 18%'
+/** Ảnh lead hiện là ảnh ngang, mặt lệch trái tâm một chút. */
+const LEAD_POS = '45% 26%'
 
-/** Mô tả ngắn theo vai trò (nói về công việc của vị trí đó, không phải thành tích cá nhân). */
-const ROLE_NOTES: { re: RegExp; vi: string; en: string }[] = [
-  { re: /software|web|app\b|develop|lập trình/i, vi: 'Xây dựng website, ứng dụng và hệ thống theo yêu cầu.', en: 'Builds websites, apps and custom systems.' },
-  { re: /machine|\bai\b/i, vi: 'Đưa mô hình AI vào quy trình làm việc của doanh nghiệp.', en: 'Brings AI models into business workflows.' },
-  { re: /technolog|architect|công nghệ/i, vi: 'Tư vấn kiến trúc và lựa chọn công nghệ phù hợp.', en: 'Advises on architecture and the right technology choices.' },
-  { re: /analyst|phân tích/i, vi: 'Chuyển nhu cầu nghiệp vụ thành đặc tả cho đội kỹ thuật.', en: 'Turns business needs into specs for the engineering team.' },
+/** Chức danh nhận ra lead của đội (tìm theo từ khoá trong chức danh tiếng Anh hoặc tiếng Việt). */
+const LEAD_ROLE_RE = /(\blead\b|\bhead\b|director|chief|founder|\bceo\b|consultant|trưởng|giám đốc|tư vấn công nghệ)/i
+
+/** Dùng cho lưới 5 người xung quanh lead (bố cục bento). Khác 5 người thì chuyển sang lưới đều. */
+const BENTO_PLACE = [
+  'lg:col-span-1 lg:col-start-1 lg:row-start-1 lg:row-span-7',
+  'lg:col-span-1 lg:col-start-3 lg:row-start-1 lg:row-span-7',
+  'lg:col-span-1 lg:col-start-1 lg:row-start-8 lg:row-span-7',
+  'lg:col-span-1 lg:col-start-3 lg:row-start-8 lg:row-span-7',
+  'lg:col-span-1 lg:col-start-2 lg:row-start-9 lg:row-span-6',
 ]
 
-/** Công nghệ đội dùng hằng ngày (cùng danh sách ở trang Phần mềm theo yêu cầu). */
-const STACK = ['Next.js', 'React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Supabase', 'Vercel', 'Claude API', 'Meta Marketing API', 'Zalo ZNS']
-
 const socialClass =
-  'w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#d2d2d7] hover:bg-[#1e6dda] hover:text-white transition-colors duration-200'
+  'flex h-8 w-8 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur-sm transition-colors duration-200 hover:bg-[#1e6dda]'
 
-function Socials({ member, tone }: { member: TeamMemberItem; tone: 'dark' | 'light' }) {
-  const cls = tone === 'dark' ? socialClass : 'w-8 h-8 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-colors duration-200'
+function Socials({ member }: { member: TeamMemberItem }) {
   const links = [
     { href: member.linkedin, Icon: Linkedin, label: 'LinkedIn' },
     { href: member.facebook, Icon: Facebook, label: 'Facebook' },
@@ -35,67 +40,65 @@ function Socials({ member, tone }: { member: TeamMemberItem; tone: 'dark' | 'lig
   ].filter((l) => l.href && l.href !== '#')
   if (links.length === 0) return null
   return (
-    <div className="mt-4 flex items-center gap-2">
+    <div className="mt-3 flex items-center gap-2">
       {links.map(({ href, Icon, label }) => (
-        <Link key={label} href={href!} className={cls} aria-label={`${member.name} on ${label}`}>
-          <Icon className="w-4 h-4" />
+        <Link key={label} href={href!} className={socialClass} aria-label={`${member.name} on ${label}`}>
+          <Icon className="h-4 w-4" />
         </Link>
       ))}
     </div>
   )
 }
 
-/** Thẻ kỹ sư: ảnh dọc, số thứ tự dạng mã, chức danh kiểu nhãn kỹ thuật. */
-function EngineerCard({ member, role, note, index, itemIndex }: { member: TeamMemberItem; role: string; note: string; index: number; itemIndex: number }) {
+/** Ô ảnh: ảnh phủ kín, chữ nằm ở dải mờ phía dưới nên mặt không bị che. */
+function Tile({
+  member,
+  role,
+  itemIndex,
+  className,
+  lead = false,
+  leadLabel,
+  position = FACE_POS,
+  sizes,
+}: {
+  member: TeamMemberItem
+  role: string
+  itemIndex: number
+  className: string
+  lead?: boolean
+  leadLabel?: string
+  position?: string
+  sizes: string
+}) {
   return (
     <div
       data-cms-field="member"
       data-cms-item-index={itemIndex}
-      className="group flex h-full flex-col overflow-hidden rounded-[18px] border border-white/15 bg-[#1d1d1f] transition-colors duration-300 hover:border-[#1e6dda]"
+      className={`group relative overflow-hidden rounded-[20px] bg-[#1d1d1f] sm:rounded-3xl ${
+        lead ? 'shadow-[0_0_0_3px_#1e6dda,0_22px_50px_-20px_rgba(30,109,218,0.6)]' : ''
+      } ${className}`}
     >
-      <div className="relative aspect-[4/5] overflow-hidden bg-[#2c2c2e]">
-        <Image
-          quality={95}
-          src={member.image}
-          alt={member.name}
-          fill
-          className="object-cover object-[50%_28%] transition-transform duration-500 group-hover:scale-105"
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#1d1d1f] via-transparent to-transparent opacity-80" />
-        <span className="absolute left-3 top-3 rounded-md bg-black/55 px-2 py-1 font-mono text-[11px] tracking-wider text-[#7db8ff] backdrop-blur-sm">
-          {String(index + 1).padStart(2, '0')}
+      <Image
+        quality={95}
+        src={member.image}
+        alt={member.name}
+        fill
+        sizes={sizes}
+        className="scale-[1.08] object-cover transition-transform duration-500 group-hover:scale-[1.13]"
+        style={{ objectPosition: position, transformOrigin: '50% 22%' }}
+      />
+      {/* Dải mờ chỉ ở phần chân ô, đủ đọc chữ mà không làm tối khuôn mặt */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[46%] bg-gradient-to-t from-black/80 via-black/35 to-transparent sm:h-[38%] lg:h-[34%] lg:from-black/75 lg:via-black/30" />
+      {lead && leadLabel && (
+        <span className="absolute left-4 top-4 rounded-full bg-[#1e6dda] px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-white sm:left-5 sm:top-5">
+          {leadLabel}
         </span>
+      )}
+      <div className="absolute inset-x-0 bottom-0 p-4 text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] sm:p-5">
+        <h3 className={`font-extrabold leading-tight ${lead ? 'text-2xl sm:text-[28px]' : 'text-lg sm:text-xl'}`}>{member.name}</h3>
+        <p className={`mt-1 leading-snug text-[#e5e5ea] ${lead ? 'text-sm sm:text-[15px]' : 'text-[13px]'}`}>{role}</p>
+        <Socials member={member} />
       </div>
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
-        <h3 className="text-base font-semibold leading-tight text-white sm:text-lg">{member.name}</h3>
-        <p className="mt-2 inline-flex w-fit max-w-full items-center rounded-md border border-[#7db8ff]/35 bg-[#7db8ff]/10 px-2 py-1 font-mono text-[11px] leading-snug text-[#7db8ff] sm:text-xs">
-          {role}
-        </p>
-        {note && <p className="mt-3 text-[13px] leading-relaxed text-[#d2d2d7] sm:text-sm">{note}</p>}
-        <div className="mt-auto">
-          <Socials member={member} tone="dark" />
-        </div>
-      </div>
-    </div>
-  )
-}
-
-/** Thẻ nhỏ cho khối marketing và thiết kế. */
-function CompactCard({ member, role, itemIndex }: { member: TeamMemberItem; role: string; itemIndex: number }) {
-  return (
-    <div
-      data-cms-field="member"
-      data-cms-item-index={itemIndex}
-      className="flex items-center gap-3 rounded-full border border-white/15 bg-[#1d1d1f] py-2 pl-2 pr-5"
-    >
-      <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#2c2c2e]">
-        <Image quality={95} src={member.image} alt={member.name} fill className="object-cover object-[50%_25%]" sizes="48px" />
-      </span>
-      <span className="min-w-0">
-        <span className="block truncate text-sm font-semibold leading-tight text-white">{member.name}</span>
-        <span className="block truncate text-xs text-[#d2d2d7]">{role}</span>
-      </span>
     </div>
   )
 }
@@ -121,100 +124,104 @@ export function TeamSection({ content }: { content: TeamContent }) {
   const members: TeamMemberItem[] = sharedMembers && sharedMembers.length > 0 ? sharedMembers.map(toMemberItem) : content.members
 
   const roleOf = (m: TeamMemberItem) => (language === 'vi' ? m.role.vi || m.role.en : m.role.en || m.role.vi)
-  const entries = members.map((m, i) => ({ m, i, role: roleOf(m), tech: TECH_ROLE_RE.test(`${m.role.en} ${m.role.vi}`) }))
-  const tech = entries.filter((e) => e.tech)
-  const others = entries.filter((e) => !e.tech)
-  const noteOf = (m: TeamMemberItem) => {
-    const hit = ROLE_NOTES.find((n) => n.re.test(`${m.role.en} ${m.role.vi}`))
-    return hit ? t(hit.vi, hit.en) : ''
-  }
+  const entries = members.filter((m) => m.image).map((m) => ({ m, i: members.indexOf(m), role: roleOf(m) }))
+  // Lead đặt ở giữa: người đầu tiên có chức danh trưởng nhóm / tư vấn công nghệ; không ai khớp thì lấy người đầu danh sách.
+  const leadAt = Math.max(0, entries.findIndex((e) => LEAD_ROLE_RE.test(`${e.m.role.en} ${e.m.role.vi}`)))
+  const lead = entries[leadAt]
+  const others = entries.filter((_, k) => k !== leadAt)
+  const leadLabel = t('Trưởng nhóm', 'Team lead')
+  const isBento = others.length === 5
 
   return (
-    <section data-cms-section="team" className="bg-[#272729] py-16 text-white lg:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section data-cms-section="team" className="bg-background py-16 lg:py-24">
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mx-auto mb-12 max-w-3xl text-center lg:mb-14">
           <span
             data-cms-field="eyebrow"
-            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-medium text-[#d2d2d7]"
+            className="mb-5 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-[#144c97]"
           >
-            <span className="h-1.5 w-1.5 rounded-full bg-[#7db8ff]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </span>
-          <h2 data-cms-field="heading" className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-balance sm:text-4xl lg:text-5xl">
+          <h2 data-cms-field="heading" className="text-3xl font-extrabold leading-tight text-balance text-foreground sm:text-4xl lg:text-5xl">
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
-            <span className="text-[#7db8ff]">{t(content.heading_highlight.vi, content.heading_highlight.en)}</span>
+            <span className="text-[#1859b8]">{t(content.heading_highlight.vi, content.heading_highlight.en)}</span>
           </h2>
-          <p data-cms-field="description" className="mx-auto mt-5 max-w-2xl text-lg text-[#d2d2d7] text-pretty">
+          <p data-cms-field="description" className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground text-pretty">
             {t(content.description.vi, content.description.en)}
           </p>
         </div>
 
-        {tech.length > 0 ? (
-          <>
-            {/* Khối kỹ sư và công nghệ */}
-            <div className="mb-5 flex items-center gap-3">
-              <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-[#7db8ff] sm:text-sm">
-                {t('Công nghệ & kỹ thuật', 'Technology & engineering')}
-              </h3>
-              <span className="h-px flex-1 bg-white/15" />
-              <span className="font-mono text-xs text-[#d2d2d7]">{String(tech.length).padStart(2, '0')}</span>
-            </div>
-            <div className="grid auto-rows-fr grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
-              {tech.map((e, idx) => (
-                <EngineerCard key={e.i} member={e.m} role={e.role} note={noteOf(e.m)} index={idx} itemIndex={e.i} />
-              ))}
-            </div>
-
-            {/* Công nghệ sử dụng hằng ngày */}
-            <div className="mt-8 rounded-[18px] border border-white/15 bg-[#1d1d1f] p-4 sm:p-5">
-              <p className="mb-3 font-mono text-[11px] uppercase tracking-[0.14em] text-[#d2d2d7]">{t('Công nghệ dùng hằng ngày', 'Technology we use daily')}</p>
-              <ul className="flex flex-wrap gap-2">
-                {STACK.map((s) => (
-                  <li key={s} className="rounded-md border border-white/15 bg-white/5 px-2.5 py-1 font-mono text-xs text-white">
-                    {s}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Khối marketing và thiết kế */}
-            {others.length > 0 && (
-              <>
-                <div className="mb-5 mt-12 flex items-center gap-3">
-                  <h3 className="font-mono text-xs uppercase tracking-[0.14em] text-[#7db8ff] sm:text-sm">{t('Marketing & thiết kế', 'Marketing & design')}</h3>
-                  <span className="h-px flex-1 bg-white/15" />
-                  <span className="font-mono text-xs text-[#d2d2d7]">{String(others.length).padStart(2, '0')}</span>
-                </div>
-                <div className="flex flex-wrap gap-3">
-                  {others.map((e) => (
-                    <CompactCard key={e.i} member={e.m} role={e.role} itemIndex={e.i} />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          // Chưa có vai trò kỹ thuật nào: hiện chung một lưới thẻ nhỏ
-          <div className="flex flex-wrap justify-center gap-3">
-            {entries.map((e) => (
-              <CompactCard key={e.i} member={e.m} role={e.role} itemIndex={e.i} />
+        {lead && isBento && (
+          // Bento: lead là ô cao ở giữa, 4 người hai bên, 1 người dưới lead. Dưới lg: lead trên cùng, 4 ô đôi, ô cuối trải hết hàng.
+          <div className="grid grid-cols-2 gap-3 sm:gap-3.5 lg:h-[860px] lg:grid-cols-[1fr_1.3fr_1fr] lg:grid-rows-[repeat(14,minmax(0,1fr))] xl:h-[940px]">
+            <Tile
+              member={lead.m}
+              role={lead.role}
+              itemIndex={lead.i}
+              lead
+              leadLabel={leadLabel}
+              position={LEAD_POS}
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="col-span-2 aspect-[4/5] sm:aspect-[4/3] lg:col-span-1 lg:col-start-2 lg:row-start-1 lg:row-span-8 lg:aspect-auto"
+            />
+            {others.map((e, idx) => (
+              <Tile
+                key={e.i}
+                member={e.m}
+                role={e.role}
+                itemIndex={e.i}
+                position={idx === 4 ? '50% 10%' : FACE_POS}
+                sizes="(max-width: 1024px) 50vw, 32vw"
+                className={`${idx === 4 ? 'col-span-2 aspect-[4/3]' : 'aspect-[3/4]'} lg:aspect-auto ${BENTO_PLACE[idx]}`}
+              />
             ))}
+          </div>
+        )}
+
+        {lead && !isBento && (
+          // Số người khác 5: lead ở giữa phía trên, những người còn lại xếp đều bên dưới.
+          <div className="flex flex-col items-center gap-3 sm:gap-3.5">
+            <Tile
+              member={lead.m}
+              role={lead.role}
+              itemIndex={lead.i}
+              lead
+              leadLabel={leadLabel}
+              position={LEAD_POS}
+              sizes="(max-width: 640px) 100vw, 440px"
+              className="aspect-[4/5] w-full max-w-[440px] sm:aspect-[4/3]"
+            />
+            {others.length > 0 && (
+              <div className="flex w-full flex-wrap justify-center gap-3 sm:gap-3.5">
+                {others.map((e) => (
+                  <Tile
+                    key={e.i}
+                    member={e.m}
+                    role={e.role}
+                    itemIndex={e.i}
+                    sizes="(max-width: 640px) 50vw, 25vw"
+                    className="aspect-[3/4] w-[calc(50%-6px)] sm:w-[calc(33.333%-10px)] lg:w-[calc(25%-11px)]"
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
         {/* CTA (chỉ hiện khi CMS có nhãn nút) */}
         {(content.cta_label?.vi || content.cta_label?.en) && (
-        <div className="mt-14 text-center">
-          <Link
-            data-cms-field="cta"
-            href={content.cta_href}
-            className="group inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-semibold text-[#1d1d1f] transition-all duration-300 hover:gap-3 hover:bg-[#f5f5f7]"
-          >
-            {t(content.cta_label.vi, content.cta_label.en)}
-            <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
+          <div className="mt-14 text-center">
+            <Link
+              data-cms-field="cta"
+              href={content.cta_href}
+              className="group inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-4 font-semibold text-background transition-all duration-300 hover:gap-3 hover:bg-foreground/90 hover:shadow-lg"
+            >
+              {t(content.cta_label.vi, content.cta_label.en)}
+              <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+            </Link>
+          </div>
         )}
       </div>
     </section>
