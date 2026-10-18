@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { PostStatus } from '@/lib/cms/posts'
@@ -109,6 +109,8 @@ export async function savePost(id: string | 'new', input: PostUpdate) {
     }
     if (res.error) return { error: res.error.message }
     revalidatePath('/blog')
+    revalidatePath('/')
+    updateTag('posts')
     revalidatePath(`/blog/${res.data.slug}`)
     revalidatePath('/admin-cls/posts')
     redirect(`/admin-cls/posts/${res.data.id}/edit?created=1`)
@@ -122,6 +124,8 @@ export async function savePost(id: string | 'new', input: PostUpdate) {
     }
     if (error) return { error: error.message }
     revalidatePath('/blog')
+    revalidatePath('/')
+    updateTag('posts')
     revalidatePath(`/blog/${input.slug}`)
     revalidatePath('/admin-cls/posts')
     revalidatePath(`/admin-cls/posts/${id}/edit`)
@@ -134,6 +138,8 @@ export async function deletePost(id: string, slug: string) {
   const { error } = await supabase.from('posts').delete().eq('id', id)
   if (error) return { error: error.message }
   revalidatePath('/blog')
+  revalidatePath('/')
+  updateTag('posts')
   revalidatePath(`/blog/${slug}`)
   revalidatePath('/admin-cls/posts')
   redirect('/admin-cls/posts')

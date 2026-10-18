@@ -13,6 +13,7 @@ import { LogoMarquee } from '@/components/sections/logo-marquee'
 import { Footer } from '@/components/layout/footer'
 // EditModeOverlay moved to app/layout.tsx — covers all pages now
 import { getPublishedPage } from '@/lib/cms/queries'
+import { getLatestPosts, type LatestPost } from '@/lib/cms/posts'
 import { getSection, type AboutTimelineItem, type I18n, type Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -50,7 +51,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 type AboutExtra = { timeline?: AboutTimelineItem[]; industries?: I18n[] }
 
-function renderSection(section: Section, extra: AboutExtra) {
+function renderSection(section: Section, extra: AboutExtra, latestPosts: LatestPost[]) {
   if (!section.enabled) return null
   switch (section.type) {
     case 'hero':
@@ -70,7 +71,7 @@ function renderSection(section: Section, extra: AboutExtra) {
     case 'faq':
       return <FAQSection key={section.id} content={section.content} />
     case 'blog':
-      return <BlogSection key={section.id} content={section.content} />
+      return <BlogSection key={section.id} content={section.content} posts={latestPosts} />
     case 'cta':
       return <CTASection key={section.id} content={section.content} />
     case 'client_logos':
@@ -84,7 +85,7 @@ function renderSection(section: Section, extra: AboutExtra) {
 }
 
 export default async function Home() {
-  const [page, aboutPage] = await Promise.all([getPublishedPage('home'), getPublishedPage('about')])
+  const [page, aboutPage, latestPosts] = await Promise.all([getPublishedPage('home'), getPublishedPage('about'), getLatestPosts(3)])
   if (!page) notFound()
   // Khối About ở trang chủ dùng lại mốc phát triển và ngành nghề của trang Giới thiệu (một nguồn nhập liệu)
   const extra: AboutExtra = {
@@ -99,7 +100,7 @@ export default async function Home() {
       <MainNav />
 
       {page.sections.map((section) => (
-        <div key={section.id}>{renderSection(section, extra)}</div>
+        <div key={section.id}>{renderSection(section, extra, latestPosts)}</div>
       ))}
 
       <Footer />

@@ -1,4 +1,6 @@
+import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createPublicClient } from '@/lib/supabase/public'
 import type { I18n } from './types'
 
 export type PostStatus = 'draft' | 'published'
@@ -60,3 +62,38 @@ export async function getPostForAdmin(id: string): Promise<Post | null> {
   const { data } = await supabase.from('posts').select('*').eq('id', id).maybeSingle()
   return (data as unknown as Post) || null
 }
+
+/** Bài hiển thị ở khối tin tức trang chủ (chỉ các trường cần cho thẻ bài). */
+export type LatestPost = {
+  id: string
+  slug: string
+  title: I18n
+  excerpt: I18n
+  cover_image: string | null
+  tags: string[]
+  published_at: string | null
+}
+
+/**
+ * N bài đã đăng mới nhất, dùng cho trang chủ. Cache 5 phút (và xoá khi admin lưu bài, tag `posts`)
+ * bằng client không cookie để trang chủ vẫn render tĩnh.
+ */
+export async function getLatestPosts(limit = 3): Promise<LatestPost[]> {
+  const cached = unstable_cache(
+    async (n: number): Promise<LatestPost[]> => {
+      const supabase = createPublicClient()
+      const { data, error } = await supabase
+        .from('posts')
+        .select('id, slug, title, excerpt, cover_image, tags, published_at')
+        .eq('status', 'published')
+        .order('published_at', { ascending: false, nullsFirst: false })
+        .limit(n)
+      if (error || !data) return []
+      return data as unknown as LatestPost[]
+    },
+    ['latest-posts'],
+    { tags: ['posts'], revalidate: 300 }
+  )
+  return cached(limit)
+}
+

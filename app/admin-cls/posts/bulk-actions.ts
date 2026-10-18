@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { countExpertPlaceholders } from '@/lib/ai/content-rules'
 
@@ -19,6 +19,8 @@ export async function bulkDeletePosts(ids: string[]): Promise<{ ok?: number; err
   if (error) return { error: error.message }
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
+  revalidatePath('/')
+  updateTag('posts')
   return { ok: count ?? ids.length }
 }
 
@@ -72,5 +74,7 @@ export async function bulkSetStatus(
 
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
+  revalidatePath('/')
+  updateTag('posts')
   return { ok: count ?? ids.length }
 }
