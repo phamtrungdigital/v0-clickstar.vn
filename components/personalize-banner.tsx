@@ -36,6 +36,45 @@ const EN_FALLBACK_MESSAGE = 'Click Star can help you find the right solution. Bo
 const EN_HEADER = 'Suggested for you'
 const EN_CTA = 'Book a free consultation'
 
+/**
+ * Lời nhắn của banner theo ngôn ngữ: chiến dịch AI thì hỏi API (có cache theo ngôn ngữ), còn lại dùng
+ * câu dự phòng. Tách riêng để dùng cả lúc banner hiện lần đầu lẫn khi khách đổi VI/EN lúc banner đang mở.
+ */
+async function resolveMessage(camp: PersonalizeCampaign, lang: string, visited: string[]): Promise<string> {
+  const fallbackMsg = lang === 'en' ? EN_FALLBACK_MESSAGE : camp.content.fallback_message
+  if (!camp.content.use_ai) return fallbackMsg
+
+  const aiCacheKey = `${AI_CACHE_KEY}:${lang}:${camp.id}:${visited.slice(-10).join('|')}`
+  try {
+    const cached = sessionStorage.getItem(aiCacheKey)
+    if (cached) {
+      const p = JSON.parse(cached)
+      if (Date.now() - p.ts < AI_CACHE_TTL) return p.message
+    }
+  } catch {}
+
+  try {
+    const res = await fetch('/api/ai/personalize', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        interests: visited.slice(-5),
+        recent_pages: visited.slice(-5),
+        prompt_hint: camp.content.ai_prompt_hint || '',
+        lang,
+      }),
+    })
+    const json = (await res.json()) as Partial<AiMessageResponse>
+    const msg = json.message || fallbackMsg
+    try {
+      sessionStorage.setItem(aiCacheKey, JSON.stringify({ message: msg, ts: Date.now() }))
+    } catch {}
+    return msg
+  } catch {
+    return fallbackMsg
+  }
+}
+
 function renderIcon(name: string, className: string) {
   const Icon = (Icons as unknown as Record<string, LucideIcon>)[name] ?? Icons.Sparkles
   return <Icon className={className} />
@@ -48,6 +87,7 @@ export function PersonalizeBanner() {
   const pathname = usePathname()
   const [campaign, setCampaign] = useState<PersonalizeCampaign | null>(null)
   const [aiMessage, setAiMessage] = useState<string | null>(null)
+  const [msgLang, setMsgLang] = useState<string | null>(null)
   const [visible, setVisible] = useState(false)
   const [animating, setAnimating] = useState(false)
 
@@ -87,47 +127,8 @@ export function PersonalizeBanner() {
       const delayTimer = setTimeout(async () => {
         setCampaign(camp)
 
-        // AI mode: fetch dynamic message
-        if (camp.content.use_ai) {
-          // Try AI cache (key = campaign.id + interests hash)
-          const interests = ctx.visited_pages.slice(-10).join('|')
-          const aiCacheKey = `${AI_CACHE_KEY}:${language}:${camp.id}:${interests}`
-          const fallbackMsg = language === 'en' ? EN_FALLBACK_MESSAGE : camp.content.fallback_message
-          try {
-            const cached = sessionStorage.getItem(aiCacheKey)
-            if (cached) {
-              const p = JSON.parse(cached)
-              if (Date.now() - p.ts < AI_CACHE_TTL) {
-                setAiMessage(p.message)
-                showBanner()
-                return
-              }
-            }
-          } catch {}
-
-          try {
-            const res = await fetch('/api/ai/personalize', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                interests: ctx.visited_pages.slice(-5),
-                recent_pages: ctx.visited_pages.slice(-5),
-                prompt_hint: camp.content.ai_prompt_hint || '',
-                lang: language,
-              }),
-            })
-            const json = (await res.json()) as Partial<AiMessageResponse>
-            const msg = json.message || fallbackMsg
-            setAiMessage(msg)
-            try {
-              sessionStorage.setItem(aiCacheKey, JSON.stringify({ message: msg, ts: Date.now() }))
-            } catch {}
-          } catch {
-            setAiMessage(fallbackMsg)
-          }
-        } else {
-          setAiMessage(language === 'en' ? EN_FALLBACK_MESSAGE : camp.content.fallback_message)
-        }
+        setAiMessage(await resolveMessage(camp, language, ctx.visited_pages))
+        setMsgLang(language)
 
         showBanner()
       }, camp.delay_ms)
@@ -164,6 +165,20 @@ export function PersonalizeBanner() {
       })
       .catch(() => {})
   }, [pathname, language])
+
+  // Khách đổi VI/EN khi banner đang mở (hoặc ngôn ngữ vừa đọc xong từ cookie): làm lại lời nhắn theo ngôn ngữ mới
+  useEffect(() => {
+    if (!campaign || !aiMessage || msgLang === language) return
+    let alive = true
+    resolveMessage(campaign, language, getDistinctPaths()).then((msg) => {
+      if (!alive) return
+      setAiMessage(msg)
+      setMsgLang(language)
+    })
+    return () => {
+      alive = false
+    }
+  }, [language, campaign, aiMessage, msgLang])
 
   // Auto-dismiss timer — runs when banner becomes visible
   useEffect(() => {
