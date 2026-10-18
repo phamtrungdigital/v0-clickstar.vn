@@ -101,6 +101,8 @@ export type AboutContent = {
   thumbnail_src: string
   video_embed_url: string
   video_duration: string
+  /** Ảnh đội ngũ/văn phòng THẬT (tùy chọn). Trống thì không hiện dải ảnh, không dùng ảnh stock. */
+  photos?: { src: string; alt?: I18n; caption?: I18n }[]
 }
 
 // ---------- Stats ----------

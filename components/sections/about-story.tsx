@@ -28,7 +28,7 @@ export function AboutStorySection({ content }: { content: AboutStoryContent }) {
               />
             </div>
             {/* Floating stat card */}
-            <div data-cms-field="stat" className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-6 max-w-[240px]">
+            <div data-cms-field="stat" className="absolute -bottom-6 right-0 sm:-right-6 bg-white rounded-xl shadow-xl p-6 max-w-[240px]">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
                   <Award className="w-6 h-6 text-[#1859b8]" />
