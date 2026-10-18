@@ -387,316 +387,241 @@ export default function SpeechInsightAiPage() {
   ]
 
   return (
-    <>
+    <div className="theme-apple">
       <MainNav />
       <main>
-        {/* ═══════════ ① HERO ═══════════ */}
-        <section className="relative pt-20 pb-12 lg:pt-24 lg:pb-16 bg-[#f5f5f7] overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-20 left-1/4 w-[500px] h-[500px] bg-[#f5f5f7] rounded-full blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#f5f5f7] rounded-full blur-3xl" />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-[#1e6dda] text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full mb-6 shadow-lg">
-                  <AudioLines className="w-4 h-4" />
-                  {t('CALL TO TEXT · PHÂN TÍCH CUỘC GỌI BẰNG AI', 'CALL TO TEXT · AI CALL ANALYTICS')}
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] mb-6 text-balance">
-                  {t('Dữ liệu từ ', 'Data from ')}
-                  <span className="text-[#1859b8]">
-                    {t('mọi cuộc gọi', 'every call')}
-                  </span>
-                </h1>
-
-                <p className="text-lg text-muted-foreground leading-relaxed mb-4 max-w-xl">
-                  {t(
-                    'AI nghe thay bạn, chấm điểm và điền thẳng vào CRM.',
-                    'AI listens for you, scores the call and writes straight into your CRM.'
-                  )}
-                </p>
-
-                <p className="text-base text-muted-foreground leading-relaxed mb-8 max-w-xl">
-                  {t(
-                    'Call to Text: kết nối tổng đài sẵn có, 100% cuộc gọi thành văn bản.',
-                    'Call to Text: connects to your phone system, 100% of calls become text.'
-                  )}
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-4 mb-4">
-                  <Link
-                    href={CONTACT_HREF}
-                    className="inline-flex items-center justify-center gap-2 bg-[#1e6dda] hover:shadow-lg hover:shadow-primary/25 text-white font-semibold px-8 py-4 rounded-full transition-all duration-300"
-                  >
-                    {t('Nhận phân tích thử 50 cuộc gọi', 'Get a free 50-call analysis')}
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <Link
-                    href="#bao-cao-mau"
-                    className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-foreground font-semibold px-8 py-4 rounded-full border border-border transition-all duration-300"
-                  >
-                    {t('Xem báo cáo mẫu', 'See a sample report')}
-                  </Link>
-                </div>
-
-                <p className="text-sm text-muted-foreground mb-10">
-                  {t(
-                    'Giữ nguyên tổng đài · Không cài phần mềm trên máy nhân viên · Kết quả tự động ngay sau khi cúp máy',
-                    'Keep your phone system · No software on staff devices · Results generated right after the call ends'
-                  )}
-                </p>
-
-                <div className="grid grid-cols-3 gap-6">
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">100%</div>
-                    <div className="text-sm text-muted-foreground">
-                      {t('cuộc gọi được phân tích, không lấy mẫu', 'of calls analysed, no sampling')}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">9</div>
-                    <div className="text-sm text-muted-foreground">
-                      {t('lớp phân tích mỗi cuộc gọi', 'analysis layers per call')}
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-3xl font-extrabold text-foreground">6</div>
-                    <div className="text-sm text-muted-foreground">
-                      {t('bước chạy tự động, không ai phải bấm', 'automated steps, zero manual work')}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Mockup thẻ kết quả cuộc gọi */}
-              <div className="relative">
-                <div className="relative bg-white rounded-2xl shadow-2xl p-2 border border-border">
-                  <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-t-xl">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                      <div className="w-3 h-3 rounded-full bg-[#1e6dda]" />
-                    </div>
-                    <div className="flex-1 flex justify-center">
-                      <div className="bg-white rounded-lg px-4 py-1.5 text-xs text-muted-foreground border truncate">
-                        crm.clickstar.vn/calls
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 sm:p-5 space-y-4 bg-[#f5f5f7] rounded-b-xl">
-                    <div className="space-y-2">
-                      <div className="text-[11px] sm:text-xs font-mono text-muted-foreground break-words">
-                        <span className="text-[#1859b8] font-semibold">NV</span>
-                        {' : '}
-                        {t('Dạ em chào anh, em gọi về căn 2 phòng ngủ ạ.', 'Hello, I’m calling about the 2-bedroom unit.')}
-                      </div>
-                      <div className="text-[11px] sm:text-xs font-mono text-muted-foreground break-words">
-                        <span className="text-[#1859b8] font-semibold">KH</span>
-                        {' : '}
-                        {t('Anh cần trong tầm 2 tỷ, có hỗ trợ vay không em?', 'I need something around 2 billion. Any loan support?')}
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex items-baseline justify-between mb-1.5">
-                        <span className="text-xs font-medium text-muted-foreground">
-                          {t('Điểm chất lượng', 'Quality score')}
-                        </span>
-                        <span className="text-xl font-extrabold text-[#1859b8]">82/100</span>
-                      </div>
-                      <div className="h-2 rounded-full bg-slate-200 overflow-hidden">
-                        <div className="h-full w-[82%] rounded-full bg-[#1e6dda]" />
-                      </div>
-                    </div>
-
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-[#f5f5f7] text-[#1859b8] border border-border">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#1e6dda]" />
-                      {t('Cảm xúc: Tích cực', 'Sentiment: Positive')}
-                    </span>
-
-                    <div className="space-y-1.5">
-                      {[
-                        { l: t('Ngân sách', 'Budget'), v: t('~2 tỷ', '~2 billion') },
-                        { l: t('Khu vực', 'Area'), v: t('Thủ Đức', 'Thu Duc') },
-                        { l: t('Bước tiếp theo', 'Next step'), v: t('Hẹn xem nhà — Thứ 7', 'Site visit — Saturday') },
-                      ].map((f) => (
-                        <div key={f.l} className="flex items-center justify-between gap-3 bg-white rounded-lg px-3 py-2 border border-border">
-                          <span className="text-xs text-muted-foreground flex-shrink-0">{f.l}</span>
-                          <span className="flex items-center gap-1.5 text-xs font-semibold text-foreground min-w-0">
-                            <span className="truncate">{f.v}</span>
-                            <CheckCircle2 className="w-3.5 h-3.5 text-[#1859b8] flex-shrink-0" />
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating badges — right-2 trên mobile để không tràn viewport */}
-                <div className="absolute right-2 sm:-right-4 top-1/4 bg-white rounded-xl shadow-lg p-2.5 border border-border max-w-[190px]">
-                  <div className="flex items-center gap-2">
-                    <ShieldAlert className="w-4 h-4 text-[#1859b8] flex-shrink-0" />
-                    <span className="text-[11px] font-medium text-[#1859b8] leading-tight">
-                      {t('Đã gắn cờ: cam kết vượt quyền', 'Flagged: over-promise')}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="absolute left-2 sm:-left-4 bottom-1/4 bg-white rounded-xl shadow-lg p-2.5 border border-border">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#1e6dda] animate-pulse flex-shrink-0" />
-                    <span className="text-[11px] font-medium text-[#1859b8]">
-                      {t('Đã đẩy vào CRM', 'Synced to CRM')}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        {/* ═══════════ ② VẤN ĐỀ & GIẢI PHÁP ═══════════ */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <PhoneCall className="w-4 h-4" />
-                {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight mb-4">
-                {t('Bạn đo được từng đồng quảng cáo. Nhưng đúng lúc khách quyết định mua thì ', 'You measure every ad dollar. Yet at the exact moment customers decide, ')}
-                <span className="text-[#1859b8]">
-                  {t('bạn không nghe thấy gì', 'you hear nothing')}
-                </span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        {/* ① Hero: khối trắng, căn giữa, thẻ kết quả cuộc gọi làm ảnh sản phẩm */}
+        <section className="ap-tile ap-light">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                {t('CALL TO TEXT · PHÂN TÍCH CUỘC GỌI BẰNG AI', 'CALL TO TEXT · AI CALL ANALYTICS')}
+              </p>
+              <h1 className="ap-hero-title">{t('Dữ liệu từ mọi cuộc gọi', 'Data from every call')}</h1>
+              <p className="ap-lead max-w-[760px]">
                 {t(
-                  'Cuộc gọi là nơi đơn hàng thực sự được chốt hoặc mất — và cũng là nơi duy nhất trong phễu không ai đo được.',
-                  'Calls are where deals are actually won or lost — and the only stage of the funnel nobody measures.'
+                  'AI nghe thay bạn, chấm điểm và điền thẳng vào CRM.',
+                  'AI listens for you, scores the call and writes straight into your CRM.'
+                )}
+              </p>
+              <p className="max-w-[640px] text-base leading-relaxed text-[#515154]">
+                {t(
+                  'Call to Text: kết nối tổng đài sẵn có, 100% cuộc gọi thành văn bản.',
+                  'Call to Text: connects to your phone system, 100% of calls become text.'
+                )}
+              </p>
+              <div className="ap-cta-row mt-2">
+                <Link href={CONTACT_HREF} className="ap-btn ap-btn-primary">
+                  {t('Nhận phân tích thử 50 cuộc gọi', 'Get a free 50-call analysis')}
+                </Link>
+                <Link href="#bao-cao-mau" className="ap-btn ap-btn-ghost">
+                  {t('Xem báo cáo mẫu', 'See a sample report')}
+                </Link>
+              </div>
+              <p className="max-w-[680px] text-sm leading-relaxed text-[#515154]">
+                {t(
+                  'Giữ nguyên tổng đài · Không cài phần mềm trên máy nhân viên · Kết quả tự động ngay sau khi cúp máy',
+                  'Keep your phone system · No software on staff devices · Results generated right after the call ends'
                 )}
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4 lg:gap-5">
-              {problems.map((item, index) => (
-                <div
-                  key={index}
-                  className="group relative bg-white rounded-2xl p-5 border border-border hover:border-border hover:shadow-xl transition-all duration-300"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-start gap-2 mb-3">
-                        <XCircle className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
-                        <p className="text-foreground font-semibold text-sm">{item.problem}</p>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
-                        <p className="text-muted-foreground text-sm">{item.solution}</p>
-                      </div>
+            <div className="mt-12 grid grid-cols-3 gap-6">
+              {[
+                { v: '100%', l: t('cuộc gọi được phân tích, không lấy mẫu', 'of calls analysed, no sampling') },
+                { v: '9', l: t('lớp phân tích mỗi cuộc gọi', 'analysis layers per call') },
+                { v: '6', l: t('bước chạy tự động, không ai phải bấm', 'automated steps, zero manual work') },
+              ].map((x) => (
+                <div key={x.v}>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="mx-auto mt-1 max-w-[22ch] text-[14px] leading-snug text-[#515154] sm:text-[15px]">{x.l}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Mockup thẻ kết quả cuộc gọi */}
+            <div className="mx-auto mt-14 max-w-[600px] overflow-hidden rounded-[18px] border border-[#d2d2d7] bg-white text-left shadow-[rgba(0,0,0,0.22)_3px_5px_30px_0]">
+              <div className="flex items-center gap-2 border-b border-[#e0e0e0] bg-[#f5f5f7] px-4 py-3">
+                <div className="flex gap-1.5">
+                  <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                  <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                  <div className="h-3 w-3 rounded-full bg-[#d2d2d7]" />
+                </div>
+                <div className="flex flex-1 justify-center">
+                  <span className="truncate rounded-md bg-white px-4 py-1 text-xs text-[#515154]">crm.clickstar.vn/calls</span>
+                </div>
+              </div>
+
+              <div className="space-y-4 bg-[#f5f5f7] p-4 sm:p-6">
+                <div className="space-y-2">
+                  <div className="break-words font-mono text-[12px] text-[#515154] sm:text-[13px]">
+                    <span className="font-semibold text-[#1859b8]">{t('NV', 'AG')}</span>
+                    {' : '}
+                    {t('Dạ em chào anh, em gọi về căn 2 phòng ngủ ạ.', 'Hello, I’m calling about the 2-bedroom unit.')}
+                  </div>
+                  <div className="break-words font-mono text-[12px] text-[#515154] sm:text-[13px]">
+                    <span className="font-semibold text-[#1859b8]">{t('KH', 'CU')}</span>
+                    {' : '}
+                    {t('Anh cần trong tầm 2 tỷ, có hỗ trợ vay không em?', 'I need something around 2 billion. Any loan support?')}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="mb-1.5 flex items-baseline justify-between">
+                    <span className="text-[13px] font-medium text-[#515154]">{t('Điểm chất lượng', 'Quality score')}</span>
+                    <span className="text-[22px] font-semibold tracking-[-0.02em] text-[#1859b8]">82/100</span>
+                  </div>
+                  <div className="h-2 overflow-hidden rounded-full bg-[#e0e0e0]">
+                    <div className="h-full w-[82%] rounded-full bg-[#1e6dda]" />
+                  </div>
+                </div>
+
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#d2d2d7] bg-white px-3 py-1 text-[13px] font-medium text-[#1859b8]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#1e6dda]" />
+                  {t('Cảm xúc: Tích cực', 'Sentiment: Positive')}
+                </span>
+
+                <div className="space-y-2">
+                  {[
+                    { l: t('Ngân sách', 'Budget'), v: t('~2 tỷ', '~2 billion') },
+                    { l: t('Khu vực', 'Area'), v: t('Thủ Đức', 'Thu Duc') },
+                    { l: t('Bước tiếp theo', 'Next step'), v: t('Hẹn xem nhà — Thứ 7', 'Site visit — Saturday') },
+                  ].map((f) => (
+                    <div key={f.l} className="flex items-center justify-between gap-3 rounded-[10px] border border-[#e0e0e0] bg-white px-3.5 py-2.5">
+                      <span className="flex-shrink-0 text-[13px] text-[#515154]">{f.l}</span>
+                      <span className="flex min-w-0 items-center gap-1.5 text-[13px] font-semibold text-[#1d1d1f]">
+                        <span className="truncate">{f.v}</span>
+                        <CheckCircle2 className="h-4 w-4 flex-shrink-0 text-[#1859b8]" />
+                      </span>
                     </div>
-                    <ArrowUpRight className="w-5 h-5 text-[#1859b8] opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#d2d2d7] bg-white px-4 py-2 text-[13px] font-medium text-[#1859b8]">
+                <ShieldAlert className="h-4 w-4" />
+                {t('Đã gắn cờ: cam kết vượt quyền', 'Flagged: over-promise')}
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#d2d2d7] bg-white px-4 py-2 text-[13px] font-medium text-[#1859b8]">
+                <span className="h-2 w-2 rounded-full bg-[#1e6dda]" />
+                {t('Đã đẩy vào CRM', 'Synced to CRM')}
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* ② Vấn đề và giải pháp: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <Head
+              icon={<PhoneCall className="h-4 w-4" />}
+              eyebrow={t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
+              title={
+                <>
+                  {t('Bạn đo được từng đồng quảng cáo. Nhưng đúng lúc khách quyết định mua thì ', 'You measure every ad dollar. Yet at the exact moment customers decide, ')}
+                  <span className="text-[#1859b8]">{t('bạn không nghe thấy gì', 'you hear nothing')}</span>
+                </>
+              }
+              lead={t(
+                'Cuộc gọi là nơi đơn hàng thực sự được chốt hoặc mất — và cũng là nơi duy nhất trong phễu không ai đo được.',
+                'Calls are where deals are actually won or lost — and the only stage of the funnel nobody measures.'
+              )}
+            />
+
+            <div className="grid auto-rows-fr gap-4 md:grid-cols-2 lg:gap-5">
+              {problems.map((item, index) => (
+                <div key={index} className="flex h-full flex-col gap-4 rounded-[18px] border border-[#d2d2d7] bg-white p-6">
+                  <div>
+                    <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">{t('Vấn đề', 'Problem')}</span>
+                    <p className="mt-2 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
+                  </div>
+                  <div>
+                    <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">{t('Giải pháp', 'Solution')}</span>
+                    <p className="mt-2 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="text-center mt-10">
-              <Link href="#bao-cao-mau" className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all">
+            <div className="mt-10 text-center">
+              <Link href="#bao-cao-mau" className="ap-link inline-flex items-center gap-2 font-semibold">
                 {t('Xem AI đọc một cuộc gọi thật như thế nào', 'See how AI reads a real call')}
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
         </section>
 
-        {/* ═══════════ ③ BÁO CÁO MẪU ═══════════ */}
-        <section id="bao-cao-mau" className="py-12 lg:py-16 bg-background scroll-mt-20">
+        {/* ③ Báo cáo mẫu: khối trắng */}
+        <section id="bao-cao-mau" className="py-16 lg:py-24 bg-white scroll-mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <FileText className="w-4 h-4" />
-                {t('BÁO CÁO MẪU', 'SAMPLE REPORT')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                {t('Một cuộc gọi 8 phút 14 giây, ', 'One 8-minute 14-second call, ')}
-                <span className="text-[#1859b8]">
-                  {t('sau khi AI xử lý', 'after AI processing')}
-                </span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {t(
-                  'Cùng một cuộc gọi, bên trái là thứ bạn đang có, bên phải là thứ Speech Insight AI trả về.',
-                  'The same call: what you have today on the left, what Speech Insight AI returns on the right.'
-                )}
-              </p>
-            </div>
+            <Head
+              icon={<FileText className="h-4 w-4" />}
+              eyebrow={t('BÁO CÁO MẪU', 'SAMPLE REPORT')}
+              title={
+                <>
+                  {t('Một cuộc gọi 8 phút 14 giây, ', 'One 8-minute 14-second call, ')}
+                  <span className="text-[#1859b8]">{t('sau khi AI xử lý', 'after AI processing')}</span>
+                </>
+              }
+              lead={t(
+                'Cùng một cuộc gọi, bên trái là thứ bạn đang có, bên phải là thứ Speech Insight AI trả về.',
+                'The same call: what you have today on the left, what Speech Insight AI returns on the right.'
+              )}
+            />
 
             <SpeechReportSample />
 
-            <p className="text-center text-sm text-muted-foreground mt-8">
-              {t(
-                'Nhân viên không gõ thêm một chữ nào. Toàn bộ phần kết quả do AI tạo ra.',
-                'The agent typed nothing. Every result above was produced by AI.'
-              )}
+            <p className="mt-8 text-center text-[15px] text-[#515154]">
+              {t('Nhân viên không gõ thêm một chữ nào. Toàn bộ phần kết quả do AI tạo ra.', 'The agent typed nothing. Every result above was produced by AI.')}
             </p>
           </div>
         </section>
 
-        {/* ═══════════ ④ 9 LỚP PHÂN TÍCH ═══════════ */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* ④ 9 lớp phân tích: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Sparkles className="w-4 h-4" />
-                {t('TÍNH NĂNG', 'CAPABILITIES')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                {t('Mỗi cuộc gọi đi qua ', 'Every call passes through ')}
-                <span className="text-[#1859b8]">
-                  {t('9 lớp phân tích', '9 layers of analysis')}
-                </span>
-                {t(' — tự động, không ai phải bấm gì', ' — automatically, with zero clicks')}
-              </h2>
-            </div>
+            <Head
+              icon={<Sparkles className="h-4 w-4" />}
+              eyebrow={t('TÍNH NĂNG', 'CAPABILITIES')}
+              title={
+                <>
+                  {t('Mỗi cuộc gọi đi qua ', 'Every call passes through ')}
+                  <span className="text-[#1859b8]">{t('9 lớp phân tích', '9 layers of analysis')}</span>
+                  {t(' — tự động, không ai phải bấm gì', ' — automatically, with zero clicks')}
+                </>
+              }
+            />
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
               {features.map((f, i) => (
                 <div
                   key={i}
-                  className={`group bg-white rounded-2xl p-6 border transition-all duration-300 hover:shadow-xl ${
-                    f.highlight
-                      ? 'border-border shadow-lg'
-                      : 'border-border hover:border-border'
-                  }`}
+                  className={`flex h-full flex-col rounded-[18px] bg-white p-7 ${f.highlight ? 'border-2 border-[#1e6dda]' : 'border border-[#d2d2d7]'}`}
                 >
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-[#f5f5f7] flex items-center justify-center text-[#1859b8] group-hover:scale-110 transition-transform">
-                      {f.icon}
-                    </div>
-                    <span className="text-[10px] font-bold tracking-wider px-2 py-1 rounded-full bg-slate-100 text-[#515154]">
-                      {f.stage}
-                    </span>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda] text-white">{f.icon}</div>
+                    <span className="rounded-full bg-[#f5f5f7] px-2.5 py-1 text-[11px] font-semibold tracking-wider text-[#515154]">{f.stage}</span>
                   </div>
 
                   {f.highlight && (
-                    <span className="inline-block text-[10px] font-bold uppercase tracking-wider text-[#1859b8] mb-2">
+                    <span className="mt-4 inline-block text-[11px] font-semibold uppercase tracking-wider text-[#1859b8]">
                       {t('Trái tim của dịch vụ', 'The heart of the service')}
                     </span>
                   )}
 
-                  <h3 className="text-lg font-bold text-foreground mb-2">{f.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{f.description}</p>
+                  <h3 className="mt-4 text-xl font-semibold leading-snug text-[#1d1d1f]">{f.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{f.description}</p>
 
-                  <ul className="space-y-2">
+                  <ul className="mt-auto space-y-2.5 pt-5">
                     {f.items.map((it, k) => (
-                      <li key={k} className="flex items-start gap-2 text-xs text-muted-foreground">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#1859b8] flex-shrink-0 mt-0.5" />
-                        <span>{it}</span>
+                      <li key={k} className="flex items-center gap-2.5 text-[14px] text-[#1d1d1f]">
+                        <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-[#1859b8]" />
+                        </span>
+                        {it}
                       </li>
                     ))}
                   </ul>
@@ -706,163 +631,129 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑤ BỘ NÃO PHÂN TÍCH — CLAUDE ═══════════ */}
-        <section className="py-12 lg:py-16 bg-background">
+        {/* ⑤ Mô hình AI: khối trắng */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Bot className="w-4 h-4" />
-                {t('MÔ HÌNH AI', 'AI MODEL')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                {t('Bộ não đọc cuộc gọi là ', 'The brain reading your calls is ')}
-                <span className="text-[#1859b8]">
-                  Claude
-                </span>
-                {t(' của Anthropic', ' by Anthropic')}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {t(
-                  'Chúng tôi nói thẳng mình dùng gì. Bên dưới là bốn lý do kỹ thuật cho lựa chọn đó — và ranh giới rõ ràng giữa việc AI làm và việc con người quyết định.',
-                  'We are upfront about what we run on. Below are the four technical reasons for that choice — and a clear line between what the AI does and what people decide.'
-                )}
-              </p>
-            </div>
-
+            <Head
+              icon={<Bot className="h-4 w-4" />}
+              eyebrow={t('MÔ HÌNH AI', 'AI MODEL')}
+              title={
+                <>
+                  {t('Bộ não đọc cuộc gọi là ', 'The brain reading your calls is ')}
+                  <span className="text-[#1859b8]">Claude</span>
+                  {t(' của Anthropic', ' by Anthropic')}
+                </>
+              }
+              lead={t(
+                'Chúng tôi nói thẳng mình dùng gì. Bên dưới là bốn lý do kỹ thuật cho lựa chọn đó — và ranh giới rõ ràng giữa việc AI làm và việc con người quyết định.',
+                'We are upfront about what we run on. Below are the four technical reasons for that choice — and a clear line between what the AI does and what people decide.'
+              )}
+            />
             <ClaudeEngine />
           </div>
         </section>
 
-        {/* ═══════════ ⑥ DEMO PHÂN TÍCH CỤ THỂ ═══════════ */}
-        <section id="demo-phan-tich" className="py-12 lg:py-16 bg-[#f5f5f7] scroll-mt-20">
+        {/* ⑥ Demo phân tích: khối xám nhạt */}
+        <section id="demo-phan-tich" className="py-16 lg:py-24 bg-[#f5f5f7] scroll-mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <MessageSquare className="w-4 h-4" />
-                {t('DEMO PHÂN TÍCH', 'ANALYSIS DEMO')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                {t('Cùng một cuộc gọi, ', 'The same call — ')}
-                <span className="text-[#1859b8]">
-                  {t('AI nhìn ra những gì', 'here is what the AI sees')}
-                </span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {t(
-                  'Chọn ngành gần với bạn nhất, rồi đi theo ba bước: nghe đoạn hội thoại, xem AI đọc ra tín hiệu gì, và nhận dữ liệu trả về.',
-                  'Pick the industry closest to yours, then follow three steps: read the conversation, see the signals the AI picks up, and get the data back.'
-                )}
-              </p>
-            </div>
-
+            <Head
+              icon={<MessageSquare className="h-4 w-4" />}
+              eyebrow={t('DEMO PHÂN TÍCH', 'ANALYSIS DEMO')}
+              title={
+                <>
+                  {t('Cùng một cuộc gọi, ', 'The same call — ')}
+                  <span className="text-[#1859b8]">{t('AI nhìn ra những gì', 'here is what the AI sees')}</span>
+                </>
+              }
+              lead={t(
+                'Chọn ngành gần với bạn nhất, rồi đi theo ba bước: nghe đoạn hội thoại, xem AI đọc ra tín hiệu gì, và nhận dữ liệu trả về.',
+                'Pick the industry closest to yours, then follow three steps: read the conversation, see the signals the AI picks up, and get the data back.'
+              )}
+            />
             <AnalysisDemo />
           </div>
         </section>
 
-        {/* ═══════════ ⑦ DỮ LIỆU AI TRẢ VỀ (kỹ thuật) ═══════════ */}
-        <section className="py-12 lg:py-16 bg-background">
+        {/* ⑦ Dữ liệu trả về: khối trắng */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Braces className="w-4 h-4" />
-                {t('DỮ LIỆU TRẢ VỀ', 'DATA OUTPUT')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                {t('Không phải hộp đen — ', 'Not a black box — ')}
-                <span className="text-[#1859b8]">
-                  {t('dữ liệu có cấu trúc', 'structured data')}
-                </span>
-                {t(' đội kỹ thuật dùng được ngay', ' your engineers can use right away')}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {t(
-                  'Mỗi cuộc gọi phân tích xong trả về một bản ghi JSON đầy đủ, bắn webhook về hệ thống của bạn hoặc lấy theo lô qua API.',
-                  'Every analysed call returns a complete JSON record, delivered by webhook to your system or pulled in batches via API.'
-                )}
-              </p>
-            </div>
-
-            <TechPayload />
-
-            <p className="text-center text-sm text-muted-foreground mt-6">
-              {t(
-                'Tên trường và ánh xạ sang CRM được cấu hình theo đúng hệ thống của bạn.',
-                'Field names and CRM mapping are configured to match your own system.'
+            <Head
+              icon={<Braces className="h-4 w-4" />}
+              eyebrow={t('DỮ LIỆU TRẢ VỀ', 'DATA OUTPUT')}
+              title={
+                <>
+                  {t('Không phải hộp đen — ', 'Not a black box — ')}
+                  <span className="text-[#1859b8]">{t('dữ liệu có cấu trúc', 'structured data')}</span>
+                  {t(' đội kỹ thuật dùng được ngay', ' your engineers can use right away')}
+                </>
+              }
+              lead={t(
+                'Mỗi cuộc gọi phân tích xong trả về một bản ghi JSON đầy đủ, bắn webhook về hệ thống của bạn hoặc lấy theo lô qua API.',
+                'Every analysed call returns a complete JSON record, delivered by webhook to your system or pulled in batches via API.'
               )}
+            />
+            <TechPayload />
+            <p className="mt-6 text-center text-[15px] text-[#515154]">
+              {t('Tên trường và ánh xạ sang CRM được cấu hình theo đúng hệ thống của bạn.', 'Field names and CRM mapping are configured to match your own system.')}
             </p>
           </div>
         </section>
 
-        {/* ═══════════ ⑧ AI PHÂN TÍCH DỮ LIỆU (tổng hợp) ═══════════ */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* ⑧ AI phân tích dữ liệu tổng hợp: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <BarChart3 className="w-4 h-4" />
-                {t('AI PHÂN TÍCH DỮ LIỆU', 'AI DATA ANALYSIS')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                {t('Từ từng cuộc gọi lên ', 'From single calls to ')}
-                <span className="text-[#1859b8]">
-                  {t('bức tranh toàn đội', 'the whole team picture')}
-                </span>
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                {t(
-                  'Khi đã có hàng nghìn cuộc gọi ở dạng dữ liệu, AI trả lời được những câu mà trước đây chỉ có thể phỏng đoán.',
-                  'Once thousands of calls exist as data, AI answers questions that used to be pure guesswork.'
-                )}
-              </p>
-            </div>
-
+            <Head
+              icon={<BarChart3 className="h-4 w-4" />}
+              eyebrow={t('AI PHÂN TÍCH DỮ LIỆU', 'AI DATA ANALYSIS')}
+              title={
+                <>
+                  {t('Từ từng cuộc gọi lên ', 'From single calls to ')}
+                  <span className="text-[#1859b8]">{t('bức tranh toàn đội', 'the whole team picture')}</span>
+                </>
+              }
+              lead={t(
+                'Khi đã có hàng nghìn cuộc gọi ở dạng dữ liệu, AI trả lời được những câu mà trước đây chỉ có thể phỏng đoán.',
+                'Once thousands of calls exist as data, AI answers questions that used to be pure guesswork.'
+              )}
+            />
             <InsightAnalytics />
           </div>
         </section>
 
-        {/* ═══════════ ⑨ QUY TRÌNH 6 BƯỚC (nền tối) ═══════════ */}
-        <section className="py-12 lg:py-16 bg-foreground text-background">
+        {/* ⑨ Quy trình 6 bước: khối tối */}
+        <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-white/10 text-white font-semibold text-sm px-5 py-2.5 rounded-full mb-4 backdrop-blur">
-                <AudioLines className="w-4 h-4" />
-                {t('CÁCH VẬN HÀNH', 'HOW IT RUNS')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
-                {t('Từ lúc cúp máy đến khi CRM có dữ liệu — ', 'From hang-up to CRM record — ')}
-                <span className="text-[#1859b8]">{t('không ai phải làm gì', 'nobody lifts a finger')}</span>
-              </h2>
-            </div>
+            <Head
+              dark
+              icon={<AudioLines className="h-4 w-4" />}
+              eyebrow={t('CÁCH VẬN HÀNH', 'HOW IT RUNS')}
+              title={
+                <>
+                  {t('Từ lúc cúp máy đến khi CRM có dữ liệu — ', 'From hang-up to CRM record — ')}
+                  <span className="text-[#7db8ff]">{t('không ai phải làm gì', 'nobody lifts a finger')}</span>
+                </>
+              }
+            />
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {steps.map((s, i) => (
-                <div
-                  key={i}
-                  className="group relative bg-white/5 backdrop-blur rounded-2xl p-6 border border-white/10 hover:bg-white/10 hover:border-[#1e6dda]/30 transition-all duration-300"
-                >
-                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-[#1e6dda] rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
-                    {s.step}
-                  </div>
-                  <div className="pt-4">
-                    <div className="flex items-start justify-between gap-2 mb-3">
-                      <h3 className="text-lg font-bold text-white">{s.title}</h3>
-                    </div>
-                    <span className="inline-block text-xs text-[#7db8ff] bg-[#1e6dda]/20 px-2 py-1 rounded-full mb-3">
-                      {s.duration}
-                    </span>
-                    <p className="text-[#515154] text-sm">{s.description}</p>
-                  </div>
+                <div key={i} className="flex h-full flex-col rounded-[18px] border border-white/20 bg-[#1d1d1f] p-7">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#1e6dda] text-[15px] font-semibold text-white">{s.step}</span>
+                  <h3 className="mt-5 text-xl font-semibold leading-snug text-white">{s.title}</h3>
+                  <span className="mt-3 inline-flex w-fit rounded-full border border-white/30 px-2.5 py-0.5 text-xs text-white">{s.duration}</span>
+                  <p className="mt-3 text-[15px] leading-relaxed text-[#d2d2d7]">{s.description}</p>
                 </div>
               ))}
             </div>
 
-            <div className="text-center mt-10 space-y-2">
-              <p className="text-lg text-white font-semibold">
+            <div className="mt-10 space-y-2 text-center">
+              <p className="text-lg font-semibold text-white">
                 {t(
                   'Toàn bộ 6 bước chạy tự động. Việc duy nhất con người cần làm là xem những gì AI đã gắn cờ.',
                   'All six steps run automatically. The only human job is reviewing what AI flagged.'
                 )}
               </p>
-              <p className="text-sm text-[#515154]">
+              <p className="text-sm text-[#d2d2d7]">
                 {t(
                   'Các mốc thời gian xử lý sẽ được chốt bằng số đo thực tế trên hạ tầng của bạn trong giai đoạn chạy thử.',
                   'Exact processing times are confirmed with real measurements on your infrastructure during the pilot.'
@@ -872,38 +763,33 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑩ BẢO MẬT & TUÂN THỦ ═══════════ */}
-        <section className="py-12 lg:py-16 bg-background">
+        {/* ⑩ Bảo mật và tuân thủ: khối trắng */}
+        <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div className="order-2 lg:order-1">
-                <div className="bg-foreground rounded-2xl p-6 sm:p-8 space-y-4">
+                <div className="space-y-4 rounded-[18px] bg-[#1d1d1f] p-6 sm:p-8">
                   {securityPoints.map((p, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <span className="w-10 h-10 rounded-xl bg-[#1e6dda]/20 text-[#7db8ff] flex items-center justify-center flex-shrink-0">
-                        {p.icon}
-                      </span>
-                      <p className="text-[#d2d2d7] text-sm leading-relaxed pt-2">{p.title}</p>
+                    <div key={i} className="flex items-start gap-3.5">
+                      <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-[10px] bg-[#1e6dda] text-white">{p.icon}</span>
+                      <p className="pt-2 text-[15px] leading-relaxed text-white">{p.title}</p>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div className="order-1 lg:order-2">
-                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-6">
-                  <ShieldCheck className="w-4 h-4" />
+                <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                  <ShieldCheck className="h-4 w-4" />
                   {t('BẢO MẬT & TUÂN THỦ', 'SECURITY & COMPLIANCE')}
                 </span>
-
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground leading-tight mb-6">
+                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Ghi âm là dữ liệu cá nhân của khách hàng bạn. ', 'Recordings are your customers’ personal data. ')}
-                  <span className="text-[#1859b8]">
-                    {t('Chúng tôi coi đó là mặc định, không phải tuỳ chọn', 'We treat that as the default, not an option')}
-                  </span>
+                  <span className="text-[#1859b8]">{t('Chúng tôi coi đó là mặc định, không phải tuỳ chọn', 'We treat that as the default, not an option')}</span>
                 </h2>
 
-                <div className="rounded-2xl border border-border bg-[#f5f5f7]/60 p-5 mb-6">
-                  <p className="text-sm text-foreground leading-relaxed">
+                <div className="mt-6 rounded-[18px] border border-[#d2d2d7] bg-[#f5f5f7] p-5">
+                  <p className="text-[15px] leading-relaxed text-[#1d1d1f]">
                     {t(
                       'Việc ghi âm và phân tích cuộc gọi tại Việt Nam thuộc phạm vi Nghị định 13/2023/NĐ-CP về bảo vệ dữ liệu cá nhân. Chúng tôi bàn giao kèm mẫu thông báo ghi âm và điều khoản đồng ý để doanh nghiệp triển khai đúng ngay từ đầu.',
                       'Call recording and analysis in Vietnam falls under Decree 13/2023/ND-CP on personal data protection. We hand over recording notice and consent templates so you deploy compliantly from day one.'
@@ -911,7 +797,7 @@ export default function SpeechInsightAiPage() {
                   </p>
                 </div>
 
-                <p className="text-muted-foreground">
+                <p className="mt-6 text-[17px] leading-relaxed text-[#515154]">
                   {t(
                     'Mô hình AI sử dụng đã được nêu rõ ở phần trên. Các thông số triển khai còn lại — nơi lưu trữ dữ liệu, khả năng cài đặt riêng tại hạ tầng của bạn và thời gian lưu trữ — sẽ được xác nhận bằng văn bản trong buổi trao đổi kỹ thuật, trước khi bạn gửi bất kỳ file ghi âm nào.',
                     'The AI model we run on is stated openly above. The remaining deployment parameters — where data is stored, private/on-premise deployment options and retention periods — are confirmed in writing during the technical session, before you send us a single recording.'
@@ -922,38 +808,35 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑪ TÍCH HỢP ═══════════ */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* ⑪ Tích hợp: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <Plug className="w-4 h-4" />
-                {t('TÍCH HỢP', 'INTEGRATIONS')}
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold text-foreground leading-tight max-w-4xl mx-auto">
-                {t('Công cụ bóc băng chỉ trả cho bạn một file văn bản. ', 'A transcription tool hands you a text file. ')}
-                <span className="text-[#1859b8]">
-                  {t('Chúng tôi trả kết quả về đúng nơi bạn ra quyết định.', 'We deliver the result where you actually make decisions.')}
-                </span>
-              </h2>
-            </div>
+            <Head
+              icon={<Plug className="h-4 w-4" />}
+              eyebrow={t('TÍCH HỢP', 'INTEGRATIONS')}
+              title={
+                <>
+                  {t('Công cụ bóc băng chỉ trả cho bạn một file văn bản. ', 'A transcription tool hands you a text file. ')}
+                  <span className="text-[#1859b8]">{t('Chúng tôi trả kết quả về đúng nơi bạn ra quyết định.', 'We deliver the result where you actually make decisions.')}</span>
+                </>
+              }
+            />
 
-            <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-              {/* Nguồn vào */}
-              <div className="bg-white rounded-2xl border border-border p-6">
-                <h3 className="text-lg font-bold text-foreground mb-1">{t('Nguồn ghi âm đi vào', 'Recording sources in')}</h3>
-                <p className="text-sm text-muted-foreground mb-5">
-                  {t('Chúng tôi đọc file ghi âm bạn đã có sẵn.', 'We read the recordings you already have.')}
-                </p>
-                <ul className="space-y-3">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 lg:gap-6">
+              <div className="rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                <h3 className="text-xl font-semibold text-[#1d1d1f]">{t('Nguồn ghi âm đi vào', 'Recording sources in')}</h3>
+                <p className="mt-1 text-[15px] text-[#515154]">{t('Chúng tôi đọc file ghi âm bạn đã có sẵn.', 'We read the recordings you already have.')}</p>
+                <ul className="mt-5 space-y-3">
                   {sources.map((s, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle2 className="w-4 h-4 text-[#1859b8] flex-shrink-0 mt-0.5" />
+                    <li key={i} className="flex items-start gap-3 text-[15px] text-[#1d1d1f]">
+                      <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#eaf2fd]">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#1859b8]" />
+                      </span>
                       <span>{s}</span>
                     </li>
                   ))}
                 </ul>
-                <p className="text-sm font-medium text-foreground mt-5 pt-4 border-t border-border">
+                <p className="mt-5 border-t border-[#e0e0e0] pt-4 text-[15px] font-semibold text-[#1d1d1f]">
                   {t(
                     'Nếu tổng đài của bạn xuất được file ghi âm kèm thông tin cuộc gọi, chúng tôi kết nối được.',
                     'If your phone system can export recordings with call metadata, we can connect to it.'
@@ -961,36 +844,29 @@ export default function SpeechInsightAiPage() {
                 </p>
               </div>
 
-              {/* Điểm đến */}
-              <div className="bg-white rounded-2xl border border-border p-6">
-                <h3 className="text-lg font-bold text-foreground mb-1">{t('Kết quả đi về đâu', 'Where results land')}</h3>
-                <p className="text-sm text-muted-foreground mb-5">
-                  {t('Lợi thế riêng của hệ sinh thái Clickstar.', 'The advantage of the Clickstar ecosystem.')}
-                </p>
-                <div className="space-y-2.5">
+              <div className="rounded-[18px] border border-[#d2d2d7] bg-white p-7">
+                <h3 className="text-xl font-semibold text-[#1d1d1f]">{t('Kết quả đi về đâu', 'Where results land')}</h3>
+                <p className="mt-1 text-[15px] text-[#515154]">{t('Lợi thế riêng của hệ sinh thái Clickstar.', 'The advantage of the Clickstar ecosystem.')}</p>
+                <div className="mt-5 space-y-3">
                   {destinations.map((d, i) => {
                     const inner = (
                       <>
-                        <span className="text-sm font-semibold text-foreground">{d.name}</span>
-                        <span className="text-xs text-muted-foreground">{d.desc}</span>
+                        <span className="text-[15px] font-semibold text-[#1d1d1f]">{d.name}</span>
+                        <span className="text-[13.5px] text-[#515154]">{d.desc}</span>
                       </>
                     )
                     return d.href ? (
-                      <Link
-                        key={i}
-                        href={d.href}
-                        className="flex flex-col gap-0.5 rounded-xl border border-border hover:border-border hover:bg-[#f5f5f7]/50 px-4 py-3 transition-colors"
-                      >
+                      <Link key={i} href={d.href} className="flex flex-col gap-0.5 rounded-[12px] border border-[#d2d2d7] px-4 py-3 transition-colors hover:border-[#1e6dda] hover:bg-[#f5f5f7]">
                         {inner}
                       </Link>
                     ) : (
-                      <div key={i} className="flex flex-col gap-0.5 rounded-xl border border-border px-4 py-3">
+                      <div key={i} className="flex flex-col gap-0.5 rounded-[12px] border border-[#d2d2d7] px-4 py-3">
                         {inner}
                       </div>
                     )
                   })}
                 </div>
-                <p className="text-xs text-muted-foreground mt-4">
+                <p className="mt-4 text-[13.5px] text-[#515154]">
                   {t(
                     'CRM bên thứ ba kết nối qua API hoặc webhook. Xuất Google Sheets, CSV hoặc API mở cho đội phân tích dữ liệu.',
                     'Third-party CRMs connect via API or webhook. Export to Google Sheets, CSV or an open API for your data team.'
@@ -999,12 +875,11 @@ export default function SpeechInsightAiPage() {
               </div>
             </div>
 
-            {/* Box trấn an */}
-            <div className="mt-8 rounded-2xl bg-[#1e6dda] p-6 sm:p-8 text-center">
-              <p className="text-xl sm:text-2xl font-extrabold text-white mb-2">
+            <div className="mt-8 rounded-[18px] bg-[#1e6dda] p-7 text-center sm:p-9">
+              <p className="text-[22px] font-semibold leading-snug tracking-[-0.01em] text-white sm:text-[26px]">
                 {t('Bạn KHÔNG phải đổi tổng đài.', 'You do NOT need to replace your phone system.')}
               </p>
-              <p className="text-white max-w-2xl mx-auto">
+              <p className="mx-auto mt-2 max-w-2xl text-[16px] leading-relaxed text-white">
                 {t(
                   'Giữ nguyên số hotline, giữ nguyên cách đội sale đang gọi. Speech Insight AI nằm ở lớp sau cuộc gọi, chỉ đọc file ghi âm đã có. Nhân viên không cài thêm phần mềm nào.',
                   'Keep your hotline numbers and the way your team already calls. Speech Insight AI sits in the layer after the call, reading only the recordings you already have. Your staff install nothing.'
@@ -1014,121 +889,110 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        {/* ═══════════ ⑫ BẢNG GIÁ (đồng bộ từ trang /pricing) ═══════════ */}
+        {/* ⑫ Bảng giá (đồng bộ từ trang /pricing): khối trắng */}
         {pricingGroup && (
-          <section id="bang-gia" className="py-12 lg:py-16 bg-background scroll-mt-20">
+          <section id="bang-gia" className="py-16 lg:py-24 bg-white scroll-mt-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="text-center mb-10">
-                <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                  <Wallet className="w-4 h-4" />
-                  {t('BẢNG GIÁ', 'PRICING')}
-                </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground mb-4">
-                  {t('Ba gói theo ', 'Three plans by ')}
-                  <span className="text-[#1859b8]">
-                    {t('hạn mức phút', 'minute quota')}
-                  </span>
-                </h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  {t(
-                    'Trả theo lượng phút ghi âm thực xử lý — gọi ít không phải trả như gọi nhiều.',
-                    'You pay for the recorded minutes actually processed — calling less does not cost the same as calling a lot.'
-                  )}
-                </p>
-              </div>
+              <Head
+                icon={<Wallet className="h-4 w-4" />}
+                eyebrow={t('BẢNG GIÁ', 'PRICING')}
+                title={
+                  <>
+                    {t('Ba gói theo ', 'Three plans by ')}
+                    <span className="text-[#1859b8]">{t('hạn mức phút', 'minute quota')}</span>
+                  </>
+                }
+                lead={t(
+                  'Trả theo lượng phút ghi âm thực xử lý — gọi ít không phải trả như gọi nhiều.',
+                  'You pay for the recorded minutes actually processed — calling less does not cost the same as calling a lot.'
+                )}
+              />
 
               <PricingGroupTiers group={pricingGroup} />
 
-              <div className="text-center mt-8">
-                <Link
-                  href="/pricing"
-                  className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:text-[#1859b8] transition-colors"
-                >
+              <div className="mt-8 text-center">
+                <Link href="/pricing" className="ap-link inline-flex items-center gap-2 font-semibold">
                   {t('Xem bảng giá đầy đủ của Clickstar', 'See Clickstar’s full pricing')}
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
             </div>
           </section>
         )}
 
-        {/* ═══════════ ⑬ FAQ ═══════════ */}
-        <section className="py-12 lg:py-16 bg-[#f5f5f7]">
+        {/* ⑬ FAQ: khối xám nhạt */}
+        <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <span className="inline-flex items-center gap-2 bg-[#f5f5f7] text-[#1859b8] font-semibold text-sm px-5 py-2.5 rounded-full mb-4">
-                <ListChecks className="w-4 h-4" />
-                {t('CÂU HỎI THƯỜNG GẶP', 'FREQUENTLY ASKED')}
-              </span>
-              {/* Số câu lấy thẳng từ FAQ_ITEMS.length — thêm/bớt câu là tiêu đề tự đúng.
-                  Trước đây hardcode "Bảy câu" nên khi thêm 2 câu về mô hình AI thì sai số. */}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-foreground">
-                {t(
-                  `${FAQ_ITEMS.length} câu quản lý sale hay hỏi nhất — `,
-                  `The ${FAQ_ITEMS.length} questions sales leaders ask most — `
-                )}
-                <span className="text-[#1859b8]">
-                  {t('trả lời thẳng', 'answered directly')}
-                </span>
-              </h2>
-            </div>
+            {/* Số câu lấy thẳng từ FAQ_ITEMS.length: thêm/bớt câu thì tiêu đề tự đúng. */}
+            <Head
+              icon={<ListChecks className="h-4 w-4" />}
+              eyebrow={t('CÂU HỎI THƯỜNG GẶP', 'FREQUENTLY ASKED')}
+              title={
+                <>
+                  {t(`${FAQ_ITEMS.length} câu quản lý sale hay hỏi nhất — `, `The ${FAQ_ITEMS.length} questions sales leaders ask most — `)}
+                  <span className="text-[#1859b8]">{t('trả lời thẳng', 'answered directly')}</span>
+                </>
+              }
+            />
 
             <FaqAccordion items={FAQ_ITEMS} defaultOpen={1} />
 
-            <div className="text-center mt-8">
-              <Link href="/pricing" className="inline-flex items-center gap-2 text-[#1859b8] font-semibold hover:gap-3 transition-all">
+            <div className="mt-8 text-center">
+              <Link href="/pricing" className="ap-link inline-flex items-center gap-2 font-semibold">
                 {t('Xem bảng giá dịch vụ', 'See service pricing')}
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
         </section>
 
-        {/* ═══════════ ⑭ CTA CUỐI ═══════════ */}
-        <section id="contact" className="py-12 lg:py-16 bg-[#1e6dda]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            {/* Hộp trung thực — giữ lại từ khối "Kết quả đo được" */}
-            <div className="rounded-2xl border-2 border-dashed border-white/40 bg-[#1859b8] p-5 mb-10 text-left">
-              <p className="text-sm text-white leading-relaxed">
+        {/* ⑭ Kêu gọi hành động cuối: khối tối */}
+        <section id="contact" className="ap-tile ap-dark scroll-mt-16">
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="ap-stack">
+              {/* Hộp trung thực: giữ từ khối "Kết quả đo được" */}
+              <div className="max-w-[760px] rounded-[18px] border border-dashed border-white/40 p-5 text-left">
+                <p className="text-[15px] leading-relaxed text-white">
+                  {t(
+                    'Chúng tôi chỉ công bố con số khi đã đo được trên dữ liệu thật: độ chính xác bóc băng, kết quả chạy thử, số cuộc gọi đã xử lý. Thay vì đưa bạn một con số tự nghĩ ra, chúng tôi chạy thử trên chính cuộc gọi của bạn rồi đưa số đo — trước khi bạn ký bất cứ thứ gì.',
+                    'We only publish numbers we have actually measured on real data: transcription accuracy, pilot results, calls processed. Instead of handing you a number we invented, we run a trial on your own calls and give you measured results — before you sign anything.'
+                  )}
+                </p>
+              </div>
+
+              <h2 className="ap-display max-w-[820px]">{cta.heading[language]}</h2>
+              <p className="ap-lead max-w-[680px]">{cta.description[language]}</p>
+              <div className="ap-cta-row mt-2">
+                <Link href={cta.primary.href} className="ap-btn ap-btn-primary">{cta.primary.label[language]}</Link>
+                <Link href={cta.secondary.href} className="ap-btn ap-btn-ghost">{cta.secondary.label[language]}</Link>
+              </div>
+              <p className="max-w-[640px] text-sm text-[#d2d2d7]">
                 {t(
-                  'Chúng tôi chỉ công bố con số khi đã đo được trên dữ liệu thật: độ chính xác bóc băng, kết quả chạy thử, số cuộc gọi đã xử lý. Thay vì đưa bạn một con số tự nghĩ ra, chúng tôi chạy thử trên chính cuộc gọi của bạn rồi đưa số đo — trước khi bạn ký bất cứ thứ gì.',
-                  'We only publish numbers we have actually measured on real data: transcription accuracy, pilot results, calls processed. Instead of handing you a number we invented, we run a trial on your own calls and give you measured results — before you sign anything.'
+                  'Ký thoả thuận bảo mật trước khi bạn gửi bất kỳ file ghi âm nào. Dữ liệu gửi thử được xoá sau khi kết thúc đánh giá nếu bạn không tiếp tục.',
+                  'We sign an NDA before you send any recording. Trial data is deleted after the review if you decide not to proceed.'
                 )}
               </p>
             </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-6">
-              {cta.heading[language]}
-            </h2>
-            <p className="text-lg text-white mb-10 max-w-2xl mx-auto">{cta.description[language]}</p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href={cta.primary.href}
-                className="inline-flex items-center justify-center gap-2 bg-white text-[#1859b8] font-semibold px-8 py-4 rounded-full hover:bg-secondary transition-all shadow-lg"
-              >
-                {cta.primary.label[language]}
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                href={cta.secondary.href}
-                className="inline-flex items-center justify-center gap-2 bg-[#1859b8] text-white font-semibold px-8 py-4 rounded-full hover:bg-white/20 transition-all border border-white/30"
-              >
-                <PhoneCall className="w-5 h-5" />
-                {cta.secondary.label[language]}
-              </Link>
-            </div>
-
-            <p className="text-sm text-white mt-6">
-              {t(
-                'Ký thoả thuận bảo mật trước khi bạn gửi bất kỳ file ghi âm nào. Dữ liệu gửi thử được xoá sau khi kết thúc đánh giá nếu bạn không tiếp tục.',
-                'We sign an NDA before you send any recording. Trial data is deleted after the review if you decide not to proceed.'
-              )}
-            </p>
           </div>
         </section>
       </main>
       <Footer />
-    </>
+    </div>
+  )
+}
+
+/** Tiêu đề khối: nhãn nhỏ, h2 (có thể có đoạn nhấn màu), đoạn dẫn. `dark` cho khối nền tối. */
+function Head({ icon, eyebrow, title, lead, dark = false }: { icon: React.ReactNode; eyebrow: string; title: React.ReactNode; lead?: string; dark?: boolean }) {
+  return (
+    <div className="mb-12 text-center lg:mb-14">
+      <span className={`mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] ${dark ? 'text-[#d2d2d7]' : 'text-[#515154]'}`}>
+        {icon}
+        {eyebrow}
+      </span>
+      <h2 className={`mx-auto max-w-5xl text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-balance sm:text-4xl lg:text-5xl ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
+        {title}
+      </h2>
+      {lead && <p className={`mx-auto mt-5 max-w-3xl text-lg ${dark ? 'text-[#d2d2d7]' : 'text-[#515154]'}`}>{lead}</p>}
+    </div>
   )
 }
