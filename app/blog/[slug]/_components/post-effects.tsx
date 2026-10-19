@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { Check, Link2 } from 'lucide-react'
+import { ArrowUp, Check, Link2 } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 
 /** Toàn bộ chuyển động của trang bài viết. Mọi hiệu ứng tắt khi người dùng bật chế độ giảm chuyển động. */
@@ -23,7 +23,32 @@ const CSS = `
 @keyframes bp-drift{from{transform:translate3d(-4%,-3%,0) rotate(0deg)}to{transform:translate3d(4%,3%,0) rotate(8deg)}}
 .bp-star{animation:bp-spin 24s linear infinite}
 @keyframes bp-spin{to{transform:rotate(360deg)}}
+/* Nền đầu bài: hai quầng sáng trôi chậm và lưới chấm mờ dần xuống dưới */
+.bp-orb{position:absolute;border-radius:9999px;filter:blur(70px);opacity:.5;animation:bp-orb 16s ease-in-out infinite alternate}
+@keyframes bp-orb{from{transform:translate3d(-6%,-4%,0) scale(1)}to{transform:translate3d(8%,6%,0) scale(1.15)}}
+.bp-dots{background-image:radial-gradient(rgba(100,116,139,.28) 1px,transparent 1.2px);background-size:22px 22px;-webkit-mask-image:linear-gradient(to bottom,#000,transparent 85%);mask-image:linear-gradient(to bottom,#000,transparent 85%);animation:bp-fade 1.6s ease both}
+@keyframes bp-fade{from{opacity:0}to{opacity:1}}
+/* Tiêu đề hiện từng chữ từ dưới lên */
+.bp-wm{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.14em;margin-bottom:-.14em}
+.bp-w{display:inline-block;animation:bp-word .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.15s + var(--i,0) * 70ms)}
+@keyframes bp-word{from{transform:translateY(112%) rotate(3deg)}to{transform:none}}
+/* Ảnh bìa: ánh sáng bao quanh lấy màu từ chính ảnh, ảnh trượt nhẹ theo cuộn */
+.bp-ambient{position:absolute;inset:6% 4% -4%;z-index:-1;filter:blur(38px) saturate(1.5);opacity:.55;border-radius:32px;animation:bp-fade 1.8s .5s ease both}
+.bp-par{position:absolute;left:0;right:0;top:-24px;bottom:-24px;transform:translate3d(0,calc(var(--py,0) * 1px),0);will-change:transform}
+/* Thân bài: gạch chân liên kết vẽ ra khi rê chuột, ảnh nhấc lên, bôi chọn màu thương hiệu */
+.bp-prose a{background:linear-gradient(currentColor,currentColor) 0 100%/0 1.5px no-repeat;transition:background-size .35s cubic-bezier(.2,.7,.2,1)}
+.bp-prose a:hover{background-size:100% 1.5px}
+.bp-prose img{transition:transform .6s cubic-bezier(.2,.7,.2,1),box-shadow .6s}
+.bp-prose img:hover{transform:translateY(-4px);box-shadow:0 28px 54px -30px rgba(15,23,42,.5)}
+.bp-prose ::selection{background:rgba(54,135,252,.25)}
+/* Khối liên hệ: dấu cộng lấp lánh */
+.bp-tw{position:absolute;color:rgba(255,255,255,.7);animation:bp-tw 3.2s ease-in-out infinite}
+@keyframes bp-tw{0%,100%{opacity:.15;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(90deg)}}
+.bp-ring{transition:stroke-dashoffset .15s linear}
 @media (prefers-reduced-motion:reduce){
+.bp-orb,.bp-dots,.bp-w,.bp-ambient,.bp-tw{animation:none}
+.bp-par{transform:none}
+.bp-prose img:hover{transform:none}
 .bp-up,.bp-cover,.bp-zoom,.bp-toc-item,.bp-glow::before,.bp-star{animation:none}
 .bp-pre{opacity:1;transform:none}
 .bp-prose h2.bp-pre::after{transform:none}
@@ -84,7 +109,7 @@ export function BodyReveal({ children, className }: { children: React.ReactNode;
     // IntersectionObserver) để khối bị bỏ qua khi nhảy tới mục lục hay cuộn rất nhanh vẫn hiện khi quay lại xem.
     let pending: HTMLElement[] = []
     root
-      .querySelectorAll(':scope > h2, :scope > h3, :scope > blockquote, :scope > ul, :scope > ol, :scope > table, :scope > pre, :scope > p > img')
+      .querySelectorAll(':scope > h2, :scope > h3, :scope > p, :scope > blockquote, :scope > ul, :scope > ol, :scope > table, :scope > pre, :scope > p > img')
       .forEach((el) => {
         const target = (el.tagName === 'IMG' ? el.parentElement : el) as HTMLElement
         if (target.getBoundingClientRect().top > window.innerHeight * 0.95) {
@@ -140,6 +165,98 @@ export function CopyLinkButton({ url }: { url: string }) {
     >
       {done ? <Check className="w-4 h-4 text-emerald-600" /> : <Link2 className="w-4 h-4" />}
       {done ? t('Đã sao chép', 'Copied') : t('Sao chép liên kết', 'Copy link')}
+    </button>
+  )
+}
+
+/** Cho ảnh bìa trượt nhẹ ngược chiều cuộn (hiệu ứng chiều sâu). Đặt vào trong khung có overflow-hidden. */
+export function CoverParallax({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const parent = el.parentElement
+      if (!parent) return
+      const r = parent.getBoundingClientRect()
+      const mid = r.top + r.height / 2 - window.innerHeight / 2
+      el.style.setProperty('--py', String(Math.max(-22, Math.min(22, -mid * 0.05))))
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+  return (
+    <div ref={ref} className="bp-par">
+      {children}
+    </div>
+  )
+}
+
+/** Nút tròn "về đầu bài" có vòng tiến độ đọc, hiện ra sau khi cuộn qua phần đầu. */
+export function BackToTop() {
+  const { t } = useLanguage()
+  const [pct, setPct] = useState(0)
+  useEffect(() => {
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const el = document.getElementById('bp-article')
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const total = rect.height - window.innerHeight * 0.6
+      setPct(total > 0 ? Math.min(Math.max((-rect.top + window.innerHeight * 0.1) / total, 0), 1) : 0)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [])
+  const C = 2 * Math.PI * 19
+  const visible = pct > 0.06
+  return (
+    <button
+      type="button"
+      onClick={() =>
+        window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+      }
+      aria-label={t('Về đầu bài', 'Back to top')}
+      tabIndex={visible ? 0 : -1}
+      className={`fixed right-5 bottom-24 z-50 h-12 w-12 rounded-full bg-background shadow-[0_8px_24px_-8px_rgba(15,23,42,0.35)] border border-border flex items-center justify-center text-foreground hover:text-primary transition-all duration-300 ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
+      }`}
+    >
+      <svg className="absolute inset-0 -rotate-90" viewBox="0 0 44 44" aria-hidden="true">
+        <circle cx="22" cy="22" r="19" fill="none" stroke="currentColor" strokeOpacity=".1" strokeWidth="2.5" />
+        <circle
+          className="bp-ring text-[#3687FC]"
+          cx="22"
+          cy="22"
+          r="19"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeDasharray={C}
+          strokeDashoffset={C * (1 - pct)}
+        />
+      </svg>
+      <ArrowUp className="w-4 h-4" />
     </button>
   )
 }
