@@ -1,9 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { AlertCircle, Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import { login } from './actions'
+
+const REMEMBER_KEY = 'cs-admin-login-email'
+const REMEMBER_OFF = 'cs-admin-login-remember-off'
 
 function SubmitButton() {
   const { pending } = useFormStatus()
@@ -22,6 +25,26 @@ function SubmitButton() {
 export function LoginForm({ redirectTo, error }: { redirectTo: string; error: string }) {
   const [show, setShow] = useState(false)
   const [errs, setErrs] = useState<{ email?: string; password?: string }>({})
+  const [remember, setRemember] = useState(true)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+
+  // Nhớ email trên thiết bị này (KHÔNG lưu mật khẩu: mật khẩu do trình quản lý mật khẩu của trình duyệt giữ).
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(REMEMBER_OFF) === '1') {
+        setRemember(false)
+        return
+      }
+      const saved = localStorage.getItem(REMEMBER_KEY)
+      if (saved && emailRef.current && !emailRef.current.value) {
+        emailRef.current.value = saved
+        passwordRef.current?.focus()
+      }
+    } catch {
+      /* trình duyệt chặn lưu trữ: bỏ qua */
+    }
+  }, [])
 
   return (
     <form
@@ -33,7 +56,21 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
         if (!String(f.get('email') || '').trim()) next.email = 'Enter your email address.'
         if (!String(f.get('password') || '')) next.password = 'Enter your password.'
         setErrs(next)
-        if (next.email || next.password) e.preventDefault()
+        if (next.email || next.password) {
+          e.preventDefault()
+          return
+        }
+        try {
+          if (remember) {
+            localStorage.setItem(REMEMBER_KEY, String(f.get('email')).trim())
+            localStorage.removeItem(REMEMBER_OFF)
+          } else {
+            localStorage.removeItem(REMEMBER_KEY)
+            localStorage.setItem(REMEMBER_OFF, '1')
+          }
+        } catch {
+          /* bỏ qua */
+        }
       }}
       className="space-y-4"
     >
@@ -53,11 +90,12 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
         <div className="relative">
           <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
           <input
+            ref={emailRef}
             id="email"
             type="email"
             name="email"
             autoFocus
-            autoComplete="email"
+            autoComplete="username"
             placeholder="name@clickstar.vn"
             aria-invalid={!!errs.email}
             onChange={() => errs.email && setErrs((p) => ({ ...p, email: undefined }))}
@@ -74,6 +112,7 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
         <div className="relative">
           <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
           <input
+            ref={passwordRef}
             id="password"
             type={show ? 'text' : 'password'}
             name="password"
@@ -94,6 +133,16 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
         </div>
         {errs.password && <p className="mt-1.5 text-xs text-red-600">{errs.password}</p>}
       </div>
+
+      <label className="flex items-center gap-2 text-[13px] text-slate-600 cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={remember}
+          onChange={(e) => setRemember(e.target.checked)}
+          className="h-4 w-4 rounded border-slate-300 accent-orange-500"
+        />
+        Remember my email on this device
+      </label>
 
       <SubmitButton />
     </form>
