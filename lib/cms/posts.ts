@@ -92,3 +92,33 @@ export async function getLatestPosts(limit = 3): Promise<LatestPost[]> {
   )
   return cached(limit)
 }
+
+/** Dữ liệu cho mục Tin tức trên thanh menu: 3 bài mới nhất và số bài đăng trong 7 ngày gần nhất. */
+export type NavNews = { count: number; items: LatestPost[] }
+
+export async function getNavNews(): Promise<NavNews> {
+  const cached = unstable_cache(
+    async (): Promise<NavNews> => {
+      const supabase = createPublicClient()
+      const since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
+      const [latest, recent] = await Promise.all([
+        supabase
+          .from('posts')
+          .select('id, slug, title, excerpt, cover_image, tags, published_at')
+          .eq('status', 'published')
+          .order('published_at', { ascending: false, nullsFirst: false })
+          .limit(4),
+        supabase
+          .from('posts')
+          .select('id', { count: 'exact', head: true })
+          .eq('status', 'published')
+          .gte('published_at', since),
+      ])
+      if (latest.error || !latest.data) return { count: 0, items: [] }
+      return { count: recent.count ?? 0, items: latest.data as unknown as LatestPost[] }
+    },
+    ['nav-news'],
+    { tags: ['posts'], revalidate: 300 }
+  )
+  return cached()
+}
