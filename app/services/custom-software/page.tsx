@@ -45,7 +45,8 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { Eyebrow } from '@/components/ui/eyebrow'
+import { ServiceReadMore } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
 import { useFooterContent } from '@/contexts/web-content-context'
@@ -581,8 +582,6 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
-        <ServiceAnswer slug="custom-software" />
-
         {/* ⑬ FAQ */}
         <Section tone="soft">
           <Kicker>{tt(FAQ.kicker)}</Kicker>
@@ -636,14 +635,9 @@ function Section({ id, tone = 'white', className = '', children }: { id?: string
 
 function Kicker({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <p
-      className={`${MONO} mb-4 inline-flex items-center gap-2.5 text-[12.5px] uppercase tracking-[0.04em] ${
-        dark ? 'text-[#7db8ff]' : 'text-[#1859b8]'
-      }`}
-    >
-      <span className="w-[18px] h-[1.5px] bg-current" aria-hidden />
+    <Eyebrow dot dark={dark} className="mb-4">
       {children}
-    </p>
+    </Eyebrow>
   )
 }
 

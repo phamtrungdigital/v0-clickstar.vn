@@ -44,7 +44,8 @@ import {
   ArrowUpRight,
 } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { Eyebrow } from '@/components/ui/eyebrow'
+import { ServiceReadMore } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { SpeechReportSample } from '@/components/services/speech-report-sample'
 import { ClaudeEngine } from '@/components/services/claude-engine'
@@ -395,9 +396,9 @@ export default function SpeechInsightAiPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow dot className="mb-4">
                 {t('CALL TO TEXT · PHÂN TÍCH CUỘC GỌI BẰNG AI', 'CALL TO TEXT · AI CALL ANALYTICS')}
-              </p>
+              </Eyebrow>
               <h1 className="ap-hero-title">{t('Dữ liệu từ mọi cuộc gọi', 'Data from every call')}</h1>
               <p className="ap-lead max-w-[760px]">
                 {t(
@@ -780,10 +781,10 @@ export default function SpeechInsightAiPage() {
               </div>
 
               <div className="order-1 lg:order-2">
-                <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Eyebrow className="mb-3">
                   <ShieldCheck className="h-4 w-4" />
                   {t('BẢO MẬT & TUÂN THỦ', 'SECURITY & COMPLIANCE')}
-                </span>
+                </Eyebrow>
                 <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Ghi âm là dữ liệu cá nhân của khách hàng bạn. ', 'Recordings are your customers’ personal data. ')}
                   <span className="text-[#1859b8]">{t('Chúng tôi coi đó là mặc định, không phải tuỳ chọn', 'We treat that as the default, not an option')}</span>
@@ -921,8 +922,6 @@ export default function SpeechInsightAiPage() {
           </section>
         )}
 
-        <ServiceAnswer slug="speech-insight-ai" />
-
         {/* ⑬ FAQ: khối xám nhạt */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -990,10 +989,10 @@ export default function SpeechInsightAiPage() {
 function Head({ icon, eyebrow, title, lead, dark = false }: { icon: React.ReactNode; eyebrow: string; title: React.ReactNode; lead?: string; dark?: boolean }) {
   return (
     <div className="mb-12 text-center lg:mb-14">
-      <span className={`mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] ${dark ? 'text-[#d2d2d7]' : 'text-[#515154]'}`}>
+      <Eyebrow dark={dark} className="mb-3">
         {icon}
         {eyebrow}
-      </span>
+      </Eyebrow>
       <h2 className={`mx-auto max-w-5xl text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-balance sm:text-4xl lg:text-5xl ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
         {title}
       </h2>

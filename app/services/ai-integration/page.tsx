@@ -2,6 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Link from '@/components/app-link'
@@ -334,9 +335,9 @@ export default function AIIntegrationPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow dot className="mb-4">
                 {t('Công nghệ AI tiên tiến nhất 2026', 'The most advanced AI technology of 2026')}
-              </p>
+              </Eyebrow>
               <h1 className="ap-hero-title">{t('Tích hợp AI', 'Integrate AI')}</h1>
               <p className="ap-lead max-w-[760px]">
                 {t('AI cho marketing, nội dung và phân tích dữ liệu.', 'AI for marketing, content and data analysis.')}
@@ -389,10 +390,10 @@ export default function AIIntegrationPage() {
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <Zap className="h-4 w-4" />
                 {t('TẠI SAO CẦN AI', 'WHY AI')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('AI đang thay đổi', 'AI is changing')} <span className="text-[#7db8ff]">{t('cuộc chơi', 'the game')}</span> {t('kinh doanh', 'in business')}
               </h2>
@@ -422,10 +423,10 @@ export default function AIIntegrationPage() {
         <section id="use-cases" className="py-16 lg:py-24 bg-white scroll-mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Sparkles className="h-4 w-4" />
                 {t('Ứng dụng AI', 'AI in action')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('AI có thể làm gì cho doanh nghiệp bạn?', 'What can AI do for your business?')}
               </h2>
@@ -465,10 +466,10 @@ export default function AIIntegrationPage() {
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <Brain className="h-4 w-4" />
                 {t('HỆ SINH THÁI AI', 'THE AI ECOSYSTEM')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Công cụ AI', "The world's")} <span className="text-[#7db8ff]">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
               </h2>
@@ -513,10 +514,10 @@ export default function AIIntegrationPage() {
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Layers className="h-4 w-4" />
                 {t('Quy trình', 'Our process')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Quy trình tích hợp AI', 'The AI integration process')}
               </h2>
@@ -546,10 +547,10 @@ export default function AIIntegrationPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10 flex items-end justify-between gap-4">
               <div>
-                <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+                <Eyebrow className="mb-3">
                   <FileText className="h-4 w-4" />
                   {t('TIN TỨC AI', 'AI NEWS')}
-                </span>
+                </Eyebrow>
                 <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Bài viết', 'Our')} <span className="text-[#1859b8]">{t('mới nhất', 'latest')}</span> {t('về AI', 'AI articles')}
                 </h2>

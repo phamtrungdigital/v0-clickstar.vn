@@ -2,112 +2,20 @@
 
 import { useState } from 'react'
 import Link from '@/components/app-link'
-import { ArrowRight, BookOpen, Layers, MessageCircleQuestion, Minus, Plus, Zap } from 'lucide-react'
+import { ArrowRight, BookOpen, Layers, MessageCircleQuestion, Minus, Plus } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
-import { SERVICE_FAQ } from '@/lib/seo/service-faq'
+import { serviceFaqItems } from '@/lib/seo/service-faq'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { faqPageSchema } from '@/lib/seo/schema'
 
 type Both = { vi: string; en: string }
-
-/** Huy hiệu nhỏ đứng trên tiêu đề khối: nền xanh nhạt, viền xanh, bo tròn, có biểu tượng, cùng gam với các nút của site. */
-function Eyebrow({ icon: Icon, children }: { icon: React.ComponentType<{ className?: string }>; children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center gap-2 rounded-full border border-[#b9d4f8] bg-[#eaf2fd] py-1.5 pl-3 pr-4 text-[13px] font-semibold tracking-[-0.01em] text-[#144c97]">
-      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#1e6dda] text-white">
-        <Icon className="h-3 w-3" />
-      </span>
-      {children}
-    </span>
-  )
-}
-
-/**
- * Đoạn trả lời trực tiếp ngay dưới phần đầu mỗi trang dịch vụ: câu hỏi khách hay hỏi và câu trả lời gọn có số liệu,
- * để công cụ tìm kiếm và AI trích đúng đoạn này. Chỉ ghi số liệu đã được chủ site xác nhận (20/10/2026);
- * muốn đổi số thì sửa ở đây rồi cập nhật cả bản tiếng Anh.
- */
-const ANSWERS: Record<string, { q: Both; a: Both }> = {
-  website: {
-    q: { vi: 'Thiết kế website tại Click Star mất bao lâu?', en: 'How long does website design at Click Star take?' },
-    a: {
-      vi: 'Một website doanh nghiệp tại Click Star thường hoàn thành trong khoảng 5 đến 7 ngày, tùy yêu cầu cụ thể. Website nhiều chức năng hơn được báo thời gian riêng khi tư vấn. Website thiết kế responsive, tối ưu tốc độ tải và chuẩn SEO kỹ thuật ngay từ đầu. Chi phí được báo sau buổi tư vấn miễn phí.',
-      en: 'A business website at Click Star is usually finished in about 5 to 7 days, depending on the requirements. Websites with more features get their own timeline during the consultation. Every site is built responsive, fast-loading and technically SEO-ready from the start. Cost is quoted after a free consultation.',
-    },
-  },
-  'digital-marketing': {
-    q: { vi: 'Dịch vụ Digital Marketing giá bao nhiêu, bao lâu thấy kết quả?', en: 'How much does digital marketing cost and when do results show?' },
-    a: {
-      vi: 'Gói Starter từ 8 triệu đồng mỗi tháng, gói Professional từ 25 triệu đồng mỗi tháng, gói Enterprise báo giá theo nhu cầu. Phí quảng cáo trả cho Facebook, Google, TikTok tính riêng theo ngân sách của doanh nghiệp. Thông thường sau 3 đến 4 tuần doanh nghiệp bắt đầu thấy kết quả.',
-      en: 'The Starter plan is from 8 million VND a month, Professional from 25 million VND a month, and Enterprise is quoted to your needs. Ad spend paid to Facebook, Google and TikTok is billed separately according to your own budget. Businesses usually start to see results after 3 to 4 weeks.',
-    },
-  },
-  'crm-cdp': {
-    q: { vi: 'Triển khai CRM và CDP mất bao lâu, chi phí bao nhiêu?', en: 'How long does a CRM and CDP rollout take and what does it cost?' },
-    a: {
-      vi: 'Tích hợp CRM và CDP với hệ thống hiện có (website, nền tảng quảng cáo, email, chăm sóc khách hàng) mất khoảng 2 đến 4 tuần, chi phí một lần từ 20 đến 50 triệu đồng. Sau đó vận hành theo gói từ 15 triệu hoặc từ 35 triệu đồng mỗi tháng.',
-      en: 'Connecting a CRM and CDP to your existing systems (website, ad platforms, email, customer care) takes about 2 to 4 weeks, with a one-time cost of 20 to 50 million VND. After that it runs on a plan from 15 million or from 35 million VND a month.',
-    },
-  },
-  'ai-integration': {
-    q: { vi: 'Tích hợp AI vào quy trình doanh nghiệp mất bao lâu, chi phí bao nhiêu?', en: 'How long does AI integration take and what does it cost?' },
-    a: {
-      vi: 'Một quy trình AI riêng, ví dụ chấm điểm khách hàng tiềm năng, tự phân loại email hoặc tạo nội dung, thường mất 2 đến 3 tuần với chi phí từ 15 đến 40 triệu đồng. Click Star tư vấn miễn phí một đối một trước khi báo giá theo nhu cầu cụ thể.',
-      en: 'A custom AI workflow, such as lead scoring, automatic email sorting or content generation, usually takes 2 to 3 weeks and costs 15 to 40 million VND. Click Star gives a free one-to-one consultation before quoting for your specific needs.',
-    },
-  },
-  automation: {
-    q: { vi: 'Tự động hóa quy trình bằng AI mất bao lâu?', en: 'How long does AI process automation take?' },
-    a: {
-      vi: 'Một quy trình tự động hóa mất từ 1 đến 3 tuần tùy độ phức tạp. Click Star tự phát triển nền tảng tự động hóa và thiết kế quy trình riêng cho nghiệp vụ của từng doanh nghiệp, thay vì dùng một mẫu chung cho mọi khách hàng.',
-      en: 'An automation workflow takes 1 to 3 weeks depending on complexity. Click Star builds its own automation platform and designs each workflow around the specific operations of the business, rather than using one template for every client.',
-    },
-  },
-  dashboard: {
-    q: { vi: 'Dashboard dữ liệu của Click Star dùng để làm gì?', en: 'What is a Click Star data dashboard for?' },
-    a: {
-      vi: 'Dashboard của Click Star gom số liệu bán hàng, quảng cáo và vận hành từ nhiều nguồn vào một màn hình, tự cập nhật và có báo cáo tự động, để lãnh đạo xem tình hình kinh doanh trong vài giây thay vì tổng hợp thủ công. Thời gian và chi phí được báo sau buổi tư vấn miễn phí.',
-      en: 'A Click Star dashboard brings sales, advertising and operations figures from many sources onto one screen, updates itself and sends automatic reports, so leaders see the state of the business in seconds instead of compiling it by hand. Time and cost are quoted after a free consultation.',
-    },
-  },
-  'custom-software': {
-    q: { vi: 'Làm phần mềm theo yêu cầu mất bao lâu?', en: 'How long does custom software take to build?' },
-    a: {
-      vi: 'Thời gian tùy theo yêu cầu của doanh nghiệp, trung bình khoảng 15 ngày. Mỗi thay đổi được đưa lên môi trường thử để doanh nghiệp duyệt trước khi lên hệ thống chính, có sao lưu hằng ngày và có thể quay về phiên bản trước trong vài phút.',
-      en: 'It depends on the business requirements and averages about 15 days. Every change goes to a test environment for the business to approve before it reaches the live system, with daily backups and the ability to roll back to the previous version within minutes.',
-    },
-  },
-  'speech-insight-ai': {
-    q: { vi: 'Triển khai Speech Insight AI mất bao lâu?', en: 'How long does Speech Insight AI take to set up?' },
-    a: {
-      vi: 'Khoảng 15 ngày, tùy vào việc viết kết nối với tổng đài hiện có. Khi chạy, 100% cuộc gọi được chuyển thành văn bản, chấm điểm theo bộ tiêu chí của doanh nghiệp và gắn cờ những cuộc gọi vi phạm.',
-      en: 'About 15 days, depending on the work of writing the connection to your existing call system. Once running, 100% of calls are turned into text, scored against your own criteria and flagged when they break the rules.',
-    },
-  },
-}
-
-export function ServiceAnswer({ slug }: { slug: string }) {
-  const { t } = useLanguage()
-  const item = ANSWERS[slug]
-  if (!item) return null
-  return (
-    <section className="px-4 sm:px-6 lg:px-8 py-10 lg:py-12" aria-labelledby={`sa-${slug}`}>
-      <div className="mx-auto max-w-4xl rounded-2xl border border-[#cfe0f7] bg-[#f3f8ff] px-6 py-6 sm:px-8 sm:py-7">
-        <Eyebrow icon={Zap}>{t('Trả lời nhanh', 'Quick answer')}</Eyebrow>
-        <h2 id={`sa-${slug}`} className="mt-4 text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f]">
-          {t(item.q.vi, item.q.en)}
-        </h2>
-        <p className="mt-3 text-base sm:text-[17px] leading-relaxed text-[#3a3a3c]">{t(item.a.vi, item.a.en)}</p>
-      </div>
-    </section>
-  )
-}
 
 /** Khối câu hỏi thường gặp của trang dịch vụ: câu trả lời luôn nằm trong HTML (ẩn bằng CSS khi đóng) và có dữ liệu FAQPage. */
 export function ServiceFaq({ slug }: { slug: string }) {
   const { t, language } = useLanguage()
   const [open, setOpen] = useState<number | null>(0)
-  const items = SERVICE_FAQ[slug]
-  if (!items?.length) return null
+  const items = serviceFaqItems(slug)
+  if (!items.length) return null
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-12 lg:py-16" aria-labelledby={`faq-${slug}`}>
       <script
@@ -115,7 +23,7 @@ export function ServiceFaq({ slug }: { slug: string }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema(items, language === 'en' ? 'en' : 'vi')) }}
       />
       <div className="mx-auto max-w-4xl">
-        <Eyebrow icon={MessageCircleQuestion}>{t('Câu hỏi thường gặp', 'FAQ')}</Eyebrow>
+        <Eyebrow><MessageCircleQuestion />{t('Câu hỏi thường gặp', 'FAQ')}</Eyebrow>
         <h2 id={`faq-${slug}`} className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f]">
           {t('Những điều doanh nghiệp hay hỏi trước khi bắt đầu', 'What businesses ask before they start')}
         </h2>
@@ -147,11 +55,10 @@ export function ServiceFaq({ slug }: { slug: string }) {
   )
 }
 
-/** Cụm cuối trang dịch vụ (đặt ngay trên khối liên hệ): trả lời nhanh, câu hỏi thường gặp, bài nên đọc tiếp. */
+/** Cụm cuối trang dịch vụ (đặt ngay trên khối liên hệ): câu hỏi thường gặp (câu đầu là trả lời nhanh) và bài nên đọc tiếp. */
 export function ServiceBottom({ slug }: { slug: string }) {
   return (
     <>
-      <ServiceAnswer slug={slug} />
       <ServiceFaq slug={slug} />
       <ServiceReadMore slug={slug} />
     </>
@@ -203,7 +110,7 @@ export function ServiceReadMore({ slug }: { slug: string }) {
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-12 lg:py-14" aria-labelledby={`srm-${slug}`}>
       <div className="mx-auto max-w-4xl">
-        <Eyebrow icon={BookOpen}>{t('Đọc thêm', 'Read more')}</Eyebrow>
+        <Eyebrow><BookOpen />{t('Đọc thêm', 'Read more')}</Eyebrow>
         <h2 id={`srm-${slug}`} className="mt-4 text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f]">
           {t('Bài viết nên đọc tiếp', 'Further reading')}
         </h2>
@@ -280,7 +187,7 @@ export function RelatedServices({ postSlug, tags }: { postSlug: string; tags: st
   if (!slugs.length) return null
   return (
     <aside className="mt-8 rounded-2xl border border-[#cfe0f7] bg-[#f3f8ff] p-5" aria-label={t('Dịch vụ liên quan', 'Related services')}>
-      <Eyebrow icon={Layers}>{t('Dịch vụ liên quan', 'Related services')}</Eyebrow>
+      <Eyebrow><Layers />{t('Dịch vụ liên quan', 'Related services')}</Eyebrow>
       <ul className="mt-4 flex flex-col gap-2">
         {slugs.map((s) => (
           <li key={s}>

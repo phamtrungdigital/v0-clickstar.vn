@@ -33,6 +33,7 @@ import { useLanguage } from '@/contexts/language-context'
 import { useServiceCta } from '@/contexts/web-content-context'
 import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
 import { MainNav } from '@/components/layout/main-nav'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { MarketingGrowthIllustration } from '@/components/illustrations/service-illustrations'
@@ -292,9 +293,9 @@ export default function DigitalMarketingPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm text-muted-foreground tracking-[-0.016em] uppercase">
+              <Eyebrow dot className="mb-4">
                 {t('DIGITAL MARKETING', 'DIGITAL MARKETING')}
-              </p>
+              </Eyebrow>
 
               <h1 className="ap-hero-title">
                 Digital Marketing
@@ -365,10 +366,10 @@ export default function DigitalMarketingPage() {
               </div>
 
               <div className="order-1 lg:order-2">
-                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Eyebrow className="mb-3">
                   <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
-                </span>
+                </Eyebrow>
                 <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Doanh nghiệp của bạn đang', 'Is your business')}{' '}
                   <span className="text-[#1859b8]">{t('gặp khó khăn?', 'struggling?')}</span>
@@ -418,10 +419,10 @@ export default function DigitalMarketingPage() {
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 lg:mb-14">
-              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Zap className="w-4 h-4" />
                 {t('DỊCH VỤ CHI TIẾT', 'DETAILED SERVICES')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1d1d1f] leading-[1.15] tracking-[-0.005em]">
                 {t('Giải pháp', 'Solutions')}{' '}
                 <span className="text-[#1859b8]">{t('toàn diện', 'comprehensive')}</span>
@@ -462,10 +463,10 @@ export default function DigitalMarketingPage() {
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 lg:mb-14">
-              <span className="inline-flex items-center gap-2 text-sm tracking-[-0.016em] mb-3 text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <Rocket className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.15] tracking-[-0.005em] text-white">
                 {t('Quy trình làm việc', 'Working process')}{' '}
                 <span className="text-[#7db8ff]">{t('minh bạch', 'transparent')}</span>
@@ -519,10 +520,10 @@ export default function DigitalMarketingPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Eyebrow className="mb-3">
                   <Settings className="h-4 w-4" />
                   {t('CLICKSTAR PORTAL', 'CLICKSTAR PORTAL')}
-                </span>
+                </Eyebrow>
                 <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                   {t('Theo dõi chiến dịch', 'Track campaigns')}{' '}
                   <span className="text-[#1859b8]">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
@@ -606,10 +607,10 @@ export default function DigitalMarketingPage() {
         <section id="case-studies" className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <TrendingUp className="h-4 w-4" />
                 {t('CASE STUDIES', 'CASE STUDIES')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Kết quả', 'Results')}{' '}
                 <span className="text-[#1859b8]">{t('thực tế', 'in action')}</span>

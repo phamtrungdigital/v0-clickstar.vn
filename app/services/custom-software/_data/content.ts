@@ -1,4 +1,5 @@
 import type { I18n } from '@/lib/cms/types'
+import { SERVICE_QUICK } from '@/lib/seo/service-faq'
 
 /**
  * Nội dung trang "Phần mềm theo yêu cầu" — song ngữ, dùng chung cho page.tsx
@@ -656,6 +657,7 @@ export const FAQ = {
   kicker: { vi: 'Câu hỏi thường gặp', en: 'FAQ' },
   title: { vi: 'Những câu hỏi doanh nghiệp thường đặt ra', en: 'Questions businesses usually ask' },
   items: [
+    SERVICE_QUICK['custom-software'],
     {
       q: { vi: 'Dữ liệu của doanh nghiệp được lưu ở đâu, ai truy cập được?', en: 'Where is our data stored, and who can access it?' },
       a: {

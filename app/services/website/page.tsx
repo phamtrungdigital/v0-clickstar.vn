@@ -1,6 +1,7 @@
 'use client'
 
 import { MainNav } from '@/components/layout/main-nav'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
@@ -377,7 +378,7 @@ export default function WebsiteDesignPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">{t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}</p>
+              <Eyebrow dot className="mb-4">{t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}</Eyebrow>
               <h1 className="ap-hero-title">
                 {t('Website chuyển đổi cao', 'Website that converts')}
               </h1>
@@ -447,10 +448,10 @@ export default function WebsiteDesignPage() {
                 <WebsiteBrowserIllustration className="w-full h-auto" />
               </div>
               <div className="order-1 lg:order-2">
-                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Eyebrow className="mb-3">
                   <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
-                </span>
+                </Eyebrow>
                 <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Website của bạn', 'Is your website')}{' '}
                   <span className="text-[#1859b8]">{t('đang mất khách?', 'losing customers?')}</span>
@@ -489,10 +490,10 @@ export default function WebsiteDesignPage() {
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <Layers className="h-4 w-4" />
                 {t('QUY TRÌNH LÀM VIỆC', 'OUR PROCESS')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Quy trình ', 'Transparent ')}
                 <span className="text-[#7db8ff]">{t('minh bạch', 'process')}</span>
@@ -589,10 +590,10 @@ export default function WebsiteDesignPage() {
         <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Layers className="h-4 w-4" />
                 {t('LOẠI WEBSITE', 'WEBSITE TYPES')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Mẫu website ', 'Website templates for ')}
                 <span className="text-[#1859b8]">{t('chuyển đổi cao', 'high conversion')}</span>
@@ -634,10 +635,10 @@ export default function WebsiteDesignPage() {
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Sparkles className="h-4 w-4" />
                 {t('DỊCH VỤ BỔ SUNG', 'ADD-ON SERVICES')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('SEO & Ads ', 'SEO & Ads ')}
                 <span className="text-[#1859b8]">{t('tích hợp sẵn', 'ready to go')}</span>
@@ -679,10 +680,10 @@ export default function WebsiteDesignPage() {
         <section id="portfolio" className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Star className="h-4 w-4" />
                 {t('DỰ ÁN TIÊU BIỂU', 'FEATURED PROJECTS')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Kết quả ', 'Results ')}
                 <span className="text-[#1859b8]">{t('thực tế', 'that speak')}</span>

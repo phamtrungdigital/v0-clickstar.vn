@@ -2,6 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Link from '@/components/app-link'
@@ -228,7 +229,7 @@ export default function AIAutomationPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">AI Automation 2026</p>
+              <Eyebrow dot className="mb-4">AI Automation 2026</Eyebrow>
               <h1 className="ap-hero-title">AI Automation</h1>
               <p className="ap-lead max-w-[760px]">
                 {t('Tự động hóa quy trình với nền tảng Click Star, Claude và GPT.', 'Automate your workflows with the Click Star platform, Claude and GPT.')}
@@ -266,10 +267,10 @@ export default function AIAutomationPage() {
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <Bot className="h-4 w-4" />
                 {t('TẠI SAO CẦN AUTOMATION', 'WHY AUTOMATION')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Tự động hóa là', 'Automation is')} <span className="text-[#7db8ff]">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
               </h2>
@@ -299,10 +300,10 @@ export default function AIAutomationPage() {
         <section id="workflow" className="py-16 lg:py-24 bg-[#f5f5f7] scroll-mt-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Workflow className="h-4 w-4" />
                 Workflow Automation
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Sơ đồ Automation với AI', 'The AI automation flow')}
               </h2>
@@ -340,10 +341,10 @@ export default function AIAutomationPage() {
         <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Sparkles className="h-4 w-4" />
                 Use Cases
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Ứng dụng AI Automation', 'AI Automation in action')}
               </h2>
@@ -385,10 +386,10 @@ export default function AIAutomationPage() {
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <Layers className="h-4 w-4" />
                 TECH STACK
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Công nghệ', 'Our')} <span className="text-[#7db8ff]">{t('Automation', 'Automation stack')}</span>
               </h2>
@@ -424,10 +425,10 @@ export default function AIAutomationPage() {
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm uppercase tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Settings className="h-4 w-4" />
                 {t('Quy trình', 'Our process')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Triển khai AI Automation', 'Deploying AI Automation')}
               </h2>

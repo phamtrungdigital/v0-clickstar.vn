@@ -144,14 +144,14 @@ export const ROADMAP: RoadmapGroup[] = [
       {
         id: 'ai-answer', title: 'Đoạn trả lời trực tiếp ngay dưới phần đầu mỗi trang dịch vụ', status: 'done', who: 'Kỹ thuật', date: '20/10',
         why: 'AI thường trích đúng đoạn trả lời gọn đứng đầu, ví dụ thời gian và chi phí làm một dịch vụ.',
-        steps: ['Đã thêm khối "Trả lời nhanh" cho cả 8 trang dịch vụ (đặt gần cuối trang, trên khối FAQ), mỗi khối một câu hỏi khách hay hỏi kèm số liệu', 'Chỉ dùng số quản trị viên đã xác nhận ngày 20/10; muốn đổi số thì sửa trong components/seo/service-answer.tsx', 'Bài blog đã có khối Tóm tắt ngay dưới tiêu đề'],
+        steps: ['Câu hỏi đầu tiên của khối FAQ ở cả 8 trang dịch vụ là câu trả lời nhanh (mở sẵn): thời gian, chi phí hoặc công dụng kèm số liệu', 'Chỉ dùng số quản trị viên đã xác nhận ngày 20/10; muốn đổi số thì sửa trong lib/seo/service-faq.ts (mục SERVICE_QUICK)', 'Bài blog đã có khối Tóm tắt ngay dưới tiêu đề'],
         note: 'Trang Dashboard chưa có thời gian và giá nên khối chỉ mô tả công dụng.',
       },
       {
         id: 'ai-faq', title: 'Khối câu hỏi thường gặp kèm dữ liệu FAQPage cho các trang dịch vụ', status: 'done', who: 'Kỹ thuật', date: '20/10',
-        why: 'Câu hỏi và trả lời ngắn là dạng AI trích nhiều nhất. Mỗi dịch vụ có 4 đến 7 câu xoay quanh chuyên môn và năng lực thực thi.',
+        why: 'Câu hỏi và trả lời ngắn là dạng AI trích nhiều nhất. Mỗi dịch vụ có 5 đến 11 câu (kể cả câu trả lời nhanh) xoay quanh chuyên môn và năng lực thực thi.',
         steps: ['6 trang dịch vụ có khối FAQ mới (5 câu mỗi trang); Phần mềm theo yêu cầu và Speech Insight AI giữ FAQ riêng đã có', 'Câu trả lời bám đúng quy trình, công cụ, bảo mật và thời gian đang công bố trên website', 'Sửa chữ trong lib/seo/service-faq.ts, dữ liệu FAQPage tự cập nhật theo'],
-        note: 'Khối "Trả lời nhanh" nằm ngay trên khối FAQ, gần cuối trang, trước khối liên hệ.',
+        note: 'Câu trả lời nhanh là câu đầu tiên của khối FAQ, mở sẵn. Khối FAQ nằm gần cuối trang, trước khối liên hệ.',
       },
       {
         id: 'ai-questions', title: 'Tiêu đề phụ dạng câu hỏi khách hay hỏi trong bài blog', status: 'todo', who: 'Kỹ thuật',

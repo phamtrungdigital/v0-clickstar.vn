@@ -2,6 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
+import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Image from 'next/image'
@@ -248,7 +249,7 @@ export default function CRMCDPPage() {
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <p className="text-sm uppercase tracking-[-0.016em] text-[#515154]">{t('Quản trị & thấu hiểu khách hàng', 'Manage & understand customers')}</p>
+              <Eyebrow dot className="mb-4">{t('Quản trị & thấu hiểu khách hàng', 'Manage & understand customers')}</Eyebrow>
               <h1 className="ap-hero-title">CRM &amp; CDP</h1>
               <p className="ap-lead max-w-[780px]">
                 {t(
@@ -338,10 +339,10 @@ export default function CRMCDPPage() {
         <section id="cdp" className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#d2d2d7]">
+              <Eyebrow dark className="mb-3">
                 <BrainCircuit className="h-4 w-4" />
                 CDP - CUSTOMER DATA PLATFORM
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Thấu hiểu khách hàng', 'Understand Customers')}{' '}
                 <span className="text-[#7db8ff]">{t('ở mức sâu nhất', 'at the deepest level')}</span>
@@ -433,10 +434,10 @@ export default function CRMCDPPage() {
         <section id="crm" className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Users className="h-4 w-4" />
                 CRM - CUSTOMER RELATIONSHIP MANAGEMENT
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Quản trị quan hệ', 'Customer Relationship')}{' '}
                 <span className="text-[#1859b8]">{t('Khách hàng', 'Management')}</span>
@@ -543,10 +544,10 @@ export default function CRMCDPPage() {
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center lg:mb-14">
-              <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+              <Eyebrow className="mb-3">
                 <Workflow className="h-4 w-4" />
                 {t('TÍCH HỢP TOÀN DIỆN', 'COMPREHENSIVE INTEGRATION')}
-              </span>
+              </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Đồng bộ dữ liệu', 'Synchronize Data')}{' '}
                 <span className="text-[#1859b8]">{t('CRM - CDP - Website', 'CRM - CDP - Website')}</span>
@@ -608,10 +609,10 @@ export default function CRMCDPPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
               <div>
-                <span className="mb-3 inline-flex items-center gap-2 text-sm tracking-[-0.016em] text-[#515154]">
+                <Eyebrow className="mb-3">
                   <Sparkles className="h-4 w-4" />
                   {t('KẾT HỢP WEBSITE UX/UI', 'WEBSITE UX/UI INTEGRATION')}
-                </span>
+                </Eyebrow>
                 <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Thiết kế Website', 'Website Design')}{' '}
                   <span className="text-[#1859b8]">{t('tối ưu cho CDP', 'optimized for CDP')}</span>

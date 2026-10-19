@@ -1,4 +1,5 @@
 import type { I18n } from '@/lib/cms/types'
+import { SERVICE_QUICK } from '@/lib/seo/service-faq'
 
 /**
  * FAQ dùng CHUNG cho 2 nơi — viết 1 lần, tránh lệch nội dung:
@@ -11,6 +12,7 @@ import type { I18n } from '@/lib/cms/types'
 export type FaqItem = { q: I18n; a: I18n }
 
 export const FAQ_ITEMS: FaqItem[] = [
+  SERVICE_QUICK['speech-insight-ai'],
   {
     q: {
       vi: 'Speech Insight AI có phải là dịch vụ Call to Text (chuyển cuộc gọi thành văn bản) không?',
