@@ -164,8 +164,6 @@ export default function CustomSoftwarePage() {
           </div>
         </section>
 
-        <ServiceAnswer slug="custom-software" />
-
         {/* ② MÃ NGUỒN THẬT — khối tối */}
         <Section id="ma-nguon" tone="dark" className="scroll-mt-16">
           <Kicker dark>{tt(EVIDENCE.kicker)}</Kicker>
@@ -583,12 +581,16 @@ export default function CustomSoftwarePage() {
           </div>
         </Section>
 
+        <ServiceAnswer slug="custom-software" />
+
         {/* ⑬ FAQ */}
         <Section tone="soft">
           <Kicker>{tt(FAQ.kicker)}</Kicker>
           <H2>{tt(FAQ.title)}</H2>
           <FaqList />
         </Section>
+
+        <ServiceReadMore slug="custom-software" />
 
         {/* ⑭ CTA */}
         <section className="ap-tile ap-dark">
@@ -612,7 +614,6 @@ export default function CustomSoftwarePage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="custom-software" />
       </main>
 
       <Footer />

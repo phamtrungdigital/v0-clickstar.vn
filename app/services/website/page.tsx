@@ -1,7 +1,7 @@
 'use client'
 
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
 import { useServiceCta } from '@/contexts/web-content-context'
@@ -439,8 +439,6 @@ export default function WebsiteDesignPage() {
           </div>
         </section>
 
-        <ServiceAnswer slug="website" />
-
         {/* Vấn đề và giải pháp */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -733,6 +731,8 @@ export default function WebsiteDesignPage() {
           </div>
         </section>
 
+        <ServiceBottom slug="website" />
+
         {/* CTA */}
         <section id="contact" className="ap-tile ap-dark">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -750,7 +750,6 @@ export default function WebsiteDesignPage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="website" />
       </main>
       <Footer />
     </div>

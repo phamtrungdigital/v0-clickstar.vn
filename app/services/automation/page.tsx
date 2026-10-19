@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Link from '@/components/app-link'
 import Image from 'next/image'
@@ -262,8 +262,6 @@ export default function AIAutomationPage() {
           </div>
         </section>
 
-        <ServiceAnswer slug="automation" />
-
         {/* Tại sao cần automation: khối tối */}
         <section className="py-16 lg:py-24 bg-[#272729] text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -454,6 +452,8 @@ export default function AIAutomationPage() {
           </div>
         </section>
 
+        <ServiceBottom slug="automation" />
+
         {/* Kêu gọi hành động: khối tối */}
         <section className="ap-tile ap-dark">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -472,7 +472,6 @@ export default function AIAutomationPage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="automation" />
       </main>
       <Footer />
     </div>

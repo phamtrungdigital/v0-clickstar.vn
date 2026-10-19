@@ -513,8 +513,6 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
-        <ServiceAnswer slug="speech-insight-ai" />
-
         {/* ② Vấn đề và giải pháp: khối xám nhạt */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -923,6 +921,8 @@ export default function SpeechInsightAiPage() {
           </section>
         )}
 
+        <ServiceAnswer slug="speech-insight-ai" />
+
         {/* ⑬ FAQ: khối xám nhạt */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -948,6 +948,8 @@ export default function SpeechInsightAiPage() {
             </div>
           </div>
         </section>
+
+        <ServiceReadMore slug="speech-insight-ai" />
 
         {/* ⑭ Kêu gọi hành động cuối: khối tối */}
         <section id="contact" className="ap-tile ap-dark scroll-mt-16">
@@ -978,7 +980,6 @@ export default function SpeechInsightAiPage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="speech-insight-ai" />
       </main>
       <Footer />
     </div>

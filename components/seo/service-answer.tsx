@@ -1,8 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import Link from '@/components/app-link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Minus, Plus } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { SERVICE_FAQ } from '@/lib/seo/service-faq'
+import { faqPageSchema } from '@/lib/seo/schema'
 
 type Both = { vi: string; en: string }
 
@@ -84,6 +87,62 @@ export function ServiceAnswer({ slug }: { slug: string }) {
         <p className="mt-3 text-base sm:text-[17px] leading-relaxed text-[#3a3a3c]">{t(item.a.vi, item.a.en)}</p>
       </div>
     </section>
+  )
+}
+
+/** Khối câu hỏi thường gặp của trang dịch vụ: câu trả lời luôn nằm trong HTML (ẩn bằng CSS khi đóng) và có dữ liệu FAQPage. */
+export function ServiceFaq({ slug }: { slug: string }) {
+  const { t, language } = useLanguage()
+  const [open, setOpen] = useState<number | null>(0)
+  const items = SERVICE_FAQ[slug]
+  if (!items?.length) return null
+  return (
+    <section className="px-4 sm:px-6 lg:px-8 py-12 lg:py-16" aria-labelledby={`faq-${slug}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema(items, language === 'en' ? 'en' : 'vi')) }}
+      />
+      <div className="mx-auto max-w-4xl">
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1559b8]">{t('Câu hỏi thường gặp', 'FAQ')}</p>
+        <h2 id={`faq-${slug}`} className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f]">
+          {t('Những điều doanh nghiệp hay hỏi trước khi bắt đầu', 'What businesses ask before they start')}
+        </h2>
+        <div className="mt-8 border-t border-[#e0e0e0]">
+          {items.map((item, i) => {
+            const isOpen = open === i
+            return (
+              <div key={i} className="border-b border-[#e0e0e0]">
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="flex w-full items-start justify-between gap-4 py-5 text-left text-[17px] font-semibold text-[#1d1d1f]"
+                >
+                  <span>{t(item.q.vi, item.q.en)}</span>
+                  {isOpen ? (
+                    <Minus className="mt-0.5 h-5 w-5 shrink-0 text-[#515154]" strokeWidth={1.6} />
+                  ) : (
+                    <Plus className="mt-0.5 h-5 w-5 shrink-0 text-[#515154]" strokeWidth={1.6} />
+                  )}
+                </button>
+                <p className={`pb-5 pr-0 sm:pr-10 leading-relaxed text-[#515154] ${isOpen ? '' : 'hidden'}`}>{t(item.a.vi, item.a.en)}</p>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** Cụm cuối trang dịch vụ (đặt ngay trên khối liên hệ): trả lời nhanh, câu hỏi thường gặp, bài nên đọc tiếp. */
+export function ServiceBottom({ slug }: { slug: string }) {
+  return (
+    <>
+      <ServiceAnswer slug={slug} />
+      <ServiceFaq slug={slug} />
+      <ServiceReadMore slug={slug} />
+    </>
   )
 }
 

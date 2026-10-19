@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Link from '@/components/app-link'
 import { 
@@ -249,8 +249,6 @@ export default function DashboardServicePage() {
             </div>
           </div>
         </section>
-
-        <ServiceAnswer slug="dashboard" />
 
         {/* Tại sao cần dashboard: khối xám nhạt */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
@@ -536,6 +534,8 @@ export default function DashboardServicePage() {
           </div>
         </section>
 
+        <ServiceBottom slug="dashboard" />
+
         {/* Kêu gọi hành động: khối tối */}
         <section id="contact" className="ap-tile ap-dark scroll-mt-16">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -554,7 +554,6 @@ export default function DashboardServicePage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="dashboard" />
       </main>
 
       <Footer />

@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Image from 'next/image'
 import Link from '@/components/app-link'
@@ -328,8 +328,6 @@ export default function CRMCDPPage() {
             </div>
           </div>
         </section>
-
-        <ServiceAnswer slug="crm-cdp" />
 
         <CrmVsCdpSection />
         <JourneySection />
@@ -669,6 +667,8 @@ export default function CRMCDPPage() {
           </div>
         </section>
 
+        <ServiceBottom slug="crm-cdp" />
+
         {/* CTA */}
         <section id="contact" className="ap-tile ap-dark">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -687,7 +687,6 @@ export default function CRMCDPPage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="crm-cdp" />
       </main>
       <Footer />
     </div>

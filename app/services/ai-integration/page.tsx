@@ -2,7 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
-import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
+import { ServiceBottom } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Link from '@/components/app-link'
 import Image from 'next/image'
@@ -370,8 +370,6 @@ export default function AIIntegrationPage() {
           </div>
         </section>
 
-        <ServiceAnswer slug="ai-integration" />
-
         {/* Số liệu chuyển đổi: khối xám nhạt */}
         <section className="py-14 lg:py-16 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -591,6 +589,8 @@ export default function AIIntegrationPage() {
           </div>
         </section>
 
+        <ServiceBottom slug="ai-integration" />
+
         {/* Kêu gọi hành động: khối tối */}
         <section id="consultation" className="ap-tile ap-dark scroll-mt-16">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -609,7 +609,6 @@ export default function AIIntegrationPage() {
             </div>
           </div>
         </section>
-      <ServiceReadMore slug="ai-integration" />
       </main>
       <Footer />
     </div>
