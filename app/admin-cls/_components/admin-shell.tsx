@@ -1,10 +1,11 @@
 'use client'
 
 import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { roadmapCounts } from '@/lib/seo/roadmap'
+import { createClient } from '@/lib/supabase/client'
 import {
   LayoutDashboard,
   FolderOpen,
@@ -26,7 +27,8 @@ import {
   Shield,
   Sparkles,
   Plus,
-  HelpCircle,
+  ChevronDown,
+  UserPlus,
   ExternalLink,
   Briefcase,
   Target,
@@ -127,7 +129,13 @@ export default function AdminShell({
     return i >= 0 ? i : 0
   })
   const [query, setQuery] = useState('')
+  const [sel, setSel] = useState(0)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [addOpen, setAddOpen] = useState(false)
+  const [bellOpen, setBellOpen] = useState(false)
+  const [leads24h, setLeads24h] = useState<number | null>(null)
   const searchRef = useRef<HTMLInputElement>(null)
+  const headerRef = useRef<HTMLElement>(null)
 
   useEffect(() => {
     const saved = localStorage.getItem('admin-sidebar-collapsed')
@@ -146,8 +154,8 @@ export default function AdminShell({
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
-        setSidebarCollapsed(false)
-        window.setTimeout(() => searchRef.current?.focus(), 60)
+        searchRef.current?.focus()
+        setSearchOpen(true)
       }
     }
     window.addEventListener('keydown', onKey)
@@ -162,116 +170,299 @@ export default function AdminShell({
     })
   }
 
+  // Đóng các bảng xổ khi bấm ra ngoài hoặc nhấn Esc.
+  useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setSearchOpen(false)
+        setAddOpen(false)
+        setBellOpen(false)
+        setUserMenuOpen(false)
+      }
+    }
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSearchOpen(false)
+        setAddOpen(false)
+        setBellOpen(false)
+        setUserMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onEsc)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onEsc)
+    }
+  }, [])
+
+  // Số lead mới trong 24 giờ cho chuông thông báo: chỉ đọc, tải sau khi trang đã hiện (RLS chỉ cho admin đọc).
+  useEffect(() => {
+    let alive = true
+    createClient()
+      .from('leads')
+      .select('id', { count: 'exact', head: true })
+      .gte('created_at', new Date(Date.now() - 24 * 3600 * 1000).toISOString())
+      .then(({ count, error }) => {
+        if (alive && !error) setLeads24h(count ?? 0)
+      })
+    return () => {
+      alive = false
+    }
+  }, [])
+
   const initial = (user.full_name || user.email).charAt(0).toUpperCase()
   const displayName = user.full_name || user.email.split('@')[0]
   const contentOffset = sidebarCollapsed ? 'lg:ml-14' : 'lg:ml-[264px]'
 
   // Tìm nhanh không phân biệt hoa thường và dấu tiếng Việt.
   const fold = (t: string) => t.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd').toLowerCase().trim()
-  const results = fold(query)
-    ? sidebarItems.flatMap((sec) => sec.items.filter((it) => fold(it.label).includes(fold(query))).map((it) => ({ ...it, group: sec.title })))
-    : []
+  const allItems = sidebarItems.flatMap((sec) => sec.items.map((it) => ({ ...it, group: sec.title })))
+  const results = fold(query) ? allItems.filter((it) => fold(it.label).includes(fold(query))) : allItems.slice(0, 6)
+
+  // Đường dẫn trang đang xem (nhóm / mục) ở header: mục có href dài nhất khớp với đường dẫn hiện tại.
+  const here = useMemo(() => {
+    let best: { group: string; label: string; len: number } | null = null
+    for (const sec of sidebarItems)
+      for (const it of sec.items) {
+        const hit = pathname === it.href || (it.href !== '/admin-cls' && pathname.startsWith(it.href))
+        if (hit && (!best || it.href.length > best.len)) best = { group: sec.title, label: it.label, len: it.href.length }
+      }
+    return best
+  }, [pathname])
+
+  const go = (href: string) => {
+    router.push(href)
+    setSearchOpen(false)
+    setQuery('')
+    searchRef.current?.blur()
+    setMobileMenuOpen(false)
+  }
+  const roleLabel = user.role === 'admin' ? 'Admin' : user.role === 'editor' ? 'Biên tập' : user.role === 'viewer' ? 'Chỉ xem' : user.role
+  const bellCount = (leads24h ? 1 : 0) + (SEO_OPEN_TASKS ? 1 : 0)
 
   return (
     <div className="min-h-screen bg-slate-50">
-      {/* ───── TOP HEADER: black bar full width ───── */}
-      <header className="fixed top-0 left-0 right-0 z-40 h-14 bg-zinc-950 text-white flex items-center justify-between px-3 lg:px-4 border-b border-zinc-800">
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="lg:hidden p-1.5 hover:bg-zinc-800 rounded text-white"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <Link href="/admin-cls" className="flex items-center gap-2.5 group">
-            {branding.logoUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={branding.logoUrl}
-                alt={branding.siteName}
-                className="h-8 w-auto object-contain"
-              />
-            ) : (
-              <div className="w-8 h-8 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-xs">
-                  {branding.siteName.slice(0, 2).toUpperCase()}
-                </span>
+      {/* ───── TOP HEADER: thanh tối, logo, đường dẫn trang, tìm nhanh, thêm mới, thông báo, tài khoản ───── */}
+      <header
+        ref={headerRef}
+        className="fixed top-0 left-0 right-0 z-40 h-14 bg-zinc-950 text-white flex items-center gap-3 px-3 lg:px-4 border-b border-zinc-800"
+      >
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="lg:hidden p-1.5 hover:bg-zinc-800 rounded text-white"
+          aria-label="Mở menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <Link href="/admin-cls" className="flex items-center gap-2.5 shrink-0" aria-label="Trang tổng quan">
+          {branding.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={branding.logoUrl} alt={branding.siteName} className="h-6 w-auto object-contain" />
+          ) : (
+            <div className="w-7 h-7 bg-orange-500 rounded flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-xs">{branding.siteName.slice(0, 2).toUpperCase()}</span>
+            </div>
+          )}
+        </Link>
+        <span className="hidden sm:inline-flex items-center text-[10px] font-medium tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-orange-500/15 text-orange-400 shrink-0">
+          ADMIN
+        </span>
+        <span className="hidden md:block w-px h-5 bg-zinc-700 shrink-0" />
+        {here && (
+          <nav aria-label="Vị trí hiện tại" className="hidden md:flex items-center gap-1.5 text-xs text-zinc-400 min-w-0 whitespace-nowrap">
+            <span>{here.group}</span>
+            <ChevronRight className="w-3 h-3 text-zinc-600" />
+            <span className="text-white font-medium truncate">{here.label}</span>
+          </nav>
+        )}
+
+        {/* Tìm nhanh (Ctrl K): nhảy tới mục menu */}
+        <div className="relative flex-1 max-w-md mx-auto hidden md:block">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+          <input
+            ref={searchRef}
+            type="text"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value)
+              setSel(0)
+              setSearchOpen(true)
+            }}
+            onFocus={() => setSearchOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowDown') {
+                e.preventDefault()
+                setSel((i) => Math.min(i + 1, Math.max(results.length - 1, 0)))
+              } else if (e.key === 'ArrowUp') {
+                e.preventDefault()
+                setSel((i) => Math.max(i - 1, 0))
+              } else if (e.key === 'Enter' && results[sel]) {
+                go(results[sel].href)
+              }
+            }}
+            placeholder="Tìm trang, bài viết, cài đặt"
+            aria-label="Tìm nhanh"
+            autoComplete="off"
+            className="w-full pl-10 pr-14 py-1.5 bg-zinc-900 border border-zinc-700 rounded-lg text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
+          />
+          <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-zinc-500 border border-zinc-700 rounded px-1">Ctrl K</kbd>
+          {searchOpen && (
+            <div className="absolute left-0 right-0 top-full mt-2 bg-white text-slate-900 rounded-xl shadow-xl border border-slate-200 p-1.5 z-50">
+              <p className="px-2.5 py-1.5 text-[11px] text-slate-400">{fold(query) ? 'Kết quả' : 'Gợi ý'}</p>
+              {results.length === 0 && <p className="px-2.5 py-2 text-sm text-slate-500">Không có mục nào khớp.</p>}
+              {results.slice(0, 8).map((it, i) => (
+                <button
+                  key={it.href}
+                  type="button"
+                  onMouseEnter={() => setSel(i)}
+                  onClick={() => go(it.href)}
+                  className={cn('w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-left', i === sel ? 'bg-slate-100' : '')}
+                >
+                  <it.icon className="w-4 h-4 text-slate-500" strokeWidth={1.9} />
+                  <span className="flex-1 truncate">{it.label}</span>
+                  <span className="text-[11px] text-slate-400">{it.group}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-1 flex-shrink-0 ml-auto md:ml-0">
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setAddOpen((v) => !v)
+                setBellOpen(false)
+                setUserMenuOpen(false)
+              }}
+              aria-expanded={addOpen}
+              className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold rounded-lg transition-colors"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Thêm</span>
+              <ChevronDown className="w-3.5 h-3.5 opacity-80" />
+            </button>
+            {addOpen && (
+              <div className="absolute right-0 mt-2 w-56 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 p-1.5 z-50">
+                <p className="px-2.5 py-1.5 text-[11px] text-slate-400">Tạo mới</p>
+                {[
+                  { label: 'Bài viết mới', href: '/admin-cls/posts/new', icon: FileText },
+                  { label: 'Dự án mới', href: '/admin-cls/projects/new', icon: Briefcase },
+                  { label: 'Thành viên đội ngũ', href: '/admin-cls/team/new', icon: UserPlus },
+                  { label: 'Thông báo', href: '/admin-cls/announcements', icon: Bell },
+                ].map((it) => (
+                  <Link
+                    key={it.href}
+                    href={it.href}
+                    onClick={() => setAddOpen(false)}
+                    className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm hover:bg-slate-100"
+                  >
+                    <it.icon className="w-4 h-4 text-slate-500" strokeWidth={1.9} />
+                    {it.label}
+                  </Link>
+                ))}
               </div>
             )}
-            <span className="hidden sm:inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-orange-500/15 text-orange-400 ring-1 ring-orange-500/30 group-hover:bg-orange-500/25 transition-colors">
-              Admin
-            </span>
-          </Link>
-        </div>
-
-        {/* Global search — centered, HubSpot style */}
-        <div className="flex-1 max-w-2xl mx-4 hidden md:block">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
-            <input
-              type="text"
-              placeholder="Tìm hoặc hỏi…"
-              className="w-full pl-10 pr-3 py-1.5 bg-zinc-900 border border-zinc-700 rounded-md text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500"
-            />
           </div>
-        </div>
 
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <Link
-            href="/admin-cls/posts/new"
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold rounded-md transition-colors"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Thêm
-          </Link>
           <Link
             href="/"
             target="_blank"
-            className="hidden sm:flex items-center gap-1.5 p-1.5 hover:bg-zinc-800 rounded text-zinc-300"
+            className="hidden sm:flex items-center p-2 hover:bg-zinc-800 rounded-lg text-zinc-300"
             title="Xem website"
+            aria-label="Xem website"
           >
-            <Globe className="w-4 h-4" />
+            <ExternalLink className="w-[18px] h-[18px]" />
           </Link>
-          <button className="p-1.5 hover:bg-zinc-800 rounded text-zinc-300" title="Trợ giúp">
-            <HelpCircle className="w-4 h-4" />
-          </button>
-          <button className="relative p-1.5 hover:bg-zinc-800 rounded text-zinc-300">
-            <Bell className="w-4 h-4" />
-            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-orange-500 rounded-full" />
-          </button>
 
           <div className="relative">
             <button
-              onClick={() => setUserMenuOpen(!userMenuOpen)}
-              className="flex items-center gap-1.5 p-1 hover:bg-zinc-800 rounded ml-1"
+              type="button"
+              onClick={() => {
+                setBellOpen((v) => !v)
+                setAddOpen(false)
+                setUserMenuOpen(false)
+              }}
+              aria-label="Thông báo"
+              aria-expanded={bellOpen}
+              className="relative p-2 hover:bg-zinc-800 rounded-lg text-zinc-300"
+            >
+              <Bell className="w-[18px] h-[18px]" />
+              {bellCount > 0 && (
+                <span className="absolute top-0.5 right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-orange-500 text-white text-[10px] font-semibold flex items-center justify-center">
+                  {bellCount}
+                </span>
+              )}
+            </button>
+            {bellOpen && (
+              <div className="absolute right-0 mt-2 w-72 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 p-1.5 z-50">
+                <p className="px-2.5 py-1.5 text-[11px] text-slate-400">Thông báo</p>
+                {leads24h ? (
+                  <Link href="/admin-cls/leads" onClick={() => setBellOpen(false)} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm hover:bg-slate-100">
+                    <Target className="w-4 h-4 text-slate-500" strokeWidth={1.9} />
+                    <span className="flex-1">{leads24h} lead mới trong 24 giờ</span>
+                  </Link>
+                ) : null}
+                {SEO_OPEN_TASKS ? (
+                  <Link href="/admin-cls/seo" onClick={() => setBellOpen(false)} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm hover:bg-slate-100">
+                    <Search className="w-4 h-4 text-slate-500" strokeWidth={1.9} />
+                    <span className="flex-1">{SEO_OPEN_TASKS} việc quản trị SEO còn mở</span>
+                  </Link>
+                ) : null}
+                {bellCount === 0 && <p className="px-2.5 py-2 text-sm text-slate-500">Chưa có thông báo mới.</p>}
+              </div>
+            )}
+          </div>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setUserMenuOpen((v) => !v)
+                setAddOpen(false)
+                setBellOpen(false)
+              }}
+              aria-expanded={userMenuOpen}
+              className="flex items-center gap-2 pl-1.5 pr-1 py-1 hover:bg-zinc-800 rounded-lg ml-0.5"
             >
               <div className="w-7 h-7 bg-orange-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-semibold">{initial}</span>
               </div>
+              <span className="hidden lg:block text-left leading-tight">
+                <span className="block text-xs font-medium text-white max-w-[120px] truncate">{displayName}</span>
+                <span className="block text-[10px] text-zinc-400">{roleLabel}</span>
+              </span>
+              <ChevronDown className="hidden lg:block w-3.5 h-3.5 text-zinc-500" />
             </button>
 
             {userMenuOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-slate-200 py-1 z-50">
-                <div className="px-4 py-2 border-b border-slate-100">
+              <div className="absolute right-0 mt-2 w-60 bg-white text-slate-800 rounded-xl shadow-xl border border-slate-200 p-1.5 z-50">
+                <div className="px-2.5 py-2 border-b border-slate-100 mb-1">
                   <p className="text-xs font-semibold text-slate-900 truncate">{user.email}</p>
-                  <p className="text-[10px] text-slate-500 mt-0.5 uppercase tracking-wide">
-                    {user.role}
-                  </p>
+                  <p className="text-[11px] text-slate-500 mt-0.5">{roleLabel}</p>
                 </div>
                 <Link
                   href="/admin-cls/settings"
                   onClick={() => setUserMenuOpen(false)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
+                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm hover:bg-slate-100"
                 >
-                  <Settings className="w-4 h-4" />
+                  <Settings className="w-4 h-4 text-slate-500" />
                   Cài đặt
+                </Link>
+                <Link
+                  href="/"
+                  target="_blank"
+                  onClick={() => setUserMenuOpen(false)}
+                  className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm hover:bg-slate-100"
+                >
+                  <Globe className="w-4 h-4 text-slate-500" />
+                  Xem website
                 </Link>
                 <hr className="my-1 border-slate-100" />
                 <form action={logout}>
-                  <button
-                    type="submit"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-slate-50 w-full"
-                  >
+                  <button type="submit" className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm text-red-600 hover:bg-slate-100 w-full">
                     <LogOut className="w-4 h-4" />
                     Đăng xuất
                   </button>
@@ -347,34 +538,10 @@ export default function AdminShell({
             <X className="w-4 h-4 text-slate-600" />
           </button>
 
-          <div className="px-3 pt-3 pb-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
-              <input
-                ref={searchRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && results[0]) {
-                    router.push(results[0].href)
-                    setMobileMenuOpen(false)
-                  }
-                  if (e.key === 'Escape') setQuery('')
-                }}
-                placeholder="Tìm nhanh"
-                aria-label="Tìm nhanh trong menu"
-                className="w-full pl-8 pr-10 py-1.5 text-sm rounded-lg border border-slate-200 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#3687FC]/30 focus:border-[#3687FC]"
-              />
-              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 border border-slate-200 rounded px-1 hidden lg:block">Ctrl K</kbd>
-            </div>
-          </div>
-
-          <nav className="flex-1 overflow-y-auto px-3 pb-3">
-            <h2 className="px-2.5 pt-1 pb-1.5 text-[13px] font-semibold text-[#0F172A]">
-              {fold(query) ? 'Kết quả' : sidebarItems[activeGroup].title}
-            </h2>
+          <nav className="flex-1 overflow-y-auto px-3 pt-3 pb-3">
+            <h2 className="px-2.5 pt-1 pb-1.5 text-[13px] font-semibold text-[#0F172A]">{sidebarItems[activeGroup].title}</h2>
             <ul className="space-y-0.5">
-              {(fold(query) ? results : sidebarItems[activeGroup].items.map((it) => ({ ...it, group: '' }))).map((item) => {
+              {sidebarItems[activeGroup].items.map((item) => {
                 const isActive = pathname === item.href || (item.href !== '/admin-cls' && pathname.startsWith(item.href))
                 return (
                   <li key={item.href}>
@@ -391,7 +558,6 @@ export default function AdminShell({
                         strokeWidth={1.9}
                       />
                       <span className="truncate flex-1">{item.label}</span>
-                      {item.group && <span className="text-[11px] text-slate-400 shrink-0">{item.group}</span>}
                       {item.badge ? (
                         <span className="text-[11px] font-medium rounded-full px-1.5 min-w-[18px] text-center bg-[#E8F1FF] text-[#3687FC] shrink-0">{item.badge}</span>
                       ) : null}
@@ -399,9 +565,6 @@ export default function AdminShell({
                   </li>
                 )
               })}
-              {fold(query) && results.length === 0 && (
-                <li className="px-2.5 py-2 text-sm text-slate-500">Không có mục nào khớp.</li>
-              )}
             </ul>
           </nav>
         </div>
