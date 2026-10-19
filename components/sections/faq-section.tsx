@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Plus, Minus, ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { Reveal } from '@/components/reveal'
 import { useLanguage } from '@/contexts/language-context'
 import type { FaqContent } from '@/lib/cms/types'

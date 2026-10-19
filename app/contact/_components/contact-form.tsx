@@ -3,6 +3,7 @@
 import { useActionState, useState } from 'react'
 import { Send, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { useLocalHref } from '@/components/app-link'
 import { submitContactForm, type ContactFormState } from '../actions'
 
 // value gửi đi (s.vi) giữ nguyên tiếng Việt để không lệch dữ liệu lead/CRM giữa 2 ngôn ngữ —
@@ -26,7 +27,8 @@ const INITIAL_STATE: ContactFormState = { status: 'idle' }
 const PRIVACY_POLICY_URL = '/blog/quy-dinh-bao-ve-du-lieu-ca-nhan'
 
 export function ContactForm({ defaultService }: { defaultService?: string }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const localHref = useLocalHref()
   const [state, formAction, isPending] = useActionState(submitContactForm, INITIAL_STATE)
   // controlled để không mất dấu tích khi form báo lỗi và React reset các ô nhập
   const [consent, setConsent] = useState(false)
@@ -60,6 +62,7 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
 
   return (
     <form action={formAction} className="space-y-5">
+      <input type="hidden" name="lang" value={language} />
       {state.status === 'error' && !state.fieldErrors && (
         <div className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-lg p-4 text-sm text-red-700">
           <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
@@ -133,7 +136,7 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
               'I agree that my personal data collected on this page may be processed and stored by Click Star Digital Co., Ltd (Click Star) for consultation purposes and under the conditions published in the ',
             )}
             {PRIVACY_POLICY_URL ? (
-              <a href={PRIVACY_POLICY_URL} target="_blank" rel="noopener noreferrer" className="underline text-[#1859b8] hover:text-primary-dark">
+              <a href={localHref(PRIVACY_POLICY_URL)} target="_blank" rel="noopener noreferrer" className="underline text-[#1859b8] hover:text-primary-dark">
                 {t('Quy định bảo vệ dữ liệu cá nhân của Click Star', 'Click Star Personal Data Protection Policy')}
               </a>
             ) : (

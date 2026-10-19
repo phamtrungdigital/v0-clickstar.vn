@@ -1,7 +1,7 @@
 'use client'
 
 import { ServiceCard } from './service-card'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { useLanguage } from '@/contexts/language-context'
 import { InlineSvgImage } from '@/components/inline-svg-image'
 import type { ServicesContent } from '@/lib/cms/types'

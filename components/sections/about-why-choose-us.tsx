@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { ArrowRight, User } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import type { AboutWhyChooseUsContent } from '@/lib/cms/types'

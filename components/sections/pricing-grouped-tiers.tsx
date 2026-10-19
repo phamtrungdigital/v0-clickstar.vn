@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { Check, Sparkles } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import type { PricingGroupedTiersContent, PricingTierGroup } from '@/lib/cms/types'

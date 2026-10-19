@@ -5,7 +5,7 @@ import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
 import { useServiceCta } from '@/contexts/web-content-context'
 import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import Image from 'next/image'
 import { 
   ArrowRight, 

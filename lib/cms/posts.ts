@@ -92,4 +92,3 @@ export async function getLatestPosts(limit = 3): Promise<LatestPost[]> {
   )
   return cached(limit)
 }
-

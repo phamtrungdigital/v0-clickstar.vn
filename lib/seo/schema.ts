@@ -1,5 +1,6 @@
 import { BRAND, SITE_URL } from './site'
 import type { SiteSettings } from '@/lib/cms/settings'
+import { localizePath, type Lang } from '@/lib/i18n/locale'
 
 export const ORG_ID = `${SITE_URL}/#organization`
 export const WEBSITE_ID = `${SITE_URL}/#website`
@@ -35,15 +36,15 @@ function postalAddress(raw: string) {
   return { '@type': 'PostalAddress', streetAddress: raw, addressCountry: 'VN' }
 }
 
-/** Thông tin tổ chức, chỉ lấy từ Cài đặt trong admin (không tự bịa dữ liệu). */
-export function organizationSchema(s: SiteSettings | null) {
+/** Thông tin tổ chức, chỉ lấy từ Cài đặt trong admin (không tự bịa dữ liệu). Bản /en dùng chữ tiếng Anh nếu có. */
+export function organizationSchema(s: SiteSettings | null, lang: Lang = 'vi') {
   const sameAs = [s?.facebook_url, s?.linkedin_url, s?.youtube_url, s?.instagram_url, s?.twitter_url].filter(Boolean)
-  const address = s?.address?.vi
+  const address = (lang === 'en' ? s?.address?.en : '') || s?.address?.vi
   return {
     '@type': 'Organization',
     '@id': ORG_ID,
     name: BRAND,
-    legalName: s?.site_name?.vi || undefined,
+    legalName: (lang === 'en' ? s?.site_name?.en : '') || s?.site_name?.vi || undefined,
     url: s?.site_url || SITE_URL,
     logo: absoluteUrl(s?.logo_url),
     email: s?.contact_email || undefined,
@@ -66,39 +67,42 @@ export function organizationSchema(s: SiteSettings | null) {
   }
 }
 
-export function websiteSchema(s: SiteSettings | null) {
+export function websiteSchema(s: SiteSettings | null, lang: Lang = 'vi') {
+  const base = s?.site_url || SITE_URL
   return {
     '@type': 'WebSite',
-    '@id': WEBSITE_ID,
-    url: s?.site_url || SITE_URL,
+    '@id': lang === 'en' ? `${SITE_URL}/en#website` : WEBSITE_ID,
+    url: lang === 'en' ? `${base}/en` : base,
     name: BRAND,
-    inLanguage: 'vi',
+    inLanguage: lang,
     publisher: { '@id': ORG_ID },
   }
 }
 
 export type Crumb = { name: string; path: string }
 
-export function breadcrumbSchema(items: Crumb[]) {
+/** `path` là đường dẫn tiếng Việt (không tiền tố); bản /en tự được gắn tiền tố theo `lang`. */
+export function breadcrumbSchema(items: Crumb[], lang: Lang = 'vi') {
   return {
     '@type': 'BreadcrumbList',
     itemListElement: items.map((it, i) => ({
       '@type': 'ListItem',
       position: i + 1,
       name: it.name,
-      item: absoluteUrl(it.path),
+      item: absoluteUrl(localizePath(it.path, lang)),
     })),
   }
 }
 
-export function serviceSchema(o: { name: string; description?: string; path: string }) {
+export function serviceSchema(o: { name: string; description?: string; path: string; lang?: Lang }) {
+  const lang = o.lang ?? 'vi'
   return {
     '@type': 'Service',
     name: o.name,
     description: o.description || undefined,
-    url: absoluteUrl(o.path),
+    url: absoluteUrl(localizePath(o.path, lang)),
     provider: { '@id': ORG_ID },
-    areaServed: { '@type': 'Country', name: 'Việt Nam' },
+    areaServed: { '@type': 'Country', name: lang === 'en' ? 'Vietnam' : 'Việt Nam' },
   }
 }
 
@@ -120,12 +124,25 @@ export function blogPostingSchema(o: {
     datePublished: o.publishedAt || undefined,
     dateModified: o.modifiedAt || o.publishedAt || undefined,
     inLanguage: o.lang,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(o.path) },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(localizePath(o.path, o.lang)) },
     author: { '@type': 'Organization', name: BRAND, url: SITE_URL },
     publisher: {
       '@type': 'Organization',
       name: BRAND,
       logo: o.logoUrl ? { '@type': 'ImageObject', url: absoluteUrl(o.logoUrl) } : undefined,
     },
+  }
+}
+
+/** FAQPage từ danh sách hỏi đáp có cả hai ngôn ngữ; dùng đúng chữ của ngôn ngữ trang đang render. */
+export function faqPageSchema(items: { q: { vi: string; en: string }; a: { vi: string; en: string } }[], lang: Lang = 'vi') {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: items.map((item) => ({
+      '@type': 'Question',
+      name: item.q[lang] || item.q.vi,
+      acceptedAnswer: { '@type': 'Answer', text: item.a[lang] || item.a.vi },
+    })),
   }
 }

@@ -45,3 +45,22 @@ export function slugify(input: string): string {
     .replace(/^-+|-+$/g, '')
     .slice(0, 80)
 }
+
+/** Nội dung tiếng Anh tối thiểu (ký tự) để bản /en của dự án được coi là đã dịch đủ. */
+export const CASE_EN_MIN_BODY = 300
+
+/** Dự án có bản tiếng Anh đủ nội dung chưa (tên, tóm tắt, nội dung). Chưa có thì /en/projects/<slug> noindex. */
+export function caseStudyHasEnglish(p: Pick<CaseStudy, 'title_en' | 'summary_en' | 'body_en'>): boolean {
+  return !!p.title_en?.trim() && !!p.summary_en?.trim() && (p.body_en || '').trim().length >= CASE_EN_MIN_BODY
+}
+
+/**
+ * Tên khách hàng hiển thị. Vài dự án ghi "Bảo mật" (giấu tên khách theo thỏa thuận): bản tiếng Anh hiện "Confidential".
+ * Tên riêng khác giữ nguyên ở cả hai ngôn ngữ.
+ */
+export function clientLabel(lang: 'vi' | 'en', name: string | null | undefined): string {
+  const n = (name || '').trim()
+  if (!n) return ''
+  if (lang === 'en' && n.toLowerCase() === 'bảo mật') return 'Confidential'
+  return n
+}

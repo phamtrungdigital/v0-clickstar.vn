@@ -1,7 +1,7 @@
 'use client'
 
 import { Check, ArrowRight, Sparkles } from 'lucide-react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { cn } from '@/lib/utils'
 import { useLanguage, type Language } from '@/contexts/language-context'
 

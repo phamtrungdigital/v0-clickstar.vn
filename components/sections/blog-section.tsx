@@ -1,9 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { tagLabel } from '@/lib/cms/tags'
 import type { BlogContent } from '@/lib/cms/types'
 import type { LatestPost } from '@/lib/cms/posts'
 
@@ -102,7 +103,7 @@ export function BlogSection({ content, posts }: { content: BlogContent; posts?: 
                         key={tag}
                         className="text-xs font-semibold px-3 py-1 rounded-full backdrop-blur-sm bg-white/90 text-foreground"
                       >
-                        {tag}
+                        {tagLabel(lang, tag)}
                       </span>
                     ))}
                   </div>

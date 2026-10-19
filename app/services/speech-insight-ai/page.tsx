@@ -15,7 +15,7 @@
  *    (Anh Trung yêu cầu bỏ các caption "ví dụ minh hoạ" khỏi giao diện.)
  */
 
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import {
   AudioLines,
   PhoneCall,

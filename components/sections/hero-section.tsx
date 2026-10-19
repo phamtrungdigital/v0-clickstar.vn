@@ -1,6 +1,7 @@
 'use client'
 
 import { useLanguage } from '@/contexts/language-context'
+import { useLocalHref } from '@/components/app-link'
 import { InlineSvgImage } from '@/components/inline-svg-image'
 import type { HeroContent } from '@/lib/cms/types'
 
@@ -11,6 +12,7 @@ import type { HeroContent } from '@/lib/cms/types'
  */
 export function HeroSection({ content }: { content: HeroContent }) {
   const { t, language } = useLanguage()
+  const localHref = useLocalHref()
   // Ảnh SVG có chữ tiếng Việt: dùng bản tiếng Anh khi site ở EN (chỉ các ảnh đã có bản -en)
   const EN_VARIANT: Record<string, string> = { '/images/clickstar-data-flow.svg': '/images/clickstar-data-flow-en.svg' }
   const imageSrc = language === 'en' ? (EN_VARIANT[content.image_src] ?? content.image_src) : content.image_src
@@ -36,7 +38,7 @@ export function HeroSection({ content }: { content: HeroContent }) {
           </p>
 
           <div className="ap-cta-row mt-2">
-            <a data-cms-field="cta" href={content.cta_href} className="ap-btn ap-btn-primary">
+            <a data-cms-field="cta" href={localHref(content.cta_href)} className="ap-btn ap-btn-primary">
               {t(content.cta_label.vi, content.cta_label.en)}
             </a>
             <a

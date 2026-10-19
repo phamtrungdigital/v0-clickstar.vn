@@ -4,11 +4,11 @@ import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 import { z } from 'zod'
-import { getServerLang, makeT } from '@/lib/i18n/server'
+import { makeT } from '@/lib/i18n/server'
 import { sendLeadNotification } from '@/lib/email/send-lead-notification'
 import { pushLeadToCrm } from '@/lib/crm/push-lead'
 
-// Schema build theo ngôn ngữ lúc runtime (cookie cs-lang) để message validation
+// Schema build theo ngôn ngữ của form (trường ẩn `lang`, suy ra từ địa chỉ trang /en hay không) để message validation
 // hiển thị đúng VI/EN — không thể là hằng module scope.
 function makeContactSchema(t: (vi: string, en: string) => string) {
   return z.object({
@@ -57,7 +57,8 @@ export async function submitContactForm(
   _prev: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
-  const lang = await getServerLang()
+  // Ngôn ngữ do form gửi lên (chỉ dùng để chọn ngôn ngữ thông báo lỗi); giá trị lạ coi như tiếng Việt
+  const lang = String(formData.get('lang') ?? '') === 'en' ? 'en' : 'vi'
   const t = makeT(lang)
 
   const raw = {

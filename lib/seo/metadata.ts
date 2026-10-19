@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { BRAND } from './site'
+import { localizePath, type Lang } from '@/lib/i18n/locale'
 
 /** Đuôi thương hiệu thường gặp trong tiêu đề cũ: "... — ClickStar", "| Click Star Digital"... */
 const BRAND_TAIL = /\s*[|\-–—:·]\s*click star(\s+digital)?\s*$/i
@@ -34,29 +35,53 @@ export function fitTitle(text: string, max: number): string {
 type MetaInput = {
   title: string
   description?: string | null
-  /** Đường dẫn tuyệt đối của trang, ví dụ "/blog/abc". Dùng cho canonical và og:url. */
+  /** Đường dẫn TIẾNG VIỆT của trang (không tiền tố), ví dụ "/blog/abc". Bản /en được suy ra từ đây. */
   path?: string
+  /** Ngôn ngữ của bản đang dựng metadata (mặc định tiếng Việt). */
+  lang?: Lang
+  /**
+   * Trang này có bản tiếng Anh đủ nội dung chưa (mặc định có). Có: cặp hreflang hai chiều vi/en/x-default.
+   * Chưa có: bản /en vẫn mở được cho khách nhưng không lập chỉ mục (noindex, canonical về bản tiếng Việt)
+   * và bản tiếng Việt không khai báo hreflang tiếng Anh.
+   */
+  hasEn?: boolean
   images?: (string | null | undefined)[]
   type?: 'website' | 'article'
   publishedTime?: string | null
   modifiedTime?: string | null
 }
 
-/** Metadata đầy đủ cho một trang: tiêu đề chuẩn thương hiệu, canonical, Open Graph, Twitter. */
+/** Metadata đầy đủ cho một trang: tiêu đề chuẩn thương hiệu, canonical, hreflang, Open Graph, Twitter. */
 export function buildMetadata(o: MetaInput): Metadata {
+  const lang: Lang = o.lang ?? 'vi'
+  const hasEn = o.hasEn ?? true
   const title = brandTitle(o.title)
   const description = o.description || undefined
   const images = (o.images ?? []).filter((x): x is string => !!x)
+  const viPath = o.path
+  const selfPath = viPath ? localizePath(viPath, lang) : undefined
+  // Bản /en chưa đủ nội dung: canonical về bản tiếng Việt và không lập chỉ mục (vẫn cho theo liên kết).
+  const enFallback = lang === 'en' && !hasEn
+  const alternates: Metadata['alternates'] = !viPath
+    ? undefined
+    : enFallback
+      ? { canonical: viPath }
+      : {
+          canonical: selfPath,
+          languages: hasEn ? { vi: viPath, en: localizePath(viPath, 'en'), 'x-default': viPath } : undefined,
+        }
   return {
     title,
     description,
-    alternates: o.path ? { canonical: o.path } : undefined,
+    alternates,
+    robots: enFallback ? { index: false, follow: true } : undefined,
     openGraph: {
       title,
       description,
-      url: o.path,
+      url: selfPath,
       siteName: BRAND,
-      locale: 'vi_VN',
+      locale: lang === 'en' ? 'en_US' : 'vi_VN',
+      alternateLocale: hasEn ? [lang === 'en' ? 'vi_VN' : 'en_US'] : undefined,
       type: o.type ?? 'website',
       images,
       ...(o.type === 'article'

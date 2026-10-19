@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { Sparkles, ArrowUp, X, ChevronUp, ChevronDown, Bot, Loader2, ExternalLink, RotateCcw } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { useChatbotGate } from '@/components/chatbot-gate'

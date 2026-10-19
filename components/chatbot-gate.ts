@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+import { stripLocale } from '@/lib/i18n/locale'
 import { useEffect, useState } from 'react'
 import type { ChatbotPublicConfig } from '@/lib/cms/chatbot-shared'
 
@@ -21,8 +22,10 @@ export function useChatbotGate(config: ChatbotPublicConfig): boolean {
     return () => mq.removeEventListener('change', update)
   }, [])
 
+  // hidden_paths khai báo theo đường dẫn tiếng Việt: bản /en của trang cũng bị ẩn như bản gốc
+  const logical = pathname ? stripLocale(pathname) : pathname
   const pathHidden = (config.hidden_paths || []).some(
-    (p) => p && (pathname === p || pathname?.startsWith(p))
+    (p) => p && (logical === p || logical?.startsWith(p))
   )
   if (pathHidden) return false
 

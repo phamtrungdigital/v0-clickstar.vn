@@ -10,7 +10,8 @@
 //   hay dữ liệu nội bộ.
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
+import { stripLocale } from '@/lib/i18n/locale'
+import Link from '@/components/app-link'
 import * as Dialog from '@radix-ui/react-dialog'
 import {
   X,
@@ -59,7 +60,8 @@ export function CapabilityPopup() {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
 
-  const isHome = pathname === '/'
+  // Trang chủ ở cả hai ngôn ngữ ('/' và '/en')
+  const isHome = stripLocale(pathname || '') === '/'
 
   useEffect(() => {
     if (!isHome || !mounted) return

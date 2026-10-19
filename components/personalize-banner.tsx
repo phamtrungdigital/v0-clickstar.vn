@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
+import { stripLocale } from '@/lib/i18n/locale'
+import Link from '@/components/app-link'
 import { ArrowRight, Sparkles, X } from 'lucide-react'
 import { iconByName } from '@/lib/icons'
 import {
@@ -103,7 +104,7 @@ export function PersonalizeBanner() {
     // Match campaign first — delay applied AFTER match (each campaign has own delay)
     const ctx = {
       visited_pages: getDistinctPaths(),
-      current_path: pathname,
+      current_path: stripLocale(pathname),
       device: detectDevice(),
       is_returning: isReturningVisitor(),
       total_visits: getDistinctPaths().length,

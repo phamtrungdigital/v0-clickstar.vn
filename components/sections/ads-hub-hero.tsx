@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { ArrowRight, CheckCircle2, Sparkles, PlayCircle, TrendingUp, Bot } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'

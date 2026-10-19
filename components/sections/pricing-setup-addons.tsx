@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { Settings, Clock, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import type { PricingSetupAddonsContent } from '@/lib/cms/types'

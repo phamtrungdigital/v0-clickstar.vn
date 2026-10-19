@@ -4,7 +4,7 @@ import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { 
   Users, 
   Database, 

@@ -1,12 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import Image from 'next/image'
 import { ChevronDown, Menu, X, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLanguage } from '@/contexts/language-context'
 import { useSiteBranding } from '@/contexts/site-branding-context'
+import { LanguageSwitchLink } from '@/components/layout/language-switch-link'
 
 // Navbar tối ưu: 4 items chính + lang + CTA. Loại 'Trang chủ' (logo đã trỏ /).
 // 'Tài nguyên' gom Giới thiệu + Dự án + Tin tức.
@@ -79,7 +80,7 @@ const ctaText = {
 }
 
 export function MainNav() {
-  const { language, setLanguage } = useLanguage()
+  const { language } = useLanguage()
   const branding = useSiteBranding()
   const navItems = navItemsData[language]
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -182,10 +183,9 @@ export function MainNav() {
             {/* Language Switcher: chữ thường, không cờ */}
             <div className="flex items-center gap-0.5">
               {(['vi', 'en'] as const).map((lng) => (
-                <button
+                <LanguageSwitchLink
                   key={lng}
-                  onClick={() => setLanguage(lng)}
-                  aria-pressed={language === lng}
+                  lang={lng}
                   className={cn(
                     "px-2.5 py-1 rounded-full text-xs transition-colors",
                     language === lng
@@ -194,7 +194,7 @@ export function MainNav() {
                   )}
                 >
                   {lng.toUpperCase()}
-                </button>
+                </LanguageSwitchLink>
               ))}
             </div>
 
@@ -284,8 +284,8 @@ export function MainNav() {
               <div className="flex items-center justify-center gap-2">
                 <Globe className="w-4 h-4 text-muted-foreground" />
                 <div className="flex items-center gap-1 bg-secondary rounded-full p-1">
-                  <button
-                    onClick={() => setLanguage('vi')}
+                  <LanguageSwitchLink
+                    lang="vi"
                     className={cn(
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
                       language === 'vi' 
@@ -294,9 +294,9 @@ export function MainNav() {
                     )}
                   >
                     VI
-                  </button>
-                  <button
-                    onClick={() => setLanguage('en')}
+                  </LanguageSwitchLink>
+                  <LanguageSwitchLink
+                    lang="en"
                     className={cn(
                       "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
                       language === 'en' 
@@ -305,7 +305,7 @@ export function MainNav() {
                     )}
                   >
                     EN
-                  </button>
+                  </LanguageSwitchLink>
                 </div>
               </div>
               

@@ -1,9 +1,10 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
+import { createContext, useContext, useEffect, ReactNode } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import { langFromPathname, localizePath, switchLocalePath, type Lang } from '@/lib/i18n/locale'
 
-export type Language = 'vi' | 'en'
+export type Language = Lang
 
 interface LanguageContextType {
   language: Language
@@ -21,6 +22,11 @@ function writeCookie(lang: Language) {
   document.cookie = `${COOKIE_NAME}=${lang}; path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax`
 }
 
+/**
+ * Ngôn ngữ SUY RA TỪ ĐỊA CHỈ: /en/... là tiếng Anh, còn lại là tiếng Việt (xem lib/i18n/locale.ts). Nhờ vậy
+ * HTML tĩnh của mỗi bản đã đúng ngôn ngữ ngay khi tải (không còn "luôn tiếng Việt trước rồi đổi sau khi hydrate")
+ * và công cụ tìm kiếm thấy hai bản có địa chỉ riêng. Cookie cs-lang chỉ ghi lại lựa chọn của khách.
+ */
 export function LanguageProvider({
   children,
   initialLang = 'vi',
@@ -28,33 +34,35 @@ export function LanguageProvider({
   children: ReactNode
   initialLang?: Language
 }) {
-  const [language, setLanguageState] = useState<Language>(initialLang)
+  const pathname = usePathname()
   const router = useRouter()
+  const language: Language = pathname ? langFromPathname(pathname) : initialLang
 
-  // Trang render tĩnh bằng ngôn ngữ mặc định (initialLang, hiện là 'vi') → đọc cookie cs-lang ở client khi mount
-  // để đổi sang ngôn ngữ khách đã tự chọn. KHÔNG tự đoán theo ngôn ngữ trình duyệt: công cụ tìm kiếm cũng báo
-  // 'en' nên sẽ lập chỉ mục sai bản. KHÔNG router.refresh ở đây (chỉ đổi state client).
+  // Khách đã tự chọn tiếng Anh ở lần trước (cookie cs-lang=en) mà mở một địa chỉ tiếng Việt từ bên ngoài site
+  // (ví dụ gõ thẳng clickstar.vn): chuyển sang bản /en tương ứng một lần. Chỉ chạy ở client nên công cụ tìm kiếm
+  // (không có cookie) không bao giờ bị chuyển hướng, và không chạy khi khách đang đi trong site (referrer cùng origin).
   useEffect(() => {
-    const m = document.cookie.match(/(?:^|;\s*)cs-lang=(en|vi)/)
-    const saved = (m?.[1] as Language) || initialLang
-    if (saved !== language) setLanguageState(saved)
+    if (language !== 'vi' || !pathname) return
+    const saved = document.cookie.match(/(?:^|;\s*)cs-lang=(en|vi)/)?.[1]
+    if (saved !== 'en') return
+    let sameOrigin = false
+    try {
+      sameOrigin = !!document.referrer && new URL(document.referrer).origin === window.location.origin
+    } catch {
+      /* referrer lạ: coi như ngoài site */
+    }
+    if (sameOrigin) return
+    const target = localizePath(pathname, 'en')
+    if (target !== pathname) router.replace(`${target}${window.location.search}${window.location.hash}`)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Update <html lang="…"> on language change so screen readers + Chrome translate know.
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.lang = language
-    }
-  }, [language])
-
+  // Đổi ngôn ngữ = sang địa chỉ tương ứng (giữ query và neo), ghi lại lựa chọn để lần sau không bị chuyển ngược.
   const setLanguage = (lang: Language) => {
-    setLanguageState(lang)
+    if (lang === language) return
     writeCookie(lang)
-    // Invalidate Next.js RSC cache so server components re-fetch with new cookie.
-    // Without this, /blog & other server-rendered pages keep showing the OLD lang
-    // after navigation because the prefetched RSC payload is in the client cache.
-    router.refresh()
+    const target = switchLocalePath(window.location.pathname, lang)
+    router.push(`${target}${window.location.search}${window.location.hash}`)
   }
 
   const t = (vi: string, en: string) => (language === 'vi' ? vi : en)

@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { Facebook, Twitter, Linkedin, Instagram, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { useTeamMembers } from '@/contexts/team-members-context'

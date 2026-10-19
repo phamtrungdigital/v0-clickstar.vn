@@ -14,6 +14,7 @@ import { EditModeOverlay } from '@/components/edit-mode-overlay'
 import { PersonalizeBanner } from '@/components/personalize-banner'
 import { CapabilityPopup } from '@/components/capability-popup'
 import { FloatingContact } from '@/components/floating-contact'
+import { HtmlRoot } from '@/components/html-root'
 import { TrackingCode } from '@/components/tracking-scripts'
 import { SITE_URL, BRAND } from '@/lib/seo/site'
 import './globals.css'
@@ -67,16 +68,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Static-friendly: KHÔNG đọc cookie ở layout (cookie → ép dynamic toàn site).
-  // Ngôn ngữ mặc định lấy từ Cài đặt (site_settings.default_language, hiện là 'vi'). LanguageProvider đọc cookie cs-lang
-  // ở client khi mount để đổi sang ngôn ngữ khách đã chọn. Bản HTML Google thấy (không cookie) là ngôn ngữ mặc định.
+  // Static-friendly: KHÔNG đọc cookie/header ở layout (sẽ ép mọi trang render động).
+  // Ngôn ngữ suy ra từ ĐỊA CHỈ (/en/... là tiếng Anh, còn lại tiếng Việt): HtmlRoot đặt <html lang> và LanguageProvider
+  // chọn ngôn ngữ theo đường dẫn, nên cả HTML tĩnh lẫn client đều đúng ngôn ngữ ngay từ đầu.
   const [settings, teamMembers, chatbot, webContent] = await Promise.all([
     getSiteSettings(),
     getActiveTeamMembers(),
     getChatbotSettings(),
     getWebContent(),
   ])
-  const defaultLang = settings?.default_language === 'en' ? 'en' : 'vi'
   const chatbotConfig = toPublicConfig(chatbot)
   const { footer: footerContent, service_ctas: serviceCtas } = normalizeWebContent(webContent)
   const branding: SiteBranding = {
@@ -89,32 +89,33 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang={defaultLang} className="bg-background">
-      <body className={`${plusJakarta.variable} ${inter.variable} font-sans antialiased`}>
-        {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
-        <TrackingCode code={settings?.head_code} />
-        {/* Tracking code — vị trí "Body" (đầu trang): GTM noscript, chat widget */}
-        <TrackingCode code={settings?.body_start_code} />
+    <HtmlRoot
+      htmlClassName="bg-background"
+      bodyClassName={`${plusJakarta.variable} ${inter.variable} font-sans antialiased`}
+    >
+      {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
+      <TrackingCode code={settings?.head_code} />
+      {/* Tracking code — vị trí "Body" (đầu trang): GTM noscript, chat widget */}
+      <TrackingCode code={settings?.body_start_code} />
 
-        <SiteBrandingProvider branding={branding}>
-          <TeamMembersProvider members={teamMembers}>
-            <LanguageProvider initialLang={defaultLang}>
-              <WebContentProvider value={{ footer: footerContent, serviceCtas }}>
-                {children}
-              </WebContentProvider>
-              <ChatbotWidgets config={chatbotConfig} />
-              <EditModeOverlay />
-              <PersonalizeBanner />
-              <CapabilityPopup />
-              <FloatingContact />
-            </LanguageProvider>
-          </TeamMembersProvider>
-        </SiteBrandingProvider>
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+      <SiteBrandingProvider branding={branding}>
+        <TeamMembersProvider members={teamMembers}>
+          <LanguageProvider>
+            <WebContentProvider value={{ footer: footerContent, serviceCtas }}>
+              {children}
+            </WebContentProvider>
+            <ChatbotWidgets config={chatbotConfig} />
+            <EditModeOverlay />
+            <PersonalizeBanner />
+            <CapabilityPopup />
+            <FloatingContact />
+          </LanguageProvider>
+        </TeamMembersProvider>
+      </SiteBrandingProvider>
+      {process.env.NODE_ENV === 'production' && <Analytics />}
 
-        {/* Tracking code — vị trí "Footer" (cuối body): script defer, remarketing */}
-        <TrackingCode code={settings?.body_end_code} />
-      </body>
-    </html>
+      {/* Tracking code — vị trí "Footer" (cuối body): script defer, remarketing */}
+      <TrackingCode code={settings?.body_end_code} />
+    </HtmlRoot>
   )
 }

@@ -3,7 +3,7 @@
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { 
   BarChart3, 
   PieChart, 

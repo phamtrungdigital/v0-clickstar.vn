@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition, useEffect } from 'react'
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import {
   Sparkles,
   ArrowRight,

@@ -7,7 +7,7 @@
  * 7 trang dịch vụ.
  */
 
-import Link from 'next/link'
+import Link from '@/components/app-link'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
@@ -15,7 +15,7 @@ import { JsonLd } from '@/components/seo/json-ld'
 import { breadcrumbSchema } from '@/lib/seo/schema'
 
 export default function ServicesIndexPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
 
   const services = [
     {
@@ -88,7 +88,7 @@ export default function ServicesIndexPage() {
 
   return (
     <div className="theme-apple">
-      <JsonLd data={breadcrumbSchema([{ name: 'Trang chủ', path: '/' }, { name: 'Dịch vụ', path: '/services' }])} />
+      <JsonLd data={breadcrumbSchema([{ name: t('Trang chủ', 'Home'), path: '/' }, { name: t('Dịch vụ', 'Services'), path: '/services' }], language)} />
       <MainNav />
       <main>
         {/* Khối sáng: tiêu đề */}
