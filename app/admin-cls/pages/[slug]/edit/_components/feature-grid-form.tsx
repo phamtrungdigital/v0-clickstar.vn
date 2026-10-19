@@ -2,6 +2,7 @@
 
 import type { FeatureGridContent, FeatureItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { isKnownIcon } from '@/lib/icons'
 
 const COLORS: FeatureItem['color'][] = ['blue', 'purple', 'pink', 'amber', 'emerald', 'cyan', 'rose']
 
@@ -74,7 +75,7 @@ export function FeatureGridForm({
             </summary>
             <div className="p-3 space-y-3 border-t border-slate-200 dark:border-slate-700">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-                <TextInput label="Icon (lucide)" value={item.icon} onChange={(v) => updateItem(idx, { ...item, icon: v })} hint="Vd: Zap, Shield, Globe, BarChart..." />
+                <TextInput label="Icon (lucide)" value={item.icon} onChange={(v) => updateItem(idx, { ...item, icon: v })} hint={isKnownIcon(item.icon) ? 'Vd: Zap, Shield, Globe, BarChart...' : 'Tên này chưa có sẵn nên trang sẽ hiện biểu tượng mặc định. Hãy dùng một tên khác trong danh sách gợi ý.'} />
                 <div>
                   <label className="block text-xs font-medium mb-1.5">Màu</label>
                   <select

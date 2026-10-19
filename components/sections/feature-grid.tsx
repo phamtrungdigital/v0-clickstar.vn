@@ -1,7 +1,7 @@
 'use client'
 
-import * as Icons from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
+import { iconByName } from '@/lib/icons'
 import { useLanguage } from '@/contexts/language-context'
 import { usePageSection } from '@/lib/cms/page-data-context'
 
@@ -16,7 +16,7 @@ const COLOR_MAP = {
 }
 
 function renderIcon(name: string, className: string) {
-  const Icon = (Icons as unknown as Record<string, LucideIcon>)[name] ?? Icons.Sparkles
+  const Icon = iconByName(name, Sparkles)
   return <Icon className={className} />
 }
 

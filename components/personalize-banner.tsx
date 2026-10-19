@@ -3,9 +3,8 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import * as Icons from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
-import { X } from 'lucide-react'
+import { ArrowRight, Sparkles, X } from 'lucide-react'
+import { iconByName } from '@/lib/icons'
 import {
   loadVisits,
   markBannerShown,
@@ -76,7 +75,7 @@ async function resolveMessage(camp: PersonalizeCampaign, lang: string, visited: 
 }
 
 function renderIcon(name: string, className: string) {
-  const Icon = (Icons as unknown as Record<string, LucideIcon>)[name] ?? Icons.Sparkles
+  const Icon = iconByName(name, Sparkles)
   return <Icon className={className} />
 }
 
@@ -290,7 +289,7 @@ export function PersonalizeBanner() {
             style={{ backgroundColor: buttonColor, boxShadow: `0 4px 14px ${buttonColor}50` }}
           >
             {language === 'en' ? EN_CTA : campaign.content.cta_label}
-            <Icons.ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
 
           <p className="text-[10px] text-muted-foreground text-center mt-3">

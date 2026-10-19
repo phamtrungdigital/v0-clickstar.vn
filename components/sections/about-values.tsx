@@ -1,12 +1,12 @@
 'use client'
 
-import * as Icons from 'lucide-react'
-import type { LucideIcon } from 'lucide-react'
+import { Heart } from 'lucide-react'
+import { iconByName } from '@/lib/icons'
 import { useLanguage } from '@/contexts/language-context'
 import type { AboutValuesContent } from '@/lib/cms/types'
 
 function renderIcon(name: string, className: string) {
-  const Icon = (Icons as unknown as Record<string, LucideIcon>)[name] ?? Icons.Heart
+  const Icon = iconByName(name, Heart)
   return <Icon className={className} />
 }
 

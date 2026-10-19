@@ -3,6 +3,7 @@
 import { Plus, Trash2 } from 'lucide-react'
 import type { AboutValuesContent, AboutValueItem } from '@/lib/cms/types'
 import { I18nInput, TextInput } from './i18n-input'
+import { isKnownIcon } from '@/lib/icons'
 
 const ICON_HINT = 'Tên Lucide icon: Target, Heart, Zap, Shield, Award, Sparkles, Rocket, Users, Star, CheckCircle2...'
 
@@ -99,7 +100,7 @@ export function AboutValuesForm({
                 label="Icon name (Lucide)"
                 value={item.icon}
                 onChange={(v) => updateItem(idx, { ...item, icon: v })}
-                hint={ICON_HINT}
+                hint={isKnownIcon(item.icon) ? ICON_HINT : 'Tên này chưa có sẵn nên trang sẽ hiện biểu tượng mặc định. Hãy dùng một tên khác trong danh sách gợi ý.'}
               />
               <I18nInput
                 label="Tiêu đề"
