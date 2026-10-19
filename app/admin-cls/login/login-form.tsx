@@ -11,7 +11,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full h-11 rounded-lg bg-orange-500 hover:bg-orange-600 disabled:opacity-70 disabled:cursor-wait text-white text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2"
+      className="w-full h-11 xl:h-12 rounded-lg bg-orange-500 hover:bg-orange-600 disabled:opacity-70 disabled:cursor-wait text-white text-sm xl:text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2"
     >
       {pending ? 'Signing in…' : 'Sign in'}
     </button>
@@ -35,7 +35,7 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
         setErrs(next)
         if (next.email || next.password) e.preventDefault()
       }}
-      className="space-y-4"
+      className="space-y-5"
     >
       <input type="hidden" name="redirect" value={redirectTo} />
 
@@ -47,11 +47,11 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
       )}
 
       <div>
-        <label htmlFor="email" className="block text-[13px] font-medium text-slate-700 mb-1.5">
+        <label htmlFor="email" className="block text-[13px] xl:text-sm font-medium text-slate-700 mb-2">
           Email
         </label>
         <div className="relative">
-          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
+          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
           <input
             id="email"
             type="email"
@@ -61,18 +61,18 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
             placeholder="name@clickstar.vn"
             aria-invalid={!!errs.email}
             onChange={() => errs.email && setErrs((p) => ({ ...p, email: undefined }))}
-            className="w-full h-11 pl-10 pr-3 rounded-lg bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 aria-[invalid=true]:border-red-400"
+            className="w-full h-11 xl:h-12 pl-11 pr-3 rounded-lg bg-white border border-slate-300 text-sm xl:text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 aria-[invalid=true]:border-red-400"
           />
         </div>
-        {errs.email && <p className="mt-1 text-xs text-red-600">{errs.email}</p>}
+        {errs.email && <p className="mt-1.5 text-xs xl:text-[13px] text-red-600">{errs.email}</p>}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-[13px] font-medium text-slate-700 mb-1.5">
+        <label htmlFor="password" className="block text-[13px] xl:text-sm font-medium text-slate-700 mb-2">
           Password
         </label>
         <div className="relative">
-          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
+          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
           <input
             id="password"
             type={show ? 'text' : 'password'}
@@ -81,7 +81,7 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
             placeholder="Enter your password"
             aria-invalid={!!errs.password}
             onChange={() => errs.password && setErrs((p) => ({ ...p, password: undefined }))}
-            className="w-full h-11 pl-10 pr-11 rounded-lg bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 aria-[invalid=true]:border-red-400"
+            className="w-full h-11 xl:h-12 pl-11 pr-12 rounded-lg bg-white border border-slate-300 text-sm xl:text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 aria-[invalid=true]:border-red-400"
           />
           <button
             type="button"
@@ -92,7 +92,7 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
             {show ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
           </button>
         </div>
-        {errs.password && <p className="mt-1 text-xs text-red-600">{errs.password}</p>}
+        {errs.password && <p className="mt-1.5 text-xs xl:text-[13px] text-red-600">{errs.password}</p>}
       </div>
 
       <SubmitButton />
