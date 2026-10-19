@@ -29,6 +29,7 @@ export async function savePage(slug: string, sections: Section[], seo?: SeoField
   revalidateTag('pages')
   revalidateTag(`page:${slug}`)
   revalidatePath(slug === 'home' ? '/' : `/${slug}`)
+  revalidatePath(slug === 'home' ? '/en' : `/en/${slug}`) // bản tiếng Anh của trang
   revalidatePath(`/admin-cls/pages/${slug}/edit`)
 
   return { ok: true }

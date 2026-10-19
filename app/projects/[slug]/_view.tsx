@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import { ArrowLeft, ArrowRight, ExternalLink, Briefcase } from 'lucide-react'
+import { MarkdownLink } from '@/components/markdown-link'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudyBySlug, getPublishedCaseStudies } from '@/lib/cms/case-studies'
@@ -141,7 +142,7 @@ export async function ProjectDetailView({ slug, lang }: { slug: string; lang: La
         <section className="py-12 lg:py-16 bg-background">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <article className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:mb-3 prose-p:leading-relaxed prose-p:text-justify prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-xl prose-a:text-primary hover:prose-a:underline">
-              <ReactMarkdown>{body}</ReactMarkdown>
+              <ReactMarkdown components={{ a: ({ node: _n, ...props }) => <MarkdownLink {...props} /> }}>{body}</ReactMarkdown>
             </article>
           </div>
         </section>

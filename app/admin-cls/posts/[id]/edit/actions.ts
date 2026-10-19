@@ -111,6 +111,7 @@ export async function savePost(id: string | 'new', input: PostSave) {
     if (error) return { error: error.message }
     revalidatePath('/blog')
     revalidatePath('/')
+    revalidatePath('/en')
     updateTag('posts')
     revalidatePath(`/blog/${data.slug}`)
     revalidatePath('/admin-cls/posts')
@@ -120,6 +121,7 @@ export async function savePost(id: string | 'new', input: PostSave) {
     if (error) return { error: error.message }
     revalidatePath('/blog')
     revalidatePath('/')
+    revalidatePath('/en')
     updateTag('posts')
     revalidatePath(`/blog/${input.slug}`)
     revalidatePath('/admin-cls/posts')
@@ -134,6 +136,7 @@ export async function deletePost(id: string, slug: string) {
   if (error) return { error: error.message }
   revalidatePath('/blog')
   revalidatePath('/')
+  revalidatePath('/en')
   updateTag('posts')
   revalidatePath(`/blog/${slug}`)
   revalidatePath('/admin-cls/posts')

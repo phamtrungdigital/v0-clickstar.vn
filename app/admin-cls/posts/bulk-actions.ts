@@ -19,6 +19,7 @@ export async function bulkDeletePosts(ids: string[]): Promise<{ ok?: number; err
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
   revalidatePath('/')
+  revalidatePath('/en')
   updateTag('posts')
   return { ok: count ?? ids.length }
 }
@@ -59,6 +60,7 @@ export async function bulkSetStatus(
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
   revalidatePath('/')
+  revalidatePath('/en')
   updateTag('posts')
   return { ok: count ?? ids.length }
 }

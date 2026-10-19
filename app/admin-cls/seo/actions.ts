@@ -101,6 +101,7 @@ export async function saveSeoItem(input: SaveSeoInput): Promise<SaveSeoResult> {
   updateTag('pages')
   updateTag(`page:${cur.slug}`)
   revalidatePath(cur.slug === 'home' ? '/' : `/${cur.slug}`)
+  revalidatePath(cur.slug === 'home' ? '/en' : `/en/${cur.slug}`) // bản tiếng Anh của trang
   revalidatePath('/admin-cls/seo')
   return { ok: true }
 }

@@ -11,6 +11,7 @@ import { getSiteSettings } from '@/lib/cms/settings'
 import { makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
 import type { Lang } from '@/lib/i18n/locale'
 import { tagLabel } from '@/lib/cms/tags'
+import { MarkdownLink } from '@/components/markdown-link'
 import { TableOfContents } from './_components/table-of-contents'
 import { NewsletterCard } from './_components/newsletter-card'
 import { parseHeadings, slugifyId } from '@/lib/blog/headings'
@@ -180,6 +181,8 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
                       const id = slugifyId(extractText(children))
                       return <h3 id={id}>{children}</h3>
                     },
+                    // Liên kết nội bộ trong bài tự trỏ sang bản /en khi đang xem bản tiếng Anh
+                    a: ({ node: _n, ...props }) => <MarkdownLink {...props} />,
                     // Ảnh minh họa trong bài nằm dưới màn hình đầu: tải trễ để không tranh băng thông với ảnh bìa (LCP) và CSS/JS.
                     img: ({ node: _node, alt, ...props }) => (
                       // eslint-disable-next-line @next/next/no-img-element
