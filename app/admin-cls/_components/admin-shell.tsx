@@ -1,11 +1,13 @@
 'use client'
 
 import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { roadmapCounts } from '@/lib/seo/roadmap'
 import {
   LayoutDashboard,
+  FolderOpen,
   FileText,
   Search,
   BarChart3,
@@ -15,7 +17,6 @@ import {
   Menu,
   X,
   Bell,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   LogOut,
@@ -35,24 +36,33 @@ import { cn } from '@/lib/utils'
 import { useSiteBranding } from '@/contexts/site-branding-context'
 import { logout } from '../login/actions'
 
-const sidebarItems = [
+type NavItem = { label: string; href: string; icon: React.ComponentType<{ className?: string; strokeWidth?: number }>; badge?: number }
+type NavSection = { title: string; icon: NavItem['icon']; items: NavItem[] }
+
+/** Số việc quản trị còn mở trong Lộ trình SEO (hiện cạnh mục SEO). */
+const SEO_OPEN_TASKS = roadmapCounts().mine
+
+const sidebarItems: NavSection[] = [
   {
     title: 'Tổng quan',
+    icon: LayoutDashboard,
     items: [{ label: 'Dashboard', href: '/admin-cls', icon: LayoutDashboard }],
   },
   {
     title: 'Nội dung',
+    icon: FolderOpen,
     items: [
       { label: 'Quản lý trang', href: '/admin-cls/pages', icon: FileText },
       { label: 'Bài viết', href: '/admin-cls/posts', icon: FileText },
       { label: 'Dự án', href: '/admin-cls/projects', icon: Briefcase },
       { label: 'Đội ngũ', href: '/admin-cls/team', icon: Users },
       { label: 'Footer & CTA', href: '/admin-cls/footer-cta', icon: PanelBottom },
-      { label: 'SEO', href: '/admin-cls/seo', icon: Search },
+      { label: 'SEO', href: '/admin-cls/seo', icon: Search, badge: SEO_OPEN_TASKS },
     ],
   },
   {
     title: 'Marketing',
+    icon: Megaphone,
     items: [
       { label: 'Chiến dịch', href: '/admin-cls/campaigns', icon: Megaphone },
       { label: 'Email Marketing', href: '/admin-cls/email-marketing', icon: Mail },
@@ -63,6 +73,7 @@ const sidebarItems = [
   },
   {
     title: 'Phân tích',
+    icon: BarChart3,
     items: [
       { label: 'Báo cáo', href: '/admin-cls/reports', icon: BarChart3 },
       { label: 'Tích hợp dữ liệu', href: '/admin-cls/integrations', icon: Database },
@@ -70,6 +81,7 @@ const sidebarItems = [
   },
   {
     title: 'Hệ thống',
+    icon: Settings,
     items: [
       { label: 'Người dùng', href: '/admin-cls/users', icon: Users },
       { label: 'Phân quyền', href: '/admin-cls/roles', icon: Shield },
@@ -108,29 +120,39 @@ export default function AdminShell({
   const pathname = usePathname()
   const branding = useSiteBranding()
 
-  // Accordion nhóm menu — mặc định mở nhóm chứa trang đang xem.
-  const [openSections, setOpenSections] = useState<Set<number>>(() => {
+  const router = useRouter()
+  // Nhóm đang hiện ở bảng con: mặc định là nhóm chứa trang đang xem, đổi khi bấm biểu tượng ở thanh bên trái.
+  const [activeGroup, setActiveGroup] = useState(() => {
     const i = sectionIndexOfPath(pathname)
-    return new Set(i >= 0 ? [i] : [0])
+    return i >= 0 ? i : 0
   })
-  const toggleSection = (idx: number) =>
-    setOpenSections((prev) => {
-      const next = new Set(prev)
-      if (next.has(idx)) next.delete(idx)
-      else next.add(idx)
-      return next
-    })
+  const [query, setQuery] = useState('')
+  const searchRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const saved = localStorage.getItem('admin-sidebar-collapsed')
     if (saved === '1') setSidebarCollapsed(true)
   }, [])
 
-  // Điều hướng sang trang khác → đảm bảo nhóm chứa nó được mở (không đóng nhóm khác).
+  // Sang trang khác thì bảng con chuyển sang nhóm chứa trang đó và xóa ô tìm.
   useEffect(() => {
     const i = sectionIndexOfPath(pathname)
-    if (i >= 0) setOpenSections((prev) => (prev.has(i) ? prev : new Set(prev).add(i)))
+    if (i >= 0) setActiveGroup(i)
+    setQuery('')
   }, [pathname])
+
+  // Ctrl K (hoặc Cmd K): mở rộng menu và đặt con trỏ vào ô tìm nhanh.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setSidebarCollapsed(false)
+        window.setTimeout(() => searchRef.current?.focus(), 60)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const toggleSidebar = () => {
     setSidebarCollapsed((c) => {
@@ -142,8 +164,13 @@ export default function AdminShell({
 
   const initial = (user.full_name || user.email).charAt(0).toUpperCase()
   const displayName = user.full_name || user.email.split('@')[0]
-  const sidebarWidth = sidebarCollapsed ? 'w-16' : 'w-60'
-  const contentOffset = sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-60'
+  const contentOffset = sidebarCollapsed ? 'lg:ml-14' : 'lg:ml-[264px]'
+
+  // Tìm nhanh không phân biệt hoa thường và dấu tiếng Việt.
+  const fold = (t: string) => t.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd').toLowerCase().trim()
+  const results = fold(query)
+    ? sidebarItems.flatMap((sec) => sec.items.filter((it) => fold(it.label).includes(fold(query))).map((it) => ({ ...it, group: sec.title })))
+    : []
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -263,103 +290,121 @@ export default function AdminShell({
         />
       )}
 
-      {/* ───── SIDEBAR: white, collapsible ───── */}
+      {/* ───── SIDEBAR: thanh biểu tượng các nhóm (trái) + bảng mục của nhóm đang chọn (phải) ───── */}
       <aside
         className={cn(
-          'fixed top-14 left-0 z-30 h-[calc(100vh-3.5rem)] bg-white border-r border-slate-200 transition-all duration-200',
-          sidebarWidth,
+          'fixed top-14 left-0 z-30 h-[calc(100vh-3.5rem)] w-[264px] flex bg-white border-r border-slate-200 transition-all duration-200',
+          sidebarCollapsed && 'lg:w-14',
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
-        {/* Mobile close button */}
-        <button
-          onClick={() => setMobileMenuOpen(false)}
-          className="lg:hidden absolute top-2 right-2 p-1 hover:bg-slate-100 rounded"
-        >
-          <X className="w-4 h-4 text-slate-600" />
-        </button>
-
-        <nav className="py-3 space-y-2.5 overflow-y-auto h-[calc(100%-3rem)]">
+        <div className="w-14 shrink-0 bg-slate-50 border-r border-slate-200 flex flex-col items-center py-3 gap-1.5">
           {sidebarItems.map((section, idx) => {
-            const open = sidebarCollapsed || openSections.has(idx)
+            const on = idx === activeGroup
+            const hasBadge = section.items.some((i) => i.badge)
             return (
-              <div key={idx}>
-                {!sidebarCollapsed && (
-                  <button
-                    type="button"
-                    onClick={() => toggleSection(idx)}
-                    aria-expanded={openSections.has(idx)}
-                    className="w-full flex items-center justify-between gap-2 pl-[22px] pr-3 py-1 mb-0.5 rounded-md hover:bg-slate-50 transition-colors"
-                  >
-                    <span className="text-sm font-semibold text-[#0F172A]">
-                      {section.title}
-                    </span>
-                    <ChevronDown
-                      className={cn(
-                        'w-3.5 h-3.5 text-slate-400 transition-transform duration-200',
-                        openSections.has(idx) ? '' : '-rotate-90'
-                      )}
-                    />
-                  </button>
+              <button
+                key={section.title}
+                type="button"
+                title={section.title}
+                aria-label={section.title}
+                aria-current={on ? 'true' : undefined}
+                onClick={() => {
+                  setActiveGroup(idx)
+                  setQuery('')
+                  if (section.items.length === 1) {
+                    router.push(section.items[0].href)
+                    setMobileMenuOpen(false)
+                  } else if (sidebarCollapsed) toggleSidebar()
+                }}
+                className={cn(
+                  'relative w-10 h-10 rounded-xl flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3687FC]/50',
+                  on ? 'bg-[#E8F1FF] text-[#3687FC]' : 'text-slate-500 hover:bg-white hover:text-slate-900'
                 )}
-                <div
-                  className={cn(
-                    'grid transition-all duration-200 ease-out',
-                    open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-                  )}
-                >
-                  <ul className="space-y-0.5 overflow-hidden min-h-0">
-                    {section.items.map((item) => {
-                      const isActive =
-                        pathname === item.href ||
-                        (item.href !== '/admin-cls' && pathname.startsWith(item.href))
-                      return (
-                        <li key={item.href} className="relative mx-3">
-                          <Link
-                            href={item.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            title={sidebarCollapsed ? item.label : undefined}
-                            className={cn(
-                              'group relative flex items-center gap-[11px] px-2.5 py-[9px] rounded-xl transition-colors text-sm',
-                              isActive
-                                ? 'bg-[#E8F1FF] text-[#3687FC] font-semibold'
-                                : 'font-normal text-[#0F172A] hover:bg-[#F5F7FA]'
-                            )}
-                          >
-                            {isActive && (
-                              <span className="absolute left-[-12px] top-[6px] bottom-[6px] w-[3px] rounded-r-[3px] bg-[#3687FC]" />
-                            )}
-                            <item.icon
-                              className={cn(
-                                'h-5 w-5 flex-shrink-0 transition-colors',
-                                isActive ? 'text-[#3687FC]' : 'text-[#6B7280] group-hover:text-[#0F172A]'
-                              )}
-                              strokeWidth={1.9}
-                            />
-                            {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
-                          </Link>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              </div>
+              >
+                <section.icon className="w-5 h-5" strokeWidth={1.9} />
+                {hasBadge && <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#3687FC] ring-2 ring-slate-50" />}
+              </button>
             )
           })}
-        </nav>
+          <button
+            type="button"
+            onClick={toggleSidebar}
+            className="mt-auto hidden lg:flex w-8 h-8 rounded-full items-center justify-center text-slate-500 hover:bg-white hover:text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3687FC]/50"
+            title={sidebarCollapsed ? 'Mở rộng menu' : 'Thu gọn menu'}
+            aria-label={sidebarCollapsed ? 'Mở rộng menu' : 'Thu gọn menu'}
+          >
+            {sidebarCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </button>
+        </div>
 
-        {/* Collapse toggle — bottom of sidebar */}
-        <button
-          onClick={toggleSidebar}
-          className="hidden lg:flex absolute bottom-3 right-3 w-7 h-7 bg-white border border-slate-200 hover:bg-slate-100 rounded-full items-center justify-center text-slate-500 hover:text-slate-700 shadow-sm"
-          title={sidebarCollapsed ? 'Mở rộng sidebar' : 'Thu gọn sidebar'}
-        >
-          {sidebarCollapsed ? (
-            <ChevronRight className="w-3.5 h-3.5" />
-          ) : (
-            <ChevronLeft className="w-3.5 h-3.5" />
-          )}
-        </button>
+        <div className={cn('flex-1 min-w-0 flex flex-col', sidebarCollapsed && 'lg:hidden')}>
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            className="lg:hidden absolute top-2 right-2 p-1 hover:bg-slate-100 rounded"
+            aria-label="Đóng menu"
+          >
+            <X className="w-4 h-4 text-slate-600" />
+          </button>
+
+          <div className="px-3 pt-3 pb-2">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+              <input
+                ref={searchRef}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && results[0]) {
+                    router.push(results[0].href)
+                    setMobileMenuOpen(false)
+                  }
+                  if (e.key === 'Escape') setQuery('')
+                }}
+                placeholder="Tìm nhanh"
+                aria-label="Tìm nhanh trong menu"
+                className="w-full pl-8 pr-10 py-1.5 text-sm rounded-lg border border-slate-200 bg-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#3687FC]/30 focus:border-[#3687FC]"
+              />
+              <kbd className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 border border-slate-200 rounded px-1 hidden lg:block">Ctrl K</kbd>
+            </div>
+          </div>
+
+          <nav className="flex-1 overflow-y-auto px-3 pb-3">
+            <h2 className="px-2.5 pt-1 pb-1.5 text-[13px] font-semibold text-[#0F172A]">
+              {fold(query) ? 'Kết quả' : sidebarItems[activeGroup].title}
+            </h2>
+            <ul className="space-y-0.5">
+              {(fold(query) ? results : sidebarItems[activeGroup].items.map((it) => ({ ...it, group: '' }))).map((item) => {
+                const isActive = pathname === item.href || (item.href !== '/admin-cls' && pathname.startsWith(item.href))
+                return (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className={cn(
+                        'group flex items-center gap-[11px] px-2.5 py-[9px] rounded-xl transition-colors text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3687FC]/50',
+                        isActive ? 'bg-[#E8F1FF] text-[#3687FC] font-semibold' : 'font-normal text-[#0F172A] hover:bg-[#F5F7FA]'
+                      )}
+                    >
+                      <item.icon
+                        className={cn('h-5 w-5 flex-shrink-0 transition-colors', isActive ? 'text-[#3687FC]' : 'text-[#6B7280] group-hover:text-[#0F172A]')}
+                        strokeWidth={1.9}
+                      />
+                      <span className="truncate flex-1">{item.label}</span>
+                      {item.group && <span className="text-[11px] text-slate-400 shrink-0">{item.group}</span>}
+                      {item.badge ? (
+                        <span className="text-[11px] font-medium rounded-full px-1.5 min-w-[18px] text-center bg-[#E8F1FF] text-[#3687FC] shrink-0">{item.badge}</span>
+                      ) : null}
+                    </Link>
+                  </li>
+                )
+              })}
+              {fold(query) && results.length === 0 && (
+                <li className="px-2.5 py-2 text-sm text-slate-500">Không có mục nào khớp.</li>
+              )}
+            </ul>
+          </nav>
+        </div>
       </aside>
 
       {/* ───── MAIN CONTENT ───── */}
