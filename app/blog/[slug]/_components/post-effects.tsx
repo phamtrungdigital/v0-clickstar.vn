@@ -41,6 +41,27 @@ const CSS = `
 .bp-prose img{transition:transform .6s cubic-bezier(.2,.7,.2,1),box-shadow .6s}
 .bp-prose img:hover{transform:translateY(-4px);box-shadow:0 28px 54px -30px rgba(15,23,42,.5)}
 .bp-prose ::selection{background:rgba(54,135,252,.25)}
+/* Khối chữ cách điệu: tóm tắt, hộp mục lục, tiêu đề đánh số, trích dẫn, danh sách, nhấn mạnh */
+.bp-lead{position:relative;border-radius:22px;padding:24px 30px 26px;background:linear-gradient(135deg,rgba(54,135,252,.09),rgba(251,146,60,.06) 70%,transparent);border:1px solid rgba(54,135,252,.18)}
+.bp-lead::before{content:"";position:absolute;left:0;top:20px;bottom:20px;width:4px;border-radius:0 4px 4px 0;background:linear-gradient(#3687FC,#fb923c)}
+.bp-tocbox{position:relative;overflow:hidden}
+.bp-tocbox::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#3687FC,#fb923c)}
+.bp-prose{counter-reset:bps}
+.bp-prose h2{counter-increment:bps}
+.bp-prose h2::before{content:counter(bps,decimal-leading-zero);display:block;margin-bottom:.4rem;font-size:.74rem;font-weight:600;letter-spacing:.18em;color:#3687FC}
+.bp-prose blockquote{border:0;font-style:normal;border-radius:22px;padding:1.5rem 1.8rem 1.5rem 4rem;background:linear-gradient(135deg,rgba(54,135,252,.09),rgba(54,135,252,.02));margin:2rem 0}
+.bp-prose blockquote::before{content:"\201C";position:absolute;left:1.2rem;top:.1rem;font-family:Georgia,serif;font-size:4.2rem;line-height:1;color:#3687FC;opacity:.55}
+.bp-prose blockquote p::before,.bp-prose blockquote p::after{content:none}
+.bp-prose blockquote p{margin:0}
+.bp-prose ul{list-style:none;padding-left:0}
+.bp-prose ul>li{position:relative;padding-left:1.8rem}
+.bp-prose ul>li::marker{content:none}
+.bp-prose ul>li::before{content:"";position:absolute;left:.25rem;top:.78em;width:.5rem;height:.5rem;border-radius:9999px;background:linear-gradient(135deg,#3687FC,#fb923c)}
+.bp-prose ol{list-style:none;padding-left:0;counter-reset:bpo}
+.bp-prose ol>li{counter-increment:bpo;position:relative;padding-left:2.7rem}
+.bp-prose ol>li::marker{content:none}
+.bp-prose ol>li::before{content:counter(bpo);position:absolute;left:0;top:.2em;display:flex;align-items:center;justify-content:center;width:1.85rem;height:1.85rem;border-radius:9999px;background:rgba(54,135,252,.12);color:#1859b8;font-size:.85rem;font-weight:600}
+.bp-prose p strong,.bp-prose li strong{background:linear-gradient(transparent 62%,rgba(251,146,60,.24) 62%);padding:0 .08em}
 /* Khối liên hệ: dấu cộng lấp lánh */
 .bp-tw{position:absolute;color:rgba(255,255,255,.7);animation:bp-tw 3.2s ease-in-out infinite}
 @keyframes bp-tw{0%,100%{opacity:.15;transform:scale(.7) rotate(0)}50%{opacity:1;transform:scale(1.1) rotate(90deg)}}

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from '@/components/app-link'
-import { Calendar, Clock, ArrowLeft, ArrowRight, MessageCircle, Phone } from 'lucide-react'
+import { Calendar, Clock, ArrowLeft, ArrowRight, MessageCircle, Phone, Sparkles } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import { MainNav } from '@/components/layout/main-nav'
@@ -188,7 +188,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
         </header>
 
         {post.cover_image && (
-          <div className="max-w-[1040px] mx-auto px-4 sm:px-6 mt-12">
+          <div className="max-w-[900px] mx-auto px-4 sm:px-6 mt-12">
             <div className="relative">
               {/* Ánh sáng bao quanh lấy màu từ ảnh bìa */}
               <div className="bp-ambient" aria-hidden="true">
@@ -204,7 +204,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
                     fill
                     priority
                     className="bp-zoom object-cover"
-                    sizes="(max-width: 1040px) 100vw, 1040px"
+                    sizes="(max-width: 900px) 100vw, 900px"
                   />
                 </CoverParallax>
               </div>
@@ -212,16 +212,20 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
           </div>
         )}
 
-        <div className="max-w-[720px] mx-auto px-4 sm:px-6 mt-10">
+        <div className="max-w-[900px] mx-auto px-4 sm:px-6 mt-10">
           <TableOfContents headings={headings} />
 
           {excerpt && (
-            <p className="bp-up mt-9 text-xl sm:text-[22px] leading-[1.6] text-foreground/75 text-pretty" style={{ ['--d' as string]: '.5s' }}>
-              {excerpt}
-            </p>
+            <div className="bp-up bp-lead mt-9" style={{ ['--d' as string]: '.5s' }}>
+              <div className="mb-3 flex items-center gap-2 text-[11px] font-semibold tracking-[0.16em] text-[#1859b8]">
+                <Sparkles className="w-3.5 h-3.5" />
+                {t('TÓM TẮT', 'SUMMARY')}
+              </div>
+              <p className="text-xl sm:text-[22px] leading-[1.6] text-foreground/85 text-pretty">{excerpt}</p>
+            </div>
           )}
 
-          <BodyReveal className="bp-prose prose prose-slate dark:prose-invert max-w-none mt-9 prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl lg:prose-h2:text-[28px] prose-h2:mt-14 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-xl prose-h3:mt-8 prose-h3:scroll-mt-24 prose-p:leading-[1.8] prose-li:leading-[1.75] prose-img:rounded-2xl prose-a:text-primary prose-a:no-underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
+          <BodyReveal className="bp-prose prose prose-slate dark:prose-invert max-w-none mt-10 prose-lg prose-p:text-[19px] prose-li:text-[19px] prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl lg:prose-h2:text-[28px] prose-h2:mt-14 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-xl prose-h3:mt-8 prose-h3:scroll-mt-24 prose-p:leading-[1.85] prose-li:leading-[1.8] prose-img:rounded-2xl prose-a:text-primary prose-a:no-underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
             <ReactMarkdown
               components={{
                 // Trang đã có đúng một <h1> (tiêu đề bài). "# ..." trong nội dung được hạ thành <h2>.
@@ -275,7 +279,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
 
         {/* Bài liên quan: ba thẻ */}
         {related.length > 0 && (
-          <section className="max-w-[1080px] mx-auto px-4 sm:px-6 mt-20" aria-labelledby="bp-related">
+          <section className="max-w-[900px] mx-auto px-4 sm:px-6 mt-20" aria-labelledby="bp-related">
             <h2 id="bp-related" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mb-6">
               {t('Bài liên quan', 'Related posts')}
             </h2>
@@ -323,7 +327,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
         )}
 
         {/* Kêu gọi liên hệ: một khối tối ở cuối bài */}
-        <section className="max-w-[1080px] mx-auto px-4 sm:px-6 mt-16">
+        <section className="max-w-[900px] mx-auto px-4 sm:px-6 mt-16">
           <div className="bp-glow rounded-3xl bg-zinc-950 text-white px-6 py-10 sm:px-12 sm:py-14 text-center">
             <span className="bp-tw left-[8%] top-[18%] text-xl" aria-hidden="true">+</span>
             <span className="bp-tw right-[10%] top-[28%] text-2xl" style={{ animationDelay: '1.1s' }} aria-hidden="true">+</span>

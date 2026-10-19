@@ -34,7 +34,7 @@ export function TableOfContents({ headings }: { headings: Heading[] }) {
   return (
     <nav
       aria-label={t('Mục lục bài viết', 'Table of contents')}
-      className="bp-up rounded-2xl border border-border bg-secondary/40 p-5 sm:p-6"
+      className="bp-up bp-tocbox rounded-2xl border border-border bg-secondary/40 p-5 sm:p-7"
       style={{ ['--d' as string]: '.35s' }}
     >
       <div className="flex items-center gap-2 text-sm font-semibold text-foreground mb-3">
