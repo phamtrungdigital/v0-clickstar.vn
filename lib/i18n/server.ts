@@ -1,12 +1,20 @@
 import { cookies } from 'next/headers'
 import type { I18n } from '@/lib/cms/types'
+import { getSiteSettings } from '@/lib/cms/settings'
+import { DEFAULT_LANG } from '@/lib/seo/site'
 
 export type Lang = 'vi' | 'en'
 
-/** Read the cs-lang cookie on the server. Defaults to 'en' (chỉ 'vi' khi khách tự chọn tiếng Việt). */
+/**
+ * Ngôn ngữ của khách trên server: cookie cs-lang nếu khách đã chọn, nếu chưa thì dùng ngôn ngữ mặc định của
+ * website (site_settings.default_language, hiện là 'vi'). Công cụ tìm kiếm không có cookie nên luôn thấy bản mặc định.
+ */
 export async function getServerLang(): Promise<Lang> {
   const store = await cookies()
-  return store.get('cs-lang')?.value === 'vi' ? 'vi' : 'en'
+  const saved = store.get('cs-lang')?.value
+  if (saved === 'vi' || saved === 'en') return saved
+  const settings = await getSiteSettings()
+  return settings?.default_language === 'en' ? 'en' : DEFAULT_LANG
 }
 
 /** Build a `t(vi, en)` function for a given language. */

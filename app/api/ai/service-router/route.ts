@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
     if (!enabled) {
       return NextResponse.json(
-        { error: 'Trợ lý AI hiện đang tạm tắt. Vui lòng liên hệ hotline 0977 713 428.' },
+        { error: 'Trợ lý AI hiện đang tạm tắt. Vui lòng liên hệ hotline 0383 406 735.' },
         { status: 503 }
       )
     }

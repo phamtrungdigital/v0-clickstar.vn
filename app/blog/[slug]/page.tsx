@@ -11,6 +11,9 @@ import { getServerLang, makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
 import { TableOfContents } from './_components/table-of-contents'
 import { NewsletterCard } from './_components/newsletter-card'
 import { parseHeadings, slugifyId } from '@/lib/blog/headings'
+import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/json-ld'
+import { blogPostingSchema, breadcrumbSchema } from '@/lib/seo/schema'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,12 +30,15 @@ export async function generateMetadata({
   }
   const title = pickI18n(lang, post.seo_title) || pickI18n(lang, post.title)
   const description = pickI18n(lang, post.seo_description) || pickI18n(lang, post.excerpt)
-  const ogImage = post.og_image || post.cover_image
-  return {
+  return buildMetadata({
     title,
     description,
-    openGraph: { title, description, images: ogImage ? [ogImage] : [] },
-  }
+    path: `/blog/${slug}`,
+    images: [post.og_image || post.cover_image],
+    type: 'article',
+    publishedTime: post.published_at,
+    modifiedTime: post.updated_at,
+  })
 }
 
 function extractText(children: React.ReactNode): string {
@@ -74,8 +80,25 @@ export default async function BlogPostPage({
   const settings = await getSiteSettings()
   const zaloUrl = settings?.zalo_url
 
+  const postSchema = blogPostingSchema({
+    title,
+    description: excerpt,
+    path: `/blog/${slug}`,
+    image: post.cover_image,
+    publishedAt: post.published_at,
+    modifiedAt: post.updated_at,
+    lang,
+    logoUrl: settings?.logo_url,
+  })
+  const crumbs = breadcrumbSchema([
+    { name: t('Trang chủ', 'Home'), path: '/' },
+    { name: 'Blog', path: '/blog' },
+    { name: title, path: `/blog/${slug}` },
+  ])
+
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={[postSchema, crumbs]} />
       <MainNav />
 
       <article className="pt-12 lg:pt-16 pb-16 lg:pb-24">
@@ -145,6 +168,11 @@ export default async function BlogPostPage({
               <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:scroll-mt-24 prose-p:leading-relaxed prose-p:text-justify prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-xl prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
                 <ReactMarkdown
                   components={{
+                    // Trang đã có đúng một <h1> (tiêu đề bài). "# ..." trong nội dung được hạ thành <h2>.
+                    h1: ({ children }) => {
+                      const id = slugifyId(extractText(children))
+                      return <h2 id={id}>{children}</h2>
+                    },
                     h2: ({ children }) => {
                       const id = slugifyId(extractText(children))
                       return <h2 id={id}>{children}</h2>

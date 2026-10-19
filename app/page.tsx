@@ -17,6 +17,10 @@ import { getLatestPosts, type LatestPost } from '@/lib/cms/posts'
 import { getSection, type AboutTimelineItem, type I18n, type Section } from '@/lib/cms/types'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/json-ld'
+import { organizationSchema, websiteSchema } from '@/lib/seo/schema'
+import { getSiteSettings } from '@/lib/cms/settings'
 
 const CaseStudiesSection = nextDynamic(() =>
   import('@/components/sections/case-studies-section').then((m) => m.CaseStudiesSection),
@@ -29,24 +33,13 @@ export const revalidate = 3600
 
 export async function generateMetadata(): Promise<Metadata> {
   const page = await getPublishedPage('home')
-  if (!page) return { title: 'ClickStar' }
-  const title = page.seo_title?.vi || page.title
-  const description = page.seo_description?.vi || ''
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      images: page.og_image ? [page.og_image] : [],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: page.og_image ? [page.og_image] : [],
-    },
-  }
+  if (!page) return { title: 'Click Star' }
+  return buildMetadata({
+    title: page.seo_title?.vi || page.title,
+    description: page.seo_description?.vi || '',
+    path: '/',
+    images: [page.og_image],
+  })
 }
 
 type AboutExtra = { timeline?: AboutTimelineItem[]; industries?: I18n[] }
@@ -85,7 +78,7 @@ function renderSection(section: Section, extra: AboutExtra, latestPosts: LatestP
 }
 
 export default async function Home() {
-  const [page, aboutPage, latestPosts] = await Promise.all([getPublishedPage('home'), getPublishedPage('about'), getLatestPosts(3)])
+  const [page, aboutPage, latestPosts, settings] = await Promise.all([getPublishedPage('home'), getPublishedPage('about'), getLatestPosts(3), getSiteSettings()])
   if (!page) notFound()
   // Khối About ở trang chủ dùng lại mốc phát triển và ngành nghề của trang Giới thiệu (một nguồn nhập liệu)
   const extra: AboutExtra = {
@@ -95,6 +88,7 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen theme-apple">
+      <JsonLd data={[organizationSchema(settings), websiteSchema(settings)]} />
       {/* Theo mockup Apple: bỏ banner khuyến mãi, ô hỏi AI giữa trang và khối terminal khỏi dòng chính.
           AI vẫn có nút nổi (FloatingAiServiceRouter); muốn bật lại banner/ô AI chỉ cần thêm lại 2 dòng này. */}
       <MainNav />

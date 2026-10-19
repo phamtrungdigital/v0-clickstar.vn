@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { JetBrains_Mono } from 'next/font/google'
 import { pageMetadata } from '@/lib/cms/page-metadata'
 import { FAQ, SERVICE_SLUG } from './_data/content'
+import { PageSchema } from '@/components/seo/page-schema'
 
 export const revalidate = 3600
 
@@ -41,6 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={mono.variable}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <PageSchema slug={SERVICE_SLUG} service />
       {children}
     </div>
   )

@@ -8,6 +8,9 @@ import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudyBySlug, getPublishedCaseStudies } from '@/lib/cms/case-studies'
 import { getServerLang, makeT } from '@/lib/i18n/server'
+import { buildMetadata, fitTitle } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/json-ld'
+import { breadcrumbSchema } from '@/lib/seo/schema'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,16 +21,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const p = await getPublishedCaseStudyBySlug(slug)
-  if (!p) return { title: 'Không tìm thấy dự án' }
-  return {
-    title: `${p.title_vi} — Click Star`,
-    description: p.summary_vi ?? undefined,
-    openGraph: {
-      title: p.title_vi,
-      description: p.summary_vi ?? undefined,
-      images: p.cover_image ? [p.cover_image] : [],
-    },
-  }
+  if (!p) return { title: 'Không tìm thấy dự án | Click Star' }
+  // Tiêu đề dự án thường dài (70 đến 110 ký tự): rút còn vừa khung hiển thị của Google (tối đa khoảng 60 ký tự gồm cả thương hiệu).
+  return buildMetadata({
+    title: fitTitle(p.title_vi, 46),
+    description: p.summary_vi,
+    path: `/projects/${slug}`,
+    images: [p.cover_image],
+  })
 }
 
 export default async function ProjectDetailPage({
@@ -55,6 +56,13 @@ export default async function ProjectDetailPage({
 
   return (
     <div className="min-h-screen">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: t('Trang chủ', 'Home'), path: '/' },
+          { name: t('Dự án', 'Projects'), path: '/projects' },
+          { name: t(project.title_vi, project.title_en || project.title_vi), path: `/projects/${slug}` },
+        ])}
+      />
       <MainNav />
 
       {/* Hero */}

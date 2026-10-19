@@ -94,8 +94,8 @@ export const DEFAULT_FOOTER: FooterContent = {
     vi: 'Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, Thành phố Hà Nội, Việt Nam',
     en: 'Floor 6, MD Complex Tower (Office Building), 68 Nguyen Co Thach, Tu Liem Ward, Hanoi, Vietnam',
   },
-  contact_phone: '0977 713 428',
-  contact_email: 'clickstar.vn@gmail.com',
+  contact_phone: '0383 406 735',
+  contact_email: 'admin@clickstar.vn',
   newsletter_title: { vi: 'Đăng ký nhận tin', en: 'Newsletter' },
   newsletter_desc: {
     vi: 'Đăng ký để nhận thông tin mới nhất về xu hướng công nghệ và chuyển đổi số.',
@@ -121,8 +121,8 @@ export const DEFAULT_SERVICE_CTAS: ServiceCtas = {
     },
     primary: { label: { vi: 'Đặt lịch tư vấn', en: 'Book Consultation' }, href: '/contact' },
     secondary: {
-      label: { vi: 'Gọi ngay: 0977 713 428', en: 'Call now: 0977 713 428' },
-      href: 'tel:0977713428',
+      label: { vi: 'Gọi ngay: 0383 406 735', en: 'Call now: 0383 406 735' },
+      href: 'tel:0383406735',
     },
   },
   website: {
@@ -132,8 +132,8 @@ export const DEFAULT_SERVICE_CTAS: ServiceCtas = {
       en: 'Contact us now for free consultation and detailed quote for your project.',
     },
     primary: {
-      label: { vi: 'Gọi ngay: 0977 713 428', en: 'Call now: 0977 713 428' },
-      href: 'tel:0977713428',
+      label: { vi: 'Gọi ngay: 0383 406 735', en: 'Call now: 0383 406 735' },
+      href: 'tel:0383406735',
     },
     secondary: { label: { vi: 'Nhận báo giá qua email', en: 'Get quote via email' }, href: '/contact' },
   },
@@ -151,8 +151,8 @@ export const DEFAULT_SERVICE_CTAS: ServiceCtas = {
       href: '/contact?service=Ph%C3%A2n%20t%C3%ADch%20cu%E1%BB%99c%20g%E1%BB%8Di%20AI',
     },
     secondary: {
-      label: { vi: 'Gọi ngay: 0977 713 428', en: 'Call now: 0977 713 428' },
-      href: 'tel:0977713428',
+      label: { vi: 'Gọi ngay: 0383 406 735', en: 'Call now: 0383 406 735' },
+      href: 'tel:0383406735',
     },
   },
 }

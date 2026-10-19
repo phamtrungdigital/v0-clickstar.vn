@@ -216,7 +216,7 @@ function CtaTab({
             <div className="border-t border-slate-200 dark:border-slate-700 pt-3 mt-1">
               <p className="text-xs font-semibold text-slate-500 mb-2">Nút chính</p>
               <I18nField label="Nhãn nút" value={c.primary.label} onChange={(v) => setCta(slug, { primary: { ...c.primary, label: v } })} />
-              <Field label="Đường dẫn (vd /contact hoặc tel:0977713428)">
+              <Field label="Đường dẫn (vd /contact hoặc tel:0383406735)">
                 <TextInput value={c.primary.href} onChange={(v) => setCta(slug, { primary: { ...c.primary, href: v } })} />
               </Field>
             </div>

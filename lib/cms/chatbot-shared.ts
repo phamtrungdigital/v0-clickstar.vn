@@ -113,7 +113,7 @@ export const DEFAULT_CHATBOT_CONFIG: ChatbotPublicConfig = {
       { label: 'Contact for consultation', value: 'I want to contact for consultation' },
     ],
   },
-  hotline: '0977 713 428',
+  hotline: '0383 406 735',
   hidden_paths: ['/admin-cls', '/contact', '/ads-hub', '/api'],
   show_delay_ms: 10000,
   auto_close_ms: 15000,

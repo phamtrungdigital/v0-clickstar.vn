@@ -21,6 +21,13 @@ const nextConfig = {
       { protocol: 'https', hostname: '*.supabase.co' },
     ],
   },
+  async headers() {
+    // Lớp bảo vệ thứ hai ngoài thẻ meta: khu quản trị và API không bao giờ được lập chỉ mục.
+    return [
+      { source: '/admin-cls/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+      { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
+    ]
+  },
   async redirects() {
     return [
       // URL đăng nhập gọn: clickstar.vn/login → trang login admin (/admin-cls/login vẫn chạy như cũ)

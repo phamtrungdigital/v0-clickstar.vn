@@ -79,7 +79,7 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
 
       <div className="grid sm:grid-cols-2 gap-5">
         <Field label={t('Họ và tên *', 'Full name *')} name="name" placeholder={t('Nguyễn Văn A', 'Jane Smith')} error={fieldErrors.name} required />
-        <Field label={t('Số điện thoại *', 'Phone number *')} name="phone" type="tel" placeholder="0977 713 428" error={fieldErrors.phone} required />
+        <Field label={t('Số điện thoại *', 'Phone number *')} name="phone" type="tel" placeholder="0383 406 428" error={fieldErrors.phone} required />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-5">

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { getAdminProfile } from '@/lib/admin-cls/auth'
 import AdminShell from './_components/admin-shell'
@@ -8,6 +9,9 @@ const inter = Inter({
   weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 })
+
+/** Khu quản trị không được xuất hiện trên công cụ tìm kiếm. */
+export const metadata: Metadata = { robots: { index: false, follow: false } }
 
 export default async function AdminLayout({
   children,

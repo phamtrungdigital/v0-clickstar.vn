@@ -5,15 +5,18 @@ import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { getServerLang, makeT, pickI18n } from '@/lib/i18n/server'
+import { buildMetadata } from '@/lib/seo/metadata'
+import { DEFAULT_HOTLINE, DEFAULT_EMAIL } from '@/lib/seo/site'
 import { ContactForm } from './_components/contact-form'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Liên hệ — Click Star Digital',
+export const metadata: Metadata = buildMetadata({
+  title: 'Liên hệ tư vấn chuyển đổi số miễn phí',
   description:
-    'Liên hệ Click Star Digital để được tư vấn miễn phí các dịch vụ Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP. Gọi 0977 713 428 hoặc gửi yêu cầu qua form.',
-}
+    'Liên hệ Click Star để được tư vấn miễn phí các dịch vụ Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP. Gọi hotline hoặc gửi yêu cầu qua form.',
+  path: '/contact',
+})
 
 export default async function ContactPage({
   searchParams,
@@ -25,8 +28,8 @@ export default async function ContactPage({
   const lang = await getServerLang()
   const t = makeT(lang)
 
-  const phone = settings?.contact_phone || '0977 713 428'
-  const email = settings?.contact_email || 'clickstar.vn@gmail.com'
+  const phone = settings?.contact_phone || DEFAULT_HOTLINE
+  const email = settings?.contact_email || DEFAULT_EMAIL
   const address =
     pickI18n(lang, settings?.address) ||
     t(

@@ -15,6 +15,7 @@ import { PersonalizeBanner } from '@/components/personalize-banner'
 import { CapabilityPopup } from '@/components/capability-popup'
 import { FloatingContact } from '@/components/floating-contact'
 import { TrackingCode } from '@/components/tracking-scripts'
+import { SITE_URL, BRAND } from '@/lib/seo/site'
 import './globals.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -35,7 +36,6 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
   const favicon = settings?.favicon_url
   const ogImage = settings?.default_og_image
-  const siteName = settings?.site_name?.vi || 'ClickStar'
 
   const icons = favicon
     ? { icon: favicon, apple: favicon }
@@ -49,13 +49,16 @@ export async function generateMetadata(): Promise<Metadata> {
       }
 
   return {
-    title: `${siteName} - Giải pháp chuyển đổi số toàn diện`,
+    // metadataBase: biến đường dẫn tương đối (canonical, og:url, ảnh) thành địa chỉ tuyệt đối.
+    metadataBase: new URL(settings?.site_url || SITE_URL),
+    title: `${BRAND} | Chuyển đổi số, Marketing và AI cho doanh nghiệp`,
     description:
       settings?.default_seo_description?.vi ||
       'Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, Automation, CRM/CDP, Phân tích cuộc gọi AI (Call to Text) và Phần mềm theo yêu cầu cho doanh nghiệp Việt Nam',
-    generator: 'v0.app',
+    // Mặc định canonical là chính đường dẫn của trang (bỏ tham số ?utm...). Từng trang có thể đặt canonical riêng.
+    alternates: { canonical: './' },
     icons,
-    openGraph: ogImage ? { images: [ogImage] } : undefined,
+    openGraph: { siteName: BRAND, locale: 'vi_VN', type: 'website', images: ogImage ? [ogImage] : undefined },
   }
 }
 
@@ -65,13 +68,15 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   // Static-friendly: KHÔNG đọc cookie ở layout (cookie → ép dynamic toàn site).
-  // LanguageProvider tự đọc cookie cs-lang ở client khi mount để đổi sang VI nếu khách đã chọn (mặc định EN).
+  // Ngôn ngữ mặc định lấy từ Cài đặt (site_settings.default_language, hiện là 'vi'). LanguageProvider đọc cookie cs-lang
+  // ở client khi mount để đổi sang ngôn ngữ khách đã chọn. Bản HTML Google thấy (không cookie) là ngôn ngữ mặc định.
   const [settings, teamMembers, chatbot, webContent] = await Promise.all([
     getSiteSettings(),
     getActiveTeamMembers(),
     getChatbotSettings(),
     getWebContent(),
   ])
+  const defaultLang = settings?.default_language === 'en' ? 'en' : 'vi'
   const chatbotConfig = toPublicConfig(chatbot)
   const { footer: footerContent, service_ctas: serviceCtas } = normalizeWebContent(webContent)
   const branding: SiteBranding = {
@@ -84,7 +89,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className="bg-background">
+    <html lang={defaultLang} className="bg-background">
       <body className={`${plusJakarta.variable} ${inter.variable} font-sans antialiased`}>
         {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
         <TrackingCode code={settings?.head_code} />
@@ -93,7 +98,7 @@ export default async function RootLayout({
 
         <SiteBrandingProvider branding={branding}>
           <TeamMembersProvider members={teamMembers}>
-            <LanguageProvider>
+            <LanguageProvider initialLang={defaultLang}>
               <WebContentProvider value={{ footer: footerContent, serviceCtas }}>
                 {children}
               </WebContentProvider>

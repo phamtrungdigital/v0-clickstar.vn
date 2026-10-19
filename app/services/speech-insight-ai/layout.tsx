@@ -4,6 +4,7 @@ import { PageDataProvider } from '@/lib/cms/page-data-context'
 import { ServicePricingProvider } from '@/lib/cms/service-pricing'
 import { findPricingGroup } from '@/lib/cms/service-pricing-shared'
 import { FAQ_ITEMS } from './_data/faq'
+import { PageSchema } from '@/components/seo/page-schema'
 
 /** Id nhóm giá của dịch vụ này trong section `pricing_grouped_tiers` của page `pricing`. */
 const PRICING_GROUP_ID = 'speech-insight-ai'
@@ -36,6 +37,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
+        <PageSchema slug="services/speech-insight-ai" service />
         {children}
       </ServicePricingProvider>
     </PageDataProvider>

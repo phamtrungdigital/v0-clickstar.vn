@@ -147,7 +147,7 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
             label="Zalo URL"
             value={draft.zalo_url ?? ''}
             onChange={(v) => update('zalo_url', v.trim() === '' ? null : v)}
-            hint="VD: https://zalo.me/0977713428 — để trống sẽ ẩn nút Zalo trên website"
+            hint="VD: https://zalo.me/0383406735 — để trống sẽ ẩn nút Zalo trên website"
           />
         </div>
       </Section>

@@ -107,7 +107,7 @@ export function FloatingAiServiceRouter({ config }: { config: ChatbotPublicConfi
   const showDelayMs = config.show_delay_ms
   const autoCloseMs = config.auto_close_ms
   const dismissHours = config.dismiss_hours
-  const hotline = config.hotline || '0977 713 428'
+  const hotline = config.hotline || '0383 406 735'
 
   const inputRef = useRef<HTMLInputElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)

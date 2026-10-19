@@ -82,10 +82,10 @@ export async function runServiceRouter(opts: {
   // API key đọc từ env (server-only, encrypted) — KHÔNG lưu trong DB vì đây là endpoint công khai.
   const openaiKey = process.env.OPENAI_API_KEY
   if (!openaiKey) {
-    return { ok: false, error: 'AI tạm thời chưa khả dụng. Vui lòng liên hệ hotline 0977 713 428.', status: 503 }
+    return { ok: false, error: 'AI tạm thời chưa khả dụng. Vui lòng liên hệ hotline 0383 406 735.', status: 503 }
   }
 
-  const hotline = opts.hotline?.trim() || '0977 713 428'
+  const hotline = opts.hotline?.trim() || '0383 406 735'
   let knowledge: Awaited<ReturnType<typeof getSiteKnowledge>>
   try {
     knowledge = await getSiteKnowledge()

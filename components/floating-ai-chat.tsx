@@ -172,7 +172,7 @@ export function FloatingAiChat({ config }: { config: ChatbotPublicConfig }) {
   const welcome = config.welcome_message?.[lang] || ''
   const quickPrompts = config.quick_prompts?.[lang] || []
   const buttonLabel = `${t.ask} ${botName}`
-  const hotline = config.hotline || '0977 713 428'
+  const hotline = config.hotline || '0383 406 735'
   const poweredBy =
     lang === 'vi' ? `AI có thể nhầm. Hotline: ${hotline}` : `AI may be wrong. Hotline: ${hotline}`
 

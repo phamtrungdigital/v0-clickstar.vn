@@ -5,19 +5,23 @@ import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { listPublishedPosts } from '@/lib/cms/posts'
 import { getServerLang, makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
+import { buildMetadata } from '@/lib/seo/metadata'
+import { JsonLd } from '@/components/seo/json-ld'
+import { breadcrumbSchema } from '@/lib/seo/schema'
 
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata() {
   const lang = await getServerLang()
   const t = makeT(lang)
-  return {
-    title: t('Tin tức & Bài viết — ClickStar', 'News & Articles — ClickStar'),
+  return buildMetadata({
+    title: t('Blog chuyển đổi số, AI và Marketing', 'Blog: digital transformation, AI and marketing'),
     description: t(
-      'Cập nhật xu hướng, mẹo hay và insight từ các chuyên gia của ClickStar',
-      'Stay updated with trends, tips and insights from ClickStar experts'
+      'Cập nhật xu hướng, mẹo hay và insight về chuyển đổi số, AI và Marketing từ các chuyên gia của Click Star',
+      'Stay updated with trends, tips and insights on digital transformation, AI and marketing from Click Star experts'
     ),
-  }
+    path: '/blog',
+  })
 }
 
 export default async function BlogList() {
@@ -28,6 +32,7 @@ export default async function BlogList() {
 
   return (
     <div className="min-h-screen bg-background">
+      <JsonLd data={breadcrumbSchema([{ name: t('Trang chủ', 'Home'), path: '/' }, { name: 'Blog', path: '/blog' }])} />
       <MainNav />
 
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-24">

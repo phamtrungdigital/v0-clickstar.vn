@@ -59,9 +59,9 @@ const COPY = {
     askAnother: 'Hỏi câu khác',
     aiThinking: 'AI Click Star đang suy nghĩ…',
     seeMore: 'Có thể anh quan tâm:',
-    note: 'AI có thể nhầm. Gọi hotline 0977 713 428 nếu cần tư vấn người thật.',
+    note: 'AI có thể nhầm. Gọi hotline 0383 406 735 nếu cần tư vấn người thật.',
     errorUnknown: 'Lỗi không xác định',
-    errorNetwork: 'Không kết nối được. Vui lòng thử lại hoặc gọi 0977 713 428.',
+    errorNetwork: 'Không kết nối được. Vui lòng thử lại hoặc gọi 0383 406 735.',
   },
   en: {
     badge: 'AI Assistant',
@@ -76,9 +76,9 @@ const COPY = {
     askAnother: 'Ask another',
     aiThinking: 'Click Star AI is thinking…',
     seeMore: 'You may also like:',
-    note: 'AI may be wrong. Call 0977 713 428 for a real consultant.',
+    note: 'AI may be wrong. Call 0383 406 735 for a real consultant.',
     errorUnknown: 'Something went wrong. Please try again.',
-    errorNetwork: "Couldn't connect. Please try again or call 0977 713 428.",
+    errorNetwork: "Couldn't connect. Please try again or call 0383 406 735.",
   },
 }
 
