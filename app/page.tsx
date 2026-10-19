@@ -18,6 +18,7 @@ import { getSection, type AboutTimelineItem, type I18n, type Section } from '@/l
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
 import { organizationSchema, websiteSchema } from '@/lib/seo/schema'
 import { getSiteSettings } from '@/lib/cms/settings'
@@ -38,7 +39,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: page.seo_title?.vi || page.title,
     description: page.seo_description?.vi || '',
     path: '/',
-    images: [page.og_image],
+    images: await ogImageOr(page.og_image),
   })
 }
 

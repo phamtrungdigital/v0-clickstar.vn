@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudyBySlug, getPublishedCaseStudies } from '@/lib/cms/case-studies'
 import { getServerLang, makeT } from '@/lib/i18n/server'
 import { buildMetadata, fitTitle } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
 import { breadcrumbSchema } from '@/lib/seo/schema'
 
@@ -27,7 +28,7 @@ export async function generateMetadata({
     title: fitTitle(p.title_vi, 46),
     description: p.summary_vi,
     path: `/projects/${slug}`,
-    images: [p.cover_image],
+    images: await ogImageOr(p.cover_image),
   })
 }
 

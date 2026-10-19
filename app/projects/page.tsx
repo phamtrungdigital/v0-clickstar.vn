@@ -7,17 +7,21 @@ import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudies } from '@/lib/cms/case-studies'
 import { getServerLang, makeT } from '@/lib/i18n/server'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
 import { breadcrumbSchema } from '@/lib/seo/schema'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Dự án đã triển khai: Website, CRM, Dashboard, AI',
-  description:
-    'Tổng hợp các dự án Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP mà Click Star đã triển khai cho khách hàng.',
-  path: '/projects',
-})
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: 'Dự án đã triển khai: Website, CRM, Dashboard, AI',
+    description:
+      'Tổng hợp các dự án Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP mà Click Star đã triển khai cho khách hàng.',
+    path: '/projects',
+    images: await ogImageOr(),
+  })
+}
 
 export default async function ProjectsPage() {
   const projects = await getPublishedCaseStudies()

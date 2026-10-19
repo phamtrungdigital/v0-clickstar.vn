@@ -6,17 +6,21 @@ import { Footer } from '@/components/layout/footer'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { getServerLang, makeT, pickI18n } from '@/lib/i18n/server'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 import { DEFAULT_HOTLINE, DEFAULT_EMAIL } from '@/lib/seo/site'
 import { ContactForm } from './_components/contact-form'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = buildMetadata({
-  title: 'Liên hệ tư vấn chuyển đổi số miễn phí',
-  description:
-    'Liên hệ Click Star để được tư vấn miễn phí các dịch vụ Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP. Gọi hotline hoặc gửi yêu cầu qua form.',
-  path: '/contact',
-})
+export async function generateMetadata(): Promise<Metadata> {
+  return buildMetadata({
+    title: 'Liên hệ tư vấn chuyển đổi số miễn phí',
+    description:
+      'Liên hệ Click Star để được tư vấn miễn phí các dịch vụ Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP. Gọi hotline hoặc gửi yêu cầu qua form.',
+    path: '/contact',
+    images: await ogImageOr(),
+  })
+}
 
 export default async function ContactPage({
   searchParams,

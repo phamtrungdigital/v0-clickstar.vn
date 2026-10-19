@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getPublishedPage } from './queries'
 import { buildMetadata, brandTitle } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 
 /**
  * Build Next.js Metadata for a page by reading its `pages` row.
@@ -17,6 +18,6 @@ export async function pageMetadata(slug: string, fallbackTitle = 'Click Star'): 
     title: page.seo_title?.vi || page.title || fallbackTitle,
     description: page.seo_description?.vi || '',
     path: slug === 'home' ? '/' : `/${slug}`,
-    images: [page.og_image],
+    images: await ogImageOr(page.og_image),
   })
 }

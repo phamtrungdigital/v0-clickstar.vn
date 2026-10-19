@@ -6,6 +6,7 @@ import { Footer } from '@/components/layout/footer'
 import { listPublishedPosts } from '@/lib/cms/posts'
 import { getServerLang, makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
 import { breadcrumbSchema } from '@/lib/seo/schema'
 
@@ -21,6 +22,7 @@ export async function generateMetadata() {
       'Stay updated with trends, tips and insights on digital transformation, AI and marketing from Click Star experts'
     ),
     path: '/blog',
+    images: await ogImageOr(),
   })
 }
 

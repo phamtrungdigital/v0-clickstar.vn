@@ -12,6 +12,7 @@ import { TableOfContents } from './_components/table-of-contents'
 import { NewsletterCard } from './_components/newsletter-card'
 import { parseHeadings, slugifyId } from '@/lib/blog/headings'
 import { buildMetadata } from '@/lib/seo/metadata'
+import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
 import { blogPostingSchema, breadcrumbSchema } from '@/lib/seo/schema'
 
@@ -34,7 +35,7 @@ export async function generateMetadata({
     title,
     description,
     path: `/blog/${slug}`,
-    images: [post.og_image || post.cover_image],
+    images: await ogImageOr(post.og_image, post.cover_image),
     type: 'article',
     publishedTime: post.published_at,
     modifiedTime: post.updated_at,
