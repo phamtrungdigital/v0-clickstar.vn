@@ -235,7 +235,7 @@ export function SeoWorkspace({
                             </span>
                           )}
                         </span>
-                        <span className="block text-[10px] font-mono text-slate-500 truncate">{it.path}</span>
+                        <span className="block text-[10px] text-slate-500 truncate">{it.path}</span>
                       </button>
                     </td>
                     <td className={cn('px-3 py-2.5 tabular-nums', TONE_TEXT[a.title.level])} title={a.title.fromFallback ? 'Đang lấy từ tên mục vì chưa nhập tiêu đề SEO' : undefined}>
@@ -393,7 +393,7 @@ function SeoDrawer({
               href={item.path}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-[11px] font-mono text-slate-500 hover:text-primary"
+              className="inline-flex items-center gap-1 text-[11px] text-slate-500 hover:text-primary"
             >
               {item.path} <ExternalLink className="w-3 h-3" />
             </a>
@@ -562,7 +562,7 @@ function Ga4Form({ check, role }: { check: SiteCheck; role: string }) {
           onChange={(e) => setValue(e.target.value.toUpperCase())}
           placeholder="G-XXXXXXXXXX"
           maxLength={20}
-          className={cn(INPUT, 'w-44 !py-1 font-mono text-xs')}
+          className={cn(INPUT, 'w-44 !py-1 text-xs')}
         />
         <button
           type="button"
@@ -622,7 +622,7 @@ function GscHelp({ siteUrl, verified }: { siteUrl: string; verified: boolean }) 
       <button
         type="button"
         onClick={copy}
-        className="ml-1 inline-flex items-center gap-1 font-mono text-[11px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
+        className="ml-1 inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600"
       >
         {sitemapUrl} {copied ? <Check className="w-3 h-3" /> : <Copy className="w-3 h-3" />}
       </button>
@@ -637,7 +637,7 @@ function GscHelp({ siteUrl, verified }: { siteUrl: string; verified: boolean }) 
   if (verified) {
     return (
       <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300">
-        Mở {consoleLink}, chọn thuộc tính <span className="font-mono">{host}</span>. {sitemapStep}
+        Mở {consoleLink}, chọn thuộc tính <span className="font-medium">{host}</span>. {sitemapStep}
       </p>
     )
   }
@@ -645,7 +645,7 @@ function GscHelp({ siteUrl, verified }: { siteUrl: string; verified: boolean }) 
   return (
     <ol className="mt-2 space-y-1 text-xs text-slate-600 dark:text-slate-300 list-decimal pl-4">
       <li>
-        Mở {consoleLink}, chọn Thêm thuộc tính, loại “Tên miền”, nhập <span className="font-mono">{host}</span>.
+        Mở {consoleLink}, chọn Thêm thuộc tính, loại “Tên miền”, nhập <span className="font-medium">{host}</span>.
       </li>
       <li>
         Google đưa một bản ghi TXT. Thêm bản ghi đó vào DNS của tên miền (nơi đang quản lý tên miền), rồi bấm Xác minh. Cách này

@@ -33,7 +33,7 @@ export function MarkdownEditor({
   const [mode, setMode] = useState<Mode>('edit')
 
   const inputClass =
-    'w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary font-mono'
+    'w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary'
 
   const renderPreview = (
     <div className="prose prose-sm max-w-none px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md overflow-y-auto" style={{ minHeight: `${rows * 1.5}rem`, maxHeight: '40rem' }}>

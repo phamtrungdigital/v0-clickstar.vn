@@ -176,7 +176,7 @@ export function PostsTable({ posts }: { posts: Post[] }) {
                     </span>
                   </div>
                 </td>
-                <td className="px-4 py-3 text-xs font-mono text-slate-500">{post.slug}</td>
+                <td className="px-4 py-3 text-xs text-slate-500">{post.slug}</td>
                 <td className="px-4 py-3">
                   <div className="flex flex-wrap gap-1">
                     {post.tags.slice(0, 3).map((t) => (

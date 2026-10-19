@@ -63,6 +63,7 @@ export function SeoPanel({
   pending = false,
   host,
   duplicateWith = [],
+  layout = 'stack',
 }: {
   item: SeoItem
   draft: SeoDraft
@@ -73,6 +74,8 @@ export function SeoPanel({
   pending?: boolean
   host: string
   duplicateWith?: string[]
+  /** 'stack': một cột (ngăn sửa hẹp). 'wide': hai cột, ô nhập bên trái, xem trước bên phải. */
+  layout?: 'stack' | 'wide'
 }) {
   const [serp, setSerp] = useState<'d' | 'm'>('d')
 
@@ -89,7 +92,7 @@ export function SeoPanel({
   const titleShown = truncateChars(title.shown, serp === 'd' ? TITLE_MAX : 56)
   const descShown = truncateChars(desc.shown, serp === 'd' ? DESC_MAX : 120)
 
-  return (
+  const fields = (
     <div className="space-y-4">
       {lang === 'en' && <Note>Bản tiếng Anh chỉ hiện khi khách chuyển sang EN. Để trống thì dùng bản tiếng Việt.</Note>}
 
@@ -164,6 +167,11 @@ export function SeoPanel({
         </div>
       )}
 
+    </div>
+  )
+
+  const previews = (
+    <div className="space-y-4">
       <div>
         <div className="flex items-center justify-between mb-1.5 gap-2">
           <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Xem trước trên Google (ước lượng)</span>
@@ -223,7 +231,11 @@ export function SeoPanel({
         </div>
       </div>
 
-      <div>
+    </div>
+  )
+
+  const checks = (
+    <div>
         <div className="text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5">Kiểm tra</div>
         {a.issues.length === 0 ? (
           <div className="flex items-center gap-1.5 text-sm text-emerald-600 dark:text-emerald-400">
@@ -240,6 +252,25 @@ export function SeoPanel({
           </ul>
         )}
       </div>
+  )
+
+  if (layout === 'wide') {
+    return (
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-5">
+        <div className="space-y-5 min-w-0">
+          {fields}
+          {checks}
+        </div>
+        <div className="min-w-0">{previews}</div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="space-y-4">
+      {fields}
+      {previews}
+      {checks}
     </div>
   )
 }

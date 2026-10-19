@@ -109,7 +109,7 @@ export function ImagePicker({
             value={value}
             placeholder="https://… hoặc kéo thả ảnh vào ô bên trái"
             onChange={(e) => onChange(e.target.value)}
-            className="w-full px-2 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs font-mono truncate"
+            className="w-full px-2 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs truncate"
           />
 
           {error && <p className="text-[10px] text-red-600">⚠ {error}</p>}
