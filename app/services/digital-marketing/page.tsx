@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Link from '@/components/app-link'
+import Link, { useLocalHref } from '@/components/app-link'
 import { 
   ArrowRight, 
   Check, 
@@ -38,6 +38,7 @@ import { MarketingGrowthIllustration } from '@/components/illustrations/service-
 
 export default function DigitalMarketingPage() {
   const { t, language } = useLanguage()
+  const localHref = useLocalHref()
   const cta = useServiceCta('digital-marketing') ?? DEFAULT_SERVICE_CTAS['digital-marketing']
 
   const platforms = [
@@ -664,7 +665,7 @@ export default function DigitalMarketingPage() {
                 <Link href={cta.primary.href} className="ap-btn ap-btn-primary">
                   {cta.primary.label[language]}
                 </Link>
-                <a href={cta.secondary.href} className="ap-btn ap-btn-ghost">
+                <a href={localHref(cta.secondary.href)} className="ap-btn ap-btn-ghost">
                   {cta.secondary.label[language]}
                 </a>
               </div>

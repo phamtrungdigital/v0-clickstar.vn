@@ -17,12 +17,14 @@ import type { Lang } from '@/lib/i18n/locale'
  */
 export async function pageMetadata(slug: string, fallbackTitle = 'Click Star', lang: Lang = 'vi'): Promise<Metadata> {
   const page = await getPublishedPage(slug)
-  if (!page) return { title: brandTitle(fallbackTitle) }
+  const path = slug === 'home' ? '/' : `/${slug}`
+  // Chưa có dòng `pages`: bản tiếng Việt giữ như cũ; bản /en không lập chỉ mục (sitemap cũng không liệt kê trang chưa có SEO tiếng Anh).
+  if (!page) return lang === 'en' ? buildMetadata({ title: fallbackTitle, path, lang, hasEn: false }) : { title: brandTitle(fallbackTitle) }
   const en = lang === 'en'
   return buildMetadata({
     title: (en ? page.seo_title?.en || page.seo_title?.vi : page.seo_title?.vi) || page.title || fallbackTitle,
     description: (en ? page.seo_description?.en || page.seo_description?.vi : page.seo_description?.vi) || '',
-    path: slug === 'home' ? '/' : `/${slug}`,
+    path,
     lang,
     hasEn: !!page.seo_title?.en?.trim(),
     images: await ogImageOr(page.og_image),

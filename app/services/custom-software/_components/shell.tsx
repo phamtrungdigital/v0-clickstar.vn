@@ -32,8 +32,12 @@ const FALLBACK_META: Record<Lang, Metadata> = {
 }
 
 export async function customSoftwareMetadata(lang: Lang = 'vi'): Promise<Metadata> {
-  const fromCms = await pageMetadata(SERVICE_SLUG, undefined, lang)
-  return fromCms.description ? fromCms : FALLBACK_META[lang]
+  const fallback = FALLBACK_META[lang]
+  const fromCms = await pageMetadata(SERVICE_SLUG, String(fallback.title), lang)
+  if (fromCms.description) return fromCms
+  if (lang === 'vi') return fallback
+  // Bản /en: giữ canonical, hreflang, robots đã tính từ CMS (khớp sitemap: chưa có SEO tiếng Anh thì noindex), chỉ bổ sung mô tả
+  return { ...fromCms, description: fallback.description }
 }
 
 /** Khung của trang Phần mềm theo yêu cầu: font code, FAQPage và Service/breadcrumb đúng ngôn ngữ. */

@@ -57,13 +57,12 @@ export async function saveSeoItem(input: SaveSeoInput): Promise<SaveSeoResult> {
       .maybeSingle()
     if (readErr || !cur) return { error: readErr?.message || 'Không tìm thấy bài viết.' }
 
-    const enTitle = clean(input.en?.title, MAX_TITLE)
-    const enDesc = clean(input.en?.desc, MAX_DESC)
+    // Không gửi bản tiếng Anh thì giữ nguyên giá trị đang lưu (không xóa).
     const { data: done, error } = await supabase
       .from('posts')
       .update({
-        seo_title: { ...(cur.seo_title ?? {}), vi: viTitle, en: enTitle },
-        seo_description: { ...(cur.seo_description ?? {}), vi: viDesc, en: enDesc },
+        seo_title: { ...(cur.seo_title ?? {}), vi: viTitle, ...(input.en ? { en: clean(input.en.title, MAX_TITLE) } : {}) },
+        seo_description: { ...(cur.seo_description ?? {}), vi: viDesc, ...(input.en ? { en: clean(input.en.desc, MAX_DESC) } : {}) },
         og_image: og || null,
       })
       .eq('id', input.id)

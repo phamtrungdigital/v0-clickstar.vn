@@ -3,7 +3,7 @@
 import type { ComponentProps } from 'react'
 import NextLink from 'next/link'
 import { useLanguage } from '@/contexts/language-context'
-import { localizePath, type Lang } from '@/lib/i18n/locale'
+import { localizeAnyHref, localizePath, type Lang } from '@/lib/i18n/locale'
 
 type Href = ComponentProps<typeof NextLink>['href']
 
@@ -16,10 +16,13 @@ export function localizeHref(href: Href, lang: Lang): Href {
   return href
 }
 
-/** Hook cho chỗ dùng thẻ <a> thường hoặc router.push: trả về hàm đổi đường dẫn nội bộ sang ngôn ngữ đang xem. */
+/**
+ * Hook cho chỗ dùng thẻ <a> thường hoặc router.push: trả về hàm đổi đường dẫn nội bộ sang ngôn ngữ đang xem.
+ * Hiểu cả địa chỉ tuyệt đối tới chính site (CMS hay dán https://clickstar.vn/projects/x); địa chỉ ngoài site, neo, tel: giữ nguyên.
+ */
 export function useLocalHref(): (href: string) => string {
   const { language } = useLanguage()
-  return (href: string) => localizePath(href, language)
+  return (href: string) => localizeAnyHref(href, language)
 }
 
 /**

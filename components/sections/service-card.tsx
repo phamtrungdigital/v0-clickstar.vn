@@ -1,6 +1,6 @@
 'use client'
 
-import Link from '@/components/app-link'
+import Link, { useLocalHref } from '@/components/app-link'
 import { type ReactNode } from 'react'
 
 interface ServiceCardProps {
@@ -23,6 +23,7 @@ interface ServiceCardProps {
  * Cấu trúc: tên, dòng phạm vi (tag), mô tả, liên kết "Tìm hiểu thêm".
  */
 export function ServiceCard({ title, description, tag, href, badge, moreLabel = 'Learn more' }: ServiceCardProps) {
+  const localHref = useLocalHref()
   const inner = (
     <>
       <h3 className="text-[21px] leading-tight font-semibold tracking-[0.01em] text-foreground flex items-center gap-2">
@@ -49,7 +50,7 @@ export function ServiceCard({ title, description, tag, href, badge, moreLabel = 
   const isExternal = /^https?:\/\//.test(href)
   if (isExternal) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={className}>
+      <a href={localHref(href)} target="_blank" rel="noopener noreferrer" className={className}>
         {inner}
       </a>
     )

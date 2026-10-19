@@ -41,7 +41,7 @@ type MetaInput = {
   lang?: Lang
   /**
    * Trang này có bản tiếng Anh đủ nội dung chưa (mặc định có). Có: cặp hreflang hai chiều vi/en/x-default.
-   * Chưa có: bản /en vẫn mở được cho khách nhưng không lập chỉ mục (noindex, canonical về bản tiếng Việt)
+   * Chưa có: bản /en vẫn mở được cho khách nhưng không lập chỉ mục (noindex, canonical trỏ chính nó, không hreflang)
    * và bản tiếng Việt không khai báo hreflang tiếng Anh.
    */
   hasEn?: boolean
@@ -60,16 +60,15 @@ export function buildMetadata(o: MetaInput): Metadata {
   const images = (o.images ?? []).filter((x): x is string => !!x)
   const viPath = o.path
   const selfPath = viPath ? localizePath(viPath, lang) : undefined
-  // Bản /en chưa đủ nội dung: canonical về bản tiếng Việt và không lập chỉ mục (vẫn cho theo liên kết).
+  // Bản /en chưa đủ nội dung: không lập chỉ mục (vẫn cho theo liên kết). Canonical vẫn trỏ chính nó: noindex kèm canonical
+  // sang địa chỉ khác là hai tín hiệu mâu thuẫn, Google khuyên chọn một.
   const enFallback = lang === 'en' && !hasEn
   const alternates: Metadata['alternates'] = !viPath
     ? undefined
-    : enFallback
-      ? { canonical: viPath }
-      : {
-          canonical: selfPath,
-          languages: hasEn ? { vi: viPath, en: localizePath(viPath, 'en'), 'x-default': viPath } : undefined,
-        }
+    : {
+        canonical: selfPath,
+        languages: hasEn ? { vi: viPath, en: localizePath(viPath, 'en'), 'x-default': viPath } : undefined,
+      }
   return {
     title,
     description,

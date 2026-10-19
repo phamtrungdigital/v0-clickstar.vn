@@ -1,5 +1,14 @@
+// Trang động (bài viết, dự án, liên hệ) mặc định "streaming metadata": canonical, hreflang, robots được đẩy xuống <body>
+// sau khi vỏ trang gửi đi, chỉ các bot không chạy JavaScript mới nhận trong <head>. Googlebot không nằm trong danh sách mặc định
+// của Next (Google có hiển thị JS nên vẫn đọc được), nhưng thẻ noindex và hreflang của bản /en cần nằm ngay trong HTML gốc,
+// nên thêm Googlebot vào danh sách. Cấu hình này GHI ĐÈ danh sách mặc định, nên chép lại danh sách của Next 16.2
+// (node_modules/next/dist/shared/lib/router/utils/html-bots.js; xem lại khi nâng cấp Next). Khách thường vẫn được streaming.
+const HTML_LIMITED_BOTS =
+  /[\w-]+-Google|Google-[\w-]+|Chrome-Lighthouse|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview|Yeti|googleweblight|Googlebot/i
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  htmlLimitedBots: HTML_LIMITED_BOTS,
   typescript: {
     ignoreBuildErrors: true,
   },

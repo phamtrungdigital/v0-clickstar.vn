@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import Link from '@/components/app-link'
+import Link, { useLocalHref } from '@/components/app-link'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import type { Swiper as SwiperType } from 'swiper'
@@ -136,6 +136,7 @@ function CaseStudyCard({
   itemIndex: number
 }) {
   const { language } = useLanguage()
+  const localHref = useLocalHref()
   const tags = study.tags.map((tag) => (language === 'en' ? (TAG_EN[tag] ?? tag) : tag))
   const inner = study.mockup ? (
     <div
@@ -205,7 +206,8 @@ function CaseStudyCard({
   const isExternal = /^https?:\/\//.test(study.href)
   if (isExternal)
     return (
-      <a href={study.href} target="_blank" rel="noopener noreferrer" className="group block">
+      // CMS lưu địa chỉ tuyệt đối tới chính site (https://clickstar.vn/projects/x): bản /en phải mở bản /en của dự án
+      <a href={localHref(study.href)} target="_blank" rel="noopener noreferrer" className="group block">
         {inner}
       </a>
     )

@@ -23,6 +23,7 @@ import {
   DESC_MAX,
   analyze,
   findDuplicateTitles,
+  itemHasEn,
   scoreTone,
   type Level,
   type SeoDraft,
@@ -337,6 +338,8 @@ function SeoDrawer({
   onSaved: (draft: SeoDraft) => void
 }) {
   const [draft, setDraft] = useState<SeoDraft>(item.saved)
+  // Giá trị lúc mở ngăn (cập nhật sau mỗi lần lưu): để biết người dùng có sửa bản tiếng Anh trong ngăn này không.
+  const [loaded, setLoaded] = useState<SeoDraft>(item.saved)
   const [lang, setLang] = useState<'vi' | 'en'>('vi')
   const [pending, startTransition] = useTransition()
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
@@ -360,12 +363,16 @@ function SeoDrawer({
   const save = () => {
     setMsg(null)
     const next = normDraft(draft)
+    // Chỉ gửi bản tiếng Anh khi người dùng sửa nó trong ngăn này: ngăn mở từ trước có thể giữ giá trị cũ, gửi lại sẽ đè
+    // lên chỗ đã sửa ở trình sửa trang/bài (máy chủ giữ nguyên bản tiếng Anh nếu không nhận được).
+    const was = normDraft(loaded)
+    const enChanged = next.en.title !== was.en.title || next.en.desc !== was.en.desc
     startTransition(async () => {
       const res = await saveSeoItem({
         kind: item.kind as 'page' | 'service' | 'post',
         id: item.id,
         vi: next.vi,
-        en: next.en,
+        en: enChanged ? next.en : undefined,
         og: next.og,
       })
       if ('error' in res) {
@@ -373,6 +380,7 @@ function SeoDrawer({
         return
       }
       setDraft(next)
+      setLoaded(next)
       onSaved(next)
       setMsg({ ok: true, text: 'Đã lưu. Trang công khai cập nhật trong ít phút.' })
     })
@@ -436,10 +444,10 @@ function SeoDrawer({
               <span
                 className={cn(
                   'ml-auto text-[11px]',
-                  item.hasEn ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+                  itemHasEn(item) ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
                 )}
               >
-                {item.hasEn ? 'Có bản /en được lập chỉ mục' : 'Bản /en chưa lập chỉ mục'}
+                {itemHasEn(item) ? 'Có bản /en được lập chỉ mục' : 'Bản /en chưa lập chỉ mục'}
               </span>
             </div>
           )}

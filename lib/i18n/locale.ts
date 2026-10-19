@@ -5,6 +5,8 @@
  * Ngôn ngữ của một trang luôn suy ra từ ĐỊA CHỈ (không từ cookie), nên HTML tĩnh đúng ngôn ngữ ngay khi tải và
  * công cụ tìm kiếm thấy hai bản có địa chỉ riêng.
  */
+import { SITE_URL } from '@/lib/seo/site'
+
 export type Lang = 'vi' | 'en'
 
 export const DEFAULT_LANG: Lang = 'vi'
@@ -60,4 +62,21 @@ export function localizePath(path: string, lang: Lang): string {
 /** Địa chỉ tương ứng ở ngôn ngữ khác: dùng cho nút đổi ngôn ngữ. */
 export function switchLocalePath(pathname: string, target: Lang): string {
   return localizePath(stripLocale(pathname), target)
+}
+
+/** Gốc địa chỉ của chính site (có và không có www): CMS hay dán dạng tuyệt đối https://clickstar.vn/projects/x. */
+const OWN_ORIGINS = [SITE_URL, SITE_URL.replace('://', '://www.')]
+
+/**
+ * Như localizePath nhưng hiểu cả địa chỉ tuyệt đối tới chính site, dành cho thẻ <a> thường (nội dung CMS):
+ * https://clickstar.vn/projects/x sang https://clickstar.vn/en/projects/x khi xem tiếng Anh.
+ * Tiếng Việt và địa chỉ ngoài site giữ nguyên.
+ */
+export function localizeAnyHref(href: string, lang: Lang): string {
+  if (!href) return href
+  const origin = OWN_ORIGINS.find((o) => href.startsWith(o) && (href.length === o.length || /[/?#]/.test(href[o.length])))
+  if (!origin) return localizePath(href, lang)
+  if (lang !== 'en') return href
+  const rest = href.slice(origin.length)
+  return `${SITE_URL}${localizePath(/^[?#]/.test(rest) ? `/${rest}` : rest || '/', 'en')}`
 }

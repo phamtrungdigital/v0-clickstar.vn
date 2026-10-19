@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Play, X, ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
+import { useLocalHref } from '@/components/app-link'
 import { useInView, useCountUp } from '@/lib/hooks/use-reveal'
 import type { AboutContent, AboutTimelineItem, I18n } from '@/lib/cms/types'
 import { splitTimeline, type TimelineEntry } from '@/lib/cms/timeline'
@@ -131,6 +132,7 @@ export function AboutSection({
 }) {
   const [isVideoOpen, setIsVideoOpen] = useState(false)
   const { t } = useLanguage()
+  const localHref = useLocalHref()
   const [ref, seen] = useInView<HTMLElement>(0.2)
 
   const stats = [
@@ -176,7 +178,7 @@ export function AboutSection({
               {content.cta_label?.vi && (
                 <a
                   data-cms-field="cta"
-                  href={content.cta_href}
+                  href={localHref(content.cta_href)}
                   className="group mt-7 inline-flex items-center gap-2 rounded-full bg-[#1e6dda] px-7 py-3.5 text-[15px] font-semibold text-white transition-transform active:scale-95"
                 >
                   {t(content.cta_label.vi, content.cta_label.en)}

@@ -90,6 +90,15 @@ export function descLevel(len: number): Level {
 const nfc = (s: string) => (s || '').normalize('NFC').trim()
 
 /**
+ * Bản /en của mục có được lập chỉ mục không. Trang và dịch vụ chỉ cần tiêu đề SEO tiếng Anh nên tính từ giá trị ĐÃ LƯU
+ * (đổi ngay sau khi lưu ở ngăn sửa mà không cần tải lại); bài viết và dự án phụ thuộc nội dung tiếng Anh nên giữ giá trị
+ * tính lúc tải trang.
+ */
+export function itemHasEn(it: SeoItem): boolean {
+  return it.kind === 'page' || it.kind === 'service' ? !!nfc(it.saved.en.title) : it.hasEn
+}
+
+/**
  * Giá trị Google/Facebook thực sự nhận, theo đúng thứ tự trang công khai dùng (pickI18n):
  * ô SEO của ngôn ngữ đó, rồi ô SEO tiếng Việt, rồi tên/tóm tắt của mục (ngôn ngữ đó, rồi tiếng Việt).
  */

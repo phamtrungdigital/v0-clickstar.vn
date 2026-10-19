@@ -10,6 +10,7 @@ import {
   TITLE_MAX,
   analyze,
   breadcrumbUrl,
+  itemHasEn,
   measureDesc,
   measureTitle,
   suggestTitle,
@@ -97,8 +98,12 @@ export function SeoPanel({
     <div className="space-y-4">
       {lang === 'en' && (
         <Note>
-          Bản tiếng Anh nằm ở <span className="font-medium">{localizePath(item.path, 'en')}</span>. Để trống thì dùng bản tiếng Việt.
-          {!item.hasEn && ' Mục này chưa đủ nội dung tiếng Anh nên bản /en chưa được lập chỉ mục.'}
+          Bản tiếng Anh nằm ở <span className="font-medium">{localizePath(item.path, 'en')}</span>.{' '}
+          {item.kind === 'page' || item.kind === 'service'
+            ? itemHasEn(item)
+              ? 'Trang đã có tiêu đề SEO tiếng Anh nên bản /en được lập chỉ mục và đưa vào sitemap. Chỉ giữ khi nội dung tiếng Anh của trang đã dịch đủ; xóa tiêu đề để gỡ bản /en khỏi Google.'
+              : 'Để trống thì bản /en dùng tạm chữ tiếng Việt và chưa được lập chỉ mục. Chỉ nhập khi nội dung tiếng Anh của trang đã dịch đủ: có tiêu đề tiếng Anh là bản /en được lập chỉ mục và đưa vào sitemap.'
+            : `Để trống thì dùng bản tiếng Việt.${itemHasEn(item) ? '' : ' Mục này chưa đủ nội dung tiếng Anh nên bản /en chưa được lập chỉ mục.'}`}
         </Note>
       )}
 
