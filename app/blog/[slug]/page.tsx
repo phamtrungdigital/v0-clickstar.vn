@@ -143,6 +143,7 @@ export default async function BlogPostPage({
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',
+                    timeZone: 'Asia/Ho_Chi_Minh',
                   })}
                 </div>
               )}
@@ -280,6 +281,7 @@ export default async function BlogPostPage({
                                     day: '2-digit',
                                     month: '2-digit',
                                     year: 'numeric',
+                                    timeZone: 'Asia/Ho_Chi_Minh',
                                   })}
                                 </p>
                               )}

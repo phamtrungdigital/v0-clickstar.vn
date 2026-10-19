@@ -203,7 +203,7 @@ export function PostsTable({ posts }: { posts: Post[] }) {
                 </td>
                 <td className="px-4 py-3 text-xs text-slate-500">
                   {post.published_at
-                    ? new Date(post.published_at).toLocaleDateString('vi-VN')
+                    ? new Date(post.published_at).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
                     : '—'}
                 </td>
                 <td className="px-4 py-3 text-right">

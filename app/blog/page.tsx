@@ -105,7 +105,7 @@ export default async function BlogList() {
                       {post.published_at && (
                         <div className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3">
                           <Calendar className="w-3.5 h-3.5" />
-                          {new Date(post.published_at).toLocaleDateString(locale)}
+                          {new Date(post.published_at).toLocaleDateString(locale, { timeZone: 'Asia/Ho_Chi_Minh' })}
                         </div>
                       )}
                       <h3 className="font-bold text-lg text-foreground leading-snug mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-200">
