@@ -10,7 +10,7 @@ const STATUS: Record<RoadmapStatus, { label: string; chip: string }> = {
   done: { label: 'Đã làm', chip: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300' },
   wait: { label: 'Chờ Google', chip: 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300' },
   todo: { label: 'Sẽ làm', chip: 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300' },
-  mine: { label: 'Việc của anh', chip: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
+  mine: { label: 'Cần quản trị', chip: 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' },
 }
 
 type Filter = 'all' | RoadmapStatus
@@ -26,7 +26,7 @@ export function SeoRoadmap() {
     ['done', 'Đã làm', c.done],
     ['wait', 'Chờ Google', c.wait],
     ['todo', 'Sẽ làm', c.todo],
-    ['mine', 'Việc của anh', c.mine],
+    ['mine', 'Cần quản trị', c.mine],
   ]
 
   return (
@@ -115,7 +115,7 @@ export function SeoRoadmap() {
                       <span className={cn('text-[11px] px-2 py-0.5 rounded-md shrink-0', STATUS[it.status].chip)}>
                         {STATUS[it.status].label}
                       </span>
-                      <span className="text-[11px] text-slate-400 w-10 shrink-0 hidden sm:block">{it.who}</span>
+                      <span className="text-[11px] text-slate-400 w-16 shrink-0 hidden sm:block">{it.who}</span>
                       <ChevronDown className={cn('w-4 h-4 text-slate-400 shrink-0 transition-transform', open && 'rotate-180')} />
                     </button>
                     {open && (
