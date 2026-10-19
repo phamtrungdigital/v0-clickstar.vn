@@ -9,11 +9,13 @@ export async function login(formData: FormData) {
 
   const email = formData.get('email') as string
   const password = formData.get('password') as string
-  const redirectTo = (formData.get('redirect') as string) || '/admin-cls'
+  const wanted = (formData.get('redirect') as string) || ''
+  // Chỉ chuyển hướng trong khu quản trị: chặn địa chỉ ngoài site gửi kèm trong biểu mẫu.
+  const redirectTo = wanted.startsWith('/admin-cls') && !wanted.startsWith('//') ? wanted : '/admin-cls'
 
   const { data, error } = await supabase.auth.signInWithPassword({ email, password })
   if (error || !data.user) {
-    redirect(`/admin-cls/login?error=${encodeURIComponent(error?.message || 'Sai email hoặc mật khẩu')}`)
+    redirect(`/admin-cls/login?error=${error?.status === 429 ? 'rate_limited' : 'invalid'}`)
   }
 
   // Verify is admin
@@ -26,7 +28,7 @@ export async function login(formData: FormData) {
 
   if (!adminRow) {
     await supabase.auth.signOut()
-    redirect('/admin-cls/login?error=' + encodeURIComponent('Tài khoản chưa được cấp quyền admin'))
+    redirect('/admin-cls/login?error=not_admin')
   }
 
   revalidatePath('/admin-cls', 'layout')
