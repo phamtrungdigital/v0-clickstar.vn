@@ -18,8 +18,14 @@ export type SaveSeoResult = { ok: true } | { error: string }
 const MAX_TITLE = 200
 const MAX_DESC = 400
 
-const clean = (v: unknown, max: number) =>
-  typeof v === 'string' ? v.normalize('NFC').replace(/\s+/g, ' ').trim().slice(0, max) : ''
+/** Chuẩn hóa NFC, gộp khoảng trắng, cắt theo KÝ TỰ (không cắt giữa cặp ký tự đại diện như emoji) và bỏ ký tự lỗi. */
+const clean = (v: unknown, max: number) => {
+  if (typeof v !== 'string') return ''
+  const wellFormed = (v as string & { toWellFormed?: () => string }).toWellFormed?.() ?? v
+  return Array.from(wellFormed.normalize('NFC').replace(/\s+/g, ' ').trim())
+    .slice(0, max)
+    .join('')
+}
 
 /** Chỉ admin và editor được sửa SEO (viewer chỉ xem). RLS ở DB vẫn là lớp chặn cuối. Trả về thông báo lỗi hoặc null. */
 async function editorError(): Promise<string | null> {
@@ -43,8 +49,10 @@ export async function saveSeoItem(input: SaveSeoInput): Promise<SaveSeoResult> {
 
   const viTitle = clean(input.vi?.title, MAX_TITLE)
   const viDesc = clean(input.vi?.desc, MAX_DESC)
-  const og = typeof input.og === 'string' ? input.og.trim().slice(0, 1000) : ''
-  if (og && !/^(https?:\/\/|\/)/i.test(og)) return { error: 'Ảnh chia sẻ phải là đường dẫn bắt đầu bằng https:// hoặc /.' }
+  const og = typeof input.og === 'string' ? input.og.trim() : ''
+  if (og.length > 1000) return { error: 'Đường dẫn ảnh chia sẻ quá dài.' }
+  // "/" một mình là đường dẫn trong site; "//" sẽ bị hiểu là địa chỉ ngoài nên không nhận.
+  if (og && !/^(https?:\/\/|\/(?!\/))/i.test(og)) return { error: 'Ảnh chia sẻ phải là đường dẫn bắt đầu bằng https:// hoặc /.' }
 
   const supabase = await createClient()
   const { data: userData } = await supabase.auth.getUser()
@@ -125,7 +133,7 @@ export async function saveGa4(measurementId: string): Promise<SaveSeoResult> {
   const { data: row, error: readErr } = await supabase.from('site_settings').select('head_code').eq('id', 1).maybeSingle()
   if (readErr || !row) return { error: readErr?.message || 'Không đọc được cài đặt.' }
 
-  const base = (row.head_code ?? '').replace(GA4_BLOCK, '').trim()
+  const current = row.head_code ?? ''
   const block = id
     ? [
         '<!-- cs-seo:ga4:start -->',
@@ -134,7 +142,12 @@ export async function saveGa4(measurementId: string): Promise<SaveSeoResult> {
         '<!-- cs-seo:ga4:end -->',
       ].join('\n')
     : ''
-  const next = [base, block].filter(Boolean).join('\n')
+  // Có khối cũ thì thay đúng vị trí cũ (để các đoạn mã khác phụ thuộc gtag vẫn chạy sau nó), chưa có thì thêm vào cuối.
+  const next = !id
+    ? current.replace(GA4_BLOCK, '').trim()
+    : GA4_BLOCK.test(current)
+      ? current.replace(GA4_BLOCK, () => `${block}\n`).trim()
+      : [current.trim(), block].filter(Boolean).join('\n')
 
   const { data: userData } = await supabase.auth.getUser()
   const { data: done, error } = await supabase

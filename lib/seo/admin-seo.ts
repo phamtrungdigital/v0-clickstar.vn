@@ -87,19 +87,25 @@ export function descLevel(len: number): Level {
 
 const nfc = (s: string) => (s || '').normalize('NFC').trim()
 
+/**
+ * Giá trị Google/Facebook thực sự nhận, theo đúng thứ tự trang công khai dùng (pickI18n):
+ * ô SEO của ngôn ngữ đó, rồi ô SEO tiếng Việt, rồi tên/tóm tắt của mục (ngôn ngữ đó, rồi tiếng Việt).
+ */
+function pickText(item: SeoItem, draft: SeoDraft, lang: Lang, field: keyof SeoText) {
+  const own = nfc(draft[lang][field]) || nfc(draft.vi[field])
+  const fb = nfc(item.fallback[lang][field]) || nfc(item.fallback.vi[field])
+  return { raw: own || fb, fromFallback: !own }
+}
+
 export function measureTitle(item: SeoItem, draft: SeoDraft, lang: Lang = 'vi'): Metric {
-  const own = nfc(draft[lang].title)
-  const fb = nfc(item.fallback[lang].title) || nfc(item.fallback.vi.title)
-  const raw = own || fb
+  const { raw, fromFallback } = pickText(item, draft, lang, 'title')
   const shown = raw ? brandTitle(raw) : ''
-  return { raw, shown, len: shown.length, level: titleLevel(shown.length), fromFallback: !own }
+  return { raw, shown, len: shown.length, level: titleLevel(shown.length), fromFallback }
 }
 
 export function measureDesc(item: SeoItem, draft: SeoDraft, lang: Lang = 'vi'): Metric {
-  const own = nfc(draft[lang].desc)
-  const fb = nfc(item.fallback[lang].desc) || nfc(item.fallback.vi.desc)
-  const raw = own || fb
-  return { raw, shown: raw, len: raw.length, level: descLevel(raw.length), fromFallback: !own }
+  const { raw, fromFallback } = pickText(item, draft, lang, 'desc')
+  return { raw, shown: raw, len: raw.length, level: descLevel(raw.length), fromFallback }
 }
 
 /** Phân tích tiếng Việt (bản Google thấy mặc định): tiêu đề, mô tả, ảnh chia sẻ, danh sách việc cần sửa và điểm. */
@@ -195,11 +201,13 @@ export function findDuplicateTitles(items: SeoItem[]): Map<string, string[]> {
  */
 export function suggestTitle(raw: string): string {
   const core = brandTitle(nfc(raw)).replace(new RegExp(`\\s*\\|\\s*${BRAND}$`), '')
-  const max = TITLE_MAX - BRAND_SUFFIX_LEN
+  // Tiêu đề đã có thương hiệu ở đầu (trang chủ) thì brandTitle không thêm đuôi nên được dùng đủ 60 ký tự.
+  const max = core.toLowerCase().includes(BRAND.toLowerCase()) ? TITLE_MAX : TITLE_MAX - BRAND_SUFFIX_LEN
   if (core.length <= max) return core
   const head = core.slice(0, max + 1)
   const cut = Math.max(head.lastIndexOf(':'), head.lastIndexOf(','), head.lastIndexOf(' – '), head.lastIndexOf(' - '), head.lastIndexOf(' | '))
-  if (cut >= 20) return head.slice(0, cut).trim()
+  // Chỉ cắt ở dấu ngăn khi còn giữ được phần lớn tiêu đề; dấu ngăn quá sớm thì cắt ở ranh giới từ để không bỏ phí chỗ trống.
+  if (cut >= Math.floor(max * 0.6)) return head.slice(0, cut).trim()
   return fitTitle(core, max)
 }
 

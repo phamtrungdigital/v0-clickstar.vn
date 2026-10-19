@@ -114,7 +114,10 @@ export function SeoWorkspace({
       if (q && !`${it.label} ${it.path}`.toLowerCase().includes(q)) return false
       return true
     })
-    return lowFirst ? [...list].sort((x, y) => x.a.score - y.a.score) : list
+    // Mục chưa đăng không có điểm thật nên luôn xếp cuối khi sắp theo điểm.
+    return lowFirst
+      ? [...list].sort((x, y) => Number(y.it.published) - Number(x.it.published) || x.a.score - y.a.score)
+      : list
   }, [rows, filter, query, lowFirst])
 
   const open = openKey ? rows.find((r) => r.it.key === openKey) : null
@@ -375,8 +378,10 @@ function SeoDrawer({
     return () => window.removeEventListener('keydown', onKey)
   })
 
-  const setText = (field: 'title' | 'desc', value: string) =>
+  const setText = (field: 'title' | 'desc', value: string) => {
+    setMsg(null)
     setDraft((d) => ({ ...d, [lang]: { ...d[lang], [field]: value } }))
+  }
 
   const save = () => {
     setMsg(null)
@@ -467,7 +472,7 @@ function SeoDrawer({
             <textarea
               value={item.editable ? draft[lang].title : title.raw}
               onChange={(e) => setText('title', e.target.value)}
-              readOnly={!canEdit}
+              readOnly={!canEdit || pending}
               rows={2}
               maxLength={200}
               placeholder={title.fromFallback ? title.raw : undefined}
@@ -500,7 +505,7 @@ function SeoDrawer({
             <textarea
               value={item.editable ? draft[lang].desc : desc.raw}
               onChange={(e) => setText('desc', e.target.value)}
-              readOnly={!canEdit}
+              readOnly={!canEdit || pending}
               rows={3}
               maxLength={400}
               placeholder={desc.fromFallback ? desc.raw : undefined}
@@ -514,12 +519,16 @@ function SeoDrawer({
             )}
           </div>
 
-          {item.kind !== 'project' && (
+          {item.kind !== 'project' && canEdit && (
             <div>
               <ImagePicker
                 label="Ảnh chia sẻ (hiện khi gửi link lên Facebook, Zalo)"
                 value={draft.og}
-                onChange={(v) => canEdit && setDraft((d) => ({ ...d, og: v }))}
+                onChange={(v) => {
+                  if (pending) return
+                  setMsg(null)
+                  setDraft((d) => ({ ...d, og: v }))
+                }}
                 hint={
                   item.ogFallback && !draft.og
                     ? 'Đang dùng ảnh bìa của bài. Tải ảnh khác lên nếu muốn ảnh riêng. Tỷ lệ tốt nhất 1200×630px.'
@@ -610,7 +619,13 @@ function SeoDrawer({
         </div>
 
         <div className="flex items-center gap-2 px-4 py-3 border-t border-slate-200 dark:border-slate-700">
-          <Link href={item.editHref} className="text-xs text-slate-500 hover:text-primary underline mr-auto">
+          <Link
+            href={item.editHref}
+            onClick={(e) => {
+              if (dirty && !window.confirm('Có thay đổi chưa lưu. Rời trang và bỏ các thay đổi này?')) e.preventDefault()
+            }}
+            className="text-xs text-slate-500 hover:text-primary underline mr-auto"
+          >
             Mở trình sửa đầy đủ
           </Link>
           {msg && (

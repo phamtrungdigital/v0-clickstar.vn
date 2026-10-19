@@ -110,19 +110,41 @@ export async function loadSeoItems(): Promise<SeoItem[]> {
 const GA4_BLOCK = /<!-- cs-seo:ga4:start -->[\s\S]*?<!-- cs-seo:ga4:end -->\s*/
 const GA4_ID = /\bG-[A-Z0-9]{6,14}\b/
 
-const digits = (v: string) => (v || '').replace(/\D/g, '')
+/** Chỉ giữ chữ số và đưa đầu số quốc gia 84 về 0 để "+84 383 406 735" và "0383 406 735" được coi là một số. */
+const digits = (v: string) => {
+  const d = (v || '').replace(/\D/g, '')
+  return d.startsWith('84') && d.length >= 11 ? `0${d.slice(2)}` : d
+}
 
-/** Ghi nhận bản ghi TXT của tên miền qua DNS công khai của Google; trả null nếu không tra được. */
+const DNS_TTL_MS = 10 * 60 * 1000
+const dnsCache = new Map<string, { at: number; value: boolean }>()
+
+const hostOf = (url: string) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return 'clickstar.vn'
+  }
+}
+
+/**
+ * Tra bản ghi TXT của tên miền qua DNS công khai của Google; trả null nếu không tra được.
+ * Kết quả tra được nhớ 10 phút để mỗi lần lưu trong màn SEO không phải chờ lại một cuộc gọi mạng.
+ */
 async function lookupDnsVerification(hostname: string): Promise<boolean | null> {
+  const hit = dnsCache.get(hostname)
+  if (hit && Date.now() - hit.at < DNS_TTL_MS) return hit.value
   try {
     const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(hostname)}&type=TXT`, {
       headers: { accept: 'application/dns-json' },
       cache: 'no-store',
-      signal: AbortSignal.timeout(2500),
+      signal: AbortSignal.timeout(2000),
     })
     if (!res.ok) return null
     const json = (await res.json()) as { Answer?: { data?: string }[] }
-    return (json.Answer ?? []).some((a) => /google-site-verification=/i.test(a.data ?? ''))
+    const value = (json.Answer ?? []).some((a) => /google-site-verification=/i.test(a.data ?? ''))
+    dnsCache.set(hostname, { at: Date.now(), value })
+    return value
   } catch {
     return null
   }
@@ -131,6 +153,8 @@ async function lookupDnsVerification(hostname: string): Promise<boolean | null> 
 /** Kiểm tra cấu hình toàn site từ dữ liệu thật (không phải danh sách cố định). */
 export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCheck[]; siteUrl: string }> {
   const supabase = await createClient()
+  // Bắt đầu tra DNS ngay, chạy song song với các truy vấn DB (địa chỉ site gần như luôn là SITE_URL).
+  const dnsEarly = lookupDnsVerification(hostOf(SITE_URL))
   const [settingsRes, chatbotRes, sitemapList] = await Promise.all([
     supabase
       .from('site_settings')
@@ -144,15 +168,10 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
   ])
   const st = (settingsRes.data ?? {}) as Record<string, string | null>
   const siteUrl = st.site_url || SITE_URL
-  let hostname = 'clickstar.vn'
-  try {
-    hostname = new URL(siteUrl).hostname.replace(/^www\./, '')
-  } catch {
-    /* giữ mặc định */
-  }
+  const hostname = hostOf(siteUrl)
 
   const tracking = [st.head_code, st.body_start_code, st.body_end_code].filter(Boolean).join('\n')
-  const dns = await lookupDnsVerification(hostname)
+  const dns = hostname === hostOf(SITE_URL) ? await dnsEarly : await lookupDnsVerification(hostname)
 
   const checks: SiteCheck[] = []
 
