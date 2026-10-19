@@ -183,6 +183,11 @@ export default async function BlogPostPage({
                       const id = slugifyId(extractText(children))
                       return <h3 id={id}>{children}</h3>
                     },
+                    // Ảnh minh họa trong bài nằm dưới màn hình đầu: tải trễ để không tranh băng thông với ảnh bìa (LCP) và CSS/JS.
+                    img: ({ node: _node, alt, ...props }) => (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img {...props} alt={alt ?? ''} loading="lazy" decoding="async" />
+                    ),
                   }}
                 >
                   {content}
