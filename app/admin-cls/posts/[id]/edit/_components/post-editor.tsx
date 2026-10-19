@@ -3,12 +3,16 @@
 import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
-import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink } from 'lucide-react'
+import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink, Search } from 'lucide-react'
 import type { Post } from '@/lib/cms/posts'
-import { savePost, deletePost, type PostUpdate } from '../actions'
+import { savePost, deletePost, type PostSave, type PostUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
-import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
+import { EditLangProvider, LangSwitcher, useEditLang } from '@/lib/cms/edit-lang-context'
+import { SeoPanel, TONE_TEXT } from '@/app/admin-cls/seo/_components/seo-panel'
+import { analyze, scoreTone, type SeoDraft, type SeoItem } from '@/lib/seo/admin-seo'
+import { SITE_URL } from '@/lib/seo/site'
+import { cn } from '@/lib/utils'
 import { AiWholePost } from './ai-whole-post'
 import { AiCoverImage } from './ai-cover-image'
 import { BodyImageReplacer } from './body-image-replacer'
@@ -56,6 +60,47 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  // Chỉ gửi các cột SEO khi người dùng có sửa khối SEO (xem PostSave).
+  const [seoTouched, setSeoTouched] = useState(false)
+  const { lang } = useEditLang()
+
+  const seoDraft: SeoDraft = {
+    vi: { title: draft.seo_title?.vi ?? '', desc: draft.seo_description?.vi ?? '' },
+    en: { title: draft.seo_title?.en ?? '', desc: draft.seo_description?.en ?? '' },
+    og: draft.og_image ?? '',
+  }
+  // Mô hình hóa bài đang soạn thành một mục SEO để dùng lại khối kiểm tra/xem trước của màn SEO.
+  const seoItem: SeoItem = {
+    key: 'post:editor',
+    kind: 'post',
+    id: post?.id ?? 'new',
+    label: draft.title.vi || draft.title.en,
+    path: `/blog/${draft.slug || 'ten-bai-viet'}`,
+    published: draft.status === 'published',
+    editable: true,
+    editHref: '',
+    saved: seoDraft,
+    fallback: {
+      vi: { title: draft.title.vi, desc: draft.excerpt.vi },
+      en: { title: draft.title.en, desc: draft.excerpt.en },
+    },
+    ogFallback: draft.cover_image ?? '',
+    descFallbackNote: 'Đang lấy từ mô tả ngắn (excerpt) của bài.',
+  }
+  const seoAnalysis = analyze(seoItem, seoDraft)
+  const seoTone = scoreTone(seoAnalysis.score)
+  const seoHost = new URL(SITE_URL).hostname
+
+  const updateSeo = (next: SeoDraft) => {
+    setDraft((prev) => ({
+      ...prev,
+      seo_title: { vi: next.vi.title, en: next.en.title },
+      seo_description: { vi: next.vi.desc, en: next.en.desc },
+      og_image: next.og.trim() === '' ? null : next.og,
+    }))
+    setSeoTouched(true)
+    setStatus('dirty')
+  }
 
   const update = <K extends keyof PostUpdate>(key: K, value: PostUpdate[K]) => {
     setDraft((prev) => ({ ...prev, [key]: value }))
@@ -64,11 +109,14 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
 
   const handleSave = () => {
     startTransition(async () => {
-      const result = await savePost(post?.id ?? 'new', draft)
+      const { seo_title, seo_description, og_image, ...withoutSeo } = draft
+      const payload: PostSave = seoTouched ? draft : withoutSeo
+      const result = await savePost(post?.id ?? 'new', payload)
       if (result && 'error' in result && result.error) {
         setStatus('error')
         setErrorMsg(result.error)
       } else {
+        setSeoTouched(false)
         setStatus('saved')
         setTimeout(() => setStatus('idle'), 2500)
       }
@@ -281,6 +329,27 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
               onChange={(v) => update('cover_image', v.trim() === '' ? null : v)}
             />
           </div>
+
+          <details className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 group">
+            <summary className="flex items-center gap-2 px-4 py-3 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">
+              <Search className="w-4 h-4 text-slate-400 shrink-0" />
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">SEO và chia sẻ</h2>
+              <span className={cn('ml-auto text-[11px] whitespace-nowrap', TONE_TEXT[seoTone])}>
+                {seoAnalysis.issues.length === 0 ? 'Đạt' : `${seoAnalysis.issues.length} mục cần xem`}
+              </span>
+            </summary>
+            <div className="px-4 pb-4 pt-3 border-t border-slate-100 dark:border-slate-700">
+              <SeoPanel
+                item={seoItem}
+                draft={seoDraft}
+                onChange={updateSeo}
+                lang={lang}
+                canEdit
+                pending={isPending}
+                host={seoHost}
+              />
+            </div>
+          </details>
         </div>
       </div>
 

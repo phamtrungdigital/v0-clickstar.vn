@@ -34,16 +34,18 @@ export async function bulkSetStatus(
   } = await supabase.auth.getUser()
   if (!user) return { error: 'Chưa đăng nhập' }
 
-  const patch: { status: 'draft' | 'published'; published_at?: string } = { status }
-  if (status === 'published') {
-    patch.published_at = new Date().toISOString()
-  }
-
-  const { error, count } = await supabase
-    .from('posts')
-    .update(patch, { count: 'exact' })
-    .in('id', ids)
+  // Đăng hàng loạt chỉ đặt ngày đăng cho bài CHƯA đăng (hoặc đã đăng nhưng thiếu ngày); bài đang đăng giữ ngày cũ.
+  const query =
+    status === 'published'
+      ? supabase
+          .from('posts')
+          .update({ status, published_at: new Date().toISOString() }, { count: 'exact' })
+          .in('id', ids)
+          .or('status.neq.published,published_at.is.null')
+      : supabase.from('posts').update({ status }, { count: 'exact' }).in('id', ids)
+  const { error, count: changed } = await query
   if (error) return { error: error.message }
+  const count = status === 'published' ? ids.length : changed
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
   revalidatePath('/')

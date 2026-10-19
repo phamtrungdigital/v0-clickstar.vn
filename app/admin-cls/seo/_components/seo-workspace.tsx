@@ -15,37 +15,21 @@ import {
   XCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
+import { CARD, INPUT, Note, SeoPanel, TONE_BAR, TONE_TEXT } from './seo-panel'
 import {
   KIND_LABEL,
   SCORE_OK,
   TITLE_MAX,
   DESC_MAX,
   analyze,
-  breadcrumbUrl,
   findDuplicateTitles,
-  measureDesc,
-  measureTitle,
   scoreTone,
-  suggestTitle,
-  truncateChars,
   type Level,
   type SeoDraft,
   type SeoItem,
   type SiteCheck,
 } from '@/lib/seo/admin-seo'
 import { saveGa4, saveSeoItem } from '../actions'
-
-const TONE_TEXT: Record<Level, string> = {
-  ok: 'text-emerald-600 dark:text-emerald-400',
-  warn: 'text-amber-600 dark:text-amber-400',
-  bad: 'text-red-600 dark:text-red-400',
-}
-const TONE_BAR: Record<Level, string> = { ok: 'bg-emerald-500', warn: 'bg-amber-500', bad: 'bg-red-500' }
-
-const CARD = 'bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700'
-const INPUT =
-  'w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-2.5 py-1.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 read-only:bg-slate-50 read-only:text-slate-500 dark:read-only:bg-slate-900/60'
 
 type Filter = 'all' | 'page' | 'service' | 'post' | 'project' | 'fix'
 const FILTERS: { id: Filter; label: string }[] = [
@@ -354,16 +338,11 @@ function SeoDrawer({
 }) {
   const [draft, setDraft] = useState<SeoDraft>(item.saved)
   const [lang, setLang] = useState<'vi' | 'en'>('vi')
-  const [serp, setSerp] = useState<'d' | 'm'>('d')
   const [pending, startTransition] = useTransition()
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null)
 
   const canEdit = item.editable && (role === 'admin' || role === 'editor')
   const dirty = !sameDraft(draft, item.saved)
-  const a = analyze(item, draft, duplicateWith)
-  const title = measureTitle(item, draft, lang)
-  const desc = measureDesc(item, draft, lang)
-  const suggestion = lang === 'vi' && title.len > TITLE_MAX ? suggestTitle(title.raw) : ''
 
   const requestClose = () => {
     if (dirty && !window.confirm('Có thay đổi chưa lưu. Đóng và bỏ các thay đổi này?')) return
@@ -377,11 +356,6 @@ function SeoDrawer({
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   })
-
-  const setText = (field: 'title' | 'desc', value: string) => {
-    setMsg(null)
-    setDraft((d) => ({ ...d, [lang]: { ...d[lang], [field]: value } }))
-  }
 
   const save = () => {
     setMsg(null)
@@ -403,10 +377,6 @@ function SeoDrawer({
       setMsg({ ok: true, text: 'Đã lưu. Trang công khai cập nhật trong ít phút.' })
     })
   }
-
-  const ogShown = draft.og || item.ogFallback
-  const titleShown = truncateChars(title.shown, serp === 'd' ? TITLE_MAX : 56)
-  const descShown = truncateChars(desc.shown, serp === 'd' ? DESC_MAX : 120)
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end" role="dialog" aria-modal="true" aria-label={`Sửa SEO: ${item.label}`}>
@@ -465,157 +435,19 @@ function SeoDrawer({
               ))}
             </div>
           )}
-          {lang === 'en' && <Note>Bản tiếng Anh chỉ hiện khi khách chuyển sang EN. Để trống thì dùng bản tiếng Việt.</Note>}
-
-          <div>
-            <FieldHead label="Tiêu đề SEO" count={title.len} max={TITLE_MAX} level={title.level} />
-            <textarea
-              value={item.editable ? draft[lang].title : title.raw}
-              onChange={(e) => setText('title', e.target.value)}
-              readOnly={!canEdit || pending}
-              rows={2}
-              maxLength={200}
-              placeholder={title.fromFallback ? title.raw : undefined}
-              className={cn(INPUT, 'resize-none')}
-            />
-            <p className="mt-1 text-[11px] text-slate-500">
-              Hệ thống tự thêm “| Click Star” ở cuối.
-              {item.editable && ' Để trống thì dùng tên mục'}
-              {item.editable && title.fromFallback && title.raw ? `: “${truncateChars(title.raw, 60)}”` : ''}
-              {item.editable && '.'}
-            </p>
-            {canEdit && suggestion && (
-              <div className="mt-1.5 rounded-md bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 px-2.5 py-2 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
-                <span className="flex-1 min-w-0">
-                  Gợi ý: <b className="font-medium">{suggestion}</b>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setText('title', suggestion)}
-                  className="shrink-0 px-2 py-1 rounded bg-white dark:bg-slate-800 border border-amber-300 dark:border-amber-700 hover:bg-amber-100 dark:hover:bg-amber-900/40"
-                >
-                  Dùng gợi ý
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div>
-            <FieldHead label="Mô tả SEO" count={desc.len} max={DESC_MAX} level={desc.level} />
-            <textarea
-              value={item.editable ? draft[lang].desc : desc.raw}
-              onChange={(e) => setText('desc', e.target.value)}
-              readOnly={!canEdit || pending}
-              rows={3}
-              maxLength={400}
-              placeholder={desc.fromFallback ? desc.raw : undefined}
-              className={cn(INPUT, 'resize-none')}
-            />
-            {desc.fromFallback && desc.len > 0 && item.descFallbackNote && (
-              <p className="mt-1 text-[11px] text-slate-500">
-                {item.descFallbackNote}
-                {item.editable && ' Nhập riêng để kiểm soát câu hiện trên Google.'}
-              </p>
-            )}
-          </div>
-
-          {item.kind !== 'project' && canEdit && (
-            <div>
-              <ImagePicker
-                label="Ảnh chia sẻ (hiện khi gửi link lên Facebook, Zalo)"
-                value={draft.og}
-                onChange={(v) => {
-                  if (pending) return
-                  setMsg(null)
-                  setDraft((d) => ({ ...d, og: v }))
-                }}
-                hint={
-                  item.ogFallback && !draft.og
-                    ? 'Đang dùng ảnh bìa của bài. Tải ảnh khác lên nếu muốn ảnh riêng. Tỷ lệ tốt nhất 1200×630px.'
-                    : 'Tỷ lệ tốt nhất 1200×630px.'
-                }
-              />
-            </div>
-          )}
-
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-xs font-medium text-slate-600 dark:text-slate-300">Xem trước trên Google (ước lượng)</span>
-              <span className="flex gap-1">
-                {(
-                  [
-                    ['d', 'Máy tính'],
-                    ['m', 'Điện thoại'],
-                  ] as const
-                ).map(([id, label]) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => setSerp(id)}
-                    className={cn(
-                      'text-[11px] px-2 py-0.5 rounded-full border',
-                      serp === id
-                        ? 'bg-primary/10 border-primary/40 text-primary'
-                        : 'border-slate-300 dark:border-slate-600 text-slate-500'
-                    )}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </span>
-            </div>
-            <div
-              className={cn(
-                'rounded-lg bg-white border border-slate-200 dark:border-slate-600 px-3.5 py-3 text-left',
-                serp === 'm' && 'max-w-[360px]'
-              )}
-            >
-              <div className="text-[12px] text-slate-600 truncate">{breadcrumbUrl(host, item.path)}</div>
-              <div className="text-[18px] leading-snug text-[#1a0dab] mt-0.5">{titleShown || 'Chưa có tiêu đề'}</div>
-              <div className="text-[13px] leading-snug text-slate-600 mt-0.5">
-                {descShown || 'Chưa có mô tả: Google sẽ tự chọn một đoạn trong trang.'}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div className="text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5">Khi chia sẻ lên Facebook, Zalo</div>
-            <div className="rounded-lg border border-slate-200 dark:border-slate-600 overflow-hidden max-w-[380px] bg-white dark:bg-slate-800">
-              {ogShown ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={ogShown} alt="" className="w-full aspect-[1200/630] object-cover bg-slate-100" />
-              ) : (
-                <div className="w-full aspect-[1200/630] bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-[11px] text-slate-500">
-                  Dùng ảnh mặc định của site
-                </div>
-              )}
-              <div className="px-3 py-2 bg-slate-50 dark:bg-slate-700/50">
-                <div className="text-[10px] uppercase text-slate-500">{host}</div>
-                <div className="text-sm font-medium text-slate-900 dark:text-white line-clamp-2">{title.shown}</div>
-                <div className="text-xs text-slate-500 line-clamp-2">{desc.shown}</div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div className="text-xs font-medium text-slate-600 dark:text-slate-300 mb-1.5">Kiểm tra</div>
-            {a.issues.length === 0 ? (
-              <div className="flex items-center gap-1.5 text-sm text-emerald-600 dark:text-emerald-400">
-                <CheckCircle2 className="w-4 h-4" /> Mục này đạt các kiểm tra cơ bản.
-              </div>
-            ) : (
-              <ul className="space-y-1.5">
-                {a.issues.map((iss, i) => (
-                  <li key={i} className="flex gap-2 text-[13px] text-slate-700 dark:text-slate-300">
-                    <AlertTriangle
-                      className={cn('w-4 h-4 shrink-0 mt-0.5', iss.level === 'bad' ? TONE_TEXT.bad : TONE_TEXT.warn)}
-                    />
-                    <span>{iss.text}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          <SeoPanel
+            item={item}
+            draft={draft}
+            onChange={(next) => {
+              setMsg(null)
+              setDraft(next)
+            }}
+            lang={lang}
+            canEdit={canEdit}
+            pending={pending}
+            host={host}
+            duplicateWith={duplicateWith}
+          />
         </div>
 
         <div className="flex items-center gap-2 px-4 py-3 border-t border-slate-200 dark:border-slate-700">
@@ -651,25 +483,6 @@ function SeoDrawer({
           )}
         </div>
       </div>
-    </div>
-  )
-}
-
-function FieldHead({ label, count, max, level }: { label: string; count: number; max: number; level: Level }) {
-  return (
-    <div className="flex items-center justify-between mb-1">
-      <label className="text-xs font-medium text-slate-600 dark:text-slate-300">{label}</label>
-      <span className={cn('text-[11px] tabular-nums', TONE_TEXT[level])}>
-        {count} / {max} ký tự
-      </span>
-    </div>
-  )
-}
-
-function Note({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="rounded-md bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-2 text-xs text-slate-600 dark:text-slate-300">
-      {children}
     </div>
   )
 }

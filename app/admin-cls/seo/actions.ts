@@ -3,6 +3,7 @@
 import { revalidatePath, updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { getAdminProfile } from '@/lib/admin-cls/auth'
+import { cleanSeoText as clean, ogUrlError } from '@/lib/seo/admin-seo'
 
 export type SaveSeoInput = {
   kind: 'page' | 'service' | 'post'
@@ -17,15 +18,6 @@ export type SaveSeoResult = { ok: true } | { error: string }
 
 const MAX_TITLE = 200
 const MAX_DESC = 400
-
-/** Chuẩn hóa NFC, gộp khoảng trắng, cắt theo KÝ TỰ (không cắt giữa cặp ký tự đại diện như emoji) và bỏ ký tự lỗi. */
-const clean = (v: unknown, max: number) => {
-  if (typeof v !== 'string') return ''
-  const wellFormed = (v as string & { toWellFormed?: () => string }).toWellFormed?.() ?? v
-  return Array.from(wellFormed.normalize('NFC').replace(/\s+/g, ' ').trim())
-    .slice(0, max)
-    .join('')
-}
 
 /** Chỉ admin và editor được sửa SEO (viewer chỉ xem). RLS ở DB vẫn là lớp chặn cuối. Trả về thông báo lỗi hoặc null. */
 async function editorError(): Promise<string | null> {
@@ -50,9 +42,8 @@ export async function saveSeoItem(input: SaveSeoInput): Promise<SaveSeoResult> {
   const viTitle = clean(input.vi?.title, MAX_TITLE)
   const viDesc = clean(input.vi?.desc, MAX_DESC)
   const og = typeof input.og === 'string' ? input.og.trim() : ''
-  if (og.length > 1000) return { error: 'Đường dẫn ảnh chia sẻ quá dài.' }
-  // "/" một mình là đường dẫn trong site; "//" sẽ bị hiểu là địa chỉ ngoài nên không nhận.
-  if (og && !/^(https?:\/\/|\/(?!\/))/i.test(og)) return { error: 'Ảnh chia sẻ phải là đường dẫn bắt đầu bằng https:// hoặc /.' }
+  const ogError = ogUrlError(og)
+  if (ogError) return { error: ogError }
 
   const supabase = await createClient()
   const { data: userData } = await supabase.auth.getUser()

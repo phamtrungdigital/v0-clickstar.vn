@@ -235,3 +235,24 @@ export type SiteCheck = {
   ga4Managed?: boolean
 }
 
+
+
+/** Chuẩn hóa NFC, gộp khoảng trắng, cắt theo KÝ TỰ (không cắt giữa cặp ký tự đại diện như emoji) và bỏ ký tự lỗi. */
+export function cleanSeoText(v: unknown, max: number): string {
+  if (typeof v !== 'string') return ''
+  const wellFormed = (v as string & { toWellFormed?: () => string }).toWellFormed?.() ?? v
+  return Array.from(wellFormed.normalize('NFC').replace(/\s+/g, ' ').trim())
+    .slice(0, max)
+    .join('')
+}
+
+/**
+ * Kiểm tra đường dẫn ảnh chia sẻ: rỗng, hoặc bắt đầu bằng http(s):// hoặc một dấu "/" (đường dẫn trong site).
+ * "//host" bị từ chối vì trình duyệt hiểu là địa chỉ ngoài. Trả về thông báo lỗi hoặc null.
+ */
+export function ogUrlError(og: string): string | null {
+  if (!og) return null
+  if (og.length > 1000) return 'Đường dẫn ảnh chia sẻ quá dài.'
+  if (!/^(https?:\/\/|\/(?!\/))/i.test(og)) return 'Ảnh chia sẻ phải là đường dẫn bắt đầu bằng https:// hoặc /.'
+  return null
+}

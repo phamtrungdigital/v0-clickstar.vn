@@ -4,6 +4,7 @@ import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Post, PostStatus } from '@/lib/cms/posts'
+import { cleanSeoText, ogUrlError } from '@/lib/seo/admin-seo'
 
 export type PostUpdate = {
   slug: string
@@ -18,7 +19,17 @@ export type PostUpdate = {
   og_image: string | null
 }
 
-export async function savePost(id: string | 'new', input: PostUpdate) {
+/**
+ * Dữ liệu gửi lên khi lưu bài. Ba cột SEO chỉ được gửi khi người dùng có sửa khối SEO trong trình sửa bài,
+ * để lần lưu không ghi đè SEO vừa sửa ở màn SEO (trình sửa bài mở từ trước giữ bản cũ).
+ */
+export type PostSave = Omit<PostUpdate, 'seo_title' | 'seo_description' | 'og_image'> &
+  Partial<Pick<PostUpdate, 'seo_title' | 'seo_description' | 'og_image'>>
+
+const seoPair = (v: { vi: string; en: string } | null | undefined, max: number) =>
+  v ? { vi: cleanSeoText(v.vi, max), en: cleanSeoText(v.en, max) } : null
+
+export async function savePost(id: string | 'new', input: PostSave) {
   const supabase = await createClient()
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -28,10 +39,25 @@ export async function savePost(id: string | 'new', input: PostUpdate) {
   if (!input.slug) return { error: 'Slug không được trống' }
   if (!input.title.vi) return { error: 'Tiêu đề VI không được trống' }
 
-  const payload = {
-    ...input,
-    published_at:
-      input.status === 'published' ? new Date().toISOString() : null,
+  // Ngày đăng chỉ đặt khi bài chuyển sang "published" (hoặc tạo mới đã published). Bài đang published mà lưu lại
+  // thì GIỮ ngày cũ, nếu không mỗi lần sửa chữ sẽ đổi ngày đăng và đẩy bài lên đầu danh sách.
+  let publishedAt: string | null = null
+  if (input.status === 'published') {
+    publishedAt = new Date().toISOString()
+    if (id !== 'new') {
+      const { data: cur } = await supabase.from('posts').select('status, published_at').eq('id', id).maybeSingle()
+      if (cur?.status === 'published' && cur.published_at) publishedAt = cur.published_at
+    }
+  }
+
+  const payload: Record<string, unknown> = { ...input, published_at: publishedAt }
+  if ('seo_title' in input) payload.seo_title = seoPair(input.seo_title, 200)
+  if ('seo_description' in input) payload.seo_description = seoPair(input.seo_description, 400)
+  if ('og_image' in input) {
+    const og = (input.og_image ?? '').trim()
+    const ogError = ogUrlError(og)
+    if (ogError) return { error: ogError }
+    payload.og_image = og || null
   }
 
   if (id === 'new') {
