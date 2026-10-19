@@ -16,6 +16,8 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CARD, INPUT, Note, SeoPanel, TONE_BAR, TONE_TEXT } from './seo-panel'
+import { SeoRoadmap } from './seo-roadmap'
+import { roadmapCounts } from '@/lib/seo/roadmap'
 import {
   KIND_LABEL,
   SCORE_OK,
@@ -64,7 +66,7 @@ export function SeoWorkspace({
   const [items, setItems] = useState(initialItems)
   useEffect(() => setItems(initialItems), [initialItems])
 
-  const [tab, setTab] = useState<'list' | 'site'>('list')
+  const [tab, setTab] = useState<'list' | 'site' | 'roadmap'>('list')
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
   const [lowFirst, setLowFirst] = useState(false)
@@ -128,6 +130,7 @@ export function SeoWorkspace({
           [
             ['list', 'Trang và bài viết'],
             ['site', 'Kiểm tra toàn site'],
+            ['roadmap', 'Lộ trình SEO'],
           ] as const
         ).map(([id, label]) => (
           <button
@@ -142,6 +145,11 @@ export function SeoWorkspace({
             )}
           >
             {label}
+            {id === 'roadmap' && (
+              <span className="ml-1.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] px-1.5 py-0.5">
+                {roadmapCounts().mine}
+              </span>
+            )}
             {id === 'site' && siteOk < checks.length && (
               <span className="ml-1.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-[10px] px-1.5 py-0.5">
                 {checks.length - siteOk}
@@ -287,6 +295,8 @@ export function SeoWorkspace({
             nhập riêng nên hệ thống đang lấy từ tên hoặc tóm tắt. Mức tốt: tiêu đề 30 đến {TITLE_MAX}, mô tả 110 đến {DESC_MAX}.
           </p>
         </>
+      ) : tab === 'roadmap' ? (
+        <SeoRoadmap />
       ) : (
         <SiteChecks checks={checks} siteUrl={siteUrl} role={role} />
       )}
