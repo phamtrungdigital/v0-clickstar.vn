@@ -80,25 +80,38 @@ export function BodyReveal({ children, className }: { children: React.ReactNode;
   useEffect(() => {
     const root = ref.current
     if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('bp-in')
-            io.unobserve(e.target)
-          }
-        })
-      },
-      { rootMargin: '0px 0px -8% 0px' },
-    )
-    root.querySelectorAll(':scope > h2, :scope > h3, :scope > blockquote, :scope > ul, :scope > ol, :scope > table, :scope > pre, :scope > p > img').forEach((el) => {
-      const target = el.tagName === 'IMG' ? (el.parentElement as HTMLElement) : (el as HTMLElement)
-      if (target.getBoundingClientRect().top > window.innerHeight * 0.95) {
-        target.classList.add('bp-pre')
-        io.observe(target)
-      }
-    })
-    return () => io.disconnect()
+    // Khối đã nằm trên hoặc trong màn hình thì hiện; khối còn ở dưới thì ẩn chờ. Kiểm theo vị trí cuộn (không phải
+    // IntersectionObserver) để khối bị bỏ qua khi nhảy tới mục lục hay cuộn rất nhanh vẫn hiện khi quay lại xem.
+    let pending: HTMLElement[] = []
+    root
+      .querySelectorAll(':scope > h2, :scope > h3, :scope > blockquote, :scope > ul, :scope > ol, :scope > table, :scope > pre, :scope > p > img')
+      .forEach((el) => {
+        const target = (el.tagName === 'IMG' ? el.parentElement : el) as HTMLElement
+        if (target.getBoundingClientRect().top > window.innerHeight * 0.95) {
+          target.classList.add('bp-pre')
+          pending.push(target)
+        }
+      })
+    let raf = 0
+    const check = () => {
+      raf = 0
+      pending = pending.filter((el) => {
+        if (el.getBoundingClientRect().top < window.innerHeight * 0.92) {
+          el.classList.add('bp-in')
+          return false
+        }
+        return true
+      })
+      if (pending.length === 0) window.removeEventListener('scroll', onScroll)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [])
   return (
     <div ref={ref} className={className}>
