@@ -74,13 +74,13 @@ export const ROADMAP: RoadmapGroup[] = [
       },
       {
         id: 'content-og', title: 'Ảnh chia sẻ riêng cho từng trang', status: 'todo', who: 'Kỹ thuật',
-        why: 'Nhiều trang đang dùng chung một ảnh khi dán link lên Facebook, Zalo, LinkedIn nên khó thu hút bấm.',
+        why: 'Nhiều trang đang dùng chung một ảnh khi gửi link qua Zalo, email hay tin nhắn nên khó thu hút bấm.',
         steps: ['Liệt kê trang chưa có ảnh riêng ở màn SEO', 'Tạo ảnh 1200x630 theo thương hiệu cho trang dịch vụ và bài mới', 'Tải lên mục Ảnh chia sẻ ở từng trang'],
       },
       {
-        id: 'content-links', title: 'Liên kết nội bộ từ bài blog sang trang dịch vụ liên quan', status: 'todo', who: 'Kỹ thuật',
+        id: 'content-links', title: 'Liên kết nội bộ giữa bài blog và trang dịch vụ liên quan', status: 'done', who: 'Kỹ thuật', date: '20/10',
         why: 'Dồn sức xếp hạng cho trang dịch vụ, và giúp cả khách lẫn bot đi tiếp.',
-        steps: ['Mỗi bài có 2 đến 3 liên kết tới dịch vụ đúng chủ đề', 'Trang dịch vụ liên kết ngược tới 3 bài hay nhất', 'Văn bản liên kết mô tả đúng đích đến, không dùng "bấm vào đây"'],
+        steps: ['Cuối mỗi bài blog có khối "Dịch vụ liên quan" (2 đến 3 liên kết đúng chủ đề)', 'Cuối mỗi trang dịch vụ có khối "Bài viết nên đọc tiếp" trỏ về 2 đến 3 bài hay nhất', 'Bài mới tự có liên kết theo nhãn chủ đề; muốn gán riêng thì sửa bảng trong components/seo/service-answer.tsx'],
       },
       {
         id: 'content-translate', title: 'Dịch thân bài 3 bài cũ sang tiếng Anh', status: 'todo', who: 'Kỹ thuật',
@@ -142,10 +142,10 @@ export const ROADMAP: RoadmapGroup[] = [
     hint: 'AI chọn đoạn trả lời rõ, có số liệu, có nguồn và có người chịu trách nhiệm.',
     items: [
       {
-        id: 'ai-answer', title: 'Đoạn trả lời trực tiếp 40 đến 60 chữ ngay dưới tiêu đề mỗi trang dịch vụ và bài blog', status: 'todo', who: 'Kỹ thuật', prio: 'cao',
-        why: 'AI thường trích đúng đoạn trả lời gọn đứng đầu. Ví dụ "Làm website doanh nghiệp tại Click Star mất bao lâu?" thì câu đầu phải trả lời luôn: "Từ 3 đến 6 tuần tùy quy mô..."',
-        steps: ['Viết lại phần mở đầu 6 trang dịch vụ và 5 bài blog hay nhất', 'Mỗi đoạn nêu rõ con số: thời gian, chi phí khoảng, kết quả điển hình', 'Quản trị viên xác nhận số liệu đúng thực tế'],
-        note: 'Số liệu phải là số thật, không ước lượng.',
+        id: 'ai-answer', title: 'Đoạn trả lời trực tiếp ngay dưới phần đầu mỗi trang dịch vụ', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'AI thường trích đúng đoạn trả lời gọn đứng đầu, ví dụ thời gian và chi phí làm một dịch vụ.',
+        steps: ['Đã thêm khối "Trả lời nhanh" cho cả 8 trang dịch vụ, mỗi khối một câu hỏi khách hay hỏi kèm số liệu', 'Chỉ dùng số quản trị viên đã xác nhận ngày 20/10; muốn đổi số thì sửa trong components/seo/service-answer.tsx', 'Bài blog đã có khối Tóm tắt ngay dưới tiêu đề'],
+        note: 'Trang Dashboard chưa có thời gian và giá nên khối chỉ mô tả công dụng.',
       },
       {
         id: 'ai-faq', title: 'Khối câu hỏi thường gặp kèm dữ liệu FAQPage cho các trang dịch vụ còn lại', status: 'todo', who: 'Kỹ thuật',
@@ -182,14 +182,14 @@ export const ROADMAP: RoadmapGroup[] = [
     hint: 'AI chỉ nhắc một thương hiệu khi chắc chắn nó là ai, ở đâu, đáng tin không.',
     items: [
       {
-        id: 'ai-sameas', title: 'Điền liên kết Facebook, LinkedIn, YouTube, Zalo ở Cài đặt', status: 'mine', who: 'Quản trị', prio: 'cao',
-        why: 'Site đã sẵn khai báo sameAs nhưng các ô liên kết mạng xã hội trong Cài đặt đang trống, nên AI khó nối các hồ sơ thành một thương hiệu.',
-        steps: ['Admin → Cài đặt → mục mạng xã hội: dán link trang chính thức', 'Kiểm tra thẻ sameAs đã xuất hiện ở trang chủ'],
+        id: 'ai-sameas', title: 'Điền liên kết Zalo ở Cài đặt', status: 'mine', who: 'Quản trị', prio: 'cao',
+        why: 'Site không dùng mạng xã hội, kênh liên hệ ngoài website là Email và Zalo. Ô Zalo trong Cài đặt đang trống nên AI và Google chưa thấy kênh này.',
+        steps: ['Admin → Cài đặt → Zalo: dán liên kết Zalo OA hoặc số Zalo của công ty', 'Kiểm tra liên kết xuất hiện ở trang chủ và trang liên hệ'],
       },
       {
         id: 'ai-nap', title: 'Tên, địa chỉ, điện thoại giống nhau ở mọi nơi', status: 'mine', who: 'Quản trị',
-        why: 'Thông tin mâu thuẫn giữa website, Facebook, Zalo OA, Google làm AI giảm độ tin.',
-        steps: ['Website đã thống nhất hotline 0383 406 735', 'Rà soát Facebook, Zalo OA, LinkedIn, Google: tên là "Click Star", cùng số điện thoại, cùng địa chỉ'],
+        why: 'Thông tin mâu thuẫn giữa website, Zalo OA, Google và các danh bạ doanh nghiệp làm AI giảm độ tin.',
+        steps: ['Website đã thống nhất hotline 0383 406 735', 'Rà soát Zalo OA, Google, các danh bạ doanh nghiệp: tên là "Click Star", cùng số điện thoại, cùng địa chỉ'],
       },
       {
         id: 'ai-gbp', title: 'Tạo và hoàn thiện Google Business Profile', status: 'mine', who: 'Quản trị',
@@ -210,19 +210,13 @@ export const ROADMAP: RoadmapGroup[] = [
     items: [
       {
         id: 'ai-reviews', title: 'Có đánh giá khách hàng thật trên Google và các trang đánh giá', status: 'mine', who: 'Quản trị',
-        why: 'AI hay trích điểm số và nhận xét từ Google, Clutch, Facebook khi so sánh nhà cung cấp.',
-        steps: ['Xin 10 đánh giá đầu từ khách hàng đang hài lòng', 'Soạn sẵn tin nhắn mời đánh giá kèm liên kết trực tiếp'],
+        why: 'AI hay trích điểm số và nhận xét từ Google, Clutch khi so sánh nhà cung cấp.',
+        steps: ['Xin 10 đánh giá đầu từ khách hàng đang hài lòng', 'Soạn sẵn tin nhắn mời đánh giá (gửi qua Zalo hoặc email) kèm liên kết trực tiếp'],
       },
       {
         id: 'ai-mentions', title: 'Được nhắc tên trên báo ngành và bài khách mời', status: 'mine', who: 'Quản trị',
         why: 'AI trích nguồn bên thứ ba nhiều hơn trang tự giới thiệu.',
         steps: ['Chọn 3 trang báo hoặc cộng đồng ngành marketing, công nghệ phù hợp', 'Soạn bài chia sẻ kinh nghiệm từ dự án thật (đã được khách đồng ý)'],
-      },
-      {
-        id: 'ai-video', title: 'Video trên YouTube có phụ đề và mô tả đầy đủ', status: 'todo', who: 'Kỹ thuật',
-        why: 'YouTube là nguồn Google AI Overviews và nhiều AI khác trích rất thường xuyên.',
-        steps: ['Chọn video giới thiệu dịch vụ và dự án', 'Viết tiêu đề, mô tả, phụ đề tiếng Việt và tiếng Anh', 'Nhúng lại vào trang dịch vụ liên quan'],
-        note: 'Cần có kênh YouTube chính thức trước.',
       },
     ],
   },
@@ -265,9 +259,9 @@ export const ROADMAP: RoadmapGroup[] = [
         why: 'Để xem dữ liệu tìm kiếm và gửi sitemap.', steps: ['Đã gắn thẻ xác minh và hoàn tất xác minh'],
       },
       {
-        id: 'sc-sitemap', title: 'Gửi sitemap.xml', status: 'mine', who: 'Quản trị', prio: 'cao',
+        id: 'sc-sitemap', title: 'Gửi sitemap.xml', status: 'done', who: 'Quản trị', date: '20/10',
         why: 'Báo Google biết 83 địa chỉ (gồm bản /en).',
-        steps: ['Search Console → Sơ đồ trang web → nhập sitemap.xml → Gửi'],
+        steps: ['Đã nạp sitemap.xml trong Search Console', 'Sitemap tự thêm bài mới, không cần gửi lại'],
       },
       {
         id: 'sc-review', title: 'Xem báo cáo Trang và hreflang sau 1 đến 2 tuần', status: 'mine', who: 'Quản trị',

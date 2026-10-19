@@ -33,6 +33,7 @@ import { useLanguage } from '@/contexts/language-context'
 import { useServiceCta } from '@/contexts/web-content-context'
 import { DEFAULT_SERVICE_CTAS } from '@/lib/cms/web-content-shared'
 import { MainNav } from '@/components/layout/main-nav'
+import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { MarketingGrowthIllustration } from '@/components/illustrations/service-illustrations'
 
@@ -355,6 +356,8 @@ export default function DigitalMarketingPage() {
           </div>
         </section>
 
+        <ServiceAnswer slug="digital-marketing" />
+
 {/* Vấn đề và giải pháp: khối trắng, ảnh minh họa SVG bên trái, 4 thẻ bên phải */}
         <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -672,6 +675,7 @@ export default function DigitalMarketingPage() {
             </div>
           </div>
         </section>
+      <ServiceReadMore slug="digital-marketing" />
       </main>
       <Footer />
     </div>

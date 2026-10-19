@@ -19,6 +19,7 @@ import { parseHeadings, slugifyId } from '@/lib/blog/headings'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
+import { RelatedServices } from '@/components/seo/service-answer'
 import { blogPostingSchema, breadcrumbSchema } from '@/lib/seo/schema'
 
 /** Metadata của một bài viết ở ngôn ngữ `lang` (dùng cho cả /blog/<slug> và /en/blog/<slug>). */
@@ -300,6 +301,9 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
               </Link>
             </div>
           </aside>
+
+          {/* Dịch vụ liên quan: liên kết nội bộ sang trang dịch vụ đúng chủ đề */}
+          <RelatedServices postSlug={post.slug} tags={post.tags} />
         </div>
 
         {/* Bài liên quan: ba thẻ */}

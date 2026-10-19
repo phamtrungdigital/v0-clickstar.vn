@@ -2,6 +2,7 @@
 
 import { useLanguage } from '@/contexts/language-context'
 import { MainNav } from '@/components/layout/main-nav'
+import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import Link from '@/components/app-link'
 import { 
@@ -248,6 +249,8 @@ export default function DashboardServicePage() {
             </div>
           </div>
         </section>
+
+        <ServiceAnswer slug="dashboard" />
 
         {/* Tại sao cần dashboard: khối xám nhạt */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
@@ -551,6 +554,7 @@ export default function DashboardServicePage() {
             </div>
           </div>
         </section>
+      <ServiceReadMore slug="dashboard" />
       </main>
 
       <Footer />

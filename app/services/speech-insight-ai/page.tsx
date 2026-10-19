@@ -44,6 +44,7 @@ import {
   ArrowUpRight,
 } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
+import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { SpeechReportSample } from '@/components/services/speech-report-sample'
 import { ClaudeEngine } from '@/components/services/claude-engine'
@@ -512,6 +513,8 @@ export default function SpeechInsightAiPage() {
           </div>
         </section>
 
+        <ServiceAnswer slug="speech-insight-ai" />
+
         {/* ② Vấn đề và giải pháp: khối xám nhạt */}
         <section className="py-16 lg:py-24 bg-[#f5f5f7]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -975,6 +978,7 @@ export default function SpeechInsightAiPage() {
             </div>
           </div>
         </section>
+      <ServiceReadMore slug="speech-insight-ai" />
       </main>
       <Footer />
     </div>

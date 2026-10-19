@@ -45,6 +45,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
+import { ServiceAnswer, ServiceReadMore } from '@/components/seo/service-answer'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
 import { useFooterContent } from '@/contexts/web-content-context'
@@ -162,6 +163,8 @@ export default function CustomSoftwarePage() {
             </dl>
           </div>
         </section>
+
+        <ServiceAnswer slug="custom-software" />
 
         {/* ② MÃ NGUỒN THẬT — khối tối */}
         <Section id="ma-nguon" tone="dark" className="scroll-mt-16">
@@ -609,6 +612,7 @@ export default function CustomSoftwarePage() {
             </div>
           </div>
         </section>
+      <ServiceReadMore slug="custom-software" />
       </main>
 
       <Footer />
