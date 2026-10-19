@@ -38,7 +38,7 @@ export default async function LoginPage({
 
         <div className="relative z-10 max-w-[520px] 2xl:max-w-[600px]">
           <p className="mb-4 text-[11px] xl:text-xs font-medium tracking-[0.16em] text-orange-400">AI-POWERED DIGITAL GROWTH</p>
-          <h1 className="text-[34px] xl:text-[42px] 2xl:text-5xl font-medium leading-[1.1] tracking-[-0.025em]">
+          <h1 className="text-balance text-[34px] xl:text-[42px] 2xl:text-5xl font-medium leading-[1.1] tracking-[-0.025em]">
             Where data, marketing and <span className="text-[#6aa9ff]">AI</span> work as one.
           </h1>
           <p className="mt-5 max-w-[460px] 2xl:max-w-[520px] text-[15px] xl:text-base 2xl:text-lg leading-relaxed text-zinc-400">
