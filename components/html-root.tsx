@@ -1,8 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { usePathname } from 'next/navigation'
-import { langFromPathname } from '@/lib/i18n/locale'
+import { useUrlLang } from '@/lib/i18n/use-url-lang'
 
 /**
  * Thẻ <html> và <body> của cả site. Là client component để thuộc tính lang đúng theo địa chỉ ngay trong HTML tĩnh
@@ -18,7 +17,7 @@ export function HtmlRoot({
   bodyClassName?: string
   children: ReactNode
 }) {
-  const lang = langFromPathname(usePathname())
+  const lang = useUrlLang()
   return (
     <html lang={lang} className={htmlClassName}>
       <body className={bodyClassName}>{children}</body>

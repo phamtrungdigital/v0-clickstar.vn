@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, ReactNode } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { langFromPathname, localizePath, switchLocalePath, type Lang } from '@/lib/i18n/locale'
+import { localizePath, switchLocalePath, type Lang } from '@/lib/i18n/locale'
+import { useUrlLang } from '@/lib/i18n/use-url-lang'
 
 export type Language = Lang
 
@@ -27,16 +28,10 @@ function writeCookie(lang: Language) {
  * HTML tĩnh của mỗi bản đã đúng ngôn ngữ ngay khi tải (không còn "luôn tiếng Việt trước rồi đổi sau khi hydrate")
  * và công cụ tìm kiếm thấy hai bản có địa chỉ riêng. Cookie cs-lang chỉ ghi lại lựa chọn của khách.
  */
-export function LanguageProvider({
-  children,
-  initialLang = 'vi',
-}: {
-  children: ReactNode
-  initialLang?: Language
-}) {
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname()
   const router = useRouter()
-  const language: Language = pathname ? langFromPathname(pathname) : initialLang
+  const language: Language = useUrlLang()
 
   // Khách đã tự chọn tiếng Anh ở lần trước (cookie cs-lang=en) mà mở một địa chỉ tiếng Việt từ bên ngoài site
   // (ví dụ gõ thẳng clickstar.vn): chuyển sang bản /en tương ứng một lần. Chỉ chạy ở client nên công cụ tìm kiếm
