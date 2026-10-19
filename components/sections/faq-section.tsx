@@ -14,7 +14,7 @@ export function FAQSection({ content }: { content: FaqContent }) {
   return (
     <section data-cms-section="faq" className="py-16 lg:py-24 bg-background">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-[35%_65%] gap-12 lg:gap-16">
+        <div className="grid lg:grid-cols-[minmax(0,35fr)_minmax(0,65fr)] gap-12 lg:gap-16">
           {/* Left Column */}
           <div className="lg:sticky lg:top-32 lg:self-start">
             <div
