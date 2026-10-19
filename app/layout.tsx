@@ -58,6 +58,8 @@ export async function generateMetadata(): Promise<Metadata> {
       'Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, Automation, CRM/CDP, Phân tích cuộc gọi AI (Call to Text) và Phần mềm theo yêu cầu cho doanh nghiệp Việt Nam',
     // Mặc định canonical là chính đường dẫn của trang (bỏ tham số ?utm...). Từng trang có thể đặt canonical riêng.
     alternates: { canonical: './' },
+    // Mã xác minh Google Search Console (thẻ meta google-site-verification trong <head> mọi trang).
+    verification: { google: '3XLcxIwkMb0I8ERCa4pzHUBLYVEIXUl0dv15959zpx4' },
     icons,
     openGraph: { siteName: BRAND, locale: 'vi_VN', type: 'website', images: ogImage ? [ogImage] : undefined },
   }
