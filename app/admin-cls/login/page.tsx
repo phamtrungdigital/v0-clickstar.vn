@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import { FileText, LineChart, Target } from 'lucide-react'
 import { LoginForm } from './login-form'
+import { LoginArt } from './login-art'
 
 export const metadata = {
   title: 'Sign in | Click Star Admin',
@@ -26,31 +26,33 @@ export default async function LoginPage({
 
   return (
     <div lang="en" className="min-h-screen grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] bg-white">
-      <aside className="hidden lg:flex flex-col bg-zinc-950 text-white p-12">
-        <div className="flex items-center gap-3">
-          <Image src="/images/logo-clickstar.png" alt="Click Star" width={160} height={32} className="h-8 w-auto" priority />
-          <span className="text-[10px] font-medium tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-orange-500/15 text-orange-400">ADMIN</span>
+      <aside className="relative hidden lg:flex flex-col overflow-hidden bg-[#08090b] text-white px-12 py-10">
+        <LoginArt className="pointer-events-none absolute -right-10 top-20 h-[320px] w-[320px] xl:h-[360px] xl:w-[360px]" />
+
+        <div className="relative z-10 flex items-center gap-3">
+          <Image src="/images/logo-clickstar.png" alt="Click Star" width={160} height={32} className="h-7 w-auto" priority />
+          <span className="text-[10px] font-medium tracking-[0.1em] px-1.5 py-0.5 rounded-md border border-orange-400/35 text-orange-400">ADMIN</span>
         </div>
 
-        <div className="my-auto max-w-md">
-          <h1 className="text-3xl font-semibold leading-tight tracking-tight">Website management console</h1>
-          <p className="mt-3 text-[15px] leading-relaxed text-zinc-400">
-            Manage content, SEO and leads for clickstar.vn in one place.
+        <div className="relative z-10 mt-auto max-w-[400px]">
+          <p className="mb-4 text-[11px] font-medium tracking-[0.16em] text-orange-400">AI-POWERED DIGITAL GROWTH</p>
+          <h1 className="text-[34px] font-medium leading-[1.12] tracking-[-0.022em]">
+            Where data, marketing and <span className="text-[#6aa9ff]">AI</span> work as one.
+          </h1>
+          <p className="mt-4 text-[15px] leading-relaxed text-zinc-400">
+            The control center for clickstar.vn: content, SEO, leads and the AI products we build for business.
           </p>
-          <ul className="mt-8 space-y-4 text-sm text-zinc-300">
-            <li className="flex items-center gap-3">
-              <FileText className="w-[18px] h-[18px] text-orange-400" /> Pages, posts, projects and team
-            </li>
-            <li className="flex items-center gap-3">
-              <LineChart className="w-[18px] h-[18px] text-orange-400" /> SEO and AI search roadmap
-            </li>
-            <li className="flex items-center gap-3">
-              <Target className="w-[18px] h-[18px] text-orange-400" /> Leads from forms and chatbot
-            </li>
+          <ul className="mt-8 flex flex-wrap items-center gap-y-1.5 border-t border-zinc-800 pt-5 text-[13px] text-zinc-300">
+            {['Speech Insight AI', 'ADS hub', 'Click Star AI', 'CRM and automation'].map((name, i) => (
+              <li key={name} className="flex items-center">
+                {i > 0 && <span className="mx-3 h-[3px] w-[3px] rounded-full bg-zinc-600" aria-hidden="true" />}
+                {name}
+              </li>
+            ))}
           </ul>
         </div>
 
-        <p className="text-xs text-zinc-500">Internal area. Authorized users only.</p>
+        <p className="relative z-10 mt-6 text-xs text-zinc-500">Authorized users only</p>
       </aside>
 
       <main className="flex items-center justify-center px-6 py-12 bg-white">
