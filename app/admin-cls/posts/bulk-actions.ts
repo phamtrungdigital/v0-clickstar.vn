@@ -45,7 +45,17 @@ export async function bulkSetStatus(
       : supabase.from('posts').update({ status }, { count: 'exact' }).in('id', ids)
   const { error, count: changed } = await query
   if (error) return { error: error.message }
-  const count = status === 'published' ? ids.length : changed
+  // Số bài báo lại cho người dùng là số bài THỰC SỰ đang ở trạng thái đó (bài đã đăng sẵn không bị cập nhật nhưng vẫn tính;
+  // bài bị từ chối ghi, ví dụ do quyền, thì không tính).
+  let count = changed
+  if (status === 'published') {
+    const { count: nowPublished } = await supabase
+      .from('posts')
+      .select('id', { count: 'exact', head: true })
+      .in('id', ids)
+      .eq('status', 'published')
+    count = nowPublished
+  }
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')
   revalidatePath('/')

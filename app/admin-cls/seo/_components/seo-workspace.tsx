@@ -438,9 +438,9 @@ function SeoDrawer({
           <SeoPanel
             item={item}
             draft={draft}
-            onChange={(next) => {
+            onChange={(update) => {
               setMsg(null)
-              setDraft(next)
+              setDraft(update)
             }}
             lang={lang}
             canEdit={canEdit}

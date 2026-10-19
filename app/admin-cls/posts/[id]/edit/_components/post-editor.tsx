@@ -5,7 +5,7 @@ import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink, Search } from 'lucide-react'
 import type { Post } from '@/lib/cms/posts'
-import { savePost, deletePost, type PostSave, type PostUpdate } from '../actions'
+import { savePost, deletePost, type PostSave, type PostUpdate, type SeoPatch } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
 import { EditLangProvider, LangSwitcher, useEditLang } from '@/lib/cms/edit-lang-context'
@@ -21,6 +21,25 @@ import { AutoTranslate } from './auto-translate'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
+type SeoCols = Pick<PostUpdate, 'seo_title' | 'seo_description' | 'og_image'>
+
+const toSeoDraft = (d: SeoCols): SeoDraft => ({
+  vi: { title: d.seo_title?.vi ?? '', desc: d.seo_description?.vi ?? '' },
+  en: { title: d.seo_title?.en ?? '', desc: d.seo_description?.en ?? '' },
+  og: d.og_image ?? '',
+})
+
+/** Các ô SEO khác với bản đã lưu: chỉ gửi những ô này để máy chủ gộp, không ghi đè ô người dùng không đụng tới. */
+function diffSeo(cur: SeoDraft, base: SeoDraft): SeoPatch {
+  const patch: SeoPatch = {}
+  if (cur.vi.title !== base.vi.title) patch.title_vi = cur.vi.title
+  if (cur.en.title !== base.en.title) patch.title_en = cur.en.title
+  if (cur.vi.desc !== base.vi.desc) patch.desc_vi = cur.vi.desc
+  if (cur.en.desc !== base.en.desc) patch.desc_en = cur.en.desc
+  if (cur.og.trim() !== base.og.trim()) patch.og = cur.og
+  return patch
+}
+
 function slugify(s: string): string {
   return s
     .toLowerCase()
@@ -33,15 +52,15 @@ function slugify(s: string): string {
     .slice(0, 60)
 }
 
-export function PostEditor({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
+export function PostEditor({ post, mode, siteUrl }: { post: Post | null; mode: 'new' | 'edit'; siteUrl?: string }) {
   return (
     <EditLangProvider initial="vi">
-      <PostEditorInner post={post} mode={mode} />
+      <PostEditorInner post={post} mode={mode} siteUrl={siteUrl} />
     </EditLangProvider>
   )
 }
 
-function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edit' }) {
+function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'new' | 'edit'; siteUrl?: string }) {
   const isNew = mode === 'new'
 
   const [draft, setDraft] = useState<PostUpdate>({
@@ -60,15 +79,17 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
-  // Chỉ gửi các cột SEO khi người dùng có sửa khối SEO (xem PostSave).
-  const [seoTouched, setSeoTouched] = useState(false)
+  // SEO đang lưu trong DB (lúc mở bài hoặc sau lần lưu thành công gần nhất): để biết ô nào người dùng đã sửa (xem SeoPatch).
+  const [savedSeo, setSavedSeo] = useState<SeoDraft>(() =>
+    toSeoDraft({
+      seo_title: post?.seo_title ?? null,
+      seo_description: post?.seo_description ?? null,
+      og_image: post?.og_image ?? null,
+    })
+  )
   const { lang } = useEditLang()
 
-  const seoDraft: SeoDraft = {
-    vi: { title: draft.seo_title?.vi ?? '', desc: draft.seo_description?.vi ?? '' },
-    en: { title: draft.seo_title?.en ?? '', desc: draft.seo_description?.en ?? '' },
-    og: draft.og_image ?? '',
-  }
+  const seoDraft = toSeoDraft(draft)
   // Mô hình hóa bài đang soạn thành một mục SEO để dùng lại khối kiểm tra/xem trước của màn SEO.
   const seoItem: SeoItem = {
     key: 'post:editor',
@@ -89,16 +110,25 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
   }
   const seoAnalysis = analyze(seoItem, seoDraft)
   const seoTone = scoreTone(seoAnalysis.score)
-  const seoHost = new URL(SITE_URL).hostname
+  const seoHost = (() => {
+    try {
+      return new URL(siteUrl || SITE_URL).hostname
+    } catch {
+      return new URL(SITE_URL).hostname
+    }
+  })()
 
-  const updateSeo = (next: SeoDraft) => {
-    setDraft((prev) => ({
-      ...prev,
-      seo_title: { vi: next.vi.title, en: next.en.title },
-      seo_description: { vi: next.vi.desc, en: next.en.desc },
-      og_image: next.og.trim() === '' ? null : next.og,
-    }))
-    setSeoTouched(true)
+  // Nhận hàm cập nhật (không phải bản sao draft) để không ghi đè chữ gõ thêm trong lúc chờ tải ảnh lên.
+  const updateSeo = (change: (d: SeoDraft) => SeoDraft) => {
+    setDraft((prev) => {
+      const next = change(toSeoDraft(prev))
+      return {
+        ...prev,
+        seo_title: { vi: next.vi.title, en: next.en.title },
+        seo_description: { vi: next.vi.desc, en: next.en.desc },
+        og_image: next.og.trim() === '' ? null : next.og,
+      }
+    })
     setStatus('dirty')
   }
 
@@ -108,15 +138,17 @@ function PostEditorInner({ post, mode }: { post: Post | null; mode: 'new' | 'edi
   }
 
   const handleSave = () => {
+    const sentSeo = seoDraft
     startTransition(async () => {
-      const { seo_title, seo_description, og_image, ...withoutSeo } = draft
-      const payload: PostSave = seoTouched ? draft : withoutSeo
+      const { seo_title, seo_description, og_image, ...content } = draft
+      const patch = diffSeo(sentSeo, savedSeo)
+      const payload: PostSave = Object.keys(patch).length > 0 ? { ...content, seo_patch: patch } : content
       const result = await savePost(post?.id ?? 'new', payload)
       if (result && 'error' in result && result.error) {
         setStatus('error')
         setErrorMsg(result.error)
       } else {
-        setSeoTouched(false)
+        setSavedSeo(sentSeo)
         setStatus('saved')
         setTimeout(() => setStatus('idle'), 2500)
       }

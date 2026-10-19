@@ -66,7 +66,8 @@ export function SeoPanel({
 }: {
   item: SeoItem
   draft: SeoDraft
-  onChange: (next: SeoDraft) => void
+  /** Báo thay đổi bằng hàm cập nhật (không phải bản sao draft) để không ghi đè chữ gõ thêm trong lúc chờ tải ảnh lên. */
+  onChange: (update: (d: SeoDraft) => SeoDraft) => void
   lang: Lang
   canEdit: boolean
   pending?: boolean
@@ -82,7 +83,7 @@ export function SeoPanel({
   const locked = !canEdit || pending
 
   const setText = (field: 'title' | 'desc', value: string) =>
-    onChange({ ...draft, [lang]: { ...draft[lang], [field]: value } })
+    onChange((d) => ({ ...d, [lang]: { ...d[lang], [field]: value } }))
 
   const ogShown = draft.og || item.ogFallback
   const titleShown = truncateChars(title.shown, serp === 'd' ? TITLE_MAX : 56)
@@ -152,7 +153,7 @@ export function SeoPanel({
             value={draft.og}
             onChange={(v) => {
               if (pending) return
-              onChange({ ...draft, og: v })
+              onChange((d) => ({ ...d, og: v }))
             }}
             hint={
               item.ogFallback && !draft.og

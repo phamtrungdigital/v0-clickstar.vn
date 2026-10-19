@@ -20,14 +20,27 @@ export type PostUpdate = {
 }
 
 /**
- * Dữ liệu gửi lên khi lưu bài. Ba cột SEO chỉ được gửi khi người dùng có sửa khối SEO trong trình sửa bài,
- * để lần lưu không ghi đè SEO vừa sửa ở màn SEO (trình sửa bài mở từ trước giữ bản cũ).
+ * Phần SEO người dùng đã SỬA trong trình sửa bài (chỉ các ô khác với lúc mở bài). Máy chủ gộp từng ô vào giá trị
+ * hiện tại trong DB, nên sửa bài không ghi đè SEO vừa sửa ở màn SEO cho những ô người dùng không đụng tới.
  */
-export type PostSave = Omit<PostUpdate, 'seo_title' | 'seo_description' | 'og_image'> &
-  Partial<Pick<PostUpdate, 'seo_title' | 'seo_description' | 'og_image'>>
+export type SeoPatch = {
+  title_vi?: string
+  title_en?: string
+  desc_vi?: string
+  desc_en?: string
+  og?: string
+}
 
-const seoPair = (v: { vi: string; en: string } | null | undefined, max: number) =>
-  v ? { vi: cleanSeoText(v.vi, max), en: cleanSeoText(v.en, max) } : null
+/** Dữ liệu gửi lên khi lưu bài (SEO đi riêng qua `seo_patch`, xem SeoPatch). */
+export type PostSave = Omit<PostUpdate, 'seo_title' | 'seo_description' | 'og_image'> & { seo_patch?: SeoPatch }
+
+type I18nCol = { vi?: string; en?: string }
+type CurrentRow = {
+  status: string | null
+  published_at: string | null
+  seo_title: I18nCol | null
+  seo_description: I18nCol | null
+}
 
 export async function savePost(id: string | 'new', input: PostSave) {
   const supabase = await createClient()
@@ -39,25 +52,54 @@ export async function savePost(id: string | 'new', input: PostSave) {
   if (!input.slug) return { error: 'Slug không được trống' }
   if (!input.title.vi) return { error: 'Tiêu đề VI không được trống' }
 
+  // Đọc bản hiện tại một lần (khi sửa bài có sẵn) để giữ ngày đăng và gộp phần SEO.
+  let current = null as CurrentRow | null
+  if (id !== 'new') {
+    const { data, error: readError } = await supabase
+      .from('posts')
+      .select('status, published_at, seo_title, seo_description')
+      .eq('id', id)
+      .maybeSingle()
+    if (readError) return { error: readError.message }
+    if (!data) return { error: 'Không tìm thấy bài viết.' }
+    current = data as CurrentRow
+  }
+
   // Ngày đăng chỉ đặt khi bài chuyển sang "published" (hoặc tạo mới đã published). Bài đang published mà lưu lại
   // thì GIỮ ngày cũ, nếu không mỗi lần sửa chữ sẽ đổi ngày đăng và đẩy bài lên đầu danh sách.
   let publishedAt: string | null = null
   if (input.status === 'published') {
-    publishedAt = new Date().toISOString()
-    if (id !== 'new') {
-      const { data: cur } = await supabase.from('posts').select('status, published_at').eq('id', id).maybeSingle()
-      if (cur?.status === 'published' && cur.published_at) publishedAt = cur.published_at
-    }
+    publishedAt = current?.status === 'published' && current.published_at ? current.published_at : new Date().toISOString()
   }
 
-  const payload: Record<string, unknown> = { ...input, published_at: publishedAt }
-  if ('seo_title' in input) payload.seo_title = seoPair(input.seo_title, 200)
-  if ('seo_description' in input) payload.seo_description = seoPair(input.seo_description, 400)
-  if ('og_image' in input) {
-    const og = (input.og_image ?? '').trim()
-    const ogError = ogUrlError(og)
-    if (ogError) return { error: ogError }
-    payload.og_image = og || null
+  // Chỉ nhận đúng các cột nội dung (không chuyển nguyên object từ trình duyệt vào DB).
+  const payload: Record<string, unknown> = {
+    slug: input.slug,
+    title: input.title,
+    excerpt: input.excerpt,
+    content: input.content,
+    cover_image: input.cover_image,
+    tags: input.tags,
+    status: input.status,
+    published_at: publishedAt,
+  }
+
+  const patch = input.seo_patch
+  if (patch) {
+    const title: I18nCol = { ...(current?.seo_title ?? { vi: '', en: '' }) }
+    const desc: I18nCol = { ...(current?.seo_description ?? { vi: '', en: '' }) }
+    if (typeof patch.title_vi === 'string') title.vi = cleanSeoText(patch.title_vi, 200)
+    if (typeof patch.title_en === 'string') title.en = cleanSeoText(patch.title_en, 200)
+    if (typeof patch.desc_vi === 'string') desc.vi = cleanSeoText(patch.desc_vi, 400)
+    if (typeof patch.desc_en === 'string') desc.en = cleanSeoText(patch.desc_en, 400)
+    if ('title_vi' in patch || 'title_en' in patch) payload.seo_title = title
+    if ('desc_vi' in patch || 'desc_en' in patch) payload.seo_description = desc
+    if (typeof patch.og === 'string') {
+      const og = patch.og.trim()
+      const ogError = ogUrlError(og)
+      if (ogError) return { error: ogError }
+      payload.og_image = og || null
+    }
   }
 
   if (id === 'new') {
