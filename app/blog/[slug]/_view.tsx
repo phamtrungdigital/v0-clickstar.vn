@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from '@/components/app-link'
-import { Calendar, ArrowLeft, ArrowRight, MessageCircle, Phone } from 'lucide-react'
+import { Calendar, Clock, ArrowLeft, ArrowRight, MessageCircle, Phone } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
 import { MainNav } from '@/components/layout/main-nav'
@@ -9,11 +9,12 @@ import { getPublishedPost, listPublishedPosts } from '@/lib/cms/posts'
 import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
-import type { Lang } from '@/lib/i18n/locale'
+import { localizePath, type Lang } from '@/lib/i18n/locale'
+import { SITE_URL } from '@/lib/seo/site'
 import { tagLabel } from '@/lib/cms/tags'
 import { MarkdownLink } from '@/components/markdown-link'
 import { TableOfContents } from './_components/table-of-contents'
-import { NewsletterCard } from './_components/newsletter-card'
+import { BodyReveal, CopyLinkButton, PostStyles, ReadingProgress } from './_components/post-effects'
 import { parseHeadings, slugifyId } from '@/lib/blog/headings'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { ogImageOr } from '@/lib/seo/default-og'
@@ -71,10 +72,20 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
   const allPosts = await listPublishedPosts()
   const related = allPosts
     .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
-    .slice(0, 4)
+    .slice(0, 3)
+
+  // Thời gian đọc: khoảng 220 từ mỗi phút.
+  const minutes = Math.max(1, Math.round(content.split(/\s+/).filter(Boolean).length / 220))
+  const dateFmt: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' }
+  const publishedLabel = post.published_at ? new Date(post.published_at).toLocaleDateString(locale, dateFmt) : ''
+  // Chỉ hiện "cập nhật" khi sửa sau ngày đăng ít nhất một ngày.
+  const showUpdated =
+    !!post.published_at && new Date(post.updated_at).getTime() - new Date(post.published_at).getTime() > 24 * 3600 * 1000
+  const updatedLabel = showUpdated ? new Date(post.updated_at).toLocaleDateString(locale, dateFmt) : ''
 
   const settings = await getSiteSettings()
   const zaloUrl = settings?.zalo_url
+  const postUrl = `${settings?.site_url || SITE_URL}${localizePath(`/blog/${slug}`, lang)}`
 
   const postSchema = blogPostingSchema({
     title,
@@ -98,228 +109,227 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
   return (
     <div className="min-h-screen bg-background">
       <JsonLd data={[postSchema, crumbs]} />
+      <PostStyles />
+      <ReadingProgress />
       <MainNav />
 
-      <article className="pt-12 lg:pt-16 pb-16 lg:pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <article id="bp-article" className="pt-12 lg:pt-16 pb-16 lg:pb-24">
+        {/* Đầu bài: một cột hẹp ở giữa để mắt tập trung vào tiêu đề */}
+        <header className="max-w-[760px] mx-auto px-4 sm:px-6">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-6"
+            className="bp-up group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-7"
           >
-            <ArrowLeft className="w-4 h-4" />
-            {t('Quay lại danh sách', 'Back to list')}
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Blog
           </Link>
 
-          {/* Layout: 3 columns desktop — ToC left | content center | sidebar right */}
-          <div className="grid lg:grid-cols-[200px_minmax(0,1fr)_300px] gap-8 lg:gap-12">
-            {/* LEFT — Table of Contents (mobile = collapsible top, desktop = sticky left) */}
-            <aside className="order-2 lg:order-1">
-              <TableOfContents headings={headings} />
-            </aside>
+          <div className="bp-up flex flex-wrap gap-2 mb-5" style={{ ['--d' as string]: '.05s' }}>
+            {post.tags.map((tag) => (
+              <span key={tag} className="text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-[#144c97]">
+                {tagLabel(lang, tag)}
+              </span>
+            ))}
+          </div>
 
-            {/* CENTER — Article content */}
-            <div className="order-1 lg:order-2 min-w-0">
-              <div className="flex flex-wrap gap-2 mb-4">
-                {post.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs font-semibold px-3 py-1 rounded-full bg-primary/10 text-[#144c97]"
-                  >
-                    {tagLabel(lang, tag)}
-                  </span>
-                ))}
-              </div>
+          <h1
+            className="bp-up text-[30px] sm:text-4xl lg:text-[44px] font-bold text-foreground leading-[1.12] tracking-[-0.025em] text-balance"
+            style={{ ['--d' as string]: '.12s' }}
+          >
+            {title}
+          </h1>
 
-              <h1 className="text-[26px] sm:text-3xl lg:text-[32px] font-bold text-foreground leading-[1.25] tracking-tight mb-4 text-balance">
-                {title}
-              </h1>
+          <div
+            className="bp-up mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-muted-foreground"
+            style={{ ['--d' as string]: '.2s' }}
+          >
+            <span className="inline-flex items-center gap-2.5">
+              <span className="relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-zinc-950">
+                <svg viewBox="0 0 24 24" className="bp-star h-4 w-4" aria-hidden="true">
+                  <polygon points="12,2 14.9,8.6 22,9.3 16.6,14 18.2,21 12,17.4 5.8,21 7.4,14 2,9.3 9.1,8.6" fill="#4f93f5" stroke="#bfdcff" strokeWidth="0.8" strokeLinejoin="round" />
+                </svg>
+              </span>
+              <span className="font-medium text-foreground">Click Star Team</span>
+            </span>
+            {publishedLabel && (
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar className="w-4 h-4" />
+                {publishedLabel}
+              </span>
+            )}
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="w-4 h-4" />
+              {t(`${minutes} phút đọc`, `${minutes} min read`)}
+            </span>
+            {updatedLabel && (
+              <span className="text-xs">
+                {t('Cập nhật', 'Updated')} {updatedLabel}
+              </span>
+            )}
+          </div>
+        </header>
 
-              {post.published_at && (
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground mb-8">
-                  <Calendar className="w-4 h-4" />
-                  {new Date(post.published_at).toLocaleDateString(locale, {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    timeZone: 'Asia/Ho_Chi_Minh',
-                  })}
-                </div>
-              )}
-
-              {post.cover_image && (
-                <div className="relative aspect-video rounded-2xl overflow-hidden mb-10">
-                  <Image quality={95}
-                    src={post.cover_image}
-                    alt={title}
-                    fill
-                    priority
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 800px"
-                  />
-                </div>
-              )}
-
-              {excerpt && (
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8 italic border-l-4 border-primary/30 pl-4">
-                  {excerpt}
-                </p>
-              )}
-
-              <div className="prose prose-slate dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl lg:prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-lg lg:prose-h3:text-xl prose-h3:mt-6 prose-h3:scroll-mt-24 prose-p:leading-relaxed prose-p:text-justify prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-xl prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
-                <ReactMarkdown
-                  components={{
-                    // Trang đã có đúng một <h1> (tiêu đề bài). "# ..." trong nội dung được hạ thành <h2>.
-                    h1: ({ children }) => {
-                      const id = slugifyId(extractText(children))
-                      return <h2 id={id}>{children}</h2>
-                    },
-                    h2: ({ children }) => {
-                      const id = slugifyId(extractText(children))
-                      return <h2 id={id}>{children}</h2>
-                    },
-                    h3: ({ children }) => {
-                      const id = slugifyId(extractText(children))
-                      return <h3 id={id}>{children}</h3>
-                    },
-                    // Liên kết nội bộ trong bài tự trỏ sang bản /en khi đang xem bản tiếng Anh
-                    a: ({ node: _n, ...props }) => <MarkdownLink {...props} />,
-                    // Ảnh minh họa trong bài nằm dưới màn hình đầu: tải trễ để không tranh băng thông với ảnh bìa (LCP) và CSS/JS.
-                    img: ({ node: _node, alt, ...props }) => (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img {...props} alt={alt ?? ''} loading="lazy" decoding="async" />
-                    ),
-                  }}
-                >
-                  {content}
-                </ReactMarkdown>
-              </div>
-
-              {/* End of article CTA */}
-              <div className="mt-12 pt-8 border-t border-border">
-                <div className="bg-[#f5f5f7] border border-primary/20 rounded-2xl p-6 lg:p-8 text-center">
-                  <h3 className="text-xl font-extrabold text-foreground mb-2">
-                    {t('Cần tư vấn cụ thể cho doanh nghiệp?', 'Need tailored advice for your business?')}
-                  </h3>
-                  <p className="text-muted-foreground mb-5 text-sm">
-                    {t(
-                      'Click Star sẽ giúp anh/chị xây dựng giải pháp phù hợp ngành nghề và quy mô.',
-                      'Click Star will help you build a solution that fits your industry and scale.',
-                    )}
-                  </p>
-                  <Link
-                    href="/contact"
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-full transition-all hover:shadow-lg hover:shadow-primary/30"
-                  >
-                    {t('Đặt lịch tư vấn miễn phí', 'Book a free consultation')}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
-              </div>
+        {post.cover_image && (
+          <div className="max-w-[980px] mx-auto px-4 sm:px-6 mt-9">
+            <div className="bp-cover relative aspect-video rounded-3xl overflow-hidden bg-muted shadow-[0_24px_60px_-28px_rgba(15,23,42,0.35)]">
+              <Image
+                quality={95}
+                src={post.cover_image}
+                alt={title}
+                fill
+                priority
+                className="bp-zoom object-cover"
+                sizes="(max-width: 1024px) 100vw, 980px"
+              />
             </div>
+          </div>
+        )}
 
-            {/* RIGHT — Sidebar (mobile = below content, desktop = sticky right) */}
-            <aside className="order-3 space-y-6 lg:sticky lg:top-24 lg:self-start">
-              {/* CTA tư vấn nhanh */}
-              <div className="bg-foreground text-background rounded-2xl p-6">
-                <h3 className="text-base font-bold mb-2">{t('Hỗ trợ trực tiếp', 'Talk to us directly')}</h3>
-                <p className="text-xs text-white/60 mb-4">
-                  {t('Trả lời mọi câu hỏi trong giờ làm việc', 'We answer every question during business hours')}
-                </p>
-                <div className="space-y-2">
-                  <Link
-                    href="/contact"
-                    className="flex items-center gap-2 px-3 py-2 bg-primary hover:bg-primary-dark rounded-lg text-sm font-semibold transition-colors"
-                  >
-                    <Phone className="w-4 h-4" />
-                    {t('Liên hệ tư vấn', 'Contact us for advice')}
-                  </Link>
-                  {zaloUrl && (
-                    <a
-                      href={zaloUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-3 py-2 bg-[#1e6dda] hover:bg-[#1e6dda] rounded-lg text-sm font-semibold transition-colors"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      {t('Chat Zalo', 'Chat on Zalo')}
-                    </a>
-                  )}
-                </div>
-              </div>
+        <div className="max-w-[720px] mx-auto px-4 sm:px-6 mt-10">
+          <TableOfContents headings={headings} />
 
-              {/* Newsletter */}
-              <NewsletterCard />
+          {excerpt && (
+            <p className="bp-up mt-9 text-xl sm:text-[22px] leading-[1.6] text-foreground/75 text-pretty" style={{ ['--d' as string]: '.5s' }}>
+              {excerpt}
+            </p>
+          )}
 
-              {/* Related posts */}
-              {related.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    {t('Bài liên quan', 'Related posts')}
-                  </h3>
-                  <ul className="space-y-3">
-                    {related.map((p) => {
-                      const rTitle = pickI18n(lang, p.title)
-                      return (
-                        <li key={p.id}>
-                          <Link
-                            href={`/blog/${p.slug}`}
-                            className="group flex gap-3 items-start"
-                          >
-                            {p.cover_image && (
-                              <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-muted flex-shrink-0">
-                                <Image quality={95}
-                                  src={p.cover_image}
-                                  alt={rTitle}
-                                  fill
-                                  className="object-cover group-hover:scale-105 transition-transform"
-                                  sizes="64px"
-                                />
-                              </div>
-                            )}
-                            <div className="min-w-0 flex-1">
-                              <h4 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2 leading-snug">
-                                {rTitle}
-                              </h4>
-                              {p.published_at && (
-                                <p className="text-[11px] text-muted-foreground mt-1">
-                                  {new Date(p.published_at).toLocaleDateString(locale, {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                    timeZone: 'Asia/Ho_Chi_Minh',
-                                  })}
-                                </p>
-                              )}
-                            </div>
-                          </Link>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </div>
-              )}
+          <BodyReveal className="bp-prose prose prose-slate dark:prose-invert max-w-none mt-9 prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl lg:prose-h2:text-[28px] prose-h2:mt-14 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-xl prose-h3:mt-8 prose-h3:scroll-mt-24 prose-p:leading-[1.8] prose-li:leading-[1.75] prose-img:rounded-2xl prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
+            <ReactMarkdown
+              components={{
+                // Trang đã có đúng một <h1> (tiêu đề bài). "# ..." trong nội dung được hạ thành <h2>.
+                h1: ({ children }) => {
+                  const id = slugifyId(extractText(children))
+                  return <h2 id={id}>{children}</h2>
+                },
+                h2: ({ children }) => {
+                  const id = slugifyId(extractText(children))
+                  return <h2 id={id}>{children}</h2>
+                },
+                h3: ({ children }) => {
+                  const id = slugifyId(extractText(children))
+                  return <h3 id={id}>{children}</h3>
+                },
+                // Liên kết nội bộ trong bài tự trỏ sang bản /en khi đang xem bản tiếng Anh
+                a: ({ node: _n, ...props }) => <MarkdownLink {...props} />,
+                // Ảnh minh họa trong bài nằm dưới màn hình đầu: tải trễ để không tranh băng thông với ảnh bìa (LCP) và CSS/JS.
+                img: ({ node: _node, alt, ...props }) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img {...props} alt={alt ?? ''} loading="lazy" decoding="async" />
+                ),
+              }}
+            >
+              {content}
+            </ReactMarkdown>
+          </BodyReveal>
 
-              {/* Tags */}
-              {post.tags.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    {t('Chủ đề', 'Topics')}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-3 py-1 rounded-full bg-secondary text-foreground"
-                      >
-                        {tagLabel(lang, tag)}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </aside>
+          {/* Chia sẻ */}
+          <div className="mt-14 pt-7 border-t border-border flex flex-wrap items-center gap-3">
+            <span className="text-sm font-semibold text-foreground mr-1">{t('Chia sẻ bài viết', 'Share this article')}</span>
+            <CopyLinkButton url={postUrl} />
+            <a
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center h-10 px-4 rounded-full border border-border bg-background text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+            >
+              LinkedIn
+            </a>
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center h-10 px-4 rounded-full border border-border bg-background text-sm font-medium text-foreground hover:border-primary hover:text-primary transition-colors"
+            >
+              Facebook
+            </a>
           </div>
         </div>
+
+        {/* Bài liên quan: ba thẻ */}
+        {related.length > 0 && (
+          <section className="max-w-[1080px] mx-auto px-4 sm:px-6 mt-20" aria-labelledby="bp-related">
+            <h2 id="bp-related" className="text-xl sm:text-2xl font-bold text-foreground tracking-tight mb-6">
+              {t('Bài liên quan', 'Related posts')}
+            </h2>
+            <ul className="grid gap-5 md:grid-cols-3">
+              {related.map((p, i) => {
+                const rTitle = pickI18n(lang, p.title)
+                return (
+                  <li key={p.id} className="bp-up" style={{ ['--d' as string]: `${i * 0.08}s` }}>
+                    <Link
+                      href={`/blog/${p.slug}`}
+                      className="group block h-full rounded-2xl border border-border bg-background overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_18px_40px_-24px_rgba(15,23,42,0.35)]"
+                    >
+                      <div className="relative aspect-[16/10] bg-muted overflow-hidden">
+                        {p.cover_image && (
+                          <Image
+                            quality={90}
+                            src={p.cover_image}
+                            alt={rTitle}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, 340px"
+                          />
+                        )}
+                      </div>
+                      <div className="p-5">
+                        {p.published_at && (
+                          <p className="text-xs text-muted-foreground mb-2">
+                            {new Date(p.published_at).toLocaleDateString(locale, { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' })}
+                          </p>
+                        )}
+                        <h3 className="text-base font-semibold text-foreground leading-snug line-clamp-3 group-hover:text-primary transition-colors">
+                          {rTitle}
+                        </h3>
+                        <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+                          {t('Đọc tiếp', 'Read more')}
+                          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )}
+
+        {/* Kêu gọi liên hệ: một khối tối ở cuối bài */}
+        <section className="max-w-[1080px] mx-auto px-4 sm:px-6 mt-16">
+          <div className="bp-glow rounded-3xl bg-zinc-950 text-white px-6 py-10 sm:px-12 sm:py-14 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-balance">
+              {t('Cần tư vấn cụ thể cho doanh nghiệp?', 'Need tailored advice for your business?')}
+            </h2>
+            <p className="mt-3 mx-auto max-w-xl text-sm sm:text-base text-zinc-300">
+              {t(
+                'Click Star giúp anh/chị xây dựng giải pháp phù hợp ngành nghề và quy mô. Trả lời mọi câu hỏi trong giờ làm việc.',
+                'Click Star helps you build a solution that fits your industry and scale. We answer every question during business hours.',
+              )}
+            </p>
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-full transition-all hover:shadow-lg hover:shadow-primary/30"
+              >
+                <Phone className="w-4 h-4" />
+                {t('Đặt lịch tư vấn miễn phí', 'Book a free consultation')}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              {zaloUrl && (
+                <a
+                  href={zaloUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/25 hover:border-white/60 text-white font-semibold transition-colors"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  {t('Chat Zalo', 'Chat on Zalo')}
+                </a>
+              )}
+            </div>
+          </div>
+        </section>
       </article>
 
       <Footer />
