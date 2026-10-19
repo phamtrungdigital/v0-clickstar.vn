@@ -2,12 +2,24 @@
 
 import { useState } from 'react'
 import Link from '@/components/app-link'
-import { ArrowRight, Minus, Plus } from 'lucide-react'
+import { ArrowRight, BookOpen, Layers, MessageCircleQuestion, Minus, Plus, Zap } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import { SERVICE_FAQ } from '@/lib/seo/service-faq'
 import { faqPageSchema } from '@/lib/seo/schema'
 
 type Both = { vi: string; en: string }
+
+/** Huy hiệu nhỏ đứng trên tiêu đề khối: nền xanh nhạt, viền xanh, bo tròn, có biểu tượng, cùng gam với các nút của site. */
+function Eyebrow({ icon: Icon, children }: { icon: React.ComponentType<{ className?: string }>; children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 rounded-full border border-[#b9d4f8] bg-[#eaf2fd] py-1.5 pl-3 pr-4 text-[13px] font-semibold tracking-[-0.01em] text-[#144c97]">
+      <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#1e6dda] text-white">
+        <Icon className="h-3 w-3" />
+      </span>
+      {children}
+    </span>
+  )
+}
 
 /**
  * Đoạn trả lời trực tiếp ngay dưới phần đầu mỗi trang dịch vụ: câu hỏi khách hay hỏi và câu trả lời gọn có số liệu,
@@ -80,8 +92,8 @@ export function ServiceAnswer({ slug }: { slug: string }) {
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-10 lg:py-12" aria-labelledby={`sa-${slug}`}>
       <div className="mx-auto max-w-4xl rounded-2xl border border-[#cfe0f7] bg-[#f3f8ff] px-6 py-6 sm:px-8 sm:py-7">
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1559b8]">{t('Trả lời nhanh', 'Quick answer')}</p>
-        <h2 id={`sa-${slug}`} className="mt-2 text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f]">
+        <Eyebrow icon={Zap}>{t('Trả lời nhanh', 'Quick answer')}</Eyebrow>
+        <h2 id={`sa-${slug}`} className="mt-4 text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f]">
           {t(item.q.vi, item.q.en)}
         </h2>
         <p className="mt-3 text-base sm:text-[17px] leading-relaxed text-[#3a3a3c]">{t(item.a.vi, item.a.en)}</p>
@@ -103,8 +115,8 @@ export function ServiceFaq({ slug }: { slug: string }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema(items, language === 'en' ? 'en' : 'vi')) }}
       />
       <div className="mx-auto max-w-4xl">
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1559b8]">{t('Câu hỏi thường gặp', 'FAQ')}</p>
-        <h2 id={`faq-${slug}`} className="mt-2 text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f]">
+        <Eyebrow icon={MessageCircleQuestion}>{t('Câu hỏi thường gặp', 'FAQ')}</Eyebrow>
+        <h2 id={`faq-${slug}`} className="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-[#1d1d1f]">
           {t('Những điều doanh nghiệp hay hỏi trước khi bắt đầu', 'What businesses ask before they start')}
         </h2>
         <div className="mt-8 border-t border-[#e0e0e0]">
@@ -191,7 +203,8 @@ export function ServiceReadMore({ slug }: { slug: string }) {
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-12 lg:py-14" aria-labelledby={`srm-${slug}`}>
       <div className="mx-auto max-w-4xl">
-        <h2 id={`srm-${slug}`} className="text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f]">
+        <Eyebrow icon={BookOpen}>{t('Đọc thêm', 'Read more')}</Eyebrow>
+        <h2 id={`srm-${slug}`} className="mt-4 text-xl sm:text-2xl font-bold tracking-tight text-[#1d1d1f]">
           {t('Bài viết nên đọc tiếp', 'Further reading')}
         </h2>
         <ul className="mt-4 divide-y divide-[#e5e7eb] rounded-2xl border border-[#e5e7eb] bg-white">
@@ -267,8 +280,8 @@ export function RelatedServices({ postSlug, tags }: { postSlug: string; tags: st
   if (!slugs.length) return null
   return (
     <aside className="mt-8 rounded-2xl border border-[#cfe0f7] bg-[#f3f8ff] p-5" aria-label={t('Dịch vụ liên quan', 'Related services')}>
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#1559b8]">{t('Dịch vụ liên quan', 'Related services')}</p>
-      <ul className="mt-3 flex flex-col gap-2">
+      <Eyebrow icon={Layers}>{t('Dịch vụ liên quan', 'Related services')}</Eyebrow>
+      <ul className="mt-4 flex flex-col gap-2">
         {slugs.map((s) => (
           <li key={s}>
             <Link
