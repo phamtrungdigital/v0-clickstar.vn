@@ -34,18 +34,18 @@ export default async function LoginPage({
           <span className="text-[10px] font-medium tracking-[0.1em] px-1.5 py-0.5 rounded-md border border-orange-400/35 text-orange-400">ADMIN</span>
         </div>
 
-        <div className="relative z-10 mt-auto max-w-[400px]">
+        <div className="relative z-10 mt-auto max-w-[500px]">
           <p className="mb-4 text-[11px] font-medium tracking-[0.16em] text-orange-400">AI-POWERED DIGITAL GROWTH</p>
-          <h1 className="text-[34px] font-medium leading-[1.12] tracking-[-0.022em]">
+          <h1 className="max-w-[400px] text-[34px] font-medium leading-[1.12] tracking-[-0.022em]">
             Where data, marketing and <span className="text-[#6aa9ff]">AI</span> work as one.
           </h1>
-          <p className="mt-4 text-[15px] leading-relaxed text-zinc-400">
+          <p className="mt-4 max-w-[400px] text-[15px] leading-relaxed text-zinc-400">
             The control center for clickstar.vn: content, SEO, leads and the AI products we build for business.
           </p>
-          <ul className="mt-8 flex flex-wrap items-center gap-y-1.5 border-t border-zinc-800 pt-5 text-[13px] text-zinc-300">
+          <ul className="mt-8 flex flex-wrap items-center gap-y-1.5 border-t border-zinc-800 pt-5 text-[12.5px] text-zinc-300">
             {['Speech Insight AI', 'ADS hub', 'Click Star AI', 'CRM and automation'].map((name, i) => (
               <li key={name} className="flex items-center">
-                {i > 0 && <span className="mx-3 h-[3px] w-[3px] rounded-full bg-zinc-600" aria-hidden="true" />}
+                {i > 0 && <span className="mx-2.5 h-[3px] w-[3px] rounded-full bg-zinc-600" aria-hidden="true" />}
                 {name}
               </li>
             ))}
