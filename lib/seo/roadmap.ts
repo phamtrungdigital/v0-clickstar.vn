@@ -26,7 +26,7 @@ export type RoadmapItem = {
 
 export type RoadmapGroup = { id: string; title: string; hint: string; items: RoadmapItem[] }
 
-export const ROADMAP_UPDATED = '19/10/2026'
+export const ROADMAP_UPDATED = '20/10/2026'
 
 export const ROADMAP: RoadmapGroup[] = [
   {
@@ -51,9 +51,9 @@ export const ROADMAP: RoadmapGroup[] = [
         note: 'Chưa đụng font chữ: đổi sang font biến thiên sẽ giảm tải thêm nhưng làm đổi nét chữ, cần quản trị viên duyệt bằng mắt.',
       },
       {
-        id: 'tech-404', title: 'Bài viết hoặc dự án không tồn tại trả mã 404 thật', status: 'todo', who: 'Kỹ thuật',
-        why: 'Hiện trả 200 kèm noindex (Google gọi là soft 404), làm báo cáo Search Console khó đọc.',
-        steps: ['Kiểm tra vì sao trang động bị giữ mã 200 (do màn chờ loading.tsx)', 'Sửa để trả 404 và chạy lại kiểm tra Googlebot'],
+        id: 'tech-404', title: 'Bài viết hoặc dự án không tồn tại trả mã 404 thật', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'Trước đây trả 200 kèm noindex (Google gọi là soft 404), làm báo cáo Search Console khó đọc.',
+        steps: ['Nguyên nhân: màn chờ loading.tsx khiến mã 200 được gửi đi trước khi trang kiểm tra bài có tồn tại', 'Nay kiểm ngay ở lớp proxy trước khi dựng trang: bài, dự án không có hoặc còn nháp trả 404 thật, cả bản /en', 'Lỗi mạng hay DB chậm thì cho qua như cũ, không chặn nhầm trang thật'],
       },
     ],
   },
@@ -95,7 +95,7 @@ export const ROADMAP: RoadmapGroup[] = [
     hint: 'Bản tiếng Việt và tiếng Anh có địa chỉ riêng.',
     items: [
       {
-        id: 'i18n-en', title: 'Tiếng Anh có địa chỉ riêng /en, hreflang hai chiều, sitemap 73 địa chỉ', status: 'done', who: 'Kỹ thuật', date: '19/10',
+        id: 'i18n-en', title: 'Tiếng Anh có địa chỉ riêng /en, hreflang hai chiều, sitemap 83 địa chỉ', status: 'done', who: 'Kỹ thuật', date: '19/10',
         why: 'Google và AI phục vụ đúng ngôn ngữ cho đúng người, không trộn hai bản vào một địa chỉ.',
         steps: ['Tiếng Việt giữ nguyên địa chỉ cũ', 'Mỗi trang có cặp vi, en, x-default', 'Bản chưa dịch đủ thì noindex'],
       },
@@ -129,9 +129,9 @@ export const ROADMAP: RoadmapGroup[] = [
         note: 'Trang tĩnh bọc nội dung trong khối ẩn chờ nạp, chữ vẫn nằm trong HTML nên bot đọc được. Trình duyệt tắt JS thì không thấy: chỉ ảnh hưởng người tắt JS.',
       },
       {
-        id: 'ai-llms', title: 'Tạo tệp /llms.txt giới thiệu site cho AI', status: 'todo', who: 'Kỹ thuật', prio: 'cao',
-        why: 'Một trang chữ thuần liệt kê Click Star là gì, làm gì và các trang quan trọng, để AI nắm nhanh. Hiện /llms.txt trả 404.',
-        steps: ['Soạn bản đầu: giới thiệu 3 câu, danh sách dịch vụ, dự án, bài blog nổi bật kèm mô tả một dòng', 'Tự cập nhật từ CMS để không bị cũ', 'Quản trị viên duyệt nội dung trước khi lên'],
+        id: 'ai-llms', title: 'Tạo tệp /llms.txt giới thiệu site cho AI', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'Một trang chữ thuần liệt kê Click Star là gì, làm gì và các trang quan trọng, để AI nắm nhanh.',
+        steps: ['Tự dựng từ dữ liệu đang đăng: giới thiệu, dịch vụ, bảng giá, dự án, 30 bài mới nhất, liên hệ', 'Làm mới mỗi giờ nên không bị cũ', 'Muốn đổi câu giới thiệu đầu tệp: sửa trong app/llms.txt/route.ts'],
         note: 'Chưa công cụ AI lớn nào cam kết dùng tệp này, nhưng chi phí thấp, làm một lần.',
       },
     ],
@@ -171,7 +171,7 @@ export const ROADMAP: RoadmapGroup[] = [
       {
         id: 'ai-author', title: 'Tác giả và người kiểm duyệt cho từng bài (E-E-A-T)', status: 'todo', who: 'Kỹ thuật',
         why: 'AI và Google đánh giá cao nội dung có người thật, có chuyên môn đứng tên.',
-        steps: ['Thêm khối tác giả cuối bài: tên, chức danh, link trang đội ngũ', 'Gắn dữ liệu Person cho tác giả trong BlogPosting', 'Quản trị viên chọn người đứng tên và cung cấp chức danh'],
+        steps: ['Đã có khối tác giả cấp đội ngũ (Click Star Team) cuối bài, dẫn sang trang Giới thiệu', 'Còn lại: đứng tên từng người: tên, chức danh, link trang đội ngũ', 'Gắn dữ liệu Person cho tác giả trong BlogPosting', 'Quản trị viên chọn người đứng tên và cung cấp chức danh'],
         note: 'Đội ngũ có sẵn ở trang chủ nên làm nhanh.',
       },
     ],
@@ -266,7 +266,7 @@ export const ROADMAP: RoadmapGroup[] = [
       },
       {
         id: 'sc-sitemap', title: 'Gửi sitemap.xml', status: 'mine', who: 'Quản trị', prio: 'cao',
-        why: 'Báo Google biết 73 địa chỉ (gồm bản /en).',
+        why: 'Báo Google biết 83 địa chỉ (gồm bản /en).',
         steps: ['Search Console → Sơ đồ trang web → nhập sitemap.xml → Gửi'],
       },
       {

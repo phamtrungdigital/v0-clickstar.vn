@@ -275,6 +275,31 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
               Facebook
             </a>
           </div>
+
+          {/* Tác giả: đội ngũ Click Star, dẫn sang trang Giới thiệu */}
+          <aside
+            className="mt-8 flex items-start gap-4 rounded-2xl border border-border bg-muted/40 p-5"
+            aria-label={t('Về tác giả', 'About the author')}
+          >
+            <span className="relative inline-flex h-11 w-11 flex-none items-center justify-center rounded-full bg-zinc-950 ring-4 ring-primary/10">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+                <polygon points="12,2 14.9,8.6 22,9.3 16.6,14 18.2,21 12,17.4 5.8,21 7.4,14 2,9.3 9.1,8.6" fill="#4f93f5" stroke="#bfdcff" strokeWidth="0.8" strokeLinejoin="round" />
+              </svg>
+            </span>
+            <div className="min-w-0">
+              <p className="font-semibold text-foreground">Click Star Team</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                {t(
+                  'Bài viết do đội ngũ Click Star biên soạn và rà soát, dựa trên tài liệu chính thức và kinh nghiệm triển khai cho doanh nghiệp.',
+                  'This article was written and reviewed by the Click Star team, based on official documentation and our experience delivering projects for businesses.'
+                )}
+              </p>
+              <Link href="/about" className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                {t('Xem đội ngũ', 'Meet the team')}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </aside>
         </div>
 
         {/* Bài liên quan: ba thẻ */}
