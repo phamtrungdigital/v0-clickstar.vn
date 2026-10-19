@@ -9,7 +9,7 @@ export type SaveSeoInput = {
   kind: 'page' | 'service' | 'post'
   id: string
   vi: { title: string; desc: string }
-  /** Chỉ bài viết dùng bản tiếng Anh trong thẻ SEO; với trang thì bỏ qua và giữ nguyên giá trị cũ. */
+  /** Bản tiếng Anh (dùng cho /en/...). Thiếu thì giữ nguyên giá trị cũ. */
   en?: { title: string; desc: string }
   og: string
 }
@@ -87,9 +87,9 @@ export async function saveSeoItem(input: SaveSeoInput): Promise<SaveSeoResult> {
   const { data: done, error } = await supabase
     .from('pages')
     .update({
-      // Giữ nguyên bản tiếng Anh cũ: thẻ SEO của trang hiện chỉ dùng bản tiếng Việt.
-      seo_title: { ...(cur.seo_title ?? {}), vi: viTitle },
-      seo_description: { ...(cur.seo_description ?? {}), vi: viDesc },
+      // Chỉ ghi bản tiếng Anh khi form gửi lên; không gửi thì giữ nguyên giá trị cũ.
+      seo_title: { ...(cur.seo_title ?? {}), vi: viTitle, ...(input.en ? { en: clean(input.en.title, MAX_TITLE) } : {}) },
+      seo_description: { ...(cur.seo_description ?? {}), vi: viDesc, ...(input.en ? { en: clean(input.en.desc, MAX_DESC) } : {}) },
       og_image: og || null,
       updated_by: userData.user.id,
     })

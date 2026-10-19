@@ -12,6 +12,7 @@ import { EditLangProvider, LangSwitcher, useEditLang } from '@/lib/cms/edit-lang
 import { SeoPanel, TONE_TEXT } from '@/app/admin-cls/seo/_components/seo-panel'
 import { analyze, scoreTone, type SeoDraft, type SeoItem } from '@/lib/seo/admin-seo'
 import { SITE_URL } from '@/lib/seo/site'
+import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { cn } from '@/lib/utils'
 import { AiWholePost } from './ai-whole-post'
 import { AiCoverImage } from './ai-cover-image'
@@ -100,6 +101,7 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
     path: `/blog/${draft.slug || 'ten-bai-viet'}`,
     published: draft.status === 'published',
     editable: true,
+    hasEn: postHasEnglish({ title: draft.title, content: draft.content }),
     editHref: '',
     saved: seoDraft,
     fallback: {

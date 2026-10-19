@@ -40,6 +40,8 @@ export type SeoItem = {
   published: boolean
   /** Dự án chưa có ô SEO riêng nên chỉ xem. */
   editable: boolean
+  /** Đã có bản tiếng Anh đủ nội dung (bản /en được lập chỉ mục và có hreflang). */
+  hasEn: boolean
   editHref: string
   saved: SeoDraft
   /** Giá trị hệ thống dùng khi ô SEO để trống (tên trang, tóm tắt bài...). */
@@ -223,7 +225,7 @@ export function breadcrumbUrl(host: string, path: string): string {
 
 export type CheckLevel = 'ok' | 'warn' | 'bad' | 'unknown'
 export type SiteCheck = {
-  id: 'robots' | 'sitemap' | 'language' | 'hotline' | 'defaults' | 'duplicates' | 'ga4' | 'gsc'
+  id: 'robots' | 'sitemap' | 'english' | 'hotline' | 'defaults' | 'duplicates' | 'ga4' | 'gsc'
   level: CheckLevel
   title: string
   detail?: string

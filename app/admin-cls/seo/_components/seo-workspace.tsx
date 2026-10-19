@@ -365,7 +365,7 @@ function SeoDrawer({
         kind: item.kind as 'page' | 'service' | 'post',
         id: item.id,
         vi: next.vi,
-        en: item.kind === 'post' ? next.en : undefined,
+        en: next.en,
         og: next.og,
       })
       if ('error' in res) {
@@ -416,8 +416,8 @@ function SeoDrawer({
           )}
           {item.editable && !canEdit && <Note>Tài khoản này chỉ có quyền xem, không sửa được.</Note>}
 
-          {item.kind === 'post' && (
-            <div className="flex gap-1.5">
+          {(
+            <div className="flex items-center gap-1.5">
               {(['vi', 'en'] as const).map((l) => (
                 <button
                   key={l}
@@ -433,6 +433,14 @@ function SeoDrawer({
                   {l === 'vi' ? 'Tiếng Việt' : 'Tiếng Anh'}
                 </button>
               ))}
+              <span
+                className={cn(
+                  'ml-auto text-[11px]',
+                  item.hasEn ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-400'
+                )}
+              >
+                {item.hasEn ? 'Có bản /en được lập chỉ mục' : 'Bản /en chưa lập chỉ mục'}
+              </span>
             </div>
           )}
           <SeoPanel

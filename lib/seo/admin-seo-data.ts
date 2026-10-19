@@ -4,6 +4,8 @@ import sitemap from '@/app/sitemap'
 import { DEFAULT_HOTLINE, SITE_URL } from './site'
 import { fitTitle } from './metadata'
 import { duplicateGroups, measureTitle, type SeoItem, type SiteCheck } from './admin-seo'
+import { postHasEnglish } from '@/lib/cms/post-i18n'
+import { caseStudyHasEnglish } from '@/lib/cms/case-studies-types'
 
 type I18nRow = { vi?: string | null; en?: string | null } | null
 
@@ -20,11 +22,11 @@ export async function loadSeoItems(): Promise<SeoItem[]> {
       .order('slug'),
     supabase
       .from('posts')
-      .select('id, slug, title, excerpt, cover_image, status, seo_title, seo_description, og_image, published_at')
+      .select('id, slug, title, excerpt, content, cover_image, status, seo_title, seo_description, og_image, published_at')
       .order('published_at', { ascending: false, nullsFirst: true }),
     supabase
       .from('case_studies')
-      .select('id, slug, title_vi, title_en, summary_vi, summary_en, cover_image, status, sort_order')
+      .select('id, slug, title_vi, title_en, summary_vi, summary_en, body_en, cover_image, status, sort_order')
       .order('sort_order', { ascending: false }),
   ])
 
@@ -42,6 +44,8 @@ export async function loadSeoItems(): Promise<SeoItem[]> {
       path: p.slug === 'home' ? '/' : `/${p.slug}`,
       published: !!p.is_published,
       editable: true,
+      // Trang CMS có tiêu đề SEO tiếng Anh thì bản /en được lập chỉ mục (khớp lib/cms/page-metadata.ts)
+      hasEn: !!t.en.trim(),
       editHref: `/admin-cls/pages/${String(p.slug).replace(/\//g, '__')}/edit`,
       saved: {
         vi: { title: t.vi, desc: d.vi },
@@ -68,6 +72,7 @@ export async function loadSeoItems(): Promise<SeoItem[]> {
       path: `/blog/${p.slug}`,
       published: p.status === 'published',
       editable: true,
+      hasEn: postHasEnglish({ title: p.title, content: p.content }),
       editHref: `/admin-cls/posts/${p.id}/edit`,
       saved: {
         vi: { title: t.vi, desc: d.vi },
@@ -92,12 +97,14 @@ export async function loadSeoItems(): Promise<SeoItem[]> {
       path: `/projects/${p.slug}`,
       published: p.status === 'published',
       editable: false,
+      hasEn: caseStudyHasEnglish({ title_en: p.title_en, summary_en: p.summary_en, body_en: p.body_en }),
       editHref: `/admin-cls/projects/${p.id}/edit`,
       saved: { vi: { title: '', desc: '' }, en: { title: '', desc: '' }, og: '' },
       // Trang dự án tự rút tên dự án còn khoảng 46 ký tự để vừa khung Google (xem app/projects/[slug]/page.tsx).
       fallback: {
         vi: { title: fitTitle(s(p.title_vi), 46), desc: s(p.summary_vi) },
-        en: { title: fitTitle(s(p.title_vi), 46), desc: s(p.summary_vi) },
+        // Bản /en dùng tên và tóm tắt tiếng Anh của dự án (xem projectMetadata)
+        en: { title: fitTitle(s(p.title_en) || s(p.title_vi), 46), desc: s(p.summary_en) || s(p.summary_vi) },
       },
       ogFallback: s(p.cover_image),
       descFallbackNote: 'Lấy từ phần tóm tắt của dự án.',
@@ -202,12 +209,21 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
     checks.push({ id: 'sitemap', level: 'bad', title: 'Không tạo được sitemap', detail: 'Hệ thống không đọc được dữ liệu để tạo sitemap.' })
   }
 
-  // ngôn ngữ mặc định
+  // bản tiếng Anh (/en): chỉ lập chỉ mục những mục đã có bản dịch đủ nội dung
+  const live = items.filter((i) => i.published)
+  const noEn = live.filter((i) => !i.hasEn)
   checks.push({
-    id: 'language',
-    level: st.default_language === 'vi' ? 'ok' : 'warn',
-    title: st.default_language === 'vi' ? 'Ngôn ngữ mặc định: tiếng Việt' : `Ngôn ngữ mặc định đang là “${st.default_language ?? 'chưa đặt'}”`,
-    detail: st.default_language === 'vi' ? 'Đổi ở Cài đặt, mục ngôn ngữ mặc định.' : 'Thị trường chính là Việt Nam nên nên đặt tiếng Việt để Google thấy đúng ngôn ngữ.',
+    id: 'english',
+    level: noEn.length === 0 ? 'ok' : 'warn',
+    title:
+      noEn.length === 0
+        ? `Bản tiếng Anh (/en) đầy đủ: ${live.length} trang, bài viết, dự án`
+        : `Bản tiếng Anh (/en): ${live.length - noEn.length} trên ${live.length} mục đã đủ nội dung`,
+    detail:
+      noEn.length === 0
+        ? 'Mỗi mục có địa chỉ riêng ở /en và khai báo hreflang hai chiều với bản tiếng Việt.'
+        : 'Mục chưa có bản tiếng Anh vẫn mở được ở /en nhưng không được lập chỉ mục (noindex) và không khai báo hreflang.',
+    lines: noEn.length ? noEn.map((i) => `${i.label} (${i.path})`) : undefined,
   })
 
   // hotline thống nhất

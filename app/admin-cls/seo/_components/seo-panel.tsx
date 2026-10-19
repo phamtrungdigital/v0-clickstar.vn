@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { localizePath } from '@/lib/i18n/locale'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
 import {
   DESC_MAX,
@@ -94,7 +95,12 @@ export function SeoPanel({
 
   const fields = (
     <div className="space-y-4">
-      {lang === 'en' && <Note>Bản tiếng Anh chỉ hiện khi khách chuyển sang EN. Để trống thì dùng bản tiếng Việt.</Note>}
+      {lang === 'en' && (
+        <Note>
+          Bản tiếng Anh nằm ở <span className="font-medium">{localizePath(item.path, 'en')}</span>. Để trống thì dùng bản tiếng Việt.
+          {!item.hasEn && ' Mục này chưa đủ nội dung tiếng Anh nên bản /en chưa được lập chỉ mục.'}
+        </Note>
+      )}
 
       <div>
         <FieldHead label="Tiêu đề SEO" count={title.len} max={TITLE_MAX} level={title.level} />
@@ -204,7 +210,7 @@ export function SeoPanel({
             serp === 'm' && 'max-w-[360px]'
           )}
         >
-          <div className="text-[12px] text-slate-600 truncate">{breadcrumbUrl(host, item.path)}</div>
+          <div className="text-[12px] text-slate-600 truncate">{breadcrumbUrl(host, lang === 'en' ? localizePath(item.path, 'en') : item.path)}</div>
           <div className="text-[18px] leading-snug text-[#1a0dab] mt-0.5 break-words">{titleShown || 'Chưa có tiêu đề'}</div>
           <div className="text-[13px] leading-snug text-slate-600 mt-0.5 break-words">
             {descShown || 'Chưa có mô tả: Google sẽ tự chọn một đoạn trong trang.'}

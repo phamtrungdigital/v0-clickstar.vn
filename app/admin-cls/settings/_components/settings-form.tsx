@@ -116,12 +116,7 @@ function SettingsFormInner({ initial }: { initial: SiteSettings }) {
         <I18nInput label="Tagline" value={draft.tagline} onChange={(v) => update('tagline', v)} />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <TextInput label="URL website" value={draft.site_url} onChange={(v) => update('site_url', v)} />
-          <TextInput
-            label="Ngôn ngữ mặc định"
-            value={draft.default_language}
-            onChange={(v) => update('default_language', (v === 'en' ? 'en' : 'vi') as 'vi' | 'en')}
-            hint="vi hoặc en"
-          />
+          {/* Ngôn ngữ không còn chọn ở đây: tiếng Việt ở địa chỉ gốc, tiếng Anh ở /en (xem lib/i18n/locale.ts) */}
         </div>
       </Section>
 
