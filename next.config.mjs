@@ -6,6 +6,9 @@ const nextConfig = {
   experimental: {
     // Tree-shake import từ barrel (icon/date) → giảm JS client (landing + admin).
     optimizePackageImports: ['lucide-react', 'date-fns'],
+    // Nhúng CSS thẳng vào HTML: tệp CSS chặn việc vẽ trang nên trước đây phải tranh băng thông với ~280 KB JS và font,
+    // về muộn ~3 giây trên mạng chậm (đo bằng Playwright, Pixel 7, 1,6 Mbps) trong khi HTML + CSS riêng lẻ vẽ sau ~0,9 giây.
+    inlineCss: true,
   },
   images: {
     formats: ['image/avif', 'image/webp'],
