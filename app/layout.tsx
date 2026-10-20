@@ -15,7 +15,7 @@ import { HtmlRoot } from '@/components/html-root'
 import { BodyCode, HeadCode } from '@/components/site-code'
 import { getEnabledSnippets } from '@/lib/cms/code-snippets'
 import { SITE_URL, BRAND } from '@/lib/seo/site'
-import './globals.css'
+import './site.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],

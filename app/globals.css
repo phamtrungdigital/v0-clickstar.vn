@@ -1,14 +1,5 @@
-/* Chỉ quét mã của trang khách: khu quản trị có tệp CSS riêng (app/admin-cls/admin.css), nhờ vậy CSS nhúng vào
-   mọi trang khách nhỏ hơn hẳn. Thêm thư mục mã mới có class Tailwind cho trang khách thì phải thêm @source ở đây. */
-@import 'tailwindcss' source(none);
-@source '../app';
-@source '../components';
-@source '../lib';
-@source '../contexts';
-@source '../hooks';
-@source not '../app/admin-cls';
-@source not '../components/admin';
-@import 'tw-animate-css';
+/* Theme và CSS dùng chung. Không tự nạp Tailwind: tệp vào của trang khách là app/site.css,
+   của khu quản trị là app/admin-cls/admin.css (mỗi tệp tự chọn phạm vi quét class). */
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));

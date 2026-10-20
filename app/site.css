@@ -1,0 +1,14 @@
+/* Tệp CSS vào của mọi trang (nạp ở app/layout.tsx). Chỉ quét mã trang khách: khu quản trị có tệp riêng
+   (app/admin-cls/admin.css) nên CSS nhúng vào trang khách nhỏ hơn hẳn.
+   Thêm thư mục mã mới có class Tailwind cho trang khách thì phải thêm @source ở đây. */
+@import 'tailwindcss' source(none);
+@import 'tw-animate-css';
+@import './globals.css';
+
+@source '../app';
+@source '../components';
+@source '../lib';
+@source '../contexts';
+@source '../hooks';
+@source not '../app/admin-cls';
+@source not '../components/admin';
