@@ -50,7 +50,7 @@ function SettingsFormInner({ initial, codeSection }: { initial: SiteSettings; co
   }
 
   return (
-    <div className="space-y-3 max-w-3xl">
+    <div className="space-y-3 max-w-[1500px]">
       <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
         <div>
           <h1 className="text-base font-semibold text-slate-900 dark:text-white">Cài đặt</h1>
@@ -113,6 +113,8 @@ function SettingsFormInner({ initial, codeSection }: { initial: SiteSettings; co
         </div>
       </Section>
 
+      {/* Các mục nhập liệu: màn rộng chia 2 cột tự cân bằng, màn hẹp xếp 1 cột */}
+      <div className="xl:columns-2 xl:gap-3 [&>*]:mb-3 [&>*]:break-inside-avoid">
       {/* General info */}
       <Section icon={<Globe className="w-4 h-4 text-slate-400" />} title="Thông tin website">
         <I18nInput label="Tên website" value={draft.site_name} onChange={(v) => update('site_name', v)} />
@@ -165,14 +167,8 @@ function SettingsFormInner({ initial, codeSection }: { initial: SiteSettings; co
           onChange={(v) => update('default_seo_description', v)}
         />
         <p className="text-[10px] text-slate-500">
-          OG image mặc định: cấu hình ở section "Branding" phía trên.
+          OG image mặc định: cấu hình ở mục "Branding" ở đầu trang.
         </p>
-      </Section>
-
-      {/* Mã tuỳ chỉnh (head, body, footer): quản lý và lưu riêng, xem code-snippets-manager.tsx */}
-      <Section icon={<Code2 className="w-4 h-4 text-slate-400" />} title="Mã tuỳ chỉnh (head, body, footer)">
-        <p className="text-[10px] text-slate-500">Mục này lưu ngay khi bấm từng nút, không cần nút Lưu ở trên.</p>
-        {codeSection}
       </Section>
 
       {/* Kết nối CRM */}
@@ -181,6 +177,13 @@ function SettingsFormInner({ initial, codeSection }: { initial: SiteSettings; co
           enabled={draft.crm_sync_enabled}
           onToggle={(v) => update('crm_sync_enabled', v)}
         />
+      </Section>
+      </div>
+
+      {/* Mã tuỳ chỉnh (head, body, footer): quản lý và lưu riêng, xem code-snippets-manager.tsx */}
+      <Section icon={<Code2 className="w-4 h-4 text-slate-400" />} title="Mã tuỳ chỉnh (head, body, footer)">
+        <p className="text-[10px] text-slate-500">Mục này lưu ngay khi bấm từng nút, không cần nút Lưu ở trên.</p>
+        {codeSection}
       </Section>
     </div>
   )
@@ -209,6 +212,8 @@ function CrmConnectionSection({
     try {
       const res = await fetch('/api/admin/crm-status', { cache: 'no-store' })
       const data = (await res.json()) as CrmStatus
+      // API trả lỗi (hết phiên, lỗi máy chủ) thì không có `env`: coi như không gọi được, kẻo cả trang Cài đặt bị lỗi trắng.
+      if (!data?.env) throw new Error('crm-status không hợp lệ')
       setStatus(data)
     } catch {
       setStatus({
