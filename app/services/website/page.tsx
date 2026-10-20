@@ -38,7 +38,6 @@ import {
   Utensils,
   ArrowUpRight,
   Play,
-  Star,
   Clock,
   Monitor,
   Settings,
@@ -322,24 +321,6 @@ export default function WebsiteDesignPage() {
     },
   ]
 
-  const portfolioItems = [
-    {
-      title: 'TechVision Corp',
-      category: language === 'vi' ? 'Website Doanh nghiệp' : 'Corporate Website',
-      image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=1000&fit=crop',
-    },
-    {
-      title: 'Fashion Store',
-      category: language === 'vi' ? 'E-commerce' : 'E-commerce',
-      image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&h=1000&fit=crop',
-    },
-    {
-      title: 'EduLearn Platform',
-      category: language === 'vi' ? 'Website Giáo dục' : 'Education Website',
-      image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1600&h=1000&fit=crop',
-    },
-  ]
-
   const colorMap: Record<string, string> = {
     blue: 'from-[#1e6dda] to-[#1e6dda]',
     emerald: 'from-[#1e6dda] to-[#1e6dda]',
@@ -389,7 +370,7 @@ export default function WebsiteDesignPage() {
                 <Link href="/contact" className="ap-btn ap-btn-primary">
                   {t('Nhận báo giá miễn phí', 'Get free quote')}
                 </Link>
-                <Link href="#portfolio" className="ap-btn ap-btn-ghost">
+                <Link href="/projects" className="ap-btn ap-btn-ghost">
                   {t('Xem Portfolio', 'View Portfolio')}
                 </Link>
               </div>
@@ -673,49 +654,6 @@ export default function WebsiteDesignPage() {
           </div>
         </section>
 
-        {/* Dự án tiêu biểu */}
-        <section id="portfolio" className="py-16 lg:py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 text-center lg:mb-14">
-              <Eyebrow className="mb-3">
-                <Star className="h-4 w-4" />
-                {t('DỰ ÁN TIÊU BIỂU', 'FEATURED PROJECTS')}
-              </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
-                {t('Dự án ', 'Featured ')}
-                <span className="text-[#1859b8]">{t('tiêu biểu', 'projects')}</span>
-              </h2>
-            </div>
-
-            <div className="grid auto-rows-fr gap-6 lg:grid-cols-3 lg:gap-8">
-              {portfolioItems.map((item, index) => (
-                <div key={index} className="flex h-full flex-col overflow-hidden rounded-[18px] border border-[#d2d2d7] bg-white">
-                  <div className="aspect-[16/10] overflow-hidden bg-[#e0e0e0]">
-                    <Image
-                      quality={95}
-                      src={item.image}
-                      alt={item.title}
-                      width={800}
-                      height={500}
-                      className="h-full w-full object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <span className="text-xs font-semibold uppercase tracking-wider text-[#1859b8]">{item.category}</span>
-                    <h3 className="mt-2 text-xl font-semibold leading-snug text-[#1d1d1f]">{item.title}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-12 text-center">
-              <Link href="/projects" className="ap-link inline-flex items-center gap-2 font-semibold">
-                {t('Xem tất cả dự án', 'View all projects')}
-              </Link>
-            </div>
-          </div>
-        </section>
 
         <ServiceBottom slug="website" />
 
