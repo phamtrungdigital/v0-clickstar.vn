@@ -1,0 +1,5 @@
+/* CSS riêng của khu quản trị: dựng lại toàn bộ (cùng theme với trang khách) và quét thêm mã khu quản trị.
+   Trang khách không tải tệp này (xem @source trong app/globals.css). */
+@import '../globals.css';
+@source './';
+@source '../../components/admin';

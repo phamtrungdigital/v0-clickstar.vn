@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import './admin.css'
 import { Inter } from 'next/font/google'
 import { getAdminProfile } from '@/lib/admin-cls/auth'
 import AdminShell from './_components/admin-shell'
