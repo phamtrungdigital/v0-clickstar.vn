@@ -97,7 +97,7 @@ export function FAQSection({ content }: { content: FaqContent }) {
                   }`}
                 >
                   <div className="overflow-hidden">
-                    <p className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                    <p className="px-6 pb-6 text-muted-foreground leading-relaxed text-justify hyphens-auto">
                       {t(faq.answer.vi, faq.answer.en)}
                     </p>
                   </div>

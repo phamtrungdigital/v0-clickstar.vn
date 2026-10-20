@@ -49,7 +49,9 @@ const CSS = `
 .bp-tocbox::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#3687FC,#fb923c)}
 .bp-prose{counter-reset:bps}
 .bp-prose h2{counter-increment:bps}
-.bp-prose h2::before{content:counter(bps,decimal-leading-zero);display:block;margin-bottom:.4rem;font-size:.74rem;font-weight:600;letter-spacing:.18em;color:#3687FC}
+.bp-prose h2{position:relative;isolation:isolate;padding-top:1.7rem}
+.bp-prose h2::before{content:counter(bps,decimal-leading-zero);position:absolute;z-index:-1;left:-.04em;top:-.75rem;font-size:4.6rem;line-height:1;font-weight:800;letter-spacing:-.04em;background:linear-gradient(135deg,#3687FC,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.26;pointer-events:none;user-select:none}
+@media (max-width:640px){.bp-prose h2{padding-top:1.4rem}.bp-prose h2::before{font-size:3.6rem;top:-.6rem}}
 .bp-prose blockquote{border:0;font-style:normal;border-radius:22px;padding:1.5rem 1.8rem 1.5rem 4rem;background:linear-gradient(135deg,rgba(54,135,252,.09),rgba(54,135,252,.02));margin:2rem 0}
 .bp-prose blockquote::before{content:"“";position:absolute;left:1.2rem;top:.1rem;font-family:Georgia,serif;font-size:4.2rem;line-height:1;color:#3687FC;opacity:.55}
 .bp-prose blockquote p::before,.bp-prose blockquote p::after{content:none}
