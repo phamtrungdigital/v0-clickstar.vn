@@ -145,8 +145,8 @@ export const ROADMAP: RoadmapGroup[] = [
       {
         id: 'ai-answer', title: 'Đoạn trả lời trực tiếp ngay dưới phần đầu mỗi trang dịch vụ', status: 'done', who: 'Kỹ thuật', date: '20/10',
         why: 'AI thường trích đúng đoạn trả lời gọn đứng đầu, ví dụ thời gian và chi phí làm một dịch vụ.',
-        steps: ['Câu hỏi đầu tiên của khối FAQ ở cả 8 trang dịch vụ là câu trả lời nhanh (mở sẵn): thời gian, chi phí hoặc công dụng kèm số liệu', 'Chỉ dùng số quản trị viên đã xác nhận ngày 20/10; muốn đổi số thì sửa trong lib/seo/service-faq.ts (mục SERVICE_QUICK)', 'Bài blog đã có khối Tóm tắt ngay dưới tiêu đề'],
-        note: 'Trang Dashboard chưa có thời gian và giá nên khối chỉ mô tả công dụng.',
+        steps: ['Câu hỏi đầu tiên của khối FAQ ở cả 8 trang dịch vụ là câu trả lời nhanh (mở sẵn): thời gian, chi phí hoặc công dụng kèm số liệu', 'Thời gian lấy đúng theo mục quy trình trên từng trang, giá lấy theo bảng giá; muốn đổi số thì sửa trong lib/seo/service-faq.ts (mục SERVICE_QUICK)', 'Bài blog đã có khối Tóm tắt ngay dưới tiêu đề'],
+        note: 'Trang Dashboard và Phần mềm theo yêu cầu chưa có giá công bố nên câu trả lời chỉ nêu thời gian.',
       },
       {
         id: 'ai-faq', title: 'Khối câu hỏi thường gặp kèm dữ liệu FAQPage cho các trang dịch vụ', status: 'done', who: 'Kỹ thuật', date: '20/10',

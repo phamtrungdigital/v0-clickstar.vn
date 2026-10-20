@@ -675,8 +675,8 @@ export const FAQ = {
     {
       q: { vi: 'Mất bao lâu để có phiên bản đầu tiên?', en: 'How long until the first version?' },
       a: {
-        vi: 'Thời gian tuỳ theo yêu cầu của doanh nghiệp, trung bình khoảng 15 ngày. Hệ thống lớn nhiều chức năng được chia thành các giai đoạn, lộ trình cụ thể được chốt ở giai đoạn thiết kế.',
-        en: 'It depends on your requirements and averages about 15 days. Larger systems with many features are split into phases, and the exact roadmap is agreed during design.',
+        vi: 'Phiên bản đầu tiên với các chức năng cốt lõi thường mất khoảng 6–10 tuần, tuỳ phạm vi. Lộ trình cụ thể được chốt ở giai đoạn thiết kế.',
+        en: 'A first version with the core features usually takes around 6–10 weeks, depending on scope. The exact roadmap is agreed during design.',
       },
     },
     {
