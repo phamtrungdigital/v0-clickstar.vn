@@ -8,17 +8,14 @@ import { getSiteSettings } from '@/lib/cms/settings'
 import { getActiveTeamMembers } from '@/lib/cms/team-members'
 import { getChatbotSettings, toPublicConfig } from '@/lib/cms/chatbot'
 import { getWebContent, normalizeWebContent } from '@/lib/cms/web-content'
-import { ChatbotWidgets } from '@/components/chatbot-widgets'
 import { WebContentProvider } from '@/contexts/web-content-context'
-import { EditModeOverlay } from '@/components/edit-mode-overlay'
-import { PersonalizeBanner } from '@/components/personalize-banner'
-import { CapabilityPopup } from '@/components/capability-popup'
+import { DeferredWidgets } from '@/components/deferred-widgets'
 import { FloatingContact } from '@/components/floating-contact'
 import { HtmlRoot } from '@/components/html-root'
 import { BodyCode, HeadCode } from '@/components/site-code'
 import { getEnabledSnippets } from '@/lib/cms/code-snippets'
 import { SITE_URL, BRAND } from '@/lib/seo/site'
-import './globals.css'
+import './site.css'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -110,10 +107,8 @@ export default async function RootLayout({
             <WebContentProvider value={{ footer: footerContent, serviceCtas }}>
               {children}
             </WebContentProvider>
-            <ChatbotWidgets config={chatbotConfig} />
-            <EditModeOverlay />
-            <PersonalizeBanner />
-            <CapabilityPopup />
+            {/* Chatbot, popup hồ sơ, banner cá nhân hoá, lớp sửa trực quan: tải sau khi trang đã hiện. */}
+            <DeferredWidgets chatbot={chatbotConfig} />
             <FloatingContact />
           </LanguageProvider>
         </TeamMembersProvider>

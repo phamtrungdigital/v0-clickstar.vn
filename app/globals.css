@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+/* Theme và CSS dùng chung. Không tự nạp Tailwind: tệp vào của trang khách là app/site.css,
+   của khu quản trị là app/admin-cls/admin.css (mỗi tệp tự chọn phạm vi quét class). */
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));

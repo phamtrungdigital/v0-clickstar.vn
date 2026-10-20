@@ -1,0 +1,5 @@
+/* CSS riêng của khu quản trị: quét toàn bộ mã như trước khi tách (cùng theme với trang khách).
+   Trang khách không tải tệp này; tệp vào của trang khách là app/site.css. */
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '../globals.css';
