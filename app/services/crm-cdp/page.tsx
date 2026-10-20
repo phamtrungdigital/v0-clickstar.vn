@@ -270,7 +270,7 @@ export default function CRMCDPPage() {
                 { v: '40%', l: t('Tiết kiệm chi phí', 'Cost savings') },
               ].map((x) => (
                 <div key={x.l}>
-                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
                   <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
               ))}

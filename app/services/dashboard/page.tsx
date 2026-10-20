@@ -239,7 +239,7 @@ export default function DashboardServicePage() {
                 { v: 'AI', l: 'Claude' },
               ].map((x) => (
                 <div key={x.l}>
-                  <div className="text-[clamp(28px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] text-[#1d1d1f]">{x.v}</div>
+                  <div className="text-[clamp(28px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] text-[#1d1d1f]">{x.v}</div>
                   <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
               ))}

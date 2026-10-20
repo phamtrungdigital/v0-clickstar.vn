@@ -61,7 +61,7 @@ function MilestoneItem({ it, now, soft }: { it: TimelineEntry; now?: boolean; so
               : 'border-[#7db8ff] bg-[#272729]'
         }`}
       />
-      <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-[28px] font-semibold leading-none tracking-[-0.03em] ${soft ? 'text-[#b0b0b6]' : 'text-white'}`}>
+      <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-[28px] font-semibold leading-[1.2] tracking-[-0.03em] ${soft ? 'text-[#b0b0b6]' : 'text-white'}`}>
         {it.year}
         {now && (
           <span className="rounded-full bg-[#1e6dda] px-1.5 py-0.5 text-[9px] font-semibold uppercase leading-none tracking-[0.06em] text-white">
@@ -190,7 +190,7 @@ export function AboutSection({
             <dl data-cms-field="stats" className={`grid grid-cols-3 gap-3 ${rise}`} style={{ transitionDelay: '150ms' }}>
               {stats.map((s, i) => (
                 <div key={i} className="rounded-[18px] bg-[#1d1d1f] p-4 sm:p-5">
-                  <dt className="text-[34px] sm:text-[42px] lg:text-[32px] xl:text-[42px] 2xl:text-[46px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-white">
+                  <dt className="text-[34px] sm:text-[42px] lg:text-[32px] xl:text-[42px] 2xl:text-[46px] font-semibold leading-[1.2] tracking-[-0.04em] tabular-nums text-white">
                     <Counter value={s.v} run={seen} />
                   </dt>
                   <dd className="mt-2 text-[13px] leading-normal text-[#b0b0b6]">{t(s.l.vi, s.l.en)}</dd>

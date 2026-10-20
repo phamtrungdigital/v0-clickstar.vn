@@ -359,7 +359,7 @@ export default function AIIntegrationPage() {
                 { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
               ].map((x) => (
                 <div key={x.l}>
-                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
                   <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
               ))}
@@ -377,7 +377,7 @@ export default function AIIntegrationPage() {
             <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
               {transformationStats.map((stat, index) => (
                 <div key={index} className="rounded-[18px] border border-[#d2d2d7] bg-white p-6 text-center">
-                  <p className="text-[40px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-[#1859b8]">{stat.value}</p>
+                  <p className="text-[40px] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1859b8]">{stat.value}</p>
                   <p className="mt-3 text-[15px] font-semibold leading-normal text-[#1d1d1f]">{t(stat.label.vi, stat.label.en)}</p>
                   <p className="mt-1 text-[13px] leading-normal text-[#515154]">{t(stat.desc.vi, stat.desc.en)}</p>
                 </div>
@@ -443,7 +443,7 @@ export default function AIIntegrationPage() {
                       <useCase.icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="text-right">
-                      <p className="text-[28px] font-semibold leading-none tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
+                      <p className="text-[28px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
                       <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>

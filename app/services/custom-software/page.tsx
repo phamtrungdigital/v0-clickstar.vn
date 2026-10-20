@@ -338,7 +338,7 @@ export default function CustomSoftwarePage() {
           <dl className="mt-10 grid grid-cols-1 sm:grid-cols-3 border-y border-[#d2d2d7]">
             {TEAM.stats.map((s, i) => (
               <div key={s.value} className={`py-6 sm:px-6 ${i === 0 ? 'sm:pl-0' : 'sm:border-l border-[#d2d2d7]'} ${i > 0 ? 'max-sm:border-t border-[#d2d2d7]' : ''}`}>
-                <dt className="text-[40px] font-semibold tracking-[-0.03em] leading-none text-[#1d1d1f]">{s.value}</dt>
+                <dt className="text-[40px] font-semibold tracking-[-0.03em] leading-[1.2] text-[#1d1d1f]">{s.value}</dt>
                 <dd className="mt-2 text-[15px] leading-normal text-[#515154] max-w-[32ch]">{tt(s.label)}</dd>
               </div>
             ))}
