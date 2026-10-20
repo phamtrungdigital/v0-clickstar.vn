@@ -3,7 +3,7 @@
 import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
-import { Save, Trash2, CheckCircle2, AlertCircle, ExternalLink, Search } from 'lucide-react'
+import { Loader2, Trash2, ExternalLink } from 'lucide-react'
 import type { Post } from '@/lib/cms/posts'
 import { savePost, deletePost, type PostSave, type PostUpdate, type SeoPatch } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
@@ -14,6 +14,8 @@ import { analyze, scoreTone, type SeoDraft, type SeoItem } from '@/lib/seo/admin
 import { SITE_URL } from '@/lib/seo/site'
 import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { cn } from '@/lib/utils'
+import { Chip, EditorBar, SaveStatus, SectionCard, btn, fieldInputClass } from '@/components/admin/ui'
+import { Segmented } from '@/components/admin/segmented'
 import { AiWholePost } from './ai-whole-post'
 import { AiCoverImage } from './ai-cover-image'
 import { BodyImageReplacer } from './body-image-replacer'
@@ -166,20 +168,17 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
     })
   }
 
-  return (
-    <div className="space-y-3">
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link href="/admin-cls/posts" className="text-xs text-slate-500 hover:text-slate-700">
-            ← Bài viết
-          </Link>
-          <h1 className="text-base font-semibold text-slate-900 dark:text-white">
-            {isNew ? 'Thêm bài viết mới' : draft.title.vi || '(chưa có tiêu đề)'}
-          </h1>
-        </div>
+  const seoChipText = seoAnalysis.issues.length === 0 ? 'SEO đạt' : `SEO: ${seoAnalysis.issues.length} mục cần xem`
 
-        <div className="flex items-center gap-2">
-          {AI_MODULE_ENABLED && (
+  return (
+    <div>
+      <EditorBar
+        backHref="/admin-cls/posts"
+        stickyOnMobile={false}
+        title={isNew ? 'Thêm bài viết mới' : draft.title.vi || '(chưa có tiêu đề)'}
+        subtitle={`/blog/${draft.slug || 'ten-bai-viet'}`}
+      >
+        {AI_MODULE_ENABLED && (
           <AiWholePost
             onApply={(p) => {
               setDraft((prev) => ({
@@ -195,8 +194,8 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
               setStatus('dirty')
             }}
           />
-          )}
-          {AI_MODULE_ENABLED && (
+        )}
+        {AI_MODULE_ENABLED && (
           <AutoTranslate
             title={draft.title}
             excerpt={draft.excerpt}
@@ -217,183 +216,125 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
               setStatus('dirty')
             }}
           />
-          )}
-          <LangSwitcher />
+        )}
+        <LangSwitcher />
 
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              Lỗi
-            </span>
-          )}
+        <SaveStatus status={status} errorMsg={errorMsg} />
 
-          {!isNew && post && draft.status === 'published' && (
-            <Link
-              href={`/blog/${post.slug}`}
-              target="_blank"
-              className="flex items-center gap-1 px-2 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded"
-            >
-              <ExternalLink className="w-3.5 h-3.5" />
-              Xem
-            </Link>
-          )}
+        {!isNew && post && draft.status === 'published' && (
+          <Link href={`/blog/${post.slug}`} target="_blank" className={btn('ghost')}>
+            <ExternalLink className="h-3.5 w-3.5" />
+            Xem trên website
+          </Link>
+        )}
 
-          {!isNew && (
-            <button
-              onClick={handleDelete}
-              disabled={isPending}
-              className="flex items-center gap-1 px-2 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded disabled:opacity-50"
-            >
-              <Trash2 className="w-3.5 h-3.5" />
-              Xoá
-            </button>
-          )}
-
-          <button
-            onClick={handleSave}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
+        {!isNew && (
+          <button onClick={handleDelete} disabled={isPending} className={btn('danger')}>
+            <Trash2 className="h-3.5 w-3.5" />
+            Xoá
           </button>
-        </div>
-      </div>
+        )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-3">
+        <button onClick={handleSave} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu thay đổi'}
+        </button>
+      </EditorBar>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_300px]">
         {/* Main */}
-        <div className="space-y-3 min-w-0">
-          <div role="tablist" className="flex gap-1 border-b border-slate-200 dark:border-slate-700">
-            {(
-              [
-                ['content', 'Nội dung'],
-                ['seo', 'SEO và chia sẻ'],
-              ] as const
-            ).map(([id, label]) => (
-              <button
-                key={id}
-                type="button"
-                role="tab"
-                aria-selected={tab === id}
-                onClick={() => setTab(id)}
-                className={cn(
-                  'inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium -mb-px border-b-2',
-                  tab === id
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-                )}
-              >
-                {id === 'seo' && <Search className="w-3.5 h-3.5" />}
-                {label}
-                {id === 'seo' && (
-                  <span className={cn('text-[11px] font-normal', TONE_TEXT[seoTone])}>
-                    {seoAnalysis.issues.length === 0 ? 'Đạt' : `${seoAnalysis.issues.length} mục cần xem`}
-                  </span>
-                )}
-              </button>
-            ))}
+        <div className="min-w-0 space-y-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <Segmented
+              ariaLabel="Chọn phần soạn"
+              value={tab}
+              onChange={setTab}
+              options={[
+                { id: 'content', label: 'Nội dung' },
+                { id: 'seo', label: 'SEO và chia sẻ' },
+              ]}
+            />
+            <Chip tone={seoTone === 'ok' ? 'ok' : seoTone === 'warn' ? 'warn' : 'bad'}>{seoChipText}</Chip>
           </div>
 
-          <div
-            className={cn(
-              'bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4',
-              tab === 'seo' ? 'space-y-3' : 'hidden'
-            )}
-          >
-            <div className="flex items-center justify-between gap-2">
-              <div>
-                <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">SEO và chia sẻ</h2>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Cách bài hiện trên Google và khi gửi link lên Facebook, Zalo. Đang sửa bản ngôn ngữ chọn bên phải.
-                </p>
-              </div>
-              <LangSwitcher />
-            </div>
-            <SeoPanel
-              item={seoItem}
-              draft={seoDraft}
-              onChange={updateSeo}
-              lang={lang}
-              canEdit
-              pending={isPending}
-              host={seoHost}
-              layout="wide"
-            />
+          <div className={cn(tab !== 'seo' && 'hidden')}>
+            <SectionCard
+              title="SEO và chia sẻ"
+              description="Cách bài hiện trên Google và khi gửi link lên Facebook, Zalo. Đang sửa bản ngôn ngữ chọn ở thanh trên."
+              actions={<LangSwitcher />}
+              bodyClassName="px-5 pb-5 pt-4"
+            >
+              <SeoPanel
+                item={seoItem}
+                draft={seoDraft}
+                onChange={updateSeo}
+                lang={lang}
+                canEdit
+                pending={isPending}
+                host={seoHost}
+                layout="wide"
+              />
+            </SectionCard>
           </div>
 
-          <div
-            className={cn(
-              'bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3',
-              tab !== 'content' && 'hidden'
-            )}
-          >
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Nội dung</h2>
-            <I18nInput label="Tiêu đề" value={draft.title} onChange={(v) => update('title', v)} />
-            <TextInput
-              label="Slug (URL)"
-              value={draft.slug}
-              onChange={(v) =>
-                update(
-                  'slug',
-                  v
-                    .toLowerCase()
-                    .replace(/[^a-z0-9-]/g, '-')
-                    .replace(/-+/g, '-')
-                    .replace(/^-|-$/g, '')
-                )
-              }
-              hint={`URL: /blog/${draft.slug || 'ten-bai-viet'}`}
-            />
-            <I18nInput
-              label="Mô tả ngắn (excerpt)"
-              multiline
-              rows={2}
-              value={draft.excerpt}
-              onChange={(v) => update('excerpt', v)}
-            />
-            <MarkdownEditor
-              label="Nội dung (Markdown)"
-              rows={20}
-              value={draft.content}
-              onChange={(v) => update('content', v)}
-            />
-            {AI_MODULE_ENABLED && (
-            <BodyImageReplacer
-              content={draft.content}
-              onContentChange={(next) => update('content', next)}
-            />
-            )}
+          <div className={cn(tab !== 'content' && 'hidden')}>
+            <SectionCard title="Nội dung" bodyClassName="space-y-4 px-5 pb-5 pt-4">
+              <I18nInput label="Tiêu đề" value={draft.title} onChange={(v) => update('title', v)} />
+              <TextInput
+                label="Đường dẫn (slug)"
+                value={draft.slug}
+                onChange={(v) =>
+                  update(
+                    'slug',
+                    v
+                      .toLowerCase()
+                      .replace(/[^a-z0-9-]/g, '-')
+                      .replace(/-+/g, '-')
+                      .replace(/^-|-$/g, '')
+                  )
+                }
+                hint={`Địa chỉ bài: /blog/${draft.slug || 'ten-bai-viet'}`}
+              />
+              <I18nInput
+                label="Mô tả ngắn"
+                multiline
+                rows={2}
+                value={draft.excerpt}
+                onChange={(v) => update('excerpt', v)}
+              />
+              <MarkdownEditor
+                label="Nội dung (Markdown)"
+                rows={20}
+                value={draft.content}
+                onChange={(v) => update('content', v)}
+              />
+              {AI_MODULE_ENABLED && (
+                <BodyImageReplacer
+                  content={draft.content}
+                  onContentChange={(next) => update('content', next)}
+                />
+              )}
+            </SectionCard>
           </div>
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-3">
-          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Cài đặt</h2>
-
+        <div className="space-y-4">
+          <SectionCard title="Xuất bản" bodyClassName="space-y-4 px-5 pb-5 pt-4">
             <div>
-              <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-                Trạng thái
-              </label>
+              <label className="mb-1.5 block text-[13px] font-medium text-[var(--ad-fg-2)]">Trạng thái</label>
               <select
                 value={draft.status}
                 onChange={(e) => update('status', e.target.value as 'draft' | 'published')}
-                className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+                className={fieldInputClass}
               >
-                <option value="draft">Draft (chưa publish)</option>
-                <option value="published">Published (hiển thị công khai)</option>
+                <option value="draft">Bản nháp (chưa đăng)</option>
+                <option value="published">Đã đăng (hiện công khai)</option>
               </select>
             </div>
 
             <TextInput
-              label="Tags (cách nhau bởi dấu phẩy)"
+              label="Thẻ (cách nhau bởi dấu phẩy)"
               value={draft.tags.join(', ')}
               onChange={(v) =>
                 update(
@@ -404,36 +345,34 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
                     .filter(Boolean)
                 )
               }
-              hint="VD: AI, Marketing, Dashboard"
+              hint="Ví dụ: AI, Marketing, Dashboard"
             />
-          </div>
+          </SectionCard>
 
-          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
-                Cover image
-              </h2>
-              {AI_MODULE_ENABLED && (
-              <AiCoverImage
-                postTitle={draft.title.vi || draft.title.en}
-                tags={draft.tags}
-                onApply={(url) => update('cover_image', url)}
-              />
-              )}
-            </div>
+          <SectionCard
+            title="Ảnh bìa"
+            actions={
+              AI_MODULE_ENABLED ? (
+                <AiCoverImage
+                  postTitle={draft.title.vi || draft.title.en}
+                  tags={draft.tags}
+                  onApply={(url) => update('cover_image', url)}
+                />
+              ) : undefined
+            }
+            bodyClassName="px-5 pb-5 pt-4"
+          >
             <ImagePicker
               label=""
               value={draft.cover_image ?? ''}
               onChange={(v) => update('cover_image', v.trim() === '' ? null : v)}
             />
-          </div>
+          </SectionCard>
         </div>
       </div>
 
       {status === 'error' && (
-        <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
-          {errorMsg}
-        </div>
+        <div className="mt-4 rounded-xl bg-[rgba(255,59,48,.10)] px-4 py-2.5 text-[13.5px] text-[#d70015]">{errorMsg}</div>
       )}
     </div>
   )

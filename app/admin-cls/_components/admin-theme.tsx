@@ -94,6 +94,13 @@ const CSS = String.raw`
 .admin-scope .to-orange-500,.admin-scope .hover\:to-orange-600:hover{--tw-gradient-to:var(--ad-accent)}
 .admin-scope .to-orange-50{--tw-gradient-to:var(--ad-accent-soft)}
 
+/* Màu tím của nút AI (module AI đang tắt) cũng về một màu nhấn */
+.admin-scope .bg-violet-500,.admin-scope .bg-violet-600{background-color:var(--ad-accent)}
+.admin-scope .hover\:bg-violet-600:hover,.admin-scope .hover\:bg-violet-700:hover{background-color:var(--ad-accent-d)}
+.admin-scope .bg-violet-50,.admin-scope .bg-violet-100,.admin-scope .hover\:bg-violet-100:hover{background-color:var(--ad-accent-soft)}
+.admin-scope .text-violet-500,.admin-scope .text-violet-600,.admin-scope .text-violet-700{color:var(--ad-accent)}
+.admin-scope .border-violet-200,.admin-scope .border-violet-300{border-color:var(--ad-line-2)}
+
 /* Nút chính dạng viên thuốc */
 .admin-scope button.bg-primary,.admin-scope a.bg-primary{border-radius:999px;font-weight:500}
 

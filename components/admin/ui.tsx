@@ -205,6 +205,7 @@ export function EditorBar({
   subtitle,
   children,
   flush = true,
+  stickyOnMobile = true,
 }: {
   backHref?: string
   title: React.ReactNode
@@ -212,11 +213,14 @@ export function EditorBar({
   children?: React.ReactNode
   /** true: thanh sát mép trên của vùng nội dung. false: khi phía trên còn nội dung khác (ví dụ hàng tab). */
   flush?: boolean
+  /** false: trên điện thoại thanh cuộn theo trang (dùng khi thanh có nhiều nút, chiếm nhiều chiều cao). */
+  stickyOnMobile?: boolean
 }) {
   return (
     <div
       className={cn(
-        'ad-glass sticky top-[52px] z-20 -mx-4 mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--ad-line)] px-4 py-2.5 lg:-mx-6 lg:px-6',
+        'ad-glass top-[52px] z-20 -mx-4 mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--ad-line)] px-4 py-2.5 lg:-mx-6 lg:px-6',
+        stickyOnMobile ? 'sticky' : 'lg:sticky',
         flush && '-mt-4 lg:-mt-6'
       )}
     >
