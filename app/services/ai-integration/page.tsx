@@ -355,8 +355,8 @@ export default function AIIntegrationPage() {
             <div className="mt-12 grid grid-cols-3 gap-6">
               {[
                 { v: '40%', l: t('Tăng năng suất', 'Productivity gain') },
-                { v: '500+', l: t('Doanh nghiệp', 'Businesses served') },
-                { v: '4.9/5', l: t('Đánh giá', 'Rating') },
+                { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
+                { v: '5+', l: t('Năm kinh nghiệm', 'Years of experience') },
               ].map((x) => (
                 <div key={x.l}>
                   <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>

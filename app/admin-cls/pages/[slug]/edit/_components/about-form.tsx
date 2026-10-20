@@ -54,7 +54,7 @@ export function AboutForm({
             label="Stat 1 — số"
             value={content.stat1_value}
             onChange={(v) => update('stat1_value', v)}
-            placeholder="10+"
+            placeholder="5+"
           />
           <I18nInput
             label="Stat 1 — nhãn"

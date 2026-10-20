@@ -33,7 +33,7 @@ export function HeroForm({
           onChange={(v) => update('heading_lead', v)}
         />
         <TextInput
-          label="Heading — số nổi bật (vd 500+)"
+          label="Heading — số nổi bật (vd 100+)"
           value={content.heading_number}
           onChange={(v) => update('heading_number', v)}
         />

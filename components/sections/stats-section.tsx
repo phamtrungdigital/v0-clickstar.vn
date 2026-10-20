@@ -71,7 +71,11 @@ export function StatsSection({ content }: { content: StatsContent }) {
           </h2>
         </div>
 
-        <div className="mt-10 sm:mt-14 grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+        <div
+          className={`mt-10 sm:mt-14 grid gap-x-6 gap-y-12 ${
+            content.items.length === 3 ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2 lg:grid-cols-4'
+          }`}
+        >
           {content.items.map((stat, index) => (
             <div key={index} data-cms-field="item" data-cms-item-index={index} className="min-w-0">
               <StatItem

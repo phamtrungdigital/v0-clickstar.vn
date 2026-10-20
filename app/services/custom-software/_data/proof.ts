@@ -10,7 +10,7 @@ import type { I18n } from '@/lib/cms/types'
  *    nhãn "mã thật". Không trích mã của khách hàng, không có email, tên miền hay khoá của khách.
  * 2. Con số trong STATS đo từ kho mã nguồn ngày 18/10/2026 (đếm file migration, commit, test).
  *    Muốn đổi thì đo lại, ghi ngày đo; không làm tròn lên.
- * 3. "10+ năm" và "500+ doanh nghiệp" lấy từ trang Giới thiệu (CMS). Không thêm số nhân sự.
+ * 3. "5+ năm" và "100+ doanh nghiệp" theo xác nhận của chủ site ngày 20/10/2026 (thành lập 2021), khớp trang Giới thiệu (CMS). Không thêm số nhân sự.
  * 4. Không ghi số phiên bản mô hình AI (đổi nhanh): chỉ ghi hãng và dòng mô hình.
  */
 
@@ -345,14 +345,14 @@ export const AI = {
 
 export const TEAM = {
   kicker: { vi: 'Đội ngũ', en: 'The team' },
-  title: { vi: 'Hơn 10 năm làm hệ thống cho doanh nghiệp', en: '10+ years building systems for businesses' },
+  title: { vi: 'Hơn 5 năm làm hệ thống cho doanh nghiệp', en: '5+ years building systems for businesses' },
   lede: {
-    vi: 'Đội kỹ thuật Click Star đã triển khai hệ thống cho hơn 500 doanh nghiệp tại Việt Nam, trong giáo dục, y tế, bán lẻ, thương mại điện tử và dịch vụ cao cấp.',
-    en: 'Click Star’s engineers have delivered systems for 500+ Vietnamese businesses across education, healthcare, retail, e-commerce and premium services.',
+    vi: 'Đội kỹ thuật Click Star đã đồng hành cùng hơn 100 doanh nghiệp tại Việt Nam, trong giáo dục, y tế, bán lẻ, thương mại điện tử và dịch vụ cao cấp.',
+    en: 'Click Star’s engineers have worked with 100+ Vietnamese businesses across education, healthcare, retail, e-commerce and premium services.',
   },
   stats: [
-    { value: '10+', label: { vi: 'năm làm Marketing, CRM và hệ thống hoá quy trình', en: 'years in Marketing, CRM and process systems' } },
-    { value: '500+', label: { vi: 'doanh nghiệp đã triển khai', en: 'businesses served' } },
+    { value: '5+', label: { vi: 'năm làm Marketing, CRM và hệ thống hoá quy trình', en: 'years in Marketing, CRM and process systems' } },
+    { value: '100+', label: { vi: 'doanh nghiệp đã đồng hành', en: 'businesses served' } },
     { value: '5', label: { vi: 'ngành đã làm: giáo dục, y tế, bán lẻ, thương mại điện tử, dịch vụ cao cấp', en: 'sectors: education, healthcare, retail, e-commerce, premium services' } },
   ],
   roles: [

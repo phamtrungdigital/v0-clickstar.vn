@@ -249,10 +249,10 @@ export default function DigitalMarketingPage() {
   ]
 
   const stats = [
-    { value: '500+', label: t('Chiến dịch đã triển khai', 'Campaigns launched') },
+    { value: '100+', label: t('Doanh nghiệp đồng hành', 'Businesses served') },
     { value: '40%', label: t('Giảm CPC trung bình', 'Average CPC reduction') },
     { value: '3.5x', label: t('ROAS trung bình', 'Average ROAS') },
-    { value: '98%', label: t('Khách hàng hài lòng', 'Client satisfaction') },
+    { value: '90%+', label: t('Khách hàng hài lòng', 'Client satisfaction') },
   ]
 
   const caseStudies = [

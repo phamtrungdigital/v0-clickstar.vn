@@ -46,9 +46,9 @@ const CAPABILITIES: Cap[] = [
 ]
 
 const STATS: { value: string; vi: string; en: string }[] = [
-  { value: '500+', vi: 'dự án đã triển khai', en: 'projects delivered' },
-  { value: '98%', vi: 'khách hàng hài lòng', en: 'client satisfaction' },
-  { value: '10+', vi: 'năm kinh nghiệm đội ngũ', en: 'years of team experience' },
+  { value: '100+', vi: 'doanh nghiệp đã đồng hành', en: 'businesses served' },
+  { value: '90%+', vi: 'khách hàng hài lòng', en: 'client satisfaction' },
+  { value: '5+', vi: 'năm kinh nghiệm đội ngũ', en: 'years of team experience' },
 ]
 
 export function CapabilityPopup() {
