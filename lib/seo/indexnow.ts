@@ -9,7 +9,7 @@ import { after } from 'next/server'
 import { SITE_URL } from './site'
 import { localizePath } from '@/lib/i18n/locale'
 
-export const INDEXNOW_KEY = 'c29e221321e0b89799fdbe24ca10d1c2'
+export const INDEXNOW_KEY = '7af5f067c2f80ed77cc01db298d540b1'
 const ENDPOINT = 'https://api.indexnow.org/IndexNow'
 const MAX_URLS = 10_000
 
@@ -38,7 +38,7 @@ const MESSAGES: Record<number, string> = {
   200: 'Đã gửi. Công cụ tìm kiếm đã nhận danh sách địa chỉ.',
   202: 'Đã nhận. Công cụ tìm kiếm đang xác minh khóa rồi sẽ xử lý.',
   400: 'Yêu cầu không hợp lệ.',
-  403: 'Khóa không hợp lệ: công cụ tìm kiếm chưa đọc được file khóa trên website.',
+  403: 'IndexNow chưa xác minh được khóa của website nên chưa nhận danh sách. Thường tự hết sau vài giờ; nếu sau 1 ngày vẫn báo thì cần kiểm tra lại.',
   422: 'Có địa chỉ không thuộc clickstar.vn.',
   429: 'Gửi quá nhiều lần, hãy thử lại sau.',
 }
