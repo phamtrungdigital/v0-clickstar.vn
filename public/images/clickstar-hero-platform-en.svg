@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 600" width="1080" height="600" font-family="'Plus Jakarta Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" role="img" aria-labelledby="csd-t">
+<title id="csd-t">Click Star platform diagram: data from CRM, ads, website and calls is unified, then turned into dashboards, an AI assistant and automation</title>
+<defs>
+  <linearGradient id="csd-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d1d1f"/><stop offset="1" stop-color="#0d2142"/></linearGradient>
+  <radialGradient id="csd-glow" cx="540" cy="322" r="190" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1e6dda" stop-opacity="0.55"/><stop offset="1" stop-color="#1e6dda" stop-opacity="0"/></radialGradient>
+  <linearGradient id="csd-core" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b8bf0"/><stop offset="1" stop-color="#144c97"/></linearGradient>
+  <pattern id="csd-grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#ffffff" stroke-opacity="0.045"/></pattern>
+  <clipPath id="csd-clip"><rect width="1080" height="600" rx="26"/></clipPath>
+</defs>
+<style>
+  .csd-f{stroke-dasharray:5 11;animation:csd-flow 1.6s linear infinite}
+  .csd-f2{animation-duration:2.1s}
+  .csd-r1{transform-origin:540px 322px;animation:csd-spin 70s linear infinite}
+  .csd-r2{transform-origin:540px 322px;animation:csd-spin 46s linear infinite reverse}
+  .csd-pulse{animation:csd-pulse 3.2s ease-in-out infinite}
+  .csd-dot{animation:csd-blink 1.8s ease-in-out infinite}
+  @keyframes csd-flow{to{stroke-dashoffset:-32}}
+  @keyframes csd-spin{to{transform:rotate(360deg)}}
+  @keyframes csd-pulse{0%,100%{opacity:.75}50%{opacity:1}}
+  @keyframes csd-blink{0%,100%{opacity:1}50%{opacity:.35}}
+  @media (prefers-reduced-motion:reduce){.csd-f,.csd-r1,.csd-r2,.csd-pulse,.csd-dot{animation:none}}
+</style>
+<g clip-path="url(#csd-clip)">
+  <rect width="1080" height="600" fill="url(#csd-bg)"/>
+  <rect width="1080" height="600" fill="url(#csd-grid)"/>
+
+  <circle cx="34" cy="30" r="5" fill="#ff5f57"/><circle cx="53" cy="30" r="5" fill="#febc2e"/><circle cx="72" cy="30" r="5" fill="#28c840"/>
+  <text x="540.0" y="35" text-anchor="middle" font-size="14" fill="#8fa3c0">clickstar · data platform</text>
+  <rect x="940" y="16" width="104" height="28" rx="14" fill="#28c840" fill-opacity="0.14"/>
+  <circle class="csd-dot" cx="957" cy="30" r="4" fill="#34d058"/>
+  <text x="970" y="35" font-size="13" font-weight="600" fill="#7ee08f">Live</text>
+  <path d="M0 59.5H1080" stroke="#ffffff" stroke-opacity="0.07"/>
+
+  <text x="48" y="106" font-size="12" font-weight="700" letter-spacing="2.4" fill="#7db8ff" fill-opacity="0.85">01 · COLLECT</text>
+  <text x="540" y="106" text-anchor="middle" font-size="12" font-weight="700" letter-spacing="2.4" fill="#7db8ff" fill-opacity="0.85">02 · UNIFY</text>
+  <text x="1032" y="106" text-anchor="end" font-size="12" font-weight="700" letter-spacing="2.4" fill="#7db8ff" fill-opacity="0.85">03 · ACT</text>
+<path d="M288 174 C388 174, 372 281, 468 281" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f" d="M288 174 C388 174, 372 281, 468 281" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="288" cy="174" r="4" fill="#7db8ff"/>
+  <path d="M288 270 C388 270, 372 307, 468 307" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f csd-f2" d="M288 270 C388 270, 372 307, 468 307" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="288" cy="270" r="4" fill="#7db8ff"/>
+  <path d="M288 366 C388 366, 372 334, 468 334" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f" d="M288 366 C388 366, 372 334, 468 334" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="288" cy="366" r="4" fill="#7db8ff"/>
+  <path d="M288 462 C388 462, 372 361, 468 361" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f csd-f2" d="M288 462 C388 462, 372 361, 468 361" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="288" cy="462" r="4" fill="#7db8ff"/>
+  <path d="M612 288 C708 288, 692 202, 792 202" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f csd-f2" d="M612 288 C708 288, 692 202, 792 202" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="792" cy="202" r="4" fill="#7db8ff"/>
+  <path d="M612 321 C708 321, 692 318, 792 318" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f" d="M612 321 C708 321, 692 318, 792 318" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="792" cy="318" r="4" fill="#7db8ff"/>
+  <path d="M612 353 C708 353, 692 434, 792 434" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csd-f csd-f2" d="M612 353 C708 353, 692 434, 792 434" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="792" cy="434" r="4" fill="#7db8ff"/>
+
+  <circle cx="540" cy="322" r="188" fill="url(#csd-glow)" class="csd-pulse"/>
+  <circle class="csd-r1" cx="540" cy="322" r="150" fill="none" stroke="#7db8ff" stroke-opacity="0.35" stroke-width="1.4" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <circle class="csd-r2" cx="540" cy="322" r="117" fill="none" stroke="#7db8ff" stroke-opacity="0.5" stroke-width="1.4" stroke-dasharray="46 16"/>
+  <circle cx="540" cy="322" r="98" fill="#1e6dda" fill-opacity="0.18"/>
+  <circle cx="540" cy="322" r="75" fill="url(#csd-core)" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.4"/>
+  <path d="M0 -1 C0.18 -0.42 0.42 -0.18 1 0 C0.42 0.18 0.18 0.42 0 1 C-0.18 0.42 -0.42 0.18 -1 0 C-0.42 -0.18 -0.18 -0.42 0 -1Z" transform="translate(540 293.5) scale(21)" fill="#ffffff"/>
+  <text x="540" y="343.0" text-anchor="middle" font-size="24" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Click Star</text>
+  <text x="540" y="362.0" text-anchor="middle" font-size="13" fill="#cfe1fb">Data platform</text>
+
+  <rect x="48" y="136" width="240" height="76" rx="18" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="90" cy="174" r="23" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(78.0 162.0) scale(1.000)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.2c2.7.2 4.5 2.3 4.5 5"/></g>
+  <text x="128" y="171" font-size="18" font-weight="700" fill="#ffffff">CRM</text>
+  <text x="128" y="192" font-size="13" fill="#9fb3d1">Customers · Deals</text>
+
+  <rect x="48" y="232" width="240" height="76" rx="18" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="90" cy="270" r="23" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(78.0 258.0) scale(1.000)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></g>
+  <text x="128" y="267" font-size="18" font-weight="700" fill="#ffffff">Ads</text>
+  <text x="128" y="288" font-size="13" fill="#9fb3d1">Meta · Google · TikTok</text>
+
+  <rect x="48" y="328" width="240" height="76" rx="18" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="90" cy="366" r="23" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(78.0 354.0) scale(1.000)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.6 2.4 3.8 5.2 3.8 8.5s-1.2 6.1-3.8 8.5c-2.6-2.4-3.8-5.2-3.8-8.5S9.4 5.9 12 3.5z"/></g>
+  <text x="128" y="363" font-size="18" font-weight="700" fill="#ffffff">Website</text>
+  <text x="128" y="384" font-size="13" fill="#9fb3d1">Behavior · Forms · Chatbot</text>
+
+  <rect x="48" y="424" width="240" height="76" rx="18" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="90" cy="462" r="23" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(78.0 450.0) scale(1.000)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><path d="M5 10v4"/><path d="M9 6.5v11"/><path d="M13 3.5v17"/><path d="M17 7.5v9"/><path d="M21 10.5v3"/></g>
+  <text x="128" y="459" font-size="18" font-weight="700" fill="#ffffff">Calls</text>
+  <text x="128" y="480" font-size="13" fill="#9fb3d1">Recordings · Conversations</text>
+
+  <rect x="792" y="158" width="240" height="88" rx="20" fill="#1e6dda" fill-opacity="0.16" stroke="#7db8ff" stroke-opacity="0.55"/>
+  <circle cx="836" cy="202" r="25" fill="#1e6dda"/>
+  <g transform="translate(823.0 189.0) scale(1.083)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#ffffff"><rect x="4" y="13" width="3.6" height="7" rx="1"/><rect x="10.2" y="8" width="3.6" height="12" rx="1"/><rect x="16.4" y="4" width="3.6" height="16" rx="1"/></g>
+  <text x="876" y="199" font-size="18" font-weight="700" fill="#ffffff">Dashboard</text>
+  <text x="876" y="221" font-size="13" fill="#cfe1fb">Real-time reports</text>
+
+  <rect x="792" y="274" width="240" height="88" rx="20" fill="#1e6dda" fill-opacity="0.16" stroke="#7db8ff" stroke-opacity="0.55"/>
+  <circle cx="836" cy="318" r="25" fill="#1e6dda"/>
+  <g transform="translate(823.0 305.0) scale(1.083)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#ffffff"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9-1.9 5.1-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M19 3v3M17.5 4.5h3"/></g>
+  <text x="876" y="315" font-size="18" font-weight="700" fill="#ffffff">AI assistant</text>
+  <text x="876" y="337" font-size="13" fill="#cfe1fb">Analysis and forecasts</text>
+
+  <rect x="792" y="390" width="240" height="88" rx="20" fill="#1e6dda" fill-opacity="0.16" stroke="#7db8ff" stroke-opacity="0.55"/>
+  <circle cx="836" cy="434" r="25" fill="#1e6dda"/>
+  <g transform="translate(823.0 421.0) scale(1.083)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#ffffff"><rect x="3.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="14" y="13.5" width="6.5" height="6.5" rx="1.6"/><path d="M10 7.2h3.5a2.5 2.5 0 0 1 2.5 2.5v3.8"/><path d="M14.5 11.5l1.5 2 1.5-2"/></g>
+  <text x="876" y="431" font-size="18" font-weight="700" fill="#ffffff">Automation</text>
+  <text x="876" y="453" font-size="13" fill="#cfe1fb">Workflows running 24/7</text>
+
+  <path d="M48 540.5H1032" stroke="#ffffff" stroke-opacity="0.07"/>
+  <text x="540" y="573" text-anchor="middle" font-size="15" fill="#8fa3c0" letter-spacing="0.2">One system · One source of truth · Faster decisions</text>
+</g>
+<rect x="0.5" y="0.5" width="1079" height="599" rx="26" fill="none" stroke="#ffffff" stroke-opacity="0.1"/>
+</svg>

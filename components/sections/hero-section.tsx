@@ -6,22 +6,49 @@ import { InlineSvgImage } from '@/components/inline-svg-image'
 import type { HeroContent } from '@/lib/cms/types'
 
 /**
- * Hero theo mockup Apple: tiêu đề căn giữa, một đoạn dẫn, hai nút, rồi ảnh minh họa SVG
- * (giữ nguyên ảnh luồng dữ liệu hiện có) làm "ảnh sản phẩm" với bóng đổ duy nhất của trang.
+ * Hero theo mockup Apple: tiêu đề căn giữa, một đoạn dẫn, hai nút, hàng số liệu uy tín, rồi "ảnh sản phẩm":
+ * sơ đồ nền tảng Click Star (SVG sống, có bản PC ngang và bản mobile dọc, có bản EN) với bóng đổ duy nhất của trang.
+ * Ảnh cũ (luồng dữ liệu) vẫn được hiểu: CMS còn trỏ vào đường dẫn cũ thì tự dùng sơ đồ mới; chọn ảnh khác thì hiện ảnh đó.
  * Mọi trường CMS (badge, heading, description, cta, support, image) vẫn sửa được như cũ.
  */
+const LEGACY_FLOW_SRC = '/images/clickstar-data-flow.svg'
+const PLATFORM_SRC = {
+  vi: { desktop: '/images/clickstar-hero-platform.svg', mobile: '/images/clickstar-hero-platform-m.svg' },
+  en: { desktop: '/images/clickstar-hero-platform-en.svg', mobile: '/images/clickstar-hero-platform-m-en.svg' },
+}
+
+// Số liệu thương hiệu đã được chủ site xác nhận (khớp trang Giới thiệu)
+const TRUST = [
+  { value: '10+', vi: 'năm kinh nghiệm', en: 'years of experience' },
+  { value: '100+', vi: 'doanh nghiệp đồng hành', en: 'businesses served' },
+  { value: '90%+', vi: 'khách hàng hài lòng', en: 'satisfied clients' },
+]
+
 export function HeroSection({ content }: { content: HeroContent }) {
   const { t, language } = useLanguage()
   const localHref = useLocalHref()
-  // Ảnh SVG có chữ tiếng Việt: dùng bản tiếng Anh khi site ở EN (chỉ các ảnh đã có bản -en)
-  const EN_VARIANT: Record<string, string> = { '/images/clickstar-data-flow.svg': '/images/clickstar-data-flow-en.svg' }
+  const lang = language === 'en' ? 'en' : 'vi'
+  const usePlatform = content.image_src === LEGACY_FLOW_SRC || !content.image_src
+  // Ảnh SVG có chữ tiếng Việt do CMS chọn: dùng bản tiếng Anh khi site ở EN (chỉ các ảnh đã có bản -en)
+  const EN_VARIANT: Record<string, string> = { [LEGACY_FLOW_SRC]: '/images/clickstar-data-flow-en.svg' }
   const imageSrc = language === 'en' ? (EN_VARIANT[content.image_src] ?? content.image_src) : content.image_src
+  const imageAlt = t(content.image_alt.vi, content.image_alt.en)
+  const imgClass = 'w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block'
 
   return (
-    <section data-cms-section="hero" className="ap-tile ap-light">
+    <section data-cms-section="hero" className="ap-tile ap-light relative isolate overflow-hidden">
+      {/* Quầng sáng xanh rất nhạt phía sau, tạo chiều sâu mà không phá nền trắng của trang */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[620px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(30,109,218,0.10),rgba(30,109,218,0)_70%)]"
+      />
       <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="ap-stack">
-          <p data-cms-field="badge" className="text-sm text-muted-foreground tracking-[-0.016em]">
+          <p
+            data-cms-field="badge"
+            className="inline-flex items-center gap-2 rounded-full border border-[#b9d4f8] bg-[#eaf2fd] px-4 py-1.5 text-[13px] font-semibold text-[#144c97]"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-[#1e6dda]" />
             {t(content.badge.vi, content.badge.en)}
           </p>
 
@@ -49,15 +76,31 @@ export function HeroSection({ content }: { content: HeroContent }) {
               {content.support_phone}
             </a>
           </div>
+
+          <ul className="mt-5 grid w-full max-w-[640px] grid-cols-3 divide-x divide-[#e0e0e0]">
+            {TRUST.map((x) => (
+              <li key={x.value} className="flex flex-col items-center gap-1 px-2 sm:px-4">
+                <span className="text-2xl font-semibold tracking-tight text-[#1d1d1f] sm:text-[32px]">{x.value}</span>
+                <span className="text-[12px] leading-tight text-[#515154] sm:text-sm">{lang === 'vi' ? x.vi : x.en}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="ap-product ap-product-shadow max-w-[760px] mt-10 sm:mt-14">
-          <InlineSvgImage
-            cmsField="image"
-            src={imageSrc}
-            alt={t(content.image_alt.vi, content.image_alt.en)}
-            className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
-          />
+        <div className="ap-product ap-product-shadow max-w-[880px] mt-10 sm:mt-14">
+          {usePlatform ? (
+            <>
+              <InlineSvgImage
+                cmsField="image"
+                src={PLATFORM_SRC[lang].desktop}
+                alt={imageAlt}
+                className={`hidden sm:block ${imgClass}`}
+              />
+              <InlineSvgImage src={PLATFORM_SRC[lang].mobile} alt={imageAlt} className={`sm:hidden ${imgClass}`} />
+            </>
+          ) : (
+            <InlineSvgImage cmsField="image" src={imageSrc} alt={imageAlt} className={imgClass} />
+          )}
         </div>
       </div>
     </section>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 652" width="480" height="652" font-family="'Plus Jakarta Sans','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif" role="img" aria-labelledby="csm-t">
+<title id="csm-t">Sơ đồ nền tảng Click Star: dữ liệu từ CRM, quảng cáo, website và cuộc gọi được hợp nhất rồi chuyển thành dashboard, trợ lý AI và tự động hóa</title>
+<defs>
+  <linearGradient id="csm-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1d1d1f"/><stop offset="1" stop-color="#0d2142"/></linearGradient>
+  <radialGradient id="csm-glow" cx="240" cy="330" r="130" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1e6dda" stop-opacity="0.55"/><stop offset="1" stop-color="#1e6dda" stop-opacity="0"/></radialGradient>
+  <linearGradient id="csm-core" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3b8bf0"/><stop offset="1" stop-color="#144c97"/></linearGradient>
+  <pattern id="csm-grid" width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#ffffff" stroke-opacity="0.045"/></pattern>
+  <clipPath id="csm-clip"><rect width="480" height="652" rx="26"/></clipPath>
+</defs>
+<style>
+  .csm-f{stroke-dasharray:5 11;animation:csm-flow 1.6s linear infinite}
+  .csm-f2{animation-duration:2.1s}
+  .csm-r1{transform-origin:240px 330px;animation:csm-spin 70s linear infinite}
+  .csm-r2{transform-origin:240px 330px;animation:csm-spin 46s linear infinite reverse}
+  .csm-pulse{animation:csm-pulse 3.2s ease-in-out infinite}
+  .csm-dot{animation:csm-blink 1.8s ease-in-out infinite}
+  @keyframes csm-flow{to{stroke-dashoffset:-32}}
+  @keyframes csm-spin{to{transform:rotate(360deg)}}
+  @keyframes csm-pulse{0%,100%{opacity:.75}50%{opacity:1}}
+  @keyframes csm-blink{0%,100%{opacity:1}50%{opacity:.35}}
+  @media (prefers-reduced-motion:reduce){.csm-f,.csm-r1,.csm-r2,.csm-pulse,.csm-dot{animation:none}}
+</style>
+<g clip-path="url(#csm-clip)">
+  <rect width="480" height="652" fill="url(#csm-bg)"/>
+  <rect width="480" height="652" fill="url(#csm-grid)"/>
+
+  <circle cx="34" cy="30" r="5" fill="#ff5f57"/><circle cx="53" cy="30" r="5" fill="#febc2e"/><circle cx="72" cy="30" r="5" fill="#28c840"/>
+  
+  <rect x="352" y="16" width="92" height="28" rx="14" fill="#28c840" fill-opacity="0.14"/>
+  <circle class="csm-dot" cx="369" cy="30" r="4" fill="#34d058"/>
+  <text x="382" y="35" font-size="13" font-weight="600" fill="#7ee08f">Trực tuyến</text>
+  <path d="M0 59.5H480" stroke="#ffffff" stroke-opacity="0.07"/>
+<path d="M75 160 C75 232, 201 214, 201 276" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f" d="M75 160 C75 232, 201 214, 201 276" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M185 160 C185 232, 227 214, 227 276" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f csm-f2" d="M185 160 C185 232, 227 214, 227 276" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M295 160 C295 232, 253 214, 253 276" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f" d="M295 160 C295 232, 253 214, 253 276" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M405 160 C405 232, 279 214, 279 276" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f csm-f2" d="M405 160 C405 232, 279 214, 279 276" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M210 384 C210 440, 90 424, 90 482" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f csm-f2" d="M210 384 C210 440, 90 424, 90 482" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M240 384 C240 440, 240 424, 240 482" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f" d="M240 384 C240 440, 240 424, 240 482" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M270 384 C270 440, 390 424, 390 482" fill="none" stroke="#3b8bf0" stroke-opacity="0.35" stroke-width="2"/>
+  <path class="csm-f csm-f2" d="M270 384 C270 440, 390 424, 390 482" fill="none" stroke="#9cc8ff" stroke-width="2.4" stroke-linecap="round"/>
+
+  <circle cx="240" cy="330" r="130" fill="url(#csm-glow)" class="csm-pulse"/>
+  <circle class="csm-r1" cx="240" cy="330" r="104" fill="none" stroke="#7db8ff" stroke-opacity="0.35" stroke-width="1.4" stroke-dasharray="2 9" stroke-linecap="round"/>
+  <circle class="csm-r2" cx="240" cy="330" r="81" fill="none" stroke="#7db8ff" stroke-opacity="0.5" stroke-width="1.4" stroke-dasharray="46 16"/>
+  <circle cx="240" cy="330" r="68" fill="#1e6dda" fill-opacity="0.18"/>
+  <circle cx="240" cy="330" r="52" fill="url(#csm-core)" stroke="#ffffff" stroke-opacity="0.28" stroke-width="1.4"/>
+  <path d="M0 -1 C0.18 -0.42 0.42 -0.18 1 0 C0.42 0.18 0.18 0.42 0 1 C-0.18 0.42 -0.42 0.18 -1 0 C-0.42 -0.18 -0.18 -0.42 0 -1Z" transform="translate(240 310.2) scale(17)" fill="#ffffff"/>
+  <text x="240" y="344.6" text-anchor="middle" font-size="20" font-weight="700" fill="#ffffff" letter-spacing="-0.3">Click Star</text>
+  <text x="240" y="361.6" text-anchor="middle" font-size="11" fill="#cfe1fb">Nền tảng dữ liệu</text>
+
+  <rect x="24" y="72" width="102" height="88" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="75" cy="104" r="19" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(65.0 94.0) scale(0.833)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16.5 14.2c2.7.2 4.5 2.3 4.5 5"/></g>
+  <text x="75" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">CRM</text>
+
+  <rect x="134" y="72" width="102" height="88" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="185" cy="104" r="19" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(175.0 94.0) scale(0.833)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.6"/><circle cx="12" cy="12" r="1" fill="currentColor"/></g>
+  <text x="185" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Quảng cáo</text>
+
+  <rect x="244" y="72" width="102" height="88" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="295" cy="104" r="19" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(285.0 94.0) scale(0.833)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.6 2.4 3.8 5.2 3.8 8.5s-1.2 6.1-3.8 8.5c-2.6-2.4-3.8-5.2-3.8-8.5S9.4 5.9 12 3.5z"/></g>
+  <text x="295" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Website</text>
+
+  <rect x="354" y="72" width="102" height="88" rx="16" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.14"/>
+  <circle cx="405" cy="104" r="19" fill="#7db8ff" fill-opacity="0.14"/>
+  <g transform="translate(395.0 94.0) scale(0.833)" fill="none" stroke="#7db8ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#7db8ff"><path d="M5 10v4"/><path d="M9 6.5v11"/><path d="M13 3.5v17"/><path d="M17 7.5v9"/><path d="M21 10.5v3"/></g>
+  <text x="405" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Cuộc gọi</text>
+
+  <rect x="20" y="482" width="140" height="106" rx="18" fill="#1e6dda" fill-opacity="0.16" stroke="#7db8ff" stroke-opacity="0.55"/>
+  <circle cx="90" cy="518" r="20" fill="#1e6dda"/>
+  <g transform="translate(79.0 507.0) scale(0.917)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#ffffff"><rect x="4" y="13" width="3.6" height="7" rx="1"/><rect x="10.2" y="8" width="3.6" height="12" rx="1"/><rect x="16.4" y="4" width="3.6" height="16" rx="1"/></g>
+  <text x="90" y="558" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Dashboard</text>
+  <text x="90" y="576" text-anchor="middle" font-size="10.5" fill="#cfe1fb">Báo cáo thời gian thực</text>
+
+  <rect x="170" y="482" width="140" height="106" rx="18" fill="#1e6dda" fill-opacity="0.16" stroke="#7db8ff" stroke-opacity="0.55"/>
+  <circle cx="240" cy="518" r="20" fill="#1e6dda"/>
+  <g transform="translate(229.0 507.0) scale(0.917)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#ffffff"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9-1.9 5.1-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M19 3v3M17.5 4.5h3"/></g>
+  <text x="240" y="558" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Trợ lý AI</text>
+  <text x="240" y="576" text-anchor="middle" font-size="10.5" fill="#cfe1fb">Phân tích và dự báo</text>
+
+  <rect x="320" y="482" width="140" height="106" rx="18" fill="#1e6dda" fill-opacity="0.16" stroke="#7db8ff" stroke-opacity="0.55"/>
+  <circle cx="390" cy="518" r="20" fill="#1e6dda"/>
+  <g transform="translate(379.0 507.0) scale(0.917)" fill="none" stroke="#ffffff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" color="#ffffff"><rect x="3.5" y="4" width="6.5" height="6.5" rx="1.6"/><rect x="14" y="13.5" width="6.5" height="6.5" rx="1.6"/><path d="M10 7.2h3.5a2.5 2.5 0 0 1 2.5 2.5v3.8"/><path d="M14.5 11.5l1.5 2 1.5-2"/></g>
+  <text x="390" y="558" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">Tự động hóa</text>
+  <text x="390" y="576" text-anchor="middle" font-size="10.5" fill="#cfe1fb">Quy trình chạy 24/7</text>
+
+  <text x="240" y="626" text-anchor="middle" font-size="12.5" fill="#8fa3c0">Một hệ thống · Một nguồn dữ liệu</text>
+</g>
+<rect x="0.5" y="0.5" width="479" height="651" rx="26" fill="none" stroke="#ffffff" stroke-opacity="0.1"/>
+</svg>
