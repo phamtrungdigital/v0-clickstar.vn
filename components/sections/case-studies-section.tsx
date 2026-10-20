@@ -1,22 +1,82 @@
 'use client'
 
-import { useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link, { useLocalHref } from '@/components/app-link'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Autoplay } from 'swiper/modules'
-import type { Swiper as SwiperType } from 'swiper'
 import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLanguage } from '@/contexts/language-context'
 import type { CaseStudiesContent, CaseStudyItem } from '@/lib/cms/types'
 
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+const AUTOPLAY_MS = 5000
 
+/**
+ * Dải dự án cuộn ngang bằng CSS (scroll-snap), không dùng thư viện trượt: 1 thẻ / 2 thẻ (từ 640px) / 3 thẻ (từ 1024px).
+ * Nút trước/sau và chấm chuyển theo từng thẻ; tự chuyển 5 giây/lần, dừng khi rê chuột, chạm, tab ẩn hoặc
+ * người dùng bật giảm chuyển động. Tới thẻ cuối thì quay về đầu.
+ */
 export function CaseStudiesSection({ content }: { content: CaseStudiesContent }) {
-  const swiperRef = useRef<SwiperType | null>(null)
   const { t } = useLanguage()
+  const trackRef = useRef<HTMLDivElement | null>(null)
+  const pausedRef = useRef(false)
+  const [page, setPage] = useState(0)
+  const [pages, setPages] = useState(Math.max(1, content.items.length))
+
+  // Số vị trí dừng = số thẻ - số thẻ hiện cùng lúc + 1 (giống chấm của slider cũ)
+  const measure = useCallback(() => {
+    const el = trackRef.current
+    const card = el?.firstElementChild as HTMLElement | null
+    if (!el || !card) return
+    const step = card.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0')
+    const perView = Math.max(1, Math.round((el.clientWidth + 1) / step))
+    setPages(Math.max(1, content.items.length - perView + 1))
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2
+    setPage(atEnd ? Math.max(0, content.items.length - perView) : Math.round(el.scrollLeft / step))
+  }, [content.items.length])
+
+  const goTo = useCallback((i: number) => {
+    const el = trackRef.current
+    const card = el?.children[i] as HTMLElement | undefined
+    if (!el || !card) return
+    el.scrollTo({ left: card.offsetLeft - (el.firstElementChild as HTMLElement).offsetLeft, behavior: 'smooth' })
+  }, [])
+
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      const next = page + dir
+      goTo(next >= pages ? 0 : next < 0 ? pages - 1 : next)
+    },
+    [goTo, page, pages]
+  )
+
+  useEffect(() => {
+    const el = trackRef.current
+    if (!el) return
+    measure()
+    let raf = 0
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(() => ((raf = 0), measure()))
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', measure)
+    return () => {
+      el.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', measure)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [measure])
+
+  useEffect(() => {
+    if (pages <= 1) return
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return
+    const id = window.setInterval(() => {
+      if (pausedRef.current || document.hidden) return
+      step(1)
+    }, AUTOPLAY_MS)
+    return () => window.clearInterval(id)
+  }, [pages, step])
+
+  const pause = () => (pausedRef.current = true)
+  const resume = () => (pausedRef.current = false)
 
   return (
     <section
@@ -58,14 +118,14 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
 
             <div className="flex items-center gap-2">
               <button
-                onClick={() => swiperRef.current?.slidePrev()}
+                onClick={() => step(-1)}
                 className="w-11 h-11 rounded-full border-2 border-border bg-background flex items-center justify-center hover:border-primary hover:text-primary transition-colors duration-200"
                 aria-label="Previous slide"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
               <button
-                onClick={() => swiperRef.current?.slideNext()}
+                onClick={() => step(1)}
                 className="w-11 h-11 rounded-full border-2 border-border bg-background flex items-center justify-center hover:border-primary hover:text-primary transition-colors duration-200"
                 aria-label="Next slide"
               >
@@ -75,37 +135,48 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
           </div>
         </div>
 
-        <Swiper
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper
-          }}
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={24}
-          slidesPerView={1}
-          pagination={{
-            clickable: true,
-            el: '.case-studies-pagination',
-            bulletClass:
-              'inline-block w-2 h-2 rounded-full bg-border cursor-pointer transition-all duration-200',
-            bulletActiveClass: '!bg-primary !w-6',
-          }}
-          autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
-          breakpoints={{ 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }}
-          className="!overflow-visible"
+        <div
+          ref={trackRef}
+          onMouseEnter={pause}
+          onMouseLeave={resume}
+          onTouchStart={pause}
+          onFocus={pause}
+          onBlur={resume}
+          className="-mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth scroll-px-4 px-4 pb-2 sm:scroll-px-6 lg:scroll-px-8 [scrollbar-width:none] sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 [&::-webkit-scrollbar]:hidden"
         >
           {content.items.map((study, index) => (
-            <SwiperSlide key={index}>
+            <div
+              key={index}
+              className="w-full shrink-0 snap-start sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-48px)/3)]"
+            >
               <CaseStudyCard
                 study={study}
                 title={t(study.title.vi, study.title.en)}
                 category={t(study.category.vi, study.category.en)}
                 itemIndex={index}
               />
-            </SwiperSlide>
+            </div>
           ))}
-        </Swiper>
+        </div>
 
-        <div className="case-studies-pagination flex items-center justify-center gap-2 mt-10" />
+        {pages > 1 && (
+          <div className="mt-10 flex items-center justify-center">
+            {Array.from({ length: pages }, (_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={t(`Tới dự án ${i + 1}`, `Go to project ${i + 1}`)}
+                aria-current={i === page ? 'true' : undefined}
+                className="flex h-6 min-w-6 items-center justify-center px-1"
+              >
+                <span
+                  className={`block h-2 rounded-full transition-all duration-200 ${i === page ? 'w-6 bg-primary' : 'w-2 bg-border'}`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="sm:hidden mt-8 text-center">
           <Link
