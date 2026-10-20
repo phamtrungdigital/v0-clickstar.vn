@@ -58,7 +58,7 @@ const AutomationFlowSVG = ({ className = "w-full h-full" }: { className?: string
 const automationBenefits = [
   {
     icon: Clock,
-    title: { vi: 'Tiết kiệm 80% thời gian', en: 'Save 80% of your time' },
+    title: { vi: 'Tiết kiệm thời gian vận hành', en: 'Save operating time' },
     description: { vi: 'Tự động hóa các tác vụ lặp đi lặp lại: nhập liệu, gửi email, cập nhật CRM, tạo báo cáo...', en: 'Automate the repetitive work: data entry, emails, CRM updates, reporting and more.' }
   },
   {
@@ -100,8 +100,8 @@ const automationUseCases = [
       { vi: 'Trả lời hoặc chuyển đến nhân viên', en: 'Reply or hand off to an agent' },
       { vi: 'Lưu vào CRM', en: 'Log to CRM' }
     ],
-    stats: '90%',
-    statsLabel: { vi: 'Tự động hóa', en: 'Automated' }
+    stats: '',
+    statsLabel: { vi: '', en: '' }
   },
   {
     icon: Bell,
@@ -126,8 +126,8 @@ const automationUseCases = [
       { vi: 'Review & edit', en: 'Review & edit' },
       { vi: 'Auto publish', en: 'Auto publish' }
     ],
-    stats: '10x',
-    statsLabel: { vi: 'Nhanh hơn', en: 'Faster' }
+    stats: '',
+    statsLabel: { vi: '', en: '' }
   },
   {
     icon: BarChart3,
@@ -139,8 +139,8 @@ const automationUseCases = [
       { vi: 'Tạo báo cáo', en: 'Build the report' },
       { vi: 'Gửi định kỳ', en: 'Send on schedule' }
     ],
-    stats: '100%',
-    statsLabel: { vi: 'Tự động', en: 'Automated' }
+    stats: '',
+    statsLabel: { vi: '', en: '' }
   }
 ]
 
@@ -246,9 +246,9 @@ export default function AIAutomationPage() {
 
             <div className="mt-12 grid grid-cols-3 gap-6">
               {[
-                { v: '80%', l: t('Tiết kiệm thời gian', 'Time saved') },
                 { v: '24/7', l: t('Hoạt động liên tục', 'Always on') },
-                { v: '100+', l: t('Workflows đã triển khai', 'Workflows deployed') },
+                { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
+                { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
               ].map((x) => (
                 <div key={x.l}>
                   <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
@@ -360,10 +360,12 @@ export default function AIAutomationPage() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
                       <useCase.icon className="h-6 w-6 text-white" />
                     </div>
-                    <div className="text-right">
-                      <p className="text-[32px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
-                      <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
-                    </div>
+                    {useCase.stats ? (
+                      <div className="text-right">
+                        <p className="text-[32px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
+                        <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{t(useCase.title.vi, useCase.title.en)}</h3>
                   <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{t(useCase.description.vi, useCase.description.en)}</p>

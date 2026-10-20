@@ -54,7 +54,7 @@ export default function DashboardServicePage() {
     {
       icon: <Clock className="w-5 h-5" />,
       problem: t('Mất hàng giờ để tổng hợp báo cáo thủ công', 'Spending hours compiling manual reports'),
-      solution: t('Báo cáo tự động real-time, tiết kiệm 90% thời gian', 'Automated real-time reports, save 90% time')
+      solution: t('Báo cáo tự động real-time, tiết kiệm thời gian báo cáo thủ công', 'Automated real-time reports, no more manual reporting')
     },
     {
       icon: <Target className="w-5 h-5" />,
@@ -76,9 +76,9 @@ export default function DashboardServicePage() {
       color: 'from-[#1e6dda] to-[#1e6dda]',
       bgColor: 'bg-[#eaf2fd]',
       metrics: [
-        { label: 'ROAS', value: '4.2x' },
-        { label: 'CPA', value: '-35%' },
-        { label: 'CTR', value: '+28%' }
+        { label: 'ROAS' },
+        { label: 'CPA' },
+        { label: 'CTR' }
       ],
       features: [
         t('Chi phí & ngân sách real-time', 'Real-time cost & budget'),
@@ -94,9 +94,9 @@ export default function DashboardServicePage() {
       color: 'from-[#1e6dda] to-[#1e6dda]',
       bgColor: 'bg-[#f5f5f7]',
       metrics: [
-        { label: t('Tỷ lệ chốt', 'Close Rate'), value: '+45%' },
-        { label: t('Thời gian', 'Cycle Time'), value: '-30%' },
-        { label: 'LTV', value: '+60%' }
+        { label: t('Tỷ lệ chốt', 'Close Rate') },
+        { label: t('Thời gian', 'Cycle Time') },
+        { label: 'LTV' }
       ],
       features: [
         t('Pipeline trực quan', 'Visual pipeline'),
@@ -112,9 +112,9 @@ export default function DashboardServicePage() {
       color: 'from-[#1e6dda] to-[#1e6dda]',
       bgColor: 'bg-[#f5f5f7]',
       metrics: [
-        { label: t('Conversion', 'Conversion'), value: '+52%' },
-        { label: t('Bounce', 'Bounce'), value: '-40%' },
-        { label: t('Session', 'Session'), value: '+85%' }
+        { label: t('Conversion', 'Conversion') },
+        { label: t('Bounce', 'Bounce') },
+        { label: t('Session', 'Session') }
       ],
       features: [
         t('User journey mapping', 'User journey mapping'),
@@ -234,7 +234,7 @@ export default function DashboardServicePage() {
 
             <div className="mt-12 grid grid-cols-3 gap-6">
               {[
-                { v: '50+', l: t('Nguồn tích hợp', 'Integrations') },
+                { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
                 { v: 'Real-time', l: t('Cập nhật', 'Updates') },
                 { v: 'AI', l: 'Claude' },
               ].map((x) => (
@@ -342,12 +342,10 @@ export default function DashboardServicePage() {
                   <div className="bg-[#1e6dda] p-7 text-white">
                     <h3 className="text-xl font-semibold leading-snug">{template.title}</h3>
                     <p className="mt-2 text-[15px] leading-relaxed text-white">{template.description}</p>
-                    <div className="mt-5 flex gap-6">
+                    <div className="mt-5 flex flex-wrap items-center gap-2">
+                      <span className="text-[13px] text-white">{t('Chỉ số theo dõi:', 'Tracked KPIs:')}</span>
                       {template.metrics.map((metric, i) => (
-                        <div key={i}>
-                          <div className="text-[22px] font-semibold leading-none tracking-[-0.02em]">{metric.value}</div>
-                          <div className="mt-1 text-[13px] text-white">{metric.label}</div>
-                        </div>
+                        <span key={i} className="rounded-full border border-white/40 px-3 py-1 text-[13px] font-semibold text-white">{metric.label}</span>
                       ))}
                     </div>
                   </div>
@@ -406,7 +404,7 @@ export default function DashboardServicePage() {
                     {t('"Phân tích hiệu quả quảng cáo tháng này"', '"Analyze this month\'s ad performance"')}
                   </p>
                   <div className="mt-3 rounded-[12px] border border-[#1e6dda] px-4 py-3 text-[15px] leading-relaxed text-white">
-                    <p className="font-semibold">{t('Tổng chi phí: ₫180M · ROAS: 4.2x', 'Total spend: ₫180M · ROAS: 4.2x')}</p>
+                    <p className="font-semibold">{t('Ví dụ minh họa · Tổng chi phí: ₫180M · ROAS: 4.2x', 'Illustrative example · Total spend: ₫180M · ROAS: 4.2x')}</p>
                     <p className="mt-1.5 text-[#d2d2d7]">
                       {t(
                         'Google Ads đang có CPA thấp nhất (₫45K). Đề xuất tăng 20% ngân sách để tối ưu conversion.',

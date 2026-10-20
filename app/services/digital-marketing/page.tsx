@@ -56,7 +56,7 @@ export default function DigitalMarketingPage() {
     {
       icon: <DollarSign className="w-6 h-6" />,
       problem: t('Chi phí quảng cáo cao nhưng không hiệu quả', 'High advertising costs but ineffective'),
-      solution: t('Tối ưu ngân sách với AI targeting, giảm CPC đến 40%', 'Optimize budget with AI targeting, reduce CPC by up to 40%'),
+      solution: t('Tối ưu ngân sách với AI targeting để giảm chi phí mỗi khách hàng', 'Optimize budget with AI targeting to lower the cost per customer'),
     },
     {
       icon: <Target className="w-6 h-6" />,
@@ -250,8 +250,8 @@ export default function DigitalMarketingPage() {
 
   const stats = [
     { value: '100+', label: t('Doanh nghiệp đồng hành', 'Businesses served') },
-    { value: '40%', label: t('Giảm CPC trung bình', 'Average CPC reduction') },
-    { value: '3.5x', label: t('ROAS trung bình', 'Average ROAS') },
+    { value: '10+', label: t('Năm kinh nghiệm', 'Years of experience') },
+    { value: '24/7', label: t('Theo dõi chiến dịch', 'Campaign monitoring') },
     { value: '90%+', label: t('Khách hàng hài lòng', 'Client satisfaction') },
   ]
 
@@ -259,29 +259,20 @@ export default function DigitalMarketingPage() {
     {
       logo: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&h=1000&fit=crop&q=80',
       industry: t('E-commerce', 'E-commerce'),
-      title: t('Tăng 250% doanh thu từ quảng cáo', '250% increase in ad revenue'),
-      metrics: [
-        { label: 'ROAS', value: '4.2x' },
-        { label: t('Giảm CPA', 'CPA Reduction'), value: '-35%' },
-      ],
+      title: t('Quảng cáo tăng trưởng doanh thu cho cửa hàng online', 'Performance ads that grow online store revenue'),
+      tags: [t('Meta Ads', 'Meta Ads'), t('Google Ads', 'Google Ads'), 'ROAS'],
     },
     {
       logo: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1600&h=1000&fit=crop&q=80',
       industry: t('Giáo dục', 'Education'),
-      title: t('300+ leads chất lượng mỗi tháng', '300+ quality leads per month'),
-      metrics: [
-        { label: t('Cost per Lead', 'Cost per Lead'), value: '-45%' },
-        { label: t('Conversion Rate', 'Conversion Rate'), value: '+120%' },
-      ],
+      title: t('Thu hút và chăm sóc leads chất lượng cho giáo dục', 'Attracting and nurturing quality leads for education'),
+      tags: [t('Lead Ads', 'Lead Ads'), 'CRM', 'Cost per Lead'],
     },
     {
       logo: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&h=1000&fit=crop&q=80',
       industry: t('Y tế', 'Healthcare'),
-      title: t('Top 3 Google cho từ khóa chính', 'Top 3 Google for main keywords'),
-      metrics: [
-        { label: t('Organic Traffic', 'Organic Traffic'), value: '+180%' },
-        { label: t('Bookings', 'Bookings'), value: '+95%' },
-      ],
+      title: t('SEO và nội dung để khách y tế tìm thấy bạn trên Google', 'SEO and content that put healthcare brands in front of searchers'),
+      tags: ['SEO', t('Nội dung', 'Content'), t('Đặt lịch', 'Bookings')],
     },
   ]
 
@@ -565,7 +556,7 @@ export default function DigitalMarketingPage() {
                   <div className="mb-5 flex items-center justify-between gap-3">
                     <div>
                       <h4 className="text-base font-semibold text-[#1d1d1f]">{t('Dashboard Overview', 'Dashboard Overview')}</h4>
-                      <p className="text-sm text-[#515154]">{t('Cập nhật 5 phút trước', 'Updated 5 minutes ago')}</p>
+                      <p className="text-sm text-[#515154]">{t('Dữ liệu minh họa', 'Sample data')}</p>
                     </div>
                     <span className="rounded-full bg-[#1e6dda] px-3 py-1 text-sm text-white">{t('Đang chạy', 'Running')}</span>
                   </div>
@@ -609,11 +600,11 @@ export default function DigitalMarketingPage() {
             <div className="mb-12 text-center lg:mb-14">
               <Eyebrow className="mb-3">
                 <TrendingUp className="h-4 w-4" />
-                {t('CASE STUDIES', 'CASE STUDIES')}
+                {t('LĨNH VỰC TRIỂN KHAI', 'INDUSTRIES WE SERVE')}
               </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
-                {t('Kết quả', 'Results')}{' '}
-                <span className="text-[#1859b8]">{t('thực tế', 'in action')}</span>
+                {t('Giải pháp theo', 'Solutions by')}{' '}
+                <span className="text-[#1859b8]">{t('ngành', 'industry')}</span>
               </h2>
             </div>
 
@@ -636,12 +627,9 @@ export default function DigitalMarketingPage() {
                   </div>
                   <div className="flex flex-1 flex-col p-6">
                     <h3 className="text-xl font-semibold leading-snug text-[#1d1d1f]">{study.title}</h3>
-                    <div className="mt-auto flex gap-3 pt-6">
-                      {study.metrics.map((metric, idx) => (
-                        <div key={idx} className="flex-1 rounded-[12px] bg-[#f5f5f7] p-3.5 text-center">
-                          <div className="text-2xl font-semibold tabular-nums tracking-tight text-[#1859b8]">{metric.value}</div>
-                          <div className="mt-0.5 text-[13px] text-[#515154]">{metric.label}</div>
-                        </div>
+                    <div className="mt-auto flex flex-wrap gap-2 pt-6">
+                      {study.tags.map((tag, idx) => (
+                        <span key={idx} className="rounded-full bg-[#f5f5f7] px-3 py-1 text-[13px] text-[#515154]">{tag}</span>
                       ))}
                     </div>
                   </div>
@@ -651,7 +639,7 @@ export default function DigitalMarketingPage() {
 
             <div className="mt-12 text-center">
               <Link href="/projects" className="ap-link inline-flex items-center gap-2 font-semibold">
-                {t('Xem tất cả case studies', 'View all case studies')}
+                {t('Xem các dự án', 'View our projects')}
               </Link>
             </div>
           </div>

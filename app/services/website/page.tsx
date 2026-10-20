@@ -327,19 +327,16 @@ export default function WebsiteDesignPage() {
       title: 'TechVision Corp',
       category: language === 'vi' ? 'Website Doanh nghiệp' : 'Corporate Website',
       image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1600&h=1000&fit=crop',
-      metrics: { conversion: '+180%', speed: '95/100', bounce: '-45%' }
     },
     {
       title: 'Fashion Store',
       category: language === 'vi' ? 'E-commerce' : 'E-commerce',
       image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1600&h=1000&fit=crop',
-      metrics: { conversion: '+250%', speed: '92/100', bounce: '-38%' }
     },
     {
       title: 'EduLearn Platform',
       category: language === 'vi' ? 'Website Giáo dục' : 'Education Website',
       image: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=1600&h=1000&fit=crop',
-      metrics: { conversion: '+320%', speed: '90/100', bounce: '-52%' }
     },
   ]
 
@@ -400,9 +397,9 @@ export default function WebsiteDesignPage() {
 
             <div className="mt-12 grid grid-cols-3 gap-6">
               {[
-                { v: '200+', l: t('Dự án hoàn thành', 'Projects completed') },
-                { v: '95+', l: t('Điểm PageSpeed', 'PageSpeed Score') },
-                { v: '3x', l: t('Tăng Conversion', 'Conversion increase') },
+                { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
+                { v: '90+', l: t('Mục tiêu điểm PageSpeed', 'PageSpeed score target') },
+                { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
               ].map((x) => (
                 <div key={x.l}>
                   <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
@@ -458,8 +455,8 @@ export default function WebsiteDesignPage() {
                 </h2>
                 <p className="mt-5 text-lg leading-relaxed text-[#515154]">
                   {t(
-                    'Một website không tối ưu có thể khiến bạn mất đến 70% khách hàng tiềm năng. Hãy để chúng tôi giúp bạn.',
-                    'An unoptimized website can cost you up to 70% of potential customers. Let us help you.'
+                    'Một website chậm, khó dùng trên điện thoại hoặc thiếu rõ ràng có thể khiến bạn mất khách hàng tiềm năng. Hãy để chúng tôi giúp bạn.',
+                    'A slow website that is hard to use on mobile or unclear can cost you potential customers. Let us help you.'
                   )}
                 </p>
                 <div className="mt-8 space-y-4">
@@ -685,8 +682,8 @@ export default function WebsiteDesignPage() {
                 {t('DỰ ÁN TIÊU BIỂU', 'FEATURED PROJECTS')}
               </Eyebrow>
               <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
-                {t('Kết quả ', 'Results ')}
-                <span className="text-[#1859b8]">{t('thực tế', 'that speak')}</span>
+                {t('Dự án ', 'Featured ')}
+                <span className="text-[#1859b8]">{t('tiêu biểu', 'projects')}</span>
               </h2>
             </div>
 
@@ -707,18 +704,6 @@ export default function WebsiteDesignPage() {
                   <div className="flex flex-1 flex-col p-6">
                     <span className="text-xs font-semibold uppercase tracking-wider text-[#1859b8]">{item.category}</span>
                     <h3 className="mt-2 text-xl font-semibold leading-snug text-[#1d1d1f]">{item.title}</h3>
-                    <div className="mt-auto grid grid-cols-3 gap-3 pt-6">
-                      {[
-                        { v: item.metrics.conversion, l: 'Conversion' },
-                        { v: item.metrics.speed, l: 'PageSpeed' },
-                        { v: item.metrics.bounce, l: 'Bounce Rate' },
-                      ].map((m) => (
-                        <div key={m.l} className="rounded-[12px] bg-[#f5f5f7] p-3 text-center">
-                          <div className="text-lg font-semibold tabular-nums text-[#1859b8]">{m.v}</div>
-                          <div className="mt-0.5 text-xs text-[#515154]">{m.l}</div>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 </div>
               ))}

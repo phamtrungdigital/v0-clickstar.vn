@@ -141,9 +141,9 @@ const useCases = [
   {
     icon: FileText,
     title: { vi: 'Content Marketing', en: 'Content Marketing' },
-    description: { vi: 'Tạo bài viết blog, social media posts, email marketing với tốc độ nhanh gấp 10 lần', en: 'Create blog posts, social content and marketing emails 10x faster' },
-    stats: '10x',
-    statsLabel: { vi: 'Nhanh hơn', en: 'Faster' },
+    description: { vi: 'Tạo bài viết blog, social media posts, email marketing nhanh hơn rất nhiều', en: 'Create blog posts, social content and marketing emails far faster' },
+    stats: '',
+    statsLabel: { vi: '', en: '' },
     features: [
       { vi: 'Blog posts tự động', en: 'Automated blog posts' },
       { vi: 'Social captions', en: 'Social captions' },
@@ -155,8 +155,8 @@ const useCases = [
     icon: ImageIcon,
     title: { vi: 'Thiết kế hình ảnh', en: 'Visual Design' },
     description: { vi: 'Tạo banner, thumbnail, product images mà không cần designer', en: 'Banners, thumbnails and product images — no designer needed' },
-    stats: '80%',
-    statsLabel: { vi: 'Tiết kiệm chi phí', en: 'Cost savings' },
+    stats: '',
+    statsLabel: { vi: '', en: '' },
     features: [
       { vi: 'Banner quảng cáo', en: 'Ad banners' },
       { vi: 'Social media images', en: 'Social media images' },
@@ -168,8 +168,8 @@ const useCases = [
     icon: Video,
     title: { vi: 'Sản xuất Video', en: 'Video Production' },
     description: { vi: 'Video ads, reels, TikTok content với thời gian sản xuất tối thiểu', en: 'Video ads, reels and TikTok content in a fraction of the time' },
-    stats: '5x',
-    statsLabel: { vi: 'Hiệu quả hơn', en: 'More efficient' },
+    stats: '',
+    statsLabel: { vi: '', en: '' },
     features: [
       { vi: 'Video ads 15-60s', en: 'Video ads 15-60s' },
       { vi: 'Reels/TikTok', en: 'Reels/TikTok' },
@@ -194,8 +194,8 @@ const useCases = [
     icon: MessageSquare,
     title: { vi: 'Chatbot & Support', en: 'Chatbot & Support' },
     description: { vi: 'Chatbot thông minh trả lời khách hàng 24/7, tích hợp đa kênh', en: 'Smart chatbots answer customers 24/7 across every channel' },
-    stats: '90%',
-    statsLabel: { vi: 'Tự động hóa', en: 'Automated' },
+    stats: '',
+    statsLabel: { vi: '', en: '' },
     features: [
       { vi: 'Website chatbot', en: 'Website chatbot' },
       { vi: 'Messenger bot', en: 'Messenger bot' },
@@ -207,8 +207,8 @@ const useCases = [
     icon: Target,
     title: { vi: 'Tối ưu quảng cáo', en: 'Ad Optimization' },
     description: { vi: 'AI tối ưu bid, targeting, creative testing tự động', en: 'AI automates bidding, targeting and creative testing' },
-    stats: '35%',
-    statsLabel: { vi: 'Giảm CPA', en: 'Lower CPA' },
+    stats: '',
+    statsLabel: { vi: '', en: '' },
     features: [
       { vi: 'Auto bidding', en: 'Auto bidding' },
       { vi: 'Audience AI', en: 'Audience AI' },
@@ -221,9 +221,9 @@ const useCases = [
 // AI transformation stats
 const transformationStats = [
   { value: '73%', label: { vi: 'Doanh nghiệp đã áp dụng AI', en: 'Businesses already using AI' }, desc: { vi: 'Theo McKinsey 2026', en: 'McKinsey, 2026' } },
-  { value: '40%', label: { vi: 'Tăng năng suất trung bình', en: 'Average productivity gain' }, desc: { vi: 'Khi tích hợp AI vào workflow', en: 'With AI built into the workflow' } },
-  { value: '2.5x', label: { vi: 'ROI cao hơn', en: 'Higher ROI' }, desc: { vi: 'So với phương pháp truyền thống', en: 'Versus traditional methods' } },
-  { value: '60%', label: { vi: 'Giảm thời gian xử lý', en: 'Less processing time' }, desc: { vi: 'Các tác vụ lặp đi lặp lại', en: 'On repetitive tasks' } }
+  { value: '100+', label: { vi: 'Doanh nghiệp đồng hành', en: 'Businesses served' }, desc: { vi: 'Marketing, CRM và vận hành', en: 'Marketing, CRM and operations' } },
+  { value: '10+', label: { vi: 'Năm kinh nghiệm', en: 'Years of experience' }, desc: { vi: 'Của đội ngũ Click Star', en: 'Across the Click Star team' } },
+  { value: '24/7', label: { vi: 'Hoạt động liên tục', en: 'Always on' }, desc: { vi: 'Chatbot và tự động hóa', en: 'Chatbots and automation' } }
 ]
 
 // Latest AI articles
@@ -354,7 +354,7 @@ export default function AIIntegrationPage() {
 
             <div className="mt-12 grid grid-cols-3 gap-6">
               {[
-                { v: '40%', l: t('Tăng năng suất', 'Productivity gain') },
+                { v: '24/7', l: t('Hoạt động liên tục', 'Always on') },
                 { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
                 { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
               ].map((x) => (
@@ -442,10 +442,12 @@ export default function AIIntegrationPage() {
                     <div className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#1e6dda]">
                       <useCase.icon className="h-6 w-6 text-white" />
                     </div>
-                    <div className="text-right">
-                      <p className="text-[28px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
-                      <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
-                    </div>
+                    {useCase.stats ? (
+                      <div className="text-right">
+                        <p className="text-[28px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
+                        <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
+                      </div>
+                    ) : null}
                   </div>
                   <h3 className="mt-5 text-xl font-semibold leading-snug text-[#1d1d1f]">{t(useCase.title.vi, useCase.title.en)}</h3>
                   <p className="mt-2 text-[15px] leading-relaxed text-[#515154]">{t(useCase.description.vi, useCase.description.en)}</p>
