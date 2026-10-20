@@ -10,7 +10,7 @@ import type { I18n } from '@/lib/cms/types'
  *    nhãn "mã thật". Không trích mã của khách hàng, không có email, tên miền hay khoá của khách.
  * 2. Con số trong STATS đo từ kho mã nguồn ngày 18/10/2026 (đếm file migration, commit, test).
  *    Muốn đổi thì đo lại, ghi ngày đo; không làm tròn lên.
- * 3. "10+ năm" (kinh nghiệm CRM, CDP từ 2016) và "100+ doanh nghiệp" theo xác nhận của chủ site ngày 20/10/2026; công ty thành lập 2021, agency từ 2019. Khớp trang Giới thiệu (CMS). Không thêm số nhân sự.
+ * 3. "10+ năm" (kinh nghiệm của đội ngũ) và "100+ doanh nghiệp" theo xác nhận của chủ site ngày 20/10/2026; agency từ 2018, công ty thành lập 2025. Khớp trang Giới thiệu (CMS). Không thêm số nhân sự.
  * 4. Không ghi số phiên bản mô hình AI (đổi nhanh): chỉ ghi hãng và dòng mô hình.
  */
 

@@ -44,7 +44,7 @@ export async function GET() {
   out.push('# Click Star')
   out.push('')
   out.push(
-    '> Click Star là công ty tại Hà Nội cung cấp giải pháp chuyển đổi số cho doanh nghiệp: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu. Đội ngũ làm CRM và CDP từ năm 2016, mở agency năm 2019 và thành lập công ty năm 2021. Website có hai ngôn ngữ: tiếng Việt (địa chỉ gốc) và tiếng Anh (thêm /en vào đầu đường dẫn).'
+    '> Click Star là công ty tại Hà Nội cung cấp giải pháp chuyển đổi số cho doanh nghiệp: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu. Đội ngũ có hơn 10 năm kinh nghiệm; bắt đầu từ agency năm 2018, mở rộng sang CRM và hệ thống vận hành từ năm 2021 và thành lập công ty năm 2025. Website có hai ngôn ngữ: tiếng Việt (địa chỉ gốc) và tiếng Anh (thêm /en vào đầu đường dẫn).'
   )
   out.push('')
 

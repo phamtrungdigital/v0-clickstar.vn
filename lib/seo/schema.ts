@@ -46,7 +46,7 @@ export function organizationSchema(s: SiteSettings | null, lang: Lang = 'vi') {
     name: BRAND,
     legalName: (lang === 'en' ? s?.site_name?.en : '') || s?.site_name?.vi || undefined,
     url: s?.site_url || SITE_URL,
-    foundingDate: '2021',
+    foundingDate: '2025',
     description:
       lang === 'en'
         ? 'Click Star provides digital transformation solutions for businesses: digital marketing, website design, data dashboards, AI integration, automation, CRM and CDP, and custom software.'
