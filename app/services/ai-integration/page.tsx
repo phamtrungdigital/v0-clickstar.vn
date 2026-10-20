@@ -330,12 +330,12 @@ export default function AIIntegrationPage() {
   return (
     <div className="theme-apple">
       <MainNav />
-      <main>
+      <main className="[counter-reset:eyebrow]">
         {/* Hero: khối trắng, căn giữa, ảnh sản phẩm là cửa sổ làm việc với AI */}
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <Eyebrow dot className="mb-4">
+              <Eyebrow numbered={false} className="mb-4">
                 {t('Công nghệ AI tiên tiến nhất 2026', 'The most advanced AI technology of 2026')}
               </Eyebrow>
               <h1 className="ap-hero-title">{t('Tích hợp AI', 'Integrate AI')}</h1>

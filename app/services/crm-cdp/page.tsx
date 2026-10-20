@@ -244,12 +244,12 @@ export default function CRMCDPPage() {
   return (
     <div className="theme-apple">
       <MainNav />
-      <main>
+      <main className="[counter-reset:eyebrow]">
 {/* Hero: khối trắng, căn giữa, bảng điều khiển CRM làm ảnh sản phẩm */}
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <Eyebrow dot className="mb-4">{t('Quản trị & thấu hiểu khách hàng', 'Manage & understand customers')}</Eyebrow>
+              <Eyebrow numbered={false} className="mb-4">{t('Quản trị & thấu hiểu khách hàng', 'Manage & understand customers')}</Eyebrow>
               <h1 className="ap-hero-title">CRM &amp; CDP</h1>
               <p className="ap-lead max-w-[780px]">
                 {t(

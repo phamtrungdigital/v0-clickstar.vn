@@ -288,12 +288,12 @@ export default function DigitalMarketingPage() {
   return (
     <div className="theme-apple">
       <MainNav />
-      <main>
+      <main className="[counter-reset:eyebrow]">
         {/* Hero: khối sáng, căn giữa theo mockup Apple */}
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <Eyebrow dot className="mb-4">
+              <Eyebrow numbered={false} className="mb-4">
                 {t('DIGITAL MARKETING', 'DIGITAL MARKETING')}
               </Eyebrow>
 

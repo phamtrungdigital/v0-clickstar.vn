@@ -224,12 +224,12 @@ export default function AIAutomationPage() {
   return (
     <div className="theme-apple">
       <MainNav />
-      <main>
+      <main className="[counter-reset:eyebrow]">
         {/* Hero: khối trắng, căn giữa, thẻ danh sách việc tự động làm ảnh sản phẩm */}
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <Eyebrow dot className="mb-4">AI Automation 2026</Eyebrow>
+              <Eyebrow numbered={false} className="mb-4">AI Automation 2026</Eyebrow>
               <h1 className="ap-hero-title">AI Automation</h1>
               <p className="ap-lead max-w-[760px]">
                 {t('Tự động hóa quy trình với nền tảng Click Star, Claude và GPT.', 'Automate your workflows with the Click Star platform, Claude and GPT.')}

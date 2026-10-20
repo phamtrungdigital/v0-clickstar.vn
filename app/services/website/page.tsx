@@ -373,12 +373,12 @@ export default function WebsiteDesignPage() {
   return (
     <div className="theme-apple">
       <MainNav />
-      <main>
+      <main className="[counter-reset:eyebrow]">
         {/* Hero: khối trắng, căn giữa, cửa sổ trình duyệt làm ảnh sản phẩm */}
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <Eyebrow dot className="mb-4">{t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}</Eyebrow>
+              <Eyebrow numbered={false} className="mb-4">{t('THIẾT KẾ WEBSITE', 'WEBSITE DESIGN')}</Eyebrow>
               <h1 className="ap-hero-title">
                 {t('Website chuyển đổi cao', 'Website that converts')}
               </h1>

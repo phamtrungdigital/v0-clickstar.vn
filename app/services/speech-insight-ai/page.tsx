@@ -391,12 +391,12 @@ export default function SpeechInsightAiPage() {
   return (
     <div className="theme-apple">
       <MainNav />
-      <main>
+      <main className="[counter-reset:eyebrow]">
         {/* ① Hero: khối trắng, căn giữa, thẻ kết quả cuộc gọi làm ảnh sản phẩm */}
         <section className="ap-tile ap-light">
           <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="ap-stack">
-              <Eyebrow dot className="mb-4">
+              <Eyebrow numbered={false} className="mb-4">
                 {t('CALL TO TEXT · PHÂN TÍCH CUỘC GỌI BẰNG AI', 'CALL TO TEXT · AI CALL ANALYTICS')}
               </Eyebrow>
               <h1 className="ap-hero-title">{t('Dữ liệu từ mọi cuộc gọi', 'Data from every call')}</h1>

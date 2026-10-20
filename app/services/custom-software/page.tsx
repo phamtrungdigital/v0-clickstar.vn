@@ -125,13 +125,13 @@ export default function CustomSoftwarePage() {
     <div className="theme-apple min-h-screen bg-white text-[#1d1d1f]">
       <MainNav />
 
-      <main>
+      <main className="[counter-reset:eyebrow]">
         {/* ① HERO */}
         <section className="pt-14 pb-16 lg:pt-20 lg:pb-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.02fr] gap-10 lg:gap-14 items-center">
               <div className="min-w-0">
-                <Kicker>{tt(HERO.kicker)}</Kicker>
+                <Kicker numbered={false}>{tt(HERO.kicker)}</Kicker>
                 <h1 className="text-[2.25rem] sm:text-[3rem] lg:text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.03em] text-[#1d1d1f] text-balance">
                   {tt(HERO.title)}
                 </h1>
@@ -633,9 +633,9 @@ function Section({ id, tone = 'white', className = '', children }: { id?: string
   )
 }
 
-function Kicker({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
+function Kicker({ children, dark = false, numbered = true }: { children: React.ReactNode; dark?: boolean; numbered?: boolean }) {
   return (
-    <Eyebrow dot dark={dark} className="mb-4">
+    <Eyebrow dark={dark} numbered={numbered} className="mb-4">
       {children}
     </Eyebrow>
   )

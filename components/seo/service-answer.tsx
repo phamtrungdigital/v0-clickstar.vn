@@ -187,7 +187,7 @@ export function RelatedServices({ postSlug, tags }: { postSlug: string; tags: st
   if (!slugs.length) return null
   return (
     <aside className="mt-8 rounded-2xl border border-[#cfe0f7] bg-[#f3f8ff] p-5" aria-label={t('Dịch vụ liên quan', 'Related services')}>
-      <Eyebrow><Layers />{t('Dịch vụ liên quan', 'Related services')}</Eyebrow>
+      <Eyebrow numbered={false}><Layers />{t('Dịch vụ liên quan', 'Related services')}</Eyebrow>
       <ul className="mt-4 flex flex-col gap-2">
         {slugs.map((s) => (
           <li key={s}>
