@@ -63,9 +63,22 @@ function renderSection(section: Section, extra: AboutExtra, latestPosts: LatestP
   }
 }
 
+/**
+ * Khối Tin tức đứng thứ 3 trên trang chủ: ngay sau thanh logo (khối thứ 2), trước Dịch vụ.
+ * Không có thanh logo thì đứng ngay sau khối đầu trang.
+ */
+function orderNewsAfterLogos(sections: Section[]): Section[] {
+  const news = sections.filter((s) => s.type === 'blog')
+  if (news.length === 0) return sections
+  const rest = sections.filter((s) => s.type !== 'blog')
+  const logoIdx = rest.findIndex((s) => s.type === 'logo_marquee')
+  const at = logoIdx >= 0 ? logoIdx + 1 : Math.min(1, rest.length)
+  return [...rest.slice(0, at), ...news, ...rest.slice(at)]
+}
+
 /** Nội dung trang chủ, dùng cho cả bản tiếng Việt (app/page.tsx) và bản /en (app/en/page.tsx). */
 export async function HomeView({ lang = 'vi' }: { lang?: Lang }) {
-  const [page, aboutPage, latestPosts, settings] = await Promise.all([getPublishedPage('home'), getPublishedPage('about'), getLatestPosts(3), getSiteSettings()])
+  const [page, aboutPage, latestPosts, settings] = await Promise.all([getPublishedPage('home'), getPublishedPage('about'), getLatestPosts(4), getSiteSettings()])
   if (!page) notFound()
   // Khối About ở trang chủ dùng lại mốc phát triển và ngành nghề của trang Giới thiệu (một nguồn nhập liệu)
   const extra: AboutExtra = {
@@ -80,7 +93,7 @@ export async function HomeView({ lang = 'vi' }: { lang?: Lang }) {
           AI vẫn có nút nổi (FloatingAiServiceRouter); muốn bật lại banner/ô AI chỉ cần thêm lại 2 dòng này. */}
       <MainNav />
 
-      {page.sections.map((section) => (
+      {orderNewsAfterLogos(page.sections).map((section) => (
         <div key={section.id}>{renderSection(section, extra, latestPosts)}</div>
       ))}
 
