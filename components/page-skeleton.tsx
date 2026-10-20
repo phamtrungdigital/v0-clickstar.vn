@@ -1,7 +1,10 @@
-// Skeleton hiển thị NGAY khi điều hướng giữa các trang công khai (force-dynamic),
-// thay vì màn trắng chờ server render → cảm giác chuyển tab nhanh hơn (PC + mobile).
-// Admin có loading.tsx riêng nên không bị ảnh hưởng.
-export default function Loading() {
+// Khung xương (skeleton) hiện NGAY khi bấm sang một trang công khai dựng động (blog, dự án, liên hệ),
+// thay vì đứng ở trang cũ chờ máy chủ dựng xong. Chỉ gắn cho các nhóm trang động (loading.tsx trong app/blog,
+// app/projects, app/contact và bản /en). KHÔNG đặt ở app/loading.tsx: loading ở gốc bọc cả trang tĩnh (trang chủ,
+// dịch vụ...) trong Suspense, HTML gửi khung xương trước còn nội dung thật nằm ẩn cuối trang chờ script của React
+// gỡ ra, nên trình duyệt chỉ vẽ nội dung sau khi tải xong JavaScript (Lighthouse điện thoại: LCP 3 giây, lần tải
+// nguội tới 13 giây).
+export function PageSkeleton() {
   return (
     <div className="min-h-screen bg-white animate-pulse" aria-hidden="true">
       {/* Nav placeholder */}
