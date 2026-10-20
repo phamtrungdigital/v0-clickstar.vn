@@ -1,13 +1,13 @@
 /**
- * Phân tích nội dung blog cho Admin → SEO → tab "Nội dung bài viết": bài đã phủ nhóm chủ đề, dịch vụ và
+ * Phân tích nội dung blog cho Admin → Quản trị bài viết: bài đã phủ nhóm chủ đề, dịch vụ và
  * giai đoạn mua nào, còn thiếu gì, nên viết bài nào tiếp. Hàm `analyzeContent` thuần (không đọc DB), nhận danh sách
- * bài đã rút gọn từ `lib/seo/content-data.ts`.
+ * bài đã rút gọn từ `lib/cms/content-data.ts`.
  *
  * Phân nhóm là dữ liệu viết tay trong file này (POST_META, BACKLOG), không suy từ chữ trong bài, vì suy đoán
  * bằng từ khóa tiếng Việt rất dễ sai. Bài mới đăng thì thêm một dòng vào POST_META (và BY_POST ở
  * `lib/seo/post-services.ts`); bài chưa có dòng sẽ hiện ở mục "Bài chưa xếp nhóm" để không bị bỏ sót.
  */
-import { SERVICE_LABELS, relatedServiceSlugs } from './post-services'
+import { SERVICE_LABELS, relatedServiceSlugs } from '@/lib/seo/post-services'
 
 /* ------------------------------ Danh mục cố định ------------------------------ */
 
@@ -525,7 +525,7 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
       id: 'unclassified',
       level: 'warn',
       title: 'Bài chưa xếp nhóm',
-      detail: 'Bài mới đăng cần một dòng trong POST_META (lib/seo/content-plan.ts) thì mới được tính vào các biểu đồ trên.',
+      detail: 'Bài mới đăng cần một dòng trong POST_META (lib/cms/content-plan.ts) thì mới được tính vào các biểu đồ trên.',
       items: unclassified.map((r) => ({ id: r.id, label: r.title, note: r.slug })),
     })
   const off = pubRows.filter((r) => r.offTopic)

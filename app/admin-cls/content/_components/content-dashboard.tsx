@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { Check, ChevronDown, Copy, ExternalLink, Lightbulb } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CARD } from './seo-panel'
+import { CARD } from '@/app/admin-cls/seo/_components/seo-panel'
 import {
   KINDS,
   SERVICE_SHORT,
@@ -14,7 +14,7 @@ import {
   type PillarId,
   type StageId,
   type Suggestion,
-} from '@/lib/seo/content-plan'
+} from '@/lib/cms/content-plan'
 
 const stageLabel = (id: StageId | null) => STAGES.find((s) => s.id === id)?.label ?? ''
 
@@ -117,7 +117,7 @@ const EN_BADGE: Record<EnState, { text: string; cls: string }> = {
   none: { text: 'Chưa có EN', cls: 'bg-slate-100 text-slate-500 dark:bg-slate-700 dark:text-slate-400' },
 }
 
-export function SeoContent({ data }: { data: ContentAnalysis }) {
+export function ContentDashboard({ data }: { data: ContentAnalysis }) {
   const { totals, pillars, matrix, stageTotals, cadence, suggestions, issues, tags, rows } = data
   const [showAllSug, setShowAllSug] = useState(false)
   const [openIssue, setOpenIssue] = useState<string | null>(null)
@@ -202,7 +202,7 @@ export function SeoContent({ data }: { data: ContentAnalysis }) {
 
       <div className="grid lg:grid-cols-2 gap-3">
         <section className={CARD}>
-          <CardHead title="Phân bố theo nhóm chủ đề" hint="Vạch đứng là tỷ trọng gợi ý. Chỉnh tỷ trọng trong lib/seo/content-plan.ts." />
+          <CardHead title="Phân bố theo nhóm chủ đề" hint="Vạch đứng là tỷ trọng gợi ý. Chỉnh tỷ trọng trong lib/cms/content-plan.ts." />
           <ul className="px-4 pb-4 space-y-3">
             {pillars.map((p) => {
               const tone = p.delta <= -1 ? 'text-amber-700 dark:text-amber-300' : p.delta >= 1.5 ? 'text-slate-500' : 'text-emerald-700 dark:text-emerald-300'

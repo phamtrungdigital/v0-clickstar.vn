@@ -5,7 +5,7 @@ import { analyzeContent, type ContentAnalysis, type ContentPostInput } from './c
 const str = (v: unknown) => (typeof v === 'string' ? v : '')
 const words = (v: string) => v.trim().split(/\s+/).filter(Boolean).length
 
-/** Đọc toàn bộ bài viết (kể cả nháp) rồi rút gọn còn số liệu cần cho màn "Nội dung bài viết". Không gửi nội dung bài xuống trình duyệt. */
+/** Đọc toàn bộ bài viết (kể cả nháp) rồi rút gọn còn số liệu cần cho màn "Quản trị bài viết". Không gửi nội dung bài xuống trình duyệt. */
 export async function loadContentAnalysis(): Promise<ContentAnalysis> {
   const supabase = await createClient()
   const { data } = await supabase

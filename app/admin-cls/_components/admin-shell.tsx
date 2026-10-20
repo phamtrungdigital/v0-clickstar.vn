@@ -33,6 +33,7 @@ import {
   Briefcase,
   Target,
   PanelBottom,
+  ClipboardList,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useSiteBranding } from '@/contexts/site-branding-context'
@@ -56,6 +57,7 @@ const sidebarItems: NavSection[] = [
     items: [
       { label: 'Quản lý trang', href: '/admin-cls/pages', icon: FileText },
       { label: 'Bài viết', href: '/admin-cls/posts', icon: FileText },
+      { label: 'Quản trị bài viết', href: '/admin-cls/content', icon: ClipboardList },
       { label: 'Dự án', href: '/admin-cls/projects', icon: Briefcase },
       { label: 'Đội ngũ', href: '/admin-cls/team', icon: Users },
       { label: 'Footer & CTA', href: '/admin-cls/footer-cta', icon: PanelBottom },

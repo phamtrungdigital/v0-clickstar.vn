@@ -1,5 +1,5 @@
 /**
- * Dịch vụ liên quan của từng bài blog: dùng ở khối "Dịch vụ liên quan" cuối bài và ở màn Admin → SEO → Nội dung
+ * Dịch vụ liên quan của từng bài blog: dùng ở khối "Dịch vụ liên quan" cuối bài và ở màn Admin → Quản trị bài viết
  * (ô phủ dịch vụ). Theo bài cụ thể nếu có, không thì theo nhãn chủ đề. Bài mới đăng nên thêm một dòng vào BY_POST.
  */
 type Both = { vi: string; en: string }
