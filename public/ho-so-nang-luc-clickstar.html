@@ -823,6 +823,140 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
   .ms::after { content: ""; position: absolute; left: 22px; right: 0; top: 7px; height: 2px; background: var(--hairline); }
   .ms:nth-child(3n)::after { right: 24px; }
 }
+
+/* ============================================================================
+   Đồng bộ concept với trang chủ clickstar.vn (20/10/2026): cùng màu, chữ đầu mục dạng viên thuốc, khối tối có lưới
+   và quầng sáng, thẻ bo 20px nâng nhẹ khi rê, hiện dần khi cuộn. Viết sau cùng để thắng các luật cũ ở trên.
+   ============================================================================ */
+:root {
+  --canvas: #ffffff; --parchment: #f5f5f7; --pearl: #fafafc;
+  --ink: #1d1d1f; --ink-80: #3a3a3c; --ink-48: #6e6e73; --hairline: #e3e5ea;
+  --tile: #0b0d12; --tile-2: #10182b; --tile-line: #243255;
+  --on-dark-muted: #b6bfd3;
+  --accent: #1e6dda; --accent-ink: #1859b8; --accent-on-dark: #7db8ff; --accent-wash: #eaf2fd;
+  --glow: rgba(30,109,218,0.28);
+}
+.tile { position: relative; isolation: isolate; overflow: hidden; }
+
+/* Nav: kính mờ sáng, nút Liên hệ xanh như website */
+.nav { background: rgba(255,255,255,0.82); }
+.nav-actions { display: flex; align-items: center; gap: 14px; margin-left: 0; }
+@media (max-width: 1300px) { .nav-actions { margin-left: auto; } }
+.nav-actions .lang { margin-left: 0 !important; }
+.nav-site { display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: var(--ink-80); white-space: nowrap; }
+.nav-site:hover { color: var(--accent-ink); }
+.nav-cta { display: inline-flex; align-items: center; height: 34px; padding: 0 16px; border-radius: 9999px; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; white-space: nowrap; transition: background .2s ease, transform .12s ease; }
+.nav-cta:hover { background: var(--accent-ink); color: #fff; }
+.nav-cta:active { transform: scale(0.96); }
+@media (max-width: 520px) { .nav-site { display: none; } .nav-in { gap: 12px; } }
+
+/* Đầu mục: căn giữa, nhãn dạng viên thuốc có chấm */
+.head { margin-inline: auto; text-align: center; justify-items: center; }
+.head[style*="max-width:none"] { max-width: 760px !important; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 6px 14px; border-radius: 9999px; background: var(--accent-wash); border: 1px solid #cfe0fa; color: var(--accent-ink); font-size: 13px; letter-spacing: 0; }
+.eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+.dark .eyebrow, .dark-2 .eyebrow { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.16); color: var(--accent-on-dark); }
+.h2 { font-size: clamp(28px, 3.7vw, 40px); letter-spacing: -0.025em; }
+.lead { font-weight: 400; font-size: clamp(17px, 2vw, 20px); line-height: 1.5; color: #515154; margin-inline: auto; }
+.dark .lead, .dark-2 .lead { color: var(--on-dark-muted); }
+.letter { margin-inline: auto; }
+
+/* Nền khối: chấm xanh mờ cho khối xám, lưới + quầng sáng cho khối tối */
+.tile.parchment { background-image: radial-gradient(rgba(30,109,218,0.10) 1px, transparent 1px); background-size: 22px 22px; }
+.tile.dark, .tile.dark-2 { background: var(--tile); }
+.tile.dark::before, .tile.dark-2::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(55% 42% at 50% 0%, var(--glow), rgba(30,109,218,0) 70%), linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+  background-size: 100% 100%, 44px 44px, 44px 44px;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 68%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 68%, transparent 100%);
+}
+
+/* Bìa: căn giữa như hero trang chủ */
+.cover { text-align: center; padding-block: clamp(48px, 7vw, 88px) var(--section); }
+.cover::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 620px; z-index: -1; pointer-events: none; background: radial-gradient(60% 60% at 50% 0%, rgba(30,109,218,0.12), rgba(30,109,218,0) 70%); }
+.cover .wrap { justify-items: center; gap: 22px; }
+.cover-mark { height: clamp(40px, 5.5vw, 60px); }
+.cover-year { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 9999px; background: var(--accent-wash); border: 1px solid #cfe0fa; color: var(--accent-ink); font-size: 13px; letter-spacing: 0; }
+.cover-year::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.hero { font-size: clamp(34px, 5.6vw, 60px); line-height: 1.08; max-width: 940px; }
+.cover-lead { font-size: clamp(18px, 2.2vw, 24px); line-height: 1.35; color: #515154; max-width: 720px; text-wrap: balance; }
+.cover-cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 400; padding: 11px 22px; border-radius: 9999px; border: 1px solid var(--accent); transition: transform .12s ease, background .2s ease; }
+.btn:active { transform: scale(0.96); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-ink); color: #fff; }
+.btn-ghost { background: transparent; color: var(--accent-ink); border-color: var(--accent-ink); }
+.cover-meta { justify-content: center; border-top: 0; padding-top: 0; gap: 8px; }
+.cover-meta > span { padding: 6px 14px; border-radius: 9999px; background: #fff; border: 1px solid var(--hairline); }
+.cover-visual { width: 100%; max-width: 880px; margin-top: 14px; border-radius: 18px; overflow: hidden; box-shadow: rgba(0,0,0,0.22) 3px 5px 30px 0; background: #0b0d12; }
+.cover-visual img { display: block; width: 100%; height: auto; }
+.cover-visual picture { display: block; }
+html[lang="en"] .cover-visual .vi, html:not([lang="en"]) .cover-visual .en { display: none !important; }
+
+/* Thẻ: bo 20px, nâng nhẹ và sáng viền khi rê */
+.card, .case, .commit div, .quote, .ptile, .dcard, .stat, .values div {
+  border-radius: 20px;
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.card, .case, .commit div { border: 1px solid var(--hairline); }
+.parchment .card { border-color: var(--hairline); }
+.card:hover, .case:hover, .commit div:hover, .ptile:hover, .stat:hover, .values div:hover { transform: translateY(-3px); border-color: rgba(30,109,218,0.45); box-shadow: 0 22px 44px -26px rgba(30,109,218,0.55); }
+.dcard { border: 1px solid rgba(255,255,255,0.10); background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02)); }
+.dcard:hover { transform: translateY(-3px); border-color: rgba(125,184,255,0.45); }
+
+/* Số liệu và giá trị cốt lõi dạng thẻ */
+.stat { background: #fff; border: 1px solid var(--hairline); padding: 24px; }
+.stat b { background: linear-gradient(135deg, var(--accent-ink), var(--accent-on-dark) 140%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.vm { position: relative; overflow: hidden; padding: 32px; border-radius: 24px; background: linear-gradient(135deg, #1d1d1f 0%, #0d2142 100%); color: #fff; }
+.vm::after { content: ""; position: absolute; right: -60px; top: -60px; width: 220px; height: 220px; border-radius: 50%; background: radial-gradient(circle, rgba(30,109,218,0.45), rgba(30,109,218,0) 70%); pointer-events: none; }
+.vm h3 { color: var(--accent-on-dark); font-size: 13px; text-transform: uppercase; letter-spacing: 0.14em; }
+.vm p { color: #fff; font-weight: 600; font-size: clamp(20px, 2.4vw, 26px); }
+.values { counter-reset: val; }
+.values div { counter-increment: val; position: relative; background: #fff; border: 1px solid var(--hairline); padding: 24px; }
+.values div::after { content: counter(val, decimal-leading-zero); position: absolute; right: 18px; top: 12px; font-size: 40px; font-weight: 600; letter-spacing: -0.04em; color: rgba(30,109,218,0.14); }
+
+/* Hành trình công ty (khối tối): đường ray phát sáng, năm pha màu */
+.dark .timeline::before { background: linear-gradient(90deg, rgba(30,109,218,0.9), rgba(125,184,255,0.6), rgba(30,109,218,0.25)); height: 2px; box-shadow: 0 0 14px rgba(125,184,255,0.55); }
+.dark .ms::before { background: var(--tile); box-shadow: inset 0 0 0 2px var(--accent-on-dark), 0 0 12px rgba(125,184,255,0.7); }
+.dark .ms.now::before { background: var(--accent-on-dark); }
+.dark .ms .yr { background: linear-gradient(135deg, #fff 30%, var(--accent-on-dark)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.dark .ms.now .yr { background: none; color: var(--accent-on-dark); -webkit-text-fill-color: var(--accent-on-dark); }
+.dark .ms h3 { color: #fff; }
+.dark .ms ul { color: var(--on-dark-muted); }
+.dark .ms li::before { color: var(--accent-on-dark); }
+@media (min-width: 901px) { .dark .ms::after { background: linear-gradient(90deg, rgba(125,184,255,0.55), rgba(125,184,255,0.18)); } }
+@media (max-width: 900px) { .dark .timeline::before { background: linear-gradient(180deg, rgba(30,109,218,0.9), rgba(125,184,255,0.3)); width: 2px; height: auto; } }
+
+/* Chân trang */
+footer { background: var(--tile); color: var(--on-dark-muted); }
+footer .wrap { color: var(--on-dark-muted); }
+
+
+/* Liên hệ: khối tối như khối kêu gọi hành động của website */
+.contact .head { text-align: left; justify-items: start; margin-inline: 0; max-width: none !important; }
+.dark .facts { border-top-color: rgba(255,255,255,0.12); }
+.dark .facts div { border-bottom-color: rgba(255,255,255,0.12); }
+.dark .facts dt { color: var(--on-dark-muted); }
+.dark .facts dd, .dark .facts dd a { color: #fff; }
+.dark .contact .h2 { color: #fff; }
+.qr { box-shadow: 0 22px 50px -26px rgba(30,109,218,0.8); }
+/* Năng lực: số thứ tự mờ ở góc, cùng nhịp với khối dịch vụ ở trang chủ */
+#services .grid { counter-reset: cap; }
+#services .card { counter-increment: cap; position: relative; }
+#services .card::after { content: counter(cap, decimal-leading-zero); position: absolute; right: 18px; top: 12px; font-size: 40px; font-weight: 600; letter-spacing: -0.04em; color: rgba(30,109,218,0.14); pointer-events: none; }
+#services .card h3 { padding-right: 44px; }
+.nav { background: rgba(255,255,255,0.9); }
+
+/* Hiện dần khi cuộn (chỉ khi có script; không có script hoặc in ấn thì hiện đủ) */
+.rv { opacity: 0; translate: 0 24px; transition: opacity .7s ease-out, translate .7s ease-out; }
+.rv.rv-in { opacity: 1; translate: none; }
+@keyframes cs-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.cover .wrap > * { animation: cs-in .7s cubic-bezier(.2,.8,.2,1) both; }
+.cover .wrap > *:nth-child(2) { animation-delay: .06s; } .cover .wrap > *:nth-child(3) { animation-delay: .12s; }
+.cover .wrap > *:nth-child(4) { animation-delay: .2s; } .cover .wrap > *:nth-child(5) { animation-delay: .28s; }
+.cover .wrap > *:nth-child(6) { animation-delay: .36s; } .cover .wrap > *:nth-child(7) { animation-delay: .46s; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; translate: none; transition: none; } .cover .wrap > * { animation: none; } .card, .case, .stat, .values div, .ptile, .dcard { transition: none; } }
+@media print { .rv { opacity: 1 !important; translate: none !important; } .cover .wrap > * { animation: none; } .tile.dark::before, .tile.dark-2::before { display: none; } }
 </style>
 </head>
 <body>
@@ -848,9 +982,13 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
       <a href="#cases"><span class="vi">Dự án</span><span class="en">Work</span></a>
       <a href="#contact"><span class="vi">Liên hệ</span><span class="en">Contact</span></a>
     </nav>
+    <div class="nav-actions">
+    <a class="nav-site" href="/"><span class="vi">Về website</span><span class="en">Website</span><svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M5 3h8v8M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <a class="nav-cta" href="#contact"><span class="vi">Liên hệ</span><span class="en">Contact</span></a>
     <div class="lang" role="group" aria-label="Ngôn ngữ / Language">
       <button type="button" id="lang-vi" data-lang="vi" aria-pressed="true">VI</button>
       <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+    </div>
     </div>
   </div>
 </header>
@@ -866,11 +1004,23 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
       <span class="vi">Tăng trưởng số, vận hành bằng <em>dữ liệu và AI.</em></span>
       <span class="en">Digital growth, run on <em>data and AI.</em></span>
     </h1>
+    <p class="cover-lead">
+      <span class="vi">Marketing, dữ liệu, công nghệ và AI trong cùng một hệ thống.</span>
+      <span class="en">Marketing, data, technology and AI in one system.</span>
+    </p>
+    <div class="cover-cta">
+      <a class="btn btn-primary" href="#contact"><span class="vi">Liên hệ</span><span class="en">Contact us</span></a>
+      <a class="btn btn-ghost" href="/"><span class="vi">Xem website</span><span class="en">Visit website</span></a>
+    </div>
     <div class="cover-meta">
       <span><b>Công ty TNHH Click Star Digital</b></span>
       <span><span class="vi">MST</span><span class="en">Tax code</span> 0111151741</span>
       <span>clickstar.vn</span>
       <span><span class="vi">Hà Nội, Việt Nam</span><span class="en">Hanoi, Vietnam</span></span>
+    </div>
+    <div class="cover-visual">
+      <picture class="vi"><source media="(max-width: 640px)" srcset="/images/clickstar-hero-platform-m.svg"><img src="/images/clickstar-hero-platform.svg" alt="Sơ đồ nền tảng Click Star: thu thập, hợp nhất, hành động" width="1080" height="600"></picture>
+      <picture class="en"><source media="(max-width: 640px)" srcset="/images/clickstar-hero-platform-m-en.svg"><img src="/images/clickstar-hero-platform-en.svg" alt="Click Star platform diagram: collect, unify, act" width="1080" height="600"></picture>
     </div>
   </div>
 </section>
@@ -942,7 +1092,7 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
 </section>
 
 <!-- 03b Timeline -->
-<section class="tile parchment" id="journey">
+<section class="tile dark" id="journey">
   <div class="wrap">
     <div class="head">
       <p class="eyebrow"><span class="vi">Hành trình phát triển</span><span class="en">Our journey</span></p>
@@ -2117,7 +2267,7 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
 </section>
 
 <!-- 14 Contact -->
-<section class="tile" id="contact">
+<section class="tile dark" id="contact">
   <div class="wrap">
     <div class="contact">
       <div class="head" style="max-width:none">
@@ -2176,6 +2326,21 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
     });
   });
 
+})();
+</script>
+<script>
+/* Hiện dần các khối khi cuộn tới (một lần). Khối đã nằm trong màn hình lúc tải thì giữ nguyên, tránh nháy. */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var vh = window.innerHeight, els = document.querySelectorAll('.tile:not(.cover) .wrap > *');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+  }, { threshold: 0.06, rootMargin: '0px 0px -6% 0px' });
+  els.forEach(function (el) {
+    if (el.getBoundingClientRect().top < vh * 0.92) return;
+    el.classList.add('rv'); io.observe(el);
+  });
 })();
 </script>
 </body>
