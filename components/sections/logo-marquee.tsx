@@ -79,7 +79,7 @@ const CSS = `
 `
 
 export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [ref, seen] = useInView<HTMLElement>()
 
   const items = (content.strips ?? []).flatMap((s) => (s.items ?? []).filter((i) => i.logo))
@@ -124,26 +124,20 @@ export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
               style={{ transitionDelay: '120ms' }}
             >
               {m && (
-                <span className="text-[56px] sm:text-[72px] lg:text-[112px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-white" aria-label={m[1]}>
+                <span className="text-[56px] sm:text-[72px] lg:text-[128px] font-semibold leading-[0.9] tracking-[-0.045em] tabular-nums text-white" aria-label={m[1]}>
                   {counted}
                 </span>
               )}
               {subRest && (
-                <p data-cms-field="sub" className="max-w-[28ch] text-lg sm:text-xl lg:text-2xl leading-snug text-[#d2d2d7] sm:text-left">
+                <p data-cms-field="sub" className="max-w-[28ch] text-lg sm:text-xl lg:text-[30px] lg:font-semibold leading-[1.2] lg:tracking-[-0.02em] text-[#d2d2d7] lg:text-white sm:text-left">
                   {subRest}
                 </p>
               )}
             </div>
-            <ul className={`m-0 mt-8 hidden list-none flex-col gap-2 p-0 text-sm text-[#a1a1a6] lg:flex ${reveal}`} style={{ transitionDelay: '200ms' }} aria-hidden>
-              <li className="flex items-center gap-2.5">
-                <span className="h-2 w-2 rounded-full bg-[#7db8ff]" />
-                <b className="font-semibold text-white">{outer.length}</b> {t('kênh và hạ tầng (vòng ngoài)', 'channels and infrastructure (outer ring)')}
-              </li>
-              <li className="flex items-center gap-2.5">
-                <span className="h-2 w-2 rounded-full bg-[#D97757]" />
-                <b className="font-semibold text-white">{inner.length}</b> {t('mô hình AI (vòng trong)', 'AI models (inner ring)')}
-              </li>
-            </ul>
+            <div className={`mt-9 hidden border-t border-white/10 pt-7 lg:block ${reveal}`} style={{ transitionDelay: '200ms' }} aria-hidden>
+              <GroupRow count={outer.length} dot="#7db8ff" title={t('Kênh và hạ tầng', 'Channels and infrastructure')} items={outer} language={language} />
+              <GroupRow count={inner.length} dot="#D97757" title={t('Mô hình AI', 'AI models')} items={inner} language={language} className="mt-6" />
+            </div>
           </div>
 
           {/* Máy tính: quỹ đạo tinh gọn */}
@@ -187,6 +181,27 @@ export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
         ))}
       </ul>
     </section>
+  )
+}
+
+/** Một nhóm công nghệ ở cột chữ: số lớn, tên nhóm, vài tên tiêu biểu (chấm màu khớp màu vòng trên quỹ đạo) */
+function GroupRow({ count, dot, title, items, language, className = '' }: { count: number; dot: string; title: string; items: ClientLogoItem[]; language: string; className?: string }) {
+  const shown = items.slice(0, 4).map((it) => nameOf(it, language)).filter(Boolean)
+  const more = items.length - shown.length
+  return (
+    <div className={`flex items-center gap-5 ${className}`}>
+      <span className="w-[72px] text-[52px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-white">{String(count).padStart(2, '0')}</span>
+      <div className="min-w-0">
+        <p className="flex items-center gap-2.5 text-[20px] font-semibold leading-tight tracking-[-0.01em] text-white">
+          <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: dot, boxShadow: `0 0 12px ${dot}` }} />
+          {title}
+        </p>
+        <p className="mt-1.5 text-[15px] leading-snug text-[#a1a1a6]">
+          {shown.join(' · ')}
+          {more > 0 && <span className="text-[#7db8ff]"> +{more}</span>}
+        </p>
+      </div>
+    </div>
   )
 }
 
