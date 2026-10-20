@@ -392,13 +392,13 @@ export default function DigitalMarketingPage() {
                           <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">
                             {t('Vấn đề', 'Problem')}
                           </span>
-                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
+                          <p className="mt-1.5 text-[15px] leading-normal text-[#515154]">{item.problem}</p>
                         </div>
                         <div>
                           <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">
                             {t('Giải pháp', 'Solution')}
                           </span>
-                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
+                          <p className="mt-1.5 text-base font-semibold leading-normal text-[#1d1d1f]">{item.solution}</p>
                         </div>
                       </div>
                     </div>
@@ -499,7 +499,7 @@ export default function DigitalMarketingPage() {
                       <div className="my-5 h-px w-full bg-white/20" />
                       <ul className="space-y-3">
                         {step.tasks.map((task, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-snug text-[#f5f5f7]">
+                          <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-normal text-[#f5f5f7]">
                             <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1e6dda]">
                               <Check className="h-3 w-3 text-white" strokeWidth={3} />
                             </span>

@@ -114,12 +114,12 @@ export function CrmVsCdpSection() {
                 </div>
               </div>
               <span className="mt-5 inline-flex w-fit rounded-full bg-[#eaf2fd] px-3 py-1 text-sm font-semibold text-[#1859b8]">{c.tag}</span>
-              <p className="mt-4 text-xl font-semibold leading-snug text-[#1d1d1f]">{c.question}</p>
+              <p className="mt-4 text-xl font-semibold leading-normal text-[#1d1d1f]">{c.question}</p>
               <dl className="mt-5 divide-y divide-[#e0e0e0] border-t border-[#e0e0e0]">
                 {c.rows.map(([k, v]) => (
                   <div key={k} className="grid grid-cols-[96px_1fr] gap-3 py-3.5 sm:grid-cols-[110px_1fr]">
                     <dt className="text-sm font-semibold text-[#515154]">{k}</dt>
-                    <dd className="text-[15px] leading-snug text-[#1d1d1f]">{v}</dd>
+                    <dd className="text-[15px] leading-normal text-[#1d1d1f]">{v}</dd>
                   </div>
                 ))}
               </dl>
@@ -146,7 +146,7 @@ export function CrmVsCdpSection() {
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#1e6dda]">
               <ArrowRight className="h-6 w-6 rotate-90 text-white lg:rotate-0" />
             </div>
-            <p className="max-w-[220px] text-[15px] font-semibold leading-snug text-[#1d1d1f]">
+            <p className="max-w-[220px] text-[15px] font-semibold leading-normal text-[#1d1d1f]">
               {t('Khách để lại số điện thoại: hồ sơ và toàn bộ lịch sử chuyển sang CRM', 'A customer leaves a phone number: the profile and full history move to the CRM')}
             </p>
           </div>

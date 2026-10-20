@@ -537,11 +537,11 @@ export default function SpeechInsightAiPage() {
                 <div key={index} className="flex h-full flex-col gap-4 rounded-[18px] border border-[#d2d2d7] bg-white p-6">
                   <div>
                     <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">{t('Vấn đề', 'Problem')}</span>
-                    <p className="mt-2 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
+                    <p className="mt-2 text-[15px] leading-normal text-[#515154]">{item.problem}</p>
                   </div>
                   <div>
                     <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">{t('Giải pháp', 'Solution')}</span>
-                    <p className="mt-2 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
+                    <p className="mt-2 text-base font-semibold leading-normal text-[#1d1d1f]">{item.solution}</p>
                   </div>
                 </div>
               ))}
@@ -878,7 +878,7 @@ export default function SpeechInsightAiPage() {
             </div>
 
             <div className="mt-8 rounded-[18px] bg-[#1e6dda] p-7 text-center sm:p-9">
-              <p className="text-[22px] font-semibold leading-snug tracking-[-0.01em] text-white sm:text-[26px]">
+              <p className="text-[22px] font-semibold leading-normal tracking-[-0.01em] text-white sm:text-[26px]">
                 {t('Bạn KHÔNG phải đổi tổng đài.', 'You do NOT need to replace your phone system.')}
               </p>
               <p className="mx-auto mt-2 max-w-2xl text-[16px] leading-relaxed text-white">

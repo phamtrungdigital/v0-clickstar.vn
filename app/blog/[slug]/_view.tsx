@@ -145,7 +145,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
             ))}
           </div>
 
-          <h1 className="text-[32px] sm:text-5xl lg:text-[56px] font-bold text-foreground leading-[1.22]! tracking-[-0.03em] text-balance">
+          <h1 className="text-[32px] sm:text-5xl lg:text-[56px] font-bold text-foreground leading-[1.22] tracking-[-0.03em] text-balance">
             {title.split(' ').map((word, i, arr) => (
               <span key={i}>
                 <span className="bp-wm">

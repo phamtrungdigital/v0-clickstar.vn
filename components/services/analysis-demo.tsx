@@ -734,7 +734,7 @@ export function AnalysisDemo() {
                   >
                     {turn.who === 'sale' ? t('Nhân viên', 'Agent') : t('Khách', 'Customer')}
                   </span>
-                  <p className="text-sm text-foreground leading-snug">{turn.line}</p>
+                  <p className="text-sm text-foreground leading-normal">{turn.line}</p>
                 </div>
               </div>
             ))}
@@ -753,7 +753,7 @@ export function AnalysisDemo() {
                     {st.icon}
                     <span className="text-[10px] font-mono font-bold">{sig.at}</span>
                   </div>
-                  <p className="text-xs leading-snug">{sig.text}</p>
+                  <p className="text-xs leading-normal">{sig.text}</p>
                 </div>
               )
             })}
@@ -776,7 +776,7 @@ export function AnalysisDemo() {
               {s.outcomes.map((o, i) => (
                 <div key={i} className="rounded-lg border border-border bg-slate-50 px-3 py-2.5">
                   <p className="text-[10px] font-bold uppercase tracking-wider text-[#1859b8] mb-1">{o.label}</p>
-                  <p className="text-xs text-foreground leading-snug">{o.value}</p>
+                  <p className="text-xs text-foreground leading-normal">{o.value}</p>
                 </div>
               ))}
             </div>

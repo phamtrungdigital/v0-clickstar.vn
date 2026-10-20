@@ -378,8 +378,8 @@ export default function AIIntegrationPage() {
               {transformationStats.map((stat, index) => (
                 <div key={index} className="rounded-[18px] border border-[#d2d2d7] bg-white p-6 text-center">
                   <p className="text-[40px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-[#1859b8]">{stat.value}</p>
-                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#1d1d1f]">{t(stat.label.vi, stat.label.en)}</p>
-                  <p className="mt-1 text-[13px] leading-snug text-[#515154]">{t(stat.desc.vi, stat.desc.en)}</p>
+                  <p className="mt-3 text-[15px] font-semibold leading-normal text-[#1d1d1f]">{t(stat.label.vi, stat.label.en)}</p>
+                  <p className="mt-1 text-[13px] leading-normal text-[#515154]">{t(stat.desc.vi, stat.desc.en)}</p>
                 </div>
               ))}
             </div>

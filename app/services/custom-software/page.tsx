@@ -132,7 +132,7 @@ export default function CustomSoftwarePage() {
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.02fr] gap-10 lg:gap-14 items-center">
               <div className="min-w-0">
                 <Kicker numbered={false}>{tt(HERO.kicker)}</Kicker>
-                <h1 className="text-[2.25rem] sm:text-[3rem] lg:text-[3.5rem] font-semibold leading-[1.1] tracking-[-0.03em] text-[#1d1d1f] text-balance">
+                <h1 className="text-[2.25rem] sm:text-[3rem] lg:text-[3.5rem] font-semibold leading-[1.2] tracking-[-0.03em] text-[#1d1d1f] text-balance">
                   {tt(HERO.title)}
                 </h1>
                 <p className="mt-6 text-lg sm:text-xl text-[#515154] leading-relaxed max-w-[34ch]">{tt(HERO.lede)}</p>
@@ -176,7 +176,7 @@ export default function CustomSoftwarePage() {
             {STATS.map((s) => (
               <div key={s.value + s.label.vi} className="bg-[#1d1d1f] p-5 sm:p-6">
                 <dt className="text-[34px] font-semibold tracking-[-0.02em] text-white tabular-nums">{s.value}</dt>
-                <dd className="mt-1 text-sm leading-snug text-[#d2d2d7]">{tt(s.label)}</dd>
+                <dd className="mt-1 text-sm leading-normal text-[#d2d2d7]">{tt(s.label)}</dd>
               </div>
             ))}
           </dl>
@@ -307,7 +307,7 @@ export default function CustomSoftwarePage() {
               <p className={`${MONO} text-[12.5px] uppercase tracking-[0.04em] text-[#7db8ff]`}>{tt(AI.live.title)}</p>
               <ul className="mt-4 space-y-3.5">
                 {AI.live.items.map((it, i) => (
-                  <li key={i} className="grid grid-cols-[20px_1fr] gap-2.5 text-[15px] leading-snug text-white">
+                  <li key={i} className="grid grid-cols-[20px_1fr] gap-2.5 text-[15px] leading-normal text-white">
                     <Check className="w-[18px] h-[18px] mt-0.5 text-[#7db8ff]" strokeWidth={2} />
                     {tt(it)}
                   </li>
@@ -339,7 +339,7 @@ export default function CustomSoftwarePage() {
             {TEAM.stats.map((s, i) => (
               <div key={s.value} className={`py-6 sm:px-6 ${i === 0 ? 'sm:pl-0' : 'sm:border-l border-[#d2d2d7]'} ${i > 0 ? 'max-sm:border-t border-[#d2d2d7]' : ''}`}>
                 <dt className="text-[40px] font-semibold tracking-[-0.03em] leading-none text-[#1d1d1f]">{s.value}</dt>
-                <dd className="mt-2 text-[15px] leading-snug text-[#515154] max-w-[32ch]">{tt(s.label)}</dd>
+                <dd className="mt-2 text-[15px] leading-normal text-[#515154] max-w-[32ch]">{tt(s.label)}</dd>
               </div>
             ))}
           </dl>
@@ -358,7 +358,7 @@ export default function CustomSoftwarePage() {
             <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.18] tracking-[-0.02em]">{tt(TEAM.practices.title)}</h3>
             <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 md:gap-x-12 border-t border-[#d2d2d7]">
               {TEAM.practices.items.map((it, i) => (
-                <li key={i} className="grid grid-cols-[24px_1fr] gap-3 py-4 border-b border-[#d2d2d7] text-[15px] leading-snug">
+                <li key={i} className="grid grid-cols-[24px_1fr] gap-3 py-4 border-b border-[#d2d2d7] text-[15px] leading-normal">
                   <Check className="w-5 h-5 mt-0.5 text-[#1859b8]" strokeWidth={2} />
                   {tt(it)}
                 </li>
@@ -387,7 +387,7 @@ export default function CustomSoftwarePage() {
                   </div>
                   <ul className="mt-4">
                     {c.items.map((it, j) => (
-                      <li key={j} className="relative py-2.5 pl-6 text-[15px] leading-snug text-[#d2d2d7] border-t border-dashed border-white/20">
+                      <li key={j} className="relative py-2.5 pl-6 text-[15px] leading-normal text-[#d2d2d7] border-t border-dashed border-white/20">
                         <span className="absolute left-0.5 top-[17px] w-2 h-2 rounded-[2px] border-[1.5px] border-[#7db8ff]" aria-hidden />
                         {tt(it)}
                       </li>

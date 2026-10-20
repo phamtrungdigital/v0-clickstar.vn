@@ -96,7 +96,7 @@ function Tile({
       )}
       <div className="absolute inset-x-0 bottom-0 p-4 text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.5)] sm:p-5">
         <h3 className={`font-extrabold leading-tight ${lead ? 'text-2xl sm:text-[28px]' : 'text-lg sm:text-xl'}`}>{member.name}</h3>
-        <p className={`mt-1 leading-snug text-[#e5e5ea] ${lead ? 'text-sm sm:text-[15px]' : 'text-[13px]'}`}>{role}</p>
+        <p className={`mt-1 leading-normal text-[#e5e5ea] ${lead ? 'text-sm sm:text-[15px]' : 'text-[13px]'}`}>{role}</p>
         <Socials member={member} />
       </div>
     </div>

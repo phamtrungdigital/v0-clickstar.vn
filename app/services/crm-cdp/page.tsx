@@ -467,11 +467,11 @@ export default function CRMCDPPage() {
                       <div className="min-w-0 flex-1 space-y-3">
                         <div>
                           <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">{t('Vấn đề', 'Problem')}</span>
-                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
+                          <p className="mt-1.5 text-[15px] leading-normal text-[#515154]">{item.problem}</p>
                         </div>
                         <div>
                           <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">{t('Giải pháp', 'Solution')}</span>
-                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
+                          <p className="mt-1.5 text-base font-semibold leading-normal text-[#1d1d1f]">{item.solution}</p>
                         </div>
                       </div>
                     </div>
