@@ -1172,6 +1172,67 @@ footer .wrap { color: var(--on-dark-muted); }
   .ms-c { break-inside: avoid; }
   .lt { grid-template-columns: 5fr 7fr; }
 }
+
+/* ============================================================================
+   Hệ sinh thái: bảng quan hệ module đổi thành chuỗi "nhận → module → tạo ra → giá trị" (21/10/2026)
+   ============================================================================ */
+.legend { gap: 10px; }
+.legend > span { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 9999px; background: #fff; border: 1px solid var(--hairline); font-size: 13px; color: var(--ink-80); }
+.legend i { margin-right: 0; width: 20px; height: 10px; }
+
+.rl-wrap { display: grid; gap: 14px; }
+.rl-head, .rl-i { display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, 190px) minmax(0, 1fr) minmax(0, 1.35fr); column-gap: 52px; }
+.rl-head { padding: 0 22px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-48); }
+.rl-head > span:nth-child(2) { text-align: center; }
+.rl { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.rl-i { position: relative; align-items: center; padding: 18px 22px; border-radius: 20px; border: 1px solid var(--hairline); background: #fff;
+  transition: transform .35s var(--e), box-shadow .35s ease, border-color .3s ease, opacity .7s ease calc(var(--i, 0) * .06s), translate .7s var(--e) calc(var(--i, 0) * .06s); }
+.rl-i:hover { transform: translateY(-3px); border-color: #b7d0f5; box-shadow: 0 22px 36px -26px rgba(30,109,218,0.55); }
+.rl-c { min-width: 0; position: relative; }
+.rl-lbl { display: none; margin-bottom: 8px; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-48); }
+.rl .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.rl .chips > span { display: contents; }
+.rl em { font-style: normal; font-size: 14px; line-height: 1.25; padding: 6px 12px; border-radius: 9999px; font-weight: 500; transition: transform .25s var(--e), background .25s ease; }
+.rl-in em { background: var(--parchment); color: var(--ink-80); box-shadow: inset 0 0 0 1px var(--hairline); }
+.rl-out em { background: var(--accent-wash); color: var(--accent-ink); box-shadow: inset 0 0 0 1px #cfe0fa; }
+.rl-i:hover em { transform: translateY(-1px); }
+.rl em::first-letter { text-transform: uppercase; }
+.rl-in .chips { justify-content: flex-end; }
+.rl-mod { display: grid; justify-items: center; }
+.rl-mod b { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 10px; max-width: 100%; min-width: 150px; padding: 12px 16px; border-radius: 14px; font-size: 16px; line-height: 1.2; font-weight: 600; color: #fff; text-align: left;
+  background: radial-gradient(120% 140% at 0% 0%, rgba(54,135,252,0.5), rgba(54,135,252,0) 60%), linear-gradient(150deg, #13264d, #0b0d12);
+  box-shadow: 0 14px 24px -14px rgba(11,13,18,0.9), inset 0 0 0 1px rgba(125,184,255,0.25); }
+.rl-mod b i { flex: none; font-style: normal; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--accent-on-dark); opacity: .9; }
+.k-core .rl-mod b { background: linear-gradient(135deg, #3687fc, #1859b8); box-shadow: 0 14px 26px -12px rgba(30,109,218,0.9), inset 0 0 0 1px rgba(255,255,255,0.3); }
+.k-core .rl-mod b i { color: #fff; }
+.k-core { border-color: #b7d0f5; background: linear-gradient(160deg, var(--accent-wash), #fff 70%); }
+.rl-mod::before, .rl-mod::after { content: ""; position: absolute; top: 50%; translate: 0 -50%; width: 40px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='14' viewBox='0 0 40 14'%3E%3Cpath d='M1 7h34' stroke='%231e6dda' stroke-width='2' stroke-linecap='round' stroke-dasharray='1 5'/%3E%3Cpath d='M30 2l7 5-7 5' fill='none' stroke='%231e6dda' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; animation: rl-nudge 2.6s ease-in-out infinite; }
+.rl-mod::before { left: -46px; }
+.rl-mod::after { right: -46px; animation-delay: .3s; }
+@keyframes rl-nudge { 0%, 100% { translate: 0 -50%; } 50% { translate: 4px -50%; } }
+.rl-val { padding: 12px 16px; border-radius: 14px; border-left: 3px solid var(--accent); background: linear-gradient(100deg, var(--accent-wash), rgba(238,245,255,0.4)); }
+.rl-val p { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 600; color: var(--accent-ink); }
+.rl-val .rl-lbl { color: var(--accent-ink); opacity: .75; }
+
+@media (max-width: 900px) {
+  .rl-head { display: none; }
+  .rl-i { grid-template-columns: minmax(0, 1fr); row-gap: 14px; padding: 20px 18px 18px; }
+  .rl-lbl { display: block; }
+  .rl-mod { order: -1; justify-items: start; }
+  .rl-mod::before { display: none; }
+  .rl-in .chips { justify-content: flex-start; }
+  .rl-out { position: relative; padding-top: 42px; }
+  .rl-out::before { content: ""; position: absolute; left: 14px; top: 0; width: 14px; height: 36px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='40' viewBox='0 0 14 40'%3E%3Cpath d='M7 1v30' stroke='%231e6dda' stroke-width='2' stroke-linecap='round' stroke-dasharray='1 5'/%3E%3Cpath d='M2 26l5 7 5-7' fill='none' stroke='%231e6dda' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+  .rl-mod::after { display: none; }
+  .rl-in { padding-bottom: 0; }
+}
+
+.rl-i.anim { opacity: 0; translate: 0 22px; }
+.rl-i.anim-in { opacity: 1; translate: none; }
+.rl-i.anim .rl-mod::before, .rl-i.anim .rl-mod::after { opacity: 0; transition: opacity .6s ease calc(var(--i, 0) * .06s + .4s); }
+.rl-i.anim-in .rl-mod::before, .rl-i.anim-in .rl-mod::after { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .rl-mod::before, .rl-mod::after { animation: none; } .rl-i { transition: none; } }
+@media print { .rl-i.anim, .rl-i.anim * { opacity: 1 !important; translate: none !important; } .rl-i { break-inside: avoid; } .rl-mod::before, .rl-mod::after { animation: none; } }
 </style>
 </head>
 <body>
@@ -1773,11 +1834,70 @@ footer .wrap { color: var(--on-dark-muted); }
 <circle class="dot" r="4.5"><animateMotion dur="7s" repeatCount="indefinite"><mpath href="#efb"/></animateMotion></circle>
 </svg></div>
     <div class="legend"><span><i></i><span class="vi">Module Click Star xây dựng và vận hành</span><span class="en">Module built and run by Click Star</span></span><span><i class="o"></i><span class="vi">Hệ thống sẵn có của doanh nghiệp, kết nối qua API</span><span class="en">Your existing systems, connected by API</span></span><span><i class="c"></i><span class="vi">Lõi dữ liệu dùng chung</span><span class="en">Shared data core</span></span></div>
-    <div class="rel">
-      <table>
-        <thead><tr><th>Module</th><th><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></th><th><span class="vi">Tạo ra</span><span class="en">Produces</span></th><th><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></th></tr></thead>
-        <tbody><tr><td>ADS Hub</td><td><span class="vi">Dashboard, CDP</span><span class="en">Dashboard, CDP</span></td><td><span class="vi">Lead, chi phí, nguồn chiến dịch</span><span class="en">Leads, cost, campaign source</span></td><td><span class="vi">Nhận tệp khách đã chốt để tìm khách tương tự, ngừng quảng cáo tới người đã mua</span><span class="en">Uses converted audiences for lookalikes and stops ads to buyers</span></td></tr><tr><td>Website & Landing</td><td><span class="vi">ADS Hub, SEO</span><span class="en">ADS Hub, SEO</span></td><td><span class="vi">Form, hành vi truy cập, UTM</span><span class="en">Forms, browsing, UTM</span></td><td><span class="vi">Mọi lead mang theo nguồn gốc chính xác</span><span class="en">Every lead carries its exact source</span></td></tr><tr><td>AI Bot Clickstar</td><td><span class="vi">Website, fanpage, Zalo</span><span class="en">Website, fan page, Zalo</span></td><td><span class="vi">Nhu cầu, liên hệ, lịch hẹn</span><span class="en">Needs, contacts, bookings</span></td><td><span class="vi">Tư vấn viên nhận lead đã có sẵn nhu cầu</span><span class="en">Reps receive leads with needs captured</span></td></tr><tr><td><span class="vi">Cổng tuyển sinh</span><span class="en">Admissions portal</span></td><td><span class="vi">CRM, AI Bot</span><span class="en">CRM, AI Bot</span></td><td><span class="vi">Hồ sơ, kết quả đầu vào, thanh toán</span><span class="en">Applications, test results, payments</span></td><td><span class="vi">Trạng thái từng hồ sơ cập nhật ngay vào CRM và dashboard chỉ tiêu</span><span class="en">Every application status flows to CRM and the quota dashboard</span></td></tr><tr><td>CDP</td><td><span class="vi">Tất cả điểm chạm</span><span class="en">All touchpoints</span></td><td><span class="vi">Hồ sơ hợp nhất, phân khúc</span><span class="en">Unified profile, segments</span></td><td><span class="vi">Một khách hàng, một hồ sơ, dù đến từ bao nhiêu kênh</span><span class="en">One customer, one profile, however many channels</span></td></tr><tr><td>CRM</td><td><span class="vi">CDP, Cổng tuyển sinh, Check-in</span><span class="en">CDP, portal, check-in</span></td><td><span class="vi">Pipeline, phân công, SLA</span><span class="en">Pipeline, assignment, SLA</span></td><td><span class="vi">Chia việc tự động, không bỏ sót lead</span><span class="en">Automatic routing, no lead left behind</span></td></tr><tr><td>AI Engine</td><td><span class="vi">CDP, CRM, cuộc gọi</span><span class="en">CDP, CRM, calls</span></td><td><span class="vi">Điểm lead, dự báo, gợi ý</span><span class="en">Lead scores, forecasts, tips</span></td><td><span class="vi">Ưu tiên đúng khách có khả năng chốt cao</span><span class="en">Prioritises the leads most likely to convert</span></td></tr><tr><td>Automation</td><td><span class="vi">CRM: thay đổi trạng thái</span><span class="en">CRM status changes</span></td><td><span class="vi">Email, ZNS, nhắc việc</span><span class="en">Email, ZNS, tasks</span></td><td><span class="vi">Đúng tin nhắn, đúng lúc, theo từng giai đoạn</span><span class="en">The right message at each stage</span></td></tr><tr><td>AI Call Analysis</td><td><span class="vi">Tổng đài, CRM</span><span class="en">Call centre, CRM</span></td><td><span class="vi">Điểm cuộc gọi, nhu cầu ẩn</span><span class="en">Call scores, hidden needs</span></td><td><span class="vi">Nhu cầu khách nói trong cuộc gọi được lưu vào hồ sơ</span><span class="en">Needs voiced on calls saved to the profile</span></td></tr><tr><td>Dashboard</td><td><span class="vi">Tất cả module</span><span class="en">All modules</span></td><td><span class="vi">KPI, cảnh báo, báo cáo</span><span class="en">KPIs, alerts, reports</span></td><td><span class="vi">Ghép doanh thu về đúng quảng cáo ban đầu</span><span class="en">Ties revenue back to the original ad</span></td></tr></tbody>
-      </table>
+    <div class="rl-wrap">
+      <div class="rl-head" aria-hidden="true"><span class=""><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="">Module</span><span class=""><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class=""><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span></div>
+      <ul class="rl">
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>Dashboard</em><em>CDP</em></span><span class="en"><em>Dashboard</em><em>CDP</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>01</i>ADS Hub</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Lead</em><em>chi phí</em><em>nguồn chiến dịch</em></span><span class="en"><em>Leads</em><em>cost</em><em>campaign source</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Nhận tệp khách đã chốt để tìm khách tương tự, ngừng quảng cáo tới người đã mua</span><span class="en">Uses converted audiences for lookalikes and stops ads to buyers</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>ADS Hub</em><em>SEO</em></span><span class="en"><em>ADS Hub</em><em>SEO</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>02</i>Website & Landing</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Form</em><em>hành vi truy cập</em><em>UTM</em></span><span class="en"><em>Forms</em><em>browsing</em><em>UTM</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Mọi lead mang theo nguồn gốc chính xác</span><span class="en">Every lead carries its exact source</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>Website</em><em>fanpage</em><em>Zalo</em></span><span class="en"><em>Website</em><em>fan page</em><em>Zalo</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>03</i>AI Bot Clickstar</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Nhu cầu</em><em>liên hệ</em><em>lịch hẹn</em></span><span class="en"><em>Needs</em><em>contacts</em><em>bookings</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Tư vấn viên nhận lead đã có sẵn nhu cầu</span><span class="en">Reps receive leads with needs captured</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>CRM</em><em>AI Bot</em></span><span class="en"><em>CRM</em><em>AI Bot</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>04</i><span class="vi">Cổng tuyển sinh</span><span class="en">Admissions portal</span></b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Hồ sơ</em><em>kết quả đầu vào</em><em>thanh toán</em></span><span class="en"><em>Applications</em><em>test results</em><em>payments</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Trạng thái từng hồ sơ cập nhật ngay vào CRM và dashboard chỉ tiêu</span><span class="en">Every application status flows to CRM and the quota dashboard</span></p></div>
+        </li>
+        <li class="rl-i k-core">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>Tất cả điểm chạm</em></span><span class="en"><em>All touchpoints</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>05</i>CDP</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Hồ sơ hợp nhất</em><em>phân khúc</em></span><span class="en"><em>Unified profile</em><em>segments</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Một khách hàng, một hồ sơ, dù đến từ bao nhiêu kênh</span><span class="en">One customer, one profile, however many channels</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>CDP</em><em>Cổng tuyển sinh</em><em>Check-in</em></span><span class="en"><em>CDP</em><em>portal</em><em>check-in</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>06</i>CRM</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Pipeline</em><em>phân công</em><em>SLA</em></span><span class="en"><em>Pipeline</em><em>assignment</em><em>SLA</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Chia việc tự động, không bỏ sót lead</span><span class="en">Automatic routing, no lead left behind</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>CDP</em><em>CRM</em><em>cuộc gọi</em></span><span class="en"><em>CDP</em><em>CRM</em><em>calls</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>07</i>AI Engine</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Điểm lead</em><em>dự báo</em><em>gợi ý</em></span><span class="en"><em>Lead scores</em><em>forecasts</em><em>tips</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Ưu tiên đúng khách có khả năng chốt cao</span><span class="en">Prioritises the leads most likely to convert</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>CRM: thay đổi trạng thái</em></span><span class="en"><em>CRM status changes</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>08</i>Automation</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Email</em><em>ZNS</em><em>nhắc việc</em></span><span class="en"><em>Email</em><em>ZNS</em><em>tasks</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Đúng tin nhắn, đúng lúc, theo từng giai đoạn</span><span class="en">The right message at each stage</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>Tổng đài</em><em>CRM</em></span><span class="en"><em>Call centre</em><em>CRM</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>09</i>AI Call Analysis</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>Điểm cuộc gọi</em><em>nhu cầu ẩn</em></span><span class="en"><em>Call scores</em><em>hidden needs</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Nhu cầu khách nói trong cuộc gọi được lưu vào hồ sơ</span><span class="en">Needs voiced on calls saved to the profile</span></p></div>
+        </li>
+        <li class="rl-i k-mod">
+          <div class="rl-c rl-in"><span class="rl-lbl"><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></span><span class="chips"><span class="vi"><em>Tất cả module</em></span><span class="en"><em>All modules</em></span></span></div>
+          <div class="rl-c rl-mod"><b><i>10</i>Dashboard</b></div>
+          <div class="rl-c rl-out"><span class="rl-lbl"><span class="vi">Tạo ra</span><span class="en">Produces</span></span><span class="chips"><span class="vi"><em>KPI</em><em>cảnh báo</em><em>báo cáo</em></span><span class="en"><em>KPIs</em><em>alerts</em><em>reports</em></span></span></div>
+          <div class="rl-c rl-val"><span class="rl-lbl"><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></span><p><span class="vi">Ghép doanh thu về đúng quảng cáo ban đầu</span><span class="en">Ties revenue back to the original ad</span></p></div>
+        </li>
+      </ul>
     </div>
   </div>
 </section>
@@ -2881,6 +3001,7 @@ footer .wrap { color: var(--on-dark-muted); }
   var tl = document.querySelector('.timeline');
   if (tl) { arm(tl); [].forEach.call(tl.querySelectorAll('.ms'), function (m, i) { arm(m, i % 3); }); }
   [].forEach.call(document.querySelectorAll('.pain'), function (p) { arm(p); });
+  [].forEach.call(document.querySelectorAll('.rl-i'), function (r, n) { arm(r, n % 10); });
 })();
 </script>
 </body>
