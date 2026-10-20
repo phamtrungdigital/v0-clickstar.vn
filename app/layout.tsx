@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import localFont from 'next/font/local'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/contexts/language-context'
@@ -18,28 +17,27 @@ import { getEnabledSnippets } from '@/lib/cms/code-snippets'
 import { SITE_URL, BRAND } from '@/lib/seo/site'
 import './site.css'
 
-// Plus Jakarta chủ yếu dùng ở các khối dưới màn hình đầu: không tải trước, để băng thông lúc mở trang dành cho
-// HTML, phông Inter của khối mở đầu và JavaScript. Chữ hiện bằng phông dự phòng đã chỉnh cỡ rồi đổi sang, không xô lệch.
-const plusJakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-plus-jakarta',
-  weight: ['400', '500', '600', '700', '800'],
-  preload: false,
-})
+// Phông chữ tự lưu trong app/fonts (tệp gốc của Google Fonts, giấy phép OFL), mỗi phông chỉ gồm hai tệp: latin và
+// vietnamese. Không dùng next/font/google vì CSS của Google khai báo thêm latin-ext và đặt nó SAU vietnamese, nên
+// trình duyệt lấy ă đ ơ ư từ latin-ext và tải thêm tệp đó (Inter latin-ext 84 KB, Plus Jakarta 22 KB) sau khi đọc xong
+// CSS, kéo dài đường tải trang; tự lưu cũng tránh lỗi build khi máy chủ build không tải được phông từ Google.
+// Mỗi phông tách thành hai họ: họ "vi" (chỉ ký tự tiếng Việt) đứng TRƯỚC họ latin trong danh sách phông (globals.css).
+// Cùng các cỡ đậm như bản Google trước đây để chữ Latin và chữ có dấu trong một từ đậm như nhau. Ký tự ngoài hai dải
+// (hiếm: chữ Nga, Ba Lan...) hiện bằng phông hệ thống.
+// Trình nạp phông của Next chỉ nhận giá trị viết thẳng (không dùng biến hay .map), nên dải ký tự viết lặp lại.
 
-// Inter: phông thay thế SF Pro trên thiết bị không phải Apple (theme-apple của trang chủ).
-const inter = Inter({
-  subsets: ['latin'],
+// Inter: phông thay thế SF Pro trên thiết bị không phải Apple (theme-apple của trang chủ, khối mở đầu) nên tải trước.
+const inter = localFont({
+  src: [
+    { path: './fonts/inter-latin.woff2', weight: '300', style: 'normal' },
+    { path: './fonts/inter-latin.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/inter-latin.woff2', weight: '600', style: 'normal' },
+  ],
   variable: '--font-inter',
-  weight: ['300', '400', '600'],
+  display: 'swap',
+  declarations: [{ prop: 'unicode-range', value: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD' }],
 })
-
-// Ký tự tiếng Việt (ă đ ơ ư và các chữ có dấu thanh) lấy từ tệp con "vietnamese" của chính Google Fonts, đặt TRƯỚC
-// Inter / Plus Jakarta trong danh sách phông. Lý do: CSS của Google khai báo tệp latin-ext SAU tệp vietnamese, nên
-// trình duyệt lấy ă đ ơ ư từ latin-ext và phải tải thêm tệp đó (Inter latin-ext 84 KB) sau khi đọc xong CSS, kéo dài
-// đường tải của trang. Khai báo cùng các cỡ đậm như phông gốc để chữ Latin và chữ có dấu trong một từ đậm như nhau.
-// adjustFontFallback tắt: phông dự phòng của nhóm này phải là phông kế tiếp trong danh sách (Inter / Plus Jakarta).
-// Trình nạp phông của Next chỉ nhận giá trị viết thẳng (không dùng biến hay .map), nên dải ký tự viết lặp lại ở hai chỗ.
+// adjustFontFallback tắt cho họ "vi": phông dự phòng của họ này phải là họ latin đứng sau trong danh sách.
 const interVietnamese = localFont({
   src: [
     { path: './fonts/inter-vietnamese.woff2', weight: '300', style: 'normal' },
@@ -50,6 +48,22 @@ const interVietnamese = localFont({
   display: 'swap',
   adjustFontFallback: false,
   declarations: [{ prop: 'unicode-range', value: 'U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB' }],
+})
+
+// Plus Jakarta chủ yếu dùng ở các khối dưới màn hình đầu: không tải trước, để băng thông lúc mở trang dành cho
+// HTML, phông Inter và JavaScript. Chữ hiện bằng phông dự phòng đã chỉnh cỡ rồi đổi sang, không xô lệch bố cục.
+const plusJakarta = localFont({
+  src: [
+    { path: './fonts/plus-jakarta-sans-latin.woff2', weight: '400', style: 'normal' },
+    { path: './fonts/plus-jakarta-sans-latin.woff2', weight: '500', style: 'normal' },
+    { path: './fonts/plus-jakarta-sans-latin.woff2', weight: '600', style: 'normal' },
+    { path: './fonts/plus-jakarta-sans-latin.woff2', weight: '700', style: 'normal' },
+    { path: './fonts/plus-jakarta-sans-latin.woff2', weight: '800', style: 'normal' },
+  ],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+  preload: false,
+  declarations: [{ prop: 'unicode-range', value: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD' }],
 })
 const plusJakartaVietnamese = localFont({
   src: [
