@@ -258,7 +258,7 @@ export function PricingSection() {
               <div className="text-sm text-muted-foreground">{t('Hỗ trợ kỹ thuật', 'Technical support')}</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-extrabold text-[#1859b8] mb-1">5+</div>
+              <div className="text-3xl font-extrabold text-[#1859b8] mb-1">10+</div>
               <div className="text-sm text-muted-foreground">{t('Năm kinh nghiệm', 'Years of experience')}</div>
             </div>
           </div>

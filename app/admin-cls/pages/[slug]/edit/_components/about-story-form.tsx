@@ -78,7 +78,7 @@ export function AboutStoryForm({
           label="Số nổi bật"
           value={content.stat_value}
           onChange={(v) => update('stat_value', v)}
-          hint="VD: 5+"
+          hint="VD: 10+"
         />
         <I18nInput
           label="Mô tả số"
