@@ -15,7 +15,8 @@ import { PersonalizeBanner } from '@/components/personalize-banner'
 import { CapabilityPopup } from '@/components/capability-popup'
 import { FloatingContact } from '@/components/floating-contact'
 import { HtmlRoot } from '@/components/html-root'
-import { TrackingCode } from '@/components/tracking-scripts'
+import { BodyCode, HeadCode } from '@/components/site-code'
+import { getEnabledSnippets } from '@/lib/cms/code-snippets'
 import { SITE_URL, BRAND } from '@/lib/seo/site'
 import './globals.css'
 
@@ -73,12 +74,14 @@ export default async function RootLayout({
   // Static-friendly: KHÔNG đọc cookie/header ở layout (sẽ ép mọi trang render động).
   // Ngôn ngữ suy ra từ ĐỊA CHỈ (/en/... là tiếng Anh, còn lại tiếng Việt): HtmlRoot đặt <html lang> và LanguageProvider
   // chọn ngôn ngữ theo đường dẫn, nên cả HTML tĩnh lẫn client đều đúng ngôn ngữ ngay từ đầu.
-  const [settings, teamMembers, chatbot, webContent] = await Promise.all([
+  const [settings, teamMembers, chatbot, webContent, snippets] = await Promise.all([
     getSiteSettings(),
     getActiveTeamMembers(),
     getChatbotSettings(),
     getWebContent(),
+    getEnabledSnippets(),
   ])
+  const codeAt = (p: 'head' | 'body_start' | 'body_end') => snippets.filter((s) => s.placement === p)
   const chatbotConfig = toPublicConfig(chatbot)
   const { footer: footerContent, service_ctas: serviceCtas } = normalizeWebContent(webContent)
   const branding: SiteBranding = {
@@ -94,11 +97,12 @@ export default async function RootLayout({
     <HtmlRoot
       htmlClassName="bg-background"
       bodyClassName={`${plusJakarta.variable} ${inter.variable} font-sans antialiased`}
+      // Mã tuỳ chỉnh "Đầu trang" (Cài đặt → Mã tuỳ chỉnh) nằm thật sự trong <head>. head_code là ô Header cũ,
+      // còn dùng cho khối Google Analytics 4 do mục SEO ghi vào.
+      head={<HeadCode items={codeAt('head')} legacy={settings?.head_code} />}
     >
-      {/* Tracking code — vị trí "Header" (đầu body, sát head): GTM, GA4, FB Pixel */}
-      <TrackingCode code={settings?.head_code} />
-      {/* Tracking code — vị trí "Body" (đầu trang): GTM noscript, chat widget */}
-      <TrackingCode code={settings?.body_start_code} />
+      {/* Mã tuỳ chỉnh "Đầu thân trang": thẻ noscript của GTM, widget chat. body_start_code cũ đã chuyển sang bảng mới. */}
+      <BodyCode items={codeAt('body_start')} />
 
       <SiteBrandingProvider branding={branding}>
         <TeamMembersProvider members={teamMembers}>
@@ -116,8 +120,8 @@ export default async function RootLayout({
       </SiteBrandingProvider>
       {process.env.NODE_ENV === 'production' && <Analytics />}
 
-      {/* Tracking code — vị trí "Footer" (cuối body): script defer, remarketing */}
-      <TrackingCode code={settings?.body_end_code} />
+      {/* Mã tuỳ chỉnh "Cuối trang": remarketing, công cụ phụ. body_end_code cũ đã chuyển sang bảng mới. */}
+      <BodyCode items={codeAt('body_end')} />
     </HtmlRoot>
   )
 }

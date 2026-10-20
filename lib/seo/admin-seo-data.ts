@@ -162,7 +162,7 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
   const supabase = await createClient()
   // Bắt đầu tra DNS ngay, chạy song song với các truy vấn DB (địa chỉ site gần như luôn là SITE_URL).
   const dnsEarly = lookupDnsVerification(hostOf(SITE_URL))
-  const [settingsRes, chatbotRes, sitemapList] = await Promise.all([
+  const [settingsRes, chatbotRes, sitemapList, snippetsRes] = await Promise.all([
     supabase
       .from('site_settings')
       .select(
@@ -172,12 +172,15 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
       .maybeSingle(),
     supabase.from('chatbot_settings').select('hotline').limit(1).maybeSingle(),
     sitemap().catch(() => null),
+    supabase.from('site_code_snippets').select('code').eq('enabled', true),
   ])
   const st = (settingsRes.data ?? {}) as Record<string, string | null>
   const siteUrl = st.site_url || SITE_URL
   const hostname = hostOf(siteUrl)
 
-  const tracking = [st.head_code, st.body_start_code, st.body_end_code].filter(Boolean).join('\n')
+  // Mã tuỳ chỉnh: bảng mới (đang bật) cộng ô Header cũ do mục SEO ghi. body_start_code, body_end_code cũ đã chuyển sang bảng mới.
+  const snippetCode = ((snippetsRes.data ?? []) as { code: string }[]).map((x) => x.code)
+  const tracking = [st.head_code, ...snippetCode].filter(Boolean).join('\n')
   const dns = hostname === hostOf(SITE_URL) ? await dnsEarly : await lookupDnsVerification(hostname)
 
   const checks: SiteCheck[] = []

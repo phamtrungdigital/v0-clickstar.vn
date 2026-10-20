@@ -1,10 +1,14 @@
 import { getSiteSettings } from '@/lib/cms/settings'
+import { getAdminProfile } from '@/lib/admin-cls/auth'
+import { createClient } from '@/lib/supabase/server'
+import { loadCodeState, type CodeState } from '@/lib/cms/code-admin'
 import { SettingsForm } from './_components/settings-form'
+import { CodeSnippetsManager } from './_components/code-snippets-manager'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AdminSettings() {
-  const settings = await getSiteSettings()
+  const [settings, profile] = await Promise.all([getSiteSettings(), getAdminProfile()])
   if (!settings) {
     return (
       <div className="text-sm text-slate-500">
@@ -12,5 +16,16 @@ export default async function AdminSettings() {
       </div>
     )
   }
-  return <SettingsForm initial={settings} />
+
+  // Chỉ admin cấp cao xem và sửa được Mã tuỳ chỉnh (mã chạy trực tiếp trên trình duyệt của mọi khách).
+  // Quyền thật nằm ở cơ sở dữ liệu và ở từng hành động máy chủ; kiểm ở đây chỉ để không hiện giao diện thừa.
+  const canEdit = profile?.role === 'admin'
+  const initial: CodeState = canEdit ? await loadCodeState(await createClient()) : { snippets: [], history: [] }
+
+  return (
+    <SettingsForm
+      initial={settings}
+      codeSection={<CodeSnippetsManager initial={initial} canEdit={canEdit} legacyHead={canEdit ? settings.head_code : null} />}
+    />
+  )
 }
