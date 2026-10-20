@@ -265,9 +265,9 @@ export default function CRMCDPPage() {
 
             <div className="mt-12 grid grid-cols-3 gap-6">
               {[
-                { v: '50+', l: t('Dự án CRM', 'CRM Projects') },
-                { v: '3x', l: t('Tăng retention', 'Retention increase') },
-                { v: '40%', l: t('Tiết kiệm chi phí', 'Cost savings') },
+                { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
+                { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
+                { v: '90%+', l: t('Khách hàng hài lòng', 'Client satisfaction') },
               ].map((x) => (
                 <div key={x.l}>
                   <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
