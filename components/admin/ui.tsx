@@ -204,14 +204,22 @@ export function EditorBar({
   title,
   subtitle,
   children,
+  flush = true,
 }: {
   backHref?: string
   title: React.ReactNode
   subtitle?: React.ReactNode
   children?: React.ReactNode
+  /** true: thanh sát mép trên của vùng nội dung. false: khi phía trên còn nội dung khác (ví dụ hàng tab). */
+  flush?: boolean
 }) {
   return (
-    <div className="ad-glass sticky top-[52px] z-20 -mx-4 -mt-4 mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--ad-line)] px-4 py-2.5 lg:-mx-6 lg:-mt-6 lg:px-6">
+    <div
+      className={cn(
+        'ad-glass sticky top-[52px] z-20 -mx-4 mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--ad-line)] px-4 py-2.5 lg:-mx-6 lg:px-6',
+        flush && '-mt-4 lg:-mt-6'
+      )}
+    >
       <div className="flex min-w-0 items-center gap-3">
         {backHref ? (
           <Link

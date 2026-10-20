@@ -2,8 +2,6 @@
 
 import { useState, useTransition } from 'react'
 import {
-  MessageCircle,
-  Save,
   CheckCircle2,
   AlertCircle,
   Plus,
@@ -29,6 +27,8 @@ import {
   type WidgetMode,
   type QuickPrompt,
 } from '@/lib/cms/chatbot-shared'
+import { EditorBar, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
+import { Switch } from '@/components/admin/switch'
 
 function initDraft(initial: ChatbotSettings | null): ChatbotSettingsUpdate {
   const d = DEFAULT_CHATBOT_CONFIG
@@ -50,7 +50,7 @@ function initDraft(initial: ChatbotSettings | null): ChatbotSettingsUpdate {
   }
 }
 
-export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | null }) {
+export function ChatbotSettingsForm({ initial, embedded = false }: { initial: ChatbotSettings | null; embedded?: boolean }) {
   const [draft, setDraft] = useState<ChatbotSettingsUpdate>(() => initDraft(initial))
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
@@ -106,76 +106,47 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
     setPrompts(lang, (draft.quick_prompts[lang] || []).filter((_, i) => i !== idx))
 
   return (
-    <div className="space-y-3 max-w-4xl">
-      {/* Header */}
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div>
-          <h1 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-            <MessageCircle className="w-4 h-4 text-sky-500" />
-            Chatbot website
-          </h1>
-          <p className="text-[11px] text-slate-500">
-            Bot AI hiển thị cho khách trên trang công khai — bật/tắt, nội dung, quy tắc hiển thị
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              Lỗi
-            </span>
-          )}
-          <button
-            onClick={handleSave}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
-          </button>
-        </div>
-      </div>
+    <div>
+      <EditorBar
+        flush={!embedded}
+        title="Chatbot website"
+        subtitle="Bot AI hiện cho khách trên website: bật tắt, nội dung, quy tắc hiển thị"
+      >
+        <SaveStatus status={status} errorMsg={errorMsg} />
+        <button onClick={handleSave} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu thay đổi'}
+        </button>
+      </EditorBar>
 
+      <div className="mx-auto max-w-4xl space-y-4">
       {/* ───── Trạng thái + widget ───── */}
       <Section title="Trạng thái & hiển thị">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={draft.enabled}
-            onChange={(e) => update('enabled', e.target.checked)}
-            className="w-4 h-4 mt-0.5"
-          />
+        <div className="flex items-start gap-3">
+          <Switch checked={draft.enabled} onChange={(v) => update('enabled', v)} label="Bật bot trên website" />
           <div>
-            <div className="text-sm font-medium text-slate-900 dark:text-white">Bật bot trên website</div>
-            <div className="text-[11px] text-slate-500">Tắt → khách không thấy bot, endpoint trả 503.</div>
+            <div className="text-[14.5px] font-medium text-[var(--ad-fg)]">Bật bot trên website</div>
+            <div className="text-[13px] text-[var(--ad-fg-3)]">Tắt thì khách không thấy bot và đường gọi bot trả về lỗi 503.</div>
           </div>
-        </label>
+        </div>
 
         <div className="mt-4">
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-2">
-            Hiển thị widget nào
-          </label>
+          <label className={fieldLabelClass}>Hiển thị kiểu nào</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {WIDGET_MODE_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 type="button"
                 onClick={() => update('widget_mode', opt.value as WidgetMode)}
-                className={`text-left p-2.5 rounded-md border-2 transition-colors ${
+                aria-pressed={draft.widget_mode === opt.value}
+                className={`rounded-xl border p-3 text-left transition-colors ${
                   draft.widget_mode === opt.value
-                    ? 'border-primary bg-primary/5'
-                    : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
+                    ? 'border-[var(--ad-accent)] bg-[var(--ad-accent-soft)] ring-1 ring-[var(--ad-accent)]'
+                    : 'border-[var(--ad-line-2)] hover:bg-[var(--ad-fill-soft)]'
                 }`}
               >
-                <div className="text-sm font-semibold">{opt.label}</div>
-                <div className="text-[10px] text-slate-500 mt-0.5">{opt.desc}</div>
+                <div className="text-[14px] font-semibold text-[var(--ad-fg)]">{opt.label}</div>
+                <div className="mt-0.5 text-[12.5px] text-[var(--ad-fg-3)]">{opt.desc}</div>
               </button>
             ))}
           </div>
@@ -231,32 +202,28 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
       {/* ───── Bộ não AI ───── */}
       <Section title="Bộ não AI">
         <Field label="Model">
-          <select
-            value={draft.model}
-            onChange={(e) => update('model', e.target.value)}
-            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
-          >
+          <select value={draft.model} onChange={(e) => update('model', e.target.value)} className={fieldInputClass}>
             {CHATBOT_MODEL_OPTIONS.map((m) => (
               <option key={m.value} value={m.value}>
                 {m.label}
               </option>
             ))}
           </select>
-          <p className="text-[10px] text-slate-500 mt-1">
-            API key dùng biến môi trường <code className="px-1 bg-slate-100 dark:bg-slate-800 rounded">OPENAI_API_KEY</code> (không lưu trong DB).
+          <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
+            API key dùng biến môi trường <code className="rounded bg-[var(--ad-fill)] px-1.5 py-0.5 text-[12px]">OPENAI_API_KEY</code> (không lưu trong DB).
           </p>
         </Field>
 
         <div>
-          <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs font-medium text-slate-700 dark:text-slate-300">System prompt</label>
+          <div className="mb-1.5 flex items-center justify-between">
+            <label className="text-[13px] font-medium text-[var(--ad-fg-2)]">Chỉ dẫn hệ thống cho AI (system prompt)</label>
             <button
               type="button"
               onClick={() => update('system_prompt', DEFAULT_CHATBOT_SYSTEM_PROMPT)}
-              className="inline-flex items-center gap-1 text-[10px] text-primary hover:underline"
+              className="inline-flex items-center gap-1 text-[12.5px] text-[var(--ad-accent)] hover:underline"
             >
-              <RotateCcw className="w-3 h-3" />
-              Khôi phục prompt mặc định
+              <RotateCcw className="h-3 w-3" />
+              Khôi phục bản mặc định
             </button>
           </div>
           <TextArea
@@ -265,7 +232,7 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
             rows={8}
             mono
           />
-          <p className="text-[10px] text-slate-500 mt-1">
+          <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
             Để trống = dùng prompt mặc định (tính cách + chính sách trả lời). <strong>Đừng gõ dịch vụ, giá, dự án vào đây</strong> —
             bot tự đọc toàn bộ website (xem mục &quot;Kiến thức AI&quot; bên dưới), sửa website là bot biết.
             Định dạng JSON và danh sách link do hệ thống tự gắn.
@@ -282,9 +249,9 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
             rows={4}
             mono
           />
-          <p className="text-[10px] text-slate-500 mt-1">
-            VD: <code className="px-1 bg-slate-100 dark:bg-slate-800 rounded">/admin-cls</code> ẩn mọi trang admin;{' '}
-            <code className="px-1 bg-slate-100 dark:bg-slate-800 rounded">/contact</code> ẩn trang liên hệ.
+          <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
+            VD: <code className="rounded bg-[var(--ad-fill)] px-1.5 py-0.5 text-[12px]">/admin-cls</code> ẩn mọi trang admin;{' '}
+            <code className="rounded bg-[var(--ad-fill)] px-1.5 py-0.5 text-[12px]">/contact</code> ẩn trang liên hệ.
           </p>
         </Field>
 
@@ -315,27 +282,17 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
           </Field>
         </div>
 
-        <div className="flex flex-wrap gap-5 pt-1">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={draft.show_on_desktop}
-              onChange={(e) => update('show_on_desktop', e.target.checked)}
-              className="w-4 h-4"
-            />
-            <span className="text-sm text-slate-700 dark:text-slate-300">Hiện trên Desktop</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={draft.show_on_mobile}
-              onChange={(e) => update('show_on_mobile', e.target.checked)}
-              className="w-4 h-4"
-            />
-            <span className="text-sm text-slate-700 dark:text-slate-300">Hiện trên Mobile</span>
-          </label>
+        <div className="flex flex-wrap gap-x-8 gap-y-3 pt-1">
+          <div className="flex items-center gap-3">
+            <Switch checked={draft.show_on_desktop} onChange={(v) => update('show_on_desktop', v)} label="Hiện trên máy tính" />
+            <span className="text-[14px] text-[var(--ad-fg)]">Hiện trên máy tính</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Switch checked={draft.show_on_mobile} onChange={(v) => update('show_on_mobile', v)} label="Hiện trên điện thoại" />
+            <span className="text-[14px] text-[var(--ad-fg)]">Hiện trên điện thoại</span>
+          </div>
         </div>
-        <p className="text-[10px] text-slate-500">
+        <p className="text-[12.5px] text-[var(--ad-fg-3)]">
           Lưu ý: Delay & Auto-close chỉ áp dụng cho <strong>Thanh bar đáy</strong>. Nút tròn hiện ngay.
         </p>
       </Section>
@@ -351,25 +308,20 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
             value={testQuery}
             onChange={(e) => setTestQuery(e.target.value)}
             placeholder="Nhập câu hỏi test…"
-            className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+            className={fieldInputClass + ' flex-1'}
           />
-          <button
-            type="button"
-            onClick={handleTest}
-            disabled={testing}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium rounded disabled:opacity-50"
-          >
-            {testing ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+          <button type="button" onClick={handleTest} disabled={testing} className={btn('primary')}>
+            {testing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Send className="h-3.5 w-3.5" />}
             Gửi thử
           </button>
         </div>
         {testResult?.answer && (
-          <div className="mt-3 px-3 py-2.5 bg-emerald-50 border border-emerald-200 rounded-md">
-            <div className="text-xs text-emerald-800 whitespace-pre-wrap">{testResult.answer}</div>
+          <div className="mt-3 rounded-xl bg-[rgba(52,199,89,.12)] px-4 py-3">
+            <div className="whitespace-pre-wrap text-[13.5px] text-[#1c6b30]">{testResult.answer}</div>
             {Array.isArray(testResult.links) && testResult.links.length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {testResult.links.map((l: any, i: number) => (
-                  <span key={i} className="text-[10px] px-2 py-0.5 bg-white border border-emerald-300 text-emerald-700 rounded-full">
+                  <span key={i} className="rounded-full bg-white px-2.5 py-0.5 text-[12px] text-[#248a3d]">
                     {l.title} → {l.href}
                   </span>
                 ))}
@@ -378,15 +330,16 @@ export function ChatbotSettingsForm({ initial }: { initial: ChatbotSettings | nu
           </div>
         )}
         {testResult?.error && (
-          <div className="mt-3 px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700 flex items-start gap-1.5">
-            <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+          <div className="mt-3 flex items-start gap-1.5 rounded-xl bg-[rgba(255,59,48,.10)] px-3.5 py-2.5 text-[13.5px] text-[#d70015]">
+            <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
             {testResult.error}
           </div>
         )}
-        <div className="mt-2 inline-flex items-center gap-1 text-[10px] text-slate-400">
-          <Zap className="w-3 h-3" /> Gọi đúng endpoint /api/ai/service-router (prompt + model đã lưu).
+        <div className="mt-2 inline-flex items-center gap-1 text-[12.5px] text-[var(--ad-fg-3)]">
+          <Zap className="h-3 w-3" /> Gọi đúng đường /api/ai/service-router (chỉ dẫn và model đã lưu).
         </div>
       </Section>
+      </div>
     </div>
   )
 }
@@ -411,41 +364,36 @@ function KnowledgePanel() {
 
   return (
     <Section title="Kiến thức AI (đọc tự động từ website)">
-      <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+      <p className="text-[13.5px] leading-relaxed text-[var(--ad-fg-3)]">
         Bot đọc toàn bộ nội dung công khai: các trang dịch vụ, bảng giá, trang chủ, FAQ, dự án, blog, thông tin
         liên hệ. Sửa nội dung trong admin rồi bấm Lưu là bot tự cập nhật (chậm nhất 1 giờ); nội dung viết trong
         code cập nhật mỗi lần deploy. Bài nháp và dự án chưa xuất bản <strong>không</strong> bao giờ được đưa cho bot.
       </p>
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleRefresh}
-          disabled={loading}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-medium rounded disabled:opacity-50"
-        >
-          {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
+        <button type="button" onClick={handleRefresh} disabled={loading} className={btn('primary')}>
+          {loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RotateCcw className="h-3.5 w-3.5" />}
           Cho AI học lại ngay
         </button>
         {info && (
-          <span className="inline-flex items-center gap-1 text-xs text-emerald-700">
-            <CheckCircle2 className="w-3.5 h-3.5" />
+          <span className="inline-flex items-center gap-1 text-[13px] text-[#248a3d]">
+            <CheckCircle2 className="h-4 w-4" />
             Đã học {info.pages} mục · {info.chars.toLocaleString('vi-VN')} ký tự · lúc{' '}
             {new Date(info.builtAt).toLocaleString('vi-VN')}
           </span>
         )}
       </div>
       {error && (
-        <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700 flex items-start gap-1.5">
-          <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+        <div className="flex items-start gap-1.5 rounded-xl bg-[rgba(255,59,48,.10)] px-3.5 py-2.5 text-[13.5px] text-[#d70015]">
+          <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
           {error}
         </div>
       )}
       {info && (
-        <details className="rounded border border-slate-200 dark:border-slate-700">
-          <summary className="px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 cursor-pointer">
+        <details className="rounded-xl border border-[var(--ad-line)]">
+          <summary className="cursor-pointer px-4 py-2.5 text-[13.5px] font-medium text-[var(--ad-fg-2)]">
             Xem toàn bộ nội dung bot đang đọc
           </summary>
-          <pre className="px-3 pb-3 max-h-96 overflow-auto text-[11px] leading-relaxed whitespace-pre-wrap text-slate-600 dark:text-slate-400">
+          <pre className="max-h-96 overflow-auto whitespace-pre-wrap px-4 pb-3 text-[12px] leading-relaxed text-[var(--ad-fg-3)]">
             {info.preview}
           </pre>
         </details>
@@ -458,31 +406,23 @@ function KnowledgePanel() {
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</h2>
+    <SectionCard title={title} bodyClassName="space-y-3.5 px-5 pb-5 pt-3">
       {children}
-    </div>
+    </SectionCard>
   )
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">{label}</label>
+      <label className={fieldLabelClass}>{label}</label>
       {children}
     </div>
   )
 }
 
 function TextInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
-  return (
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
-    />
-  )
+  return <input type="text" value={value} onChange={(e) => onChange(e.target.value)} className={fieldInputClass} />
 }
 
 function TextArea({
@@ -501,9 +441,7 @@ function TextArea({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       rows={rows}
-      className={`w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm ${
-        mono ? 'font-mono text-xs' : ''
-      }`}
+      className={fieldInputClass + (mono ? ' font-mono !text-[12.5px]' : '')}
     />
   )
 }
@@ -526,7 +464,7 @@ function NumberInput({
       min={min}
       max={max}
       onChange={(e) => onChange(Number(e.target.value))}
-      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+      className={fieldInputClass}
     />
   )
 }
@@ -545,19 +483,15 @@ function PromptEditor({
   onRemove: (idx: number) => void
 }) {
   return (
-    <div className="border border-slate-200 dark:border-slate-700 rounded-md p-3">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{title}</span>
-        <button
-          type="button"
-          onClick={onAdd}
-          className="inline-flex items-center gap-1 px-2 py-1 text-[11px] text-primary hover:bg-primary/5 rounded"
-        >
-          <Plus className="w-3 h-3" />
+    <div className="rounded-xl border border-[var(--ad-line)] p-4">
+      <div className="mb-2.5 flex items-center justify-between">
+        <span className="text-[13px] font-medium text-[var(--ad-fg-2)]">{title}</span>
+        <button type="button" onClick={onAdd} className={btn('ghost', 'sm')}>
+          <Plus className="h-3.5 w-3.5" />
           Thêm
         </button>
       </div>
-      {list.length === 0 && <p className="text-[11px] text-slate-400">Chưa có câu gợi ý nào.</p>}
+      {list.length === 0 && <p className="text-[13px] text-[var(--ad-fg-3)]">Chưa có câu gợi ý nào.</p>}
       <div className="space-y-2">
         {list.map((p, i) => (
           <div key={i} className="flex items-center gap-2">
@@ -566,22 +500,23 @@ function PromptEditor({
               value={p.label}
               onChange={(e) => onUpdate(i, 'label', e.target.value)}
               placeholder="Nhãn hiện trên nút"
-              className="flex-1 px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs"
+              className={fieldInputClass + ' min-w-0 flex-1 !py-1.5 !text-[13.5px]'}
             />
             <input
               type="text"
               value={p.value}
               onChange={(e) => onUpdate(i, 'value', e.target.value)}
               placeholder="Câu thật gửi cho AI"
-              className="flex-1 px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs"
+              className={fieldInputClass + ' min-w-0 flex-1 !py-1.5 !text-[13.5px]'}
             />
             <button
               type="button"
               onClick={() => onRemove(i)}
-              className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded"
+              className="grid h-8 w-8 flex-none place-items-center rounded-full text-[var(--ad-fg-3)] hover:bg-[rgba(255,59,48,.10)] hover:text-[#d70015]"
               aria-label="Xoá"
+              title="Xoá"
             >
-              <Trash2 className="w-3.5 h-3.5" />
+              <Trash2 className="h-4 w-4" />
             </button>
           </div>
         ))}

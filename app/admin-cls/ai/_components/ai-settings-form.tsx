@@ -23,6 +23,8 @@ import {
   type SaveAiSettingsInput,
 } from '../actions'
 import { MODEL_OPTIONS } from '@/lib/ai/providers'
+import { EditorBar, SaveStatus, Card, btn } from '@/components/admin/ui'
+import { Switch } from '@/components/admin/switch'
 import type {
   AiSettings,
   AiProvider,
@@ -41,7 +43,7 @@ const IMAGE_SIZES: { value: ImageSize; label: string }[] = [
 
 type Tab = 'keys' | 'inline' | 'blog' | 'image'
 
-export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
+export function AiSettingsForm({ initial, embedded = false }: { initial: AiSettings | null; embedded?: boolean }) {
   const [draft, setDraft] = useState<SaveAiSettingsInput>({
     enabled: initial?.enabled ?? false,
     anthropic_api_key: initial?.anthropic_api_key ?? null,
@@ -126,65 +128,29 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
   }
 
   return (
-    <div className="space-y-3 max-w-4xl">
-      {/* Header */}
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div>
-          <h1 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-violet-500" />
-            AI Assistant
-          </h1>
-          <p className="text-[11px] text-slate-500">
-            Quản lý cấu hình AI cho từng tác vụ riêng biệt
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              Lỗi
-            </span>
-          )}
-          <button
-            onClick={handleSave}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
-          </button>
-        </div>
-      </div>
+    <div>
+      <EditorBar flush={!embedded} title="AI Assistant" subtitle="Cấu hình AI cho từng tác vụ riêng">
+        <SaveStatus status={status} errorMsg={errorMsg} />
+        <button onClick={handleSave} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu thay đổi'}
+        </button>
+      </EditorBar>
 
-      {/* Enable toggle */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4">
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={draft.enabled}
-            onChange={(e) => update('enabled', e.target.checked)}
-            className="w-4 h-4 mt-0.5"
-          />
+      <div className="mx-auto max-w-4xl space-y-4">
+      {/* Bật tắt */}
+      <Card className="p-5">
+        <div className="flex items-start gap-3">
+          <Switch checked={draft.enabled} onChange={(v) => update('enabled', v)} label="Kích hoạt AI Assistant" />
           <div>
-            <div className="text-sm font-medium text-slate-900 dark:text-white">
-              Kích hoạt AI Assistant
-            </div>
-            <div className="text-[11px] text-slate-500">
-              Sau khi bật + lưu, mọi nút ✨ AI trong CMS sẽ hoạt động.
-            </div>
+            <div className="text-[14.5px] font-medium text-[var(--ad-fg)]">Kích hoạt AI Assistant</div>
+            <div className="text-[13px] text-[var(--ad-fg-3)]">Sau khi bật và lưu, mọi nút AI trong CMS sẽ hoạt động.</div>
           </div>
-        </label>
-      </div>
+        </div>
+      </Card>
 
       {/* Tabs */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+      <Card className="overflow-hidden">
         <div className="flex border-b border-slate-200 dark:border-slate-700 overflow-x-auto">
           <TabButton active={tab === 'keys'} onClick={() => setTab('keys')} icon={<Key className="w-3.5 h-3.5" />}>
             API Keys
@@ -222,7 +188,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                     type="button"
                     onClick={() => handleTestKey('anthropic')}
                     disabled={keyTests.anthropic?.loading || !draft.anthropic_api_key}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--ad-accent)] hover:bg-[var(--ad-accent-d)] text-white text-[11px] font-medium rounded disabled:opacity-50"
                   >
                     {keyTests.anthropic?.loading ? (
                       <Loader2 className="w-3 h-3 animate-spin" />
@@ -250,7 +216,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
                     type="button"
                     onClick={() => handleTestKey('openai')}
                     disabled={keyTests.openai?.loading || !draft.openai_api_key}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-500 hover:bg-amber-600 text-white text-[11px] font-medium rounded disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[var(--ad-accent)] hover:bg-[var(--ad-accent-d)] text-white text-[11px] font-medium rounded disabled:opacity-50"
                   >
                     {keyTests.openai?.loading ? (
                       <Loader2 className="w-3 h-3 animate-spin" />
@@ -546,6 +512,7 @@ export function AiSettingsForm({ initial }: { initial: AiSettings | null }) {
             </div>
           )}
         </div>
+      </Card>
       </div>
     </div>
   )
@@ -559,7 +526,7 @@ function TestResult({
   if (!result || result.loading) return null
   if (result.message) {
     return (
-      <span className="inline-flex items-center text-[11px] px-2 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded">
+      <span className="inline-flex items-center text-[11px] px-2 py-1 bg-[rgba(52,199,89,.12)] text-[#248a3d] rounded-lg">
         {result.message}
       </span>
     )
@@ -567,7 +534,7 @@ function TestResult({
   if (result.error) {
     return (
       <span
-        className="inline-flex items-center text-[11px] px-2 py-1 bg-red-50 border border-red-200 text-red-700 rounded max-w-md truncate"
+        className="inline-flex items-center text-[11px] px-2 py-1 bg-[rgba(255,59,48,.10)] text-[#d70015] rounded-lg max-w-md truncate"
         title={result.error}
       >
         ✗ {result.error.slice(0, 80)}
@@ -593,7 +560,7 @@ function TabButton({
       onClick={onClick}
       className={`flex items-center gap-1.5 px-4 py-2.5 text-xs font-medium border-b-2 whitespace-nowrap transition-colors ${
         active
-          ? 'border-primary text-primary bg-primary/5'
+          ? 'border-[var(--ad-accent)] text-[var(--ad-accent)] bg-[var(--ad-accent-soft)]'
           : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/30'
       }`}
     >
@@ -621,7 +588,7 @@ function ProviderPicker({
           onClick={() => onChange('anthropic')}
           className={`text-left p-3 rounded-md border-2 transition-colors ${
             value === 'anthropic'
-              ? 'border-primary bg-primary/5'
+              ? 'border-[var(--ad-accent)] bg-[var(--ad-accent-soft)]'
               : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
           }`}
         >
@@ -635,7 +602,7 @@ function ProviderPicker({
           onClick={() => onChange('openai')}
           className={`text-left p-3 rounded-md border-2 transition-colors ${
             value === 'openai'
-              ? 'border-primary bg-primary/5'
+              ? 'border-[var(--ad-accent)] bg-[var(--ad-accent-soft)]'
               : 'border-slate-200 dark:border-slate-700 hover:border-slate-300'
           }`}
         >

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { getSiteSettings } from '@/lib/cms/settings'
 import { LoginForm } from './login-form'
 import { LoginArt } from './login-art'
 
@@ -13,6 +14,28 @@ const MESSAGES: Record<string, string> = {
   rate_limited: 'Too many attempts. Please wait a few minutes and try again.',
 }
 
+/** Logo cho nền sáng lấy từ Cài đặt (giống thanh trên của khu quản trị); lỗi hoặc chưa đặt thì dùng ảnh mặc định trên nền tối. */
+async function loadLogoUrl(): Promise<string | null> {
+  try {
+    const settings = await getSiteSettings()
+    return settings?.logo_url || null
+  } catch {
+    return null
+  }
+}
+
+function Logo({ url, className }: { url: string | null; className: string }) {
+  if (url) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={url} alt="Click Star" className={className} />
+  }
+  return (
+    <span className="rounded-lg bg-[#1d1d1f] px-3 py-2">
+      <Image src="/images/logo-clickstar.png" alt="Click Star" width={140} height={28} className="h-5 w-auto" priority />
+    </span>
+  )
+}
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -23,31 +46,32 @@ export default async function LoginPage({
   // Chỉ cho quay lại trong khu quản trị (không chuyển hướng ra ngoài site).
   const wanted = params.redirect || ''
   const redirectTo = wanted.startsWith('/admin-cls') && !wanted.startsWith('//') ? wanted : '/admin-cls'
+  const logoUrl = await loadLogoUrl()
 
   return (
-    <div lang="en" className="h-dvh min-h-[600px] grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] bg-white">
-      <aside className="relative hidden lg:flex flex-col overflow-hidden bg-[#08090b] text-white px-12 xl:px-16 2xl:px-20 py-8">
+    <div lang="en" className="grid h-dvh min-h-[600px] bg-[var(--ad-surface)] lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+      <aside className="relative hidden flex-col overflow-hidden bg-[var(--ad-bg)] px-12 py-8 lg:flex xl:px-16 2xl:px-20">
         <div className="relative z-10 flex items-center gap-3">
-          <Image src="/images/logo-clickstar.png" alt="Click Star" width={160} height={32} className="h-7 w-auto" priority />
-          <span className="text-[10px] font-medium tracking-[0.1em] px-1.5 py-0.5 rounded-md border border-orange-400/35 text-orange-400">ADMIN</span>
+          <Logo url={logoUrl} className="h-7 w-auto" />
+          <span className="rounded-full bg-[var(--ad-accent-soft)] px-2.5 py-0.5 text-[11px] font-medium tracking-[0.08em] text-[var(--ad-accent)]">ADMIN</span>
         </div>
 
-        <div className="relative flex-1 min-h-0 flex items-center justify-center py-4">
+        <div className="relative flex min-h-0 flex-1 items-center justify-center py-4">
           <LoginArt className="pointer-events-none aspect-square h-[min(100%,340px)] w-auto" />
         </div>
 
         <div className="relative z-10 max-w-[480px]">
-          <p className="mb-3 text-[11px] font-medium tracking-[0.16em] text-orange-400">AI-POWERED DIGITAL GROWTH</p>
-          <h1 className="text-balance text-[30px] xl:text-[36px] font-medium leading-[1.22] tracking-[-0.022em]">
-            Where data, marketing and <span className="text-[#6aa9ff]">AI</span> work as one.
+          <p className="mb-3 text-[12px] font-medium tracking-[0.14em] text-[var(--ad-accent)]">AI-POWERED DIGITAL GROWTH</p>
+          <h1 className="text-balance text-[30px] font-semibold leading-[1.18] tracking-[-0.025em] text-[var(--ad-fg)] xl:text-[38px]">
+            Where data, marketing and <span className="text-[var(--ad-accent)]">AI</span> work as one.
           </h1>
-          <p className="mt-3 max-w-[440px] text-sm xl:text-[15px] leading-relaxed text-zinc-400">
+          <p className="mt-3 max-w-[440px] text-sm leading-relaxed text-[var(--ad-fg-2)] xl:text-[15px]">
             The control center for clickstar.vn: content, SEO, leads and the AI products we build for business.
           </p>
-          <ul className="mt-6 flex flex-wrap items-center gap-y-1.5 border-t border-zinc-800 pt-4 text-[13px] text-zinc-300">
+          <ul className="mt-6 flex flex-wrap items-center gap-y-1.5 border-t border-[var(--ad-line-2)] pt-4 text-[13px] text-[var(--ad-fg-2)]">
             {['Speech Insight AI', 'ADS hub', 'Click Star AI', 'CRM and automation'].map((name, i) => (
               <li key={name} className="flex items-center">
-                {i > 0 && <span className="mx-3 h-[3px] w-[3px] rounded-full bg-zinc-600" aria-hidden="true" />}
+                {i > 0 && <span className="mx-3 h-[3px] w-[3px] rounded-full bg-[var(--ad-fg-3)]" aria-hidden="true" />}
                 {name}
               </li>
             ))}
@@ -55,33 +79,31 @@ export default async function LoginPage({
         </div>
       </aside>
 
-      <main className="relative flex flex-col bg-white px-6">
-        <div className="flex items-center justify-between pt-6 lg:pt-7 lg:px-6 xl:px-10">
-          <span className="lg:hidden flex items-center gap-3">
-            <span className="rounded-md bg-zinc-950 px-3 py-2">
-              <Image src="/images/logo-clickstar.png" alt="Click Star" width={140} height={28} className="h-6 w-auto" priority />
-            </span>
-            <span className="text-[10px] font-medium tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-orange-100 text-orange-700">ADMIN</span>
+      <main className="relative flex flex-col bg-[var(--ad-surface)] px-6">
+        <div className="flex items-center justify-between pt-6 lg:px-6 lg:pt-7 xl:px-10">
+          <span className="flex items-center gap-3 lg:hidden">
+            <Logo url={logoUrl} className="h-6 w-auto" />
+            <span className="hidden rounded-full bg-[var(--ad-accent-soft)] px-2.5 py-0.5 text-[11px] font-medium tracking-[0.08em] text-[var(--ad-accent)] min-[420px]:inline">ADMIN</span>
           </span>
-          <a href="/" className="ml-auto text-sm text-slate-500 hover:text-slate-900 transition-colors">
+          <a href="/" className="ml-auto whitespace-nowrap text-sm text-[var(--ad-fg-3)] transition-colors hover:text-[var(--ad-fg)]">
             Back to website <span aria-hidden="true">→</span>
           </a>
         </div>
 
-        <div className="flex-1 min-h-0 flex items-center justify-center py-4">
+        <div className="flex min-h-0 flex-1 items-center justify-center py-4">
           <div className="w-full max-w-[400px]">
-            <h2 className="text-2xl xl:text-[28px] font-semibold tracking-tight text-slate-900">Sign in</h2>
-            <p className="mt-1.5 mb-6 text-sm xl:text-[15px] text-slate-500">Use your administrator account to continue.</p>
+            <h2 className="text-[28px] font-semibold tracking-[-0.025em] text-[var(--ad-fg)] xl:text-[32px]">Sign in</h2>
+            <p className="mb-7 mt-1.5 text-sm text-[var(--ad-fg-3)] xl:text-[15px]">Use your administrator account to continue.</p>
 
             <LoginForm redirectTo={redirectTo} error={error} />
 
-            <p className="mt-5 text-xs leading-relaxed text-slate-400">
+            <p className="mt-5 text-[12.5px] leading-relaxed text-[var(--ad-fg-3)]">
               Only accounts with admin access can sign in. If you forgot your password, contact a site administrator to reset it.
             </p>
           </div>
         </div>
 
-        <p className="pb-5 lg:pb-6 text-center text-xs text-slate-400">© 2026 Click Star. All rights reserved.</p>
+        <p className="pb-5 text-center text-xs text-[var(--ad-fg-3)] lg:pb-6">© 2026 Click Star. All rights reserved.</p>
       </main>
     </div>
   )
