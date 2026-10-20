@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { FileText, Plus } from 'lucide-react'
 import { loadContentAnalysis } from '@/lib/cms/content-data'
 import { ContentDashboard } from './_components/content-dashboard'
+import { IndexNowPanel } from './_components/indexnow-panel'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,6 +35,8 @@ export default async function AdminContentPage() {
           </Link>
         </div>
       </div>
+
+      <IndexNowPanel />
 
       <ContentDashboard data={content} />
     </div>

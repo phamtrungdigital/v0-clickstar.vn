@@ -2,6 +2,8 @@
 
 import { revalidatePath, updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { postHasEnglish } from '@/lib/cms/post-i18n'
+import { blogIndexUrls, notifyIndexNow, postUrls } from '@/lib/seo/indexnow'
 
 export async function bulkDeletePosts(ids: string[]): Promise<{ ok?: number; error?: string }> {
   if (!ids?.length) return { error: 'Không có bài nào được chọn' }
@@ -56,6 +58,11 @@ export async function bulkSetStatus(
       .in('id', ids)
       .eq('status', 'published')
     count = nowPublished
+    // Báo IndexNow cho các bài vừa đăng
+    const { data: posts } = await supabase.from('posts').select('slug, title, content').in('id', ids).eq('status', 'published')
+    if (posts?.length) {
+      notifyIndexNow([...posts.flatMap((p: any) => postUrls(p.slug, postHasEnglish(p))), ...blogIndexUrls()])
+    }
   }
   revalidatePath('/admin-cls/posts')
   revalidatePath('/blog')

@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { Post, PostStatus } from '@/lib/cms/posts'
 import { cleanSeoText, ogUrlError } from '@/lib/seo/admin-seo'
+import { postHasEnglish } from '@/lib/cms/post-i18n'
+import { blogIndexUrls, notifyIndexNow, postUrls } from '@/lib/seo/indexnow'
 
 export type PostUpdate = {
   slug: string
@@ -40,6 +42,15 @@ type CurrentRow = {
   published_at: string | null
   seo_title: I18nCol | null
   seo_description: I18nCol | null
+}
+
+/** Bài đã đăng thì báo IndexNow địa chỉ bài (vi, và en nếu đủ bản dịch) cùng trang danh sách Blog. */
+function announce(input: PostSave) {
+  if (input.status !== 'published') return
+  notifyIndexNow([
+    ...postUrls(input.slug, postHasEnglish({ title: input.title, content: input.content })),
+    ...blogIndexUrls(),
+  ])
 }
 
 export async function savePost(id: string | 'new', input: PostSave) {
@@ -109,6 +120,7 @@ export async function savePost(id: string | 'new', input: PostSave) {
       .select('id, slug')
       .single()
     if (error) return { error: error.message }
+    announce(input)
     revalidatePath('/blog')
     revalidatePath('/')
     revalidatePath('/en')
@@ -119,6 +131,7 @@ export async function savePost(id: string | 'new', input: PostSave) {
   } else {
     const { error } = await supabase.from('posts').update(payload).eq('id', id)
     if (error) return { error: error.message }
+    announce(input)
     revalidatePath('/blog')
     revalidatePath('/')
     revalidatePath('/en')

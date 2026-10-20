@@ -55,6 +55,12 @@ export const ROADMAP: RoadmapGroup[] = [
         why: 'Trước đây trả 200 kèm noindex (Google gọi là soft 404), làm báo cáo Search Console khó đọc.',
         steps: ['Nguyên nhân: màn chờ loading.tsx khiến mã 200 được gửi đi trước khi trang kiểm tra bài có tồn tại', 'Nay kiểm ngay ở lớp proxy trước khi dựng trang: bài, dự án không có hoặc còn nháp trả 404 thật, cả bản /en', 'Lỗi mạng hay DB chậm thì cho qua như cũ, không chặn nhầm trang thật'],
       },
+      {
+        id: 'tech-indexnow', title: 'IndexNow: tự báo Bing và các công cụ cùng chuẩn khi đăng hoặc sửa bài', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'Công cụ tìm kiếm biết bài mới ngay thay vì chờ đọc lại sơ đồ trang web. Bing là một nguồn mà nhiều công cụ AI dùng để tìm nội dung.',
+        steps: ['Lưu hoặc đăng bài trong trình sửa (kể cả đăng hàng loạt) thì site tự gửi địa chỉ bài và trang Blog, chỉ ở bản chính thức', 'Admin → Quản trị bài viết có nút gửi tay cho bài đăng theo cách khác, ví dụ chèn thẳng vào cơ sở dữ liệu', 'File khóa công khai nằm ở gốc website theo đúng chuẩn IndexNow'],
+        note: 'Google chưa hỗ trợ IndexNow: với Google vẫn dùng sơ đồ trang web, liên kết nội bộ và nút Yêu cầu lập chỉ mục trong Search Console.',
+      },
     ],
   },
   {
