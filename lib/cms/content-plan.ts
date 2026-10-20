@@ -48,31 +48,32 @@ const isService = (s: string): s is ServiceSlug => (SERVICE_ORDER as string[]).i
 export type PillarId = 'ai' | 'data' | 'marketing' | 'build' | 'news' | 'legal'
 
 /** Nhóm chủ đề (danh mục) của blog. `target` là tỷ trọng gợi ý (% số bài), chỉnh tại đây. */
-export const PILLARS: { id: PillarId; label: string; hint: string; target: number }[] = [
-  { id: 'ai', label: 'AI và tự động hóa', hint: 'Dùng AI vào công việc và quy trình', target: 25 },
-  { id: 'data', label: 'Dữ liệu và khách hàng', hint: 'CRM, CDP, dashboard, dữ liệu khách hàng', target: 25 },
-  { id: 'marketing', label: 'Marketing số và SEO', hint: 'SEO, quảng cáo, nội dung, xu hướng', target: 20 },
-  { id: 'build', label: 'Website và phần mềm', hint: 'Thiết kế web, phần mềm, công cụ lập trình', target: 15 },
-  { id: 'news', label: 'Tin tức công nghệ', hint: 'Tổng hợp tin, cập nhật sản phẩm', target: 10 },
-  { id: 'legal', label: 'Quy định và bảo mật', hint: 'Chính sách, pháp lý, an toàn dữ liệu', target: 5 },
+export const PILLARS: { id: PillarId; label: string; hint: string; target: number; color: string }[] = [
+  { id: 'ai', label: 'AI và tự động hóa', hint: 'Dùng AI vào công việc và quy trình', target: 25, color: '#3687FC' },
+  { id: 'data', label: 'Dữ liệu và khách hàng', hint: 'CRM, CDP, dashboard, dữ liệu khách hàng', target: 25, color: '#F59E0B' },
+  { id: 'marketing', label: 'Marketing số và SEO', hint: 'SEO, quảng cáo, nội dung, xu hướng', target: 20, color: '#14B8A6' },
+  { id: 'build', label: 'Website và phần mềm', hint: 'Thiết kế web, phần mềm, công cụ lập trình', target: 15, color: '#8B5CF6' },
+  { id: 'news', label: 'Tin tức công nghệ', hint: 'Tổng hợp tin, cập nhật sản phẩm', target: 10, color: '#94A3B8' },
+  { id: 'legal', label: 'Quy định và bảo mật', hint: 'Chính sách, pháp lý, an toàn dữ liệu', target: 5, color: '#F43F5E' },
 ]
 
 export type StageId = 'learn' | 'guide' | 'decide'
 
-export const STAGES: { id: StageId; label: string; hint: string }[] = [
-  { id: 'learn', label: 'Tìm hiểu', hint: 'Là gì, xu hướng, vì sao quan trọng' },
-  { id: 'guide', label: 'Hướng dẫn, so sánh', hint: 'Cách làm, so sánh các lựa chọn' },
-  { id: 'decide', label: 'Chọn và triển khai', hint: 'Chi phí, checklist chọn nhà cung cấp, quy trình' },
+export const STAGES: { id: StageId; label: string; hint: string; color: string }[] = [
+  { id: 'learn', label: 'Tìm hiểu', hint: 'Là gì, xu hướng, vì sao quan trọng', color: '#A9C9FB' },
+  { id: 'guide', label: 'Hướng dẫn, so sánh', hint: 'Cách làm, so sánh các lựa chọn', color: '#3687FC' },
+  { id: 'decide', label: 'Chọn và triển khai', hint: 'Chi phí, checklist chọn nhà cung cấp, quy trình', color: '#FB923C' },
 ]
 
 export type KindId = 'guide' | 'opinion' | 'news' | 'policy'
 
-export const KINDS: Record<KindId, string> = {
-  guide: 'Hướng dẫn',
-  opinion: 'Xu hướng, quan điểm',
-  news: 'Tin, cập nhật',
-  policy: 'Chính sách',
-}
+export const KIND_LIST: { id: KindId; label: string; color: string }[] = [
+  { id: 'guide', label: 'Hướng dẫn', color: '#3687FC' },
+  { id: 'opinion', label: 'Xu hướng, quan điểm', color: '#8B5CF6' },
+  { id: 'news', label: 'Tin, cập nhật', color: '#94A3B8' },
+  { id: 'policy', label: 'Chính sách', color: '#FB923C' },
+]
+export const KINDS = Object.fromEntries(KIND_LIST.map((k) => [k.id, k.label])) as Record<KindId, string>
 
 /* ------------------------------ Phân nhóm từng bài ------------------------------ */
 
@@ -241,6 +242,8 @@ export type ContentPostInput = {
   viWords: number
   enChars: number
   hasEn: boolean
+  /** Điểm SEO 0 đến 100 của bài (chấm bằng bộ chấm ở màn SEO). null = chưa chấm được. */
+  seoScore: number | null
 }
 
 export type EnState = 'ok' | 'short' | 'none'
@@ -264,7 +267,31 @@ export type PostRow = {
   viWords: number
   enState: EnState
   hasCover: boolean
+  seoScore: number | null
 }
+
+export type PillarStat = {
+  id: PillarId
+  label: string
+  hint: string
+  color: string
+  count: number
+  pct: number
+  targetPct: number
+  /** Số bài đang dư (+) hoặc thiếu (-) so với tỷ trọng gợi ý. */
+  delta: number
+  words: number
+  avgWords: number
+  /** % bài có bản tiếng Anh đủ nội dung. */
+  enPct: number
+  seoAvg: number | null
+  newestDays: number | null
+  avgAgeDays: number | null
+  byStage: Record<StageId, { count: number; words: number }>
+  byKind: Record<KindId, { count: number; words: number }>
+}
+
+export type CadenceWeek = { label: string; total: number; byPillar: Record<PillarId, number> }
 
 export type Suggestion = BacklogItem & {
   pillarLabel: string
@@ -291,16 +318,24 @@ export type ContentAnalysis = {
     enOk: number
     evergreenPct: number
     avgWords: number
+    totalWords: number
+    seoAvg: number | null
+    shortPillars: string[]
     newestDays: number | null
     newestTitle: string
     last30: number
   }
-  pillars: { id: PillarId; label: string; hint: string; count: number; pct: number; targetPct: number; delta: number }[]
+  pillars: PillarStat[]
   matrix: { service: ServiceSlug; label: string; cells: Record<StageId, number>; total: number }[]
   stageTotals: Record<StageId, number>
   /** Câu tóm tắt khoảng trống lớn nhất: giai đoạn mua mỏng và dịch vụ chưa có bài nào. */
   gapSummary: string
-  cadence: { weeks: { label: string; count: number }[]; insight: string }
+  cadence: {
+    weeks: CadenceWeek[]
+    /** Chuỗi tuần liền nhau không có bài (chỉ báo khi từ 4 tuần trở lên): bắt đầu ở tuần thứ start, dài len tuần. */
+    hole: { start: number; len: number; label: string } | null
+    insight: string
+  }
   suggestions: Suggestion[]
   issues: Issue[]
   tags: { tag: string; count: number; pillar: PillarId | null }[]
@@ -368,6 +403,7 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
       viWords: p.viWords,
       enState,
       hasCover: p.hasCover,
+      seoScore: p.seoScore,
     }
   })
   const pubRows = rows.filter((r) => r.status === 'published')
@@ -403,16 +439,37 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
 
   // Nhóm chủ đề so với tỷ trọng gợi ý
   const nPub = pubRows.length
-  const pillars = PILLARS.map((pl) => {
-    const count = pubRows.filter((r) => r.pillar === pl.id).length
+  const sum = (a: number[]) => a.reduce((n, x) => n + x, 0)
+  const pillars: PillarStat[] = PILLARS.map((pl) => {
+    const rs = pubRows.filter((r) => r.pillar === pl.id)
+    const count = rs.length
+    const words = sum(rs.map((r) => r.viWords))
+    const scores = rs.map((r) => r.seoScore).filter((x): x is number => x !== null)
+    const ages = rs.map((r) => r.ageDays).filter((x): x is number => x !== null)
+    const bucket = <K extends string>(ids: K[], pick: (r: PostRow) => K | null) =>
+      Object.fromEntries(
+        ids.map((id) => {
+          const m = rs.filter((r) => pick(r) === id)
+          return [id, { count: m.length, words: sum(m.map((r) => r.viWords)) }]
+        })
+      ) as Record<K, { count: number; words: number }>
     return {
       id: pl.id,
       label: pl.label,
       hint: pl.hint,
+      color: pl.color,
       count,
       pct: nPub ? Math.round((count / nPub) * 100) : 0,
       targetPct: pl.target,
       delta: Math.round((count - (pl.target / 100) * nPub) * 10) / 10,
+      words,
+      avgWords: count ? Math.round(words / count) : 0,
+      enPct: count ? Math.round((rs.filter((r) => r.enState === 'ok').length / count) * 100) : 0,
+      seoAvg: scores.length ? Math.round(sum(scores) / scores.length) : null,
+      newestDays: ages.length ? Math.min(...ages) : null,
+      avgAgeDays: ages.length ? Math.round(sum(ages) / ages.length) : null,
+      byStage: bucket(['learn', 'guide', 'decide'] as StageId[], (r) => r.stage),
+      byKind: bucket(['guide', 'opinion', 'news', 'policy'] as KindId[], (r) => r.kind),
     }
   })
   const deficit = new Set(pillars.filter((p) => p.delta <= -1).map((p) => p.id))
@@ -462,9 +519,15 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
     .map((r) => dayIndex(Date.parse(r.publishedAt as string)))
     .sort((a, b) => a - b)
   const thisWeek = weekStart(today)
-  const weeks = Array.from({ length: 12 }, (_, k) => {
-    const start = thisWeek - (11 - k) * 7
-    return { label: fmtDay(start), count: pubDays.filter((d) => d >= start && d < start + 7).length }
+  const WEEKS = 18
+  const pubByDay = pubRows
+    .filter((r) => r.publishedAt && r.pillar)
+    .map((r) => ({ d: dayIndex(Date.parse(r.publishedAt as string)), pillar: r.pillar as PillarId }))
+  const weeks: CadenceWeek[] = Array.from({ length: WEEKS }, (_, k) => {
+    const start = thisWeek - (WEEKS - 1 - k) * 7
+    const inWeek = pubByDay.filter((x) => x.d >= start && x.d < start + 7)
+    const byPillar = Object.fromEntries(PILLARS.map((pl) => [pl.id, inWeek.filter((x) => x.pillar === pl.id).length])) as Record<PillarId, number>
+    return { label: fmtDay(start), total: inWeek.length, byPillar }
   })
   const newestDay = pubDays.length ? pubDays[pubDays.length - 1] : null
   let gap = 0
@@ -479,6 +542,19 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
     }
   }
   const afterGap = pubDays.filter((d) => d >= gapEnd).length
+  // Chuỗi tuần trống dài nhất nằm giữa hai tuần có bài
+  let hole: { start: number; len: number; label: string } | null = null
+  for (let i = 0; i < weeks.length; ) {
+    if (weeks[i].total === 0 && i > 0 && weeks.slice(0, i).some((w) => w.total > 0)) {
+      let j = i
+      while (j < weeks.length && weeks[j].total === 0) j++
+      if (j < weeks.length && j - i >= 4 && (!hole || j - i > hole.len)) {
+        const inWindow = gap > 0 && gapStart >= thisWeek - (WEEKS - 1) * 7
+        hole = { start: i, len: j - i, label: `${inWindow ? gap : (j - i) * 7} ngày không có bài` }
+      }
+      i = j
+    } else i++
+  }
   let insight: string
   if (!pubDays.length) insight = 'Chưa có bài nào được đăng.'
   else if (gap >= 30 && newestDay !== null && today - gapEnd <= 45) {
@@ -569,6 +645,12 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
       enOk: pubRows.filter((r) => r.enState === 'ok').length,
       evergreenPct: classified ? Math.round((nonNews / classified) * 100) : 0,
       avgWords: words.length ? Math.round(words.reduce((n, w) => n + w, 0) / words.length) : 0,
+      totalWords: words.reduce((n, w) => n + w, 0),
+      seoAvg: (() => {
+        const sc = pubRows.map((r) => r.seoScore).filter((x): x is number => x !== null)
+        return sc.length ? Math.round(sc.reduce((n, x) => n + x, 0) / sc.length) : null
+      })(),
+      shortPillars: pillars.filter((p) => p.delta <= -1).map((p) => p.label),
       newestDays: newest?.ageDays ?? null,
       newestTitle: newest?.title ?? '',
       last30: pubRows.filter((r) => r.ageDays !== null && r.ageDays <= 30).length,
@@ -577,7 +659,7 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
     matrix,
     stageTotals,
     gapSummary,
-    cadence: { weeks, insight },
+    cadence: { weeks, hole, insight },
     suggestions,
     issues,
     tags,
