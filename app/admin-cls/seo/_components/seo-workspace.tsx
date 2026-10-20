@@ -17,6 +17,8 @@ import {
 import { cn } from '@/lib/utils'
 import { CARD, INPUT, Note, SeoPanel, TONE_BAR, TONE_TEXT } from './seo-panel'
 import { SeoRoadmap } from './seo-roadmap'
+import { PageHeader } from '@/components/admin/ui'
+import { Segmented } from '@/components/admin/segmented'
 import { roadmapCounts } from '@/lib/seo/roadmap'
 import {
   KIND_LABEL,
@@ -111,12 +113,11 @@ export function SeoWorkspace({
 
   return (
     <div className="space-y-3">
-      <div>
-        <h1 className="text-lg font-bold text-slate-900 dark:text-white">SEO</h1>
-        <p className="text-xs text-slate-500">
-          Tiêu đề, mô tả và ảnh chia sẻ của mọi trang, bài viết, dự án. Bấm một dòng để sửa và xem trước trên Google.
-        </p>
-      </div>
+      <PageHeader
+        className="mb-1"
+        title="SEO"
+        description="Tiêu đề, mô tả và ảnh chia sẻ của mọi trang, bài viết, dự án. Bấm một dòng để sửa và xem trước trên Google."
+      />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
         <Stat label="Điểm SEO trung bình" value={String(avg)} suffix="/ 100" tone={scoreTone(avg)} />
@@ -125,60 +126,21 @@ export function SeoWorkspace({
         <Stat label="Kiểm tra toàn site" value={String(siteOk)} suffix={`/ ${checks.length} đạt`} tone={siteOk === checks.length ? 'ok' : 'warn'} />
       </div>
 
-      <div className="flex gap-1 border-b border-slate-200 dark:border-slate-700">
-        {(
-          [
-            ['list', 'Trang và bài viết'],
-            ['site', 'Kiểm tra toàn site'],
-            ['roadmap', 'Lộ trình SEO'],
-          ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            onClick={() => setTab(id)}
-            className={cn(
-              'px-3 py-2 text-sm font-medium -mb-px border-b-2',
-              tab === id
-                ? 'border-primary text-primary'
-                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-            )}
-          >
-            {label}
-            {id === 'roadmap' && (
-              <span className="ml-1.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-[10px] px-1.5 py-0.5">
-                {roadmapCounts().mine}
-              </span>
-            )}
-            {id === 'site' && siteOk < checks.length && (
-              <span className="ml-1.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-[10px] px-1.5 py-0.5">
-                {checks.length - siteOk}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
+      <Segmented
+        ariaLabel="Chọn mục SEO"
+        value={tab}
+        onChange={setTab}
+        options={[
+          { id: 'list', label: 'Trang và bài viết' },
+          { id: 'site', label: 'Kiểm tra toàn site', count: siteOk < checks.length ? checks.length - siteOk : undefined },
+          { id: 'roadmap', label: 'Lộ trình SEO', count: roadmapCounts().mine },
+        ]}
+      />
 
       {tab === 'list' ? (
         <>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex flex-wrap gap-1.5">
-              {FILTERS.map((f) => (
-                <button
-                  key={f.id}
-                  type="button"
-                  onClick={() => setFilter(f.id)}
-                  className={cn(
-                    'text-xs px-2.5 py-1 rounded-full border',
-                    filter === f.id
-                      ? 'bg-primary/10 border-primary/40 text-primary'
-                      : 'border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/40'
-                  )}
-                >
-                  {f.label}
-                </button>
-              ))}
-            </div>
+            <Segmented ariaLabel="Lọc theo loại" value={filter} onChange={setFilter} options={FILTERS} />
             <div className="relative ml-auto">
               <Search className="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
@@ -191,11 +153,10 @@ export function SeoWorkspace({
             <button
               type="button"
               onClick={() => setLowFirst((v) => !v)}
+              aria-pressed={lowFirst}
               className={cn(
-                'text-xs px-2.5 py-1 rounded-md border',
-                lowFirst
-                  ? 'bg-primary/10 border-primary/40 text-primary'
-                  : 'border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300'
+                'h-8 whitespace-nowrap rounded-full px-3.5 text-[13px] font-medium transition-colors',
+                lowFirst ? 'bg-[var(--ad-accent-soft)] text-[var(--ad-accent)]' : 'bg-[var(--ad-fill)] text-[var(--ad-fg-2)] hover:bg-[var(--ad-fill-2)]'
               )}
             >
               Điểm thấp trước
@@ -320,11 +281,11 @@ export function SeoWorkspace({
 
 function Stat({ label, value, suffix, tone }: { label: string; value: string; suffix: string; tone: Level }) {
   return (
-    <div className={cn(CARD, 'px-3.5 py-3')}>
-      <div className="text-[11px] text-slate-500">{label}</div>
-      <div className="mt-0.5 flex items-baseline gap-1">
-        <span className={cn('text-2xl font-semibold tabular-nums', TONE_TEXT[tone])}>{value}</span>
-        <span className="text-xs text-slate-500">{suffix}</span>
+    <div className={cn(CARD, 'px-5 py-4')}>
+      <div className="text-[13px] text-[var(--ad-fg-2)]">{label}</div>
+      <div className="mt-1 flex items-baseline gap-1.5">
+        <span className={cn('text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] tabular-nums', TONE_TEXT[tone])}>{value}</span>
+        <span className="text-[13px] text-[var(--ad-fg-3)]">{suffix}</span>
       </div>
     </div>
   )

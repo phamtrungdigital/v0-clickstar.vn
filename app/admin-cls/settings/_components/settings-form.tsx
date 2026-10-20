@@ -1,12 +1,14 @@
 'use client'
 
 import { useState, useEffect, useTransition } from 'react'
-import { Save, CheckCircle2, AlertCircle, Globe, Phone, Share2, Image as ImageIcon, Code2, Database, Loader2, RefreshCw, XCircle } from 'lucide-react'
+import { CheckCircle2, XCircle, Loader2, RefreshCw } from 'lucide-react'
 import type { SiteSettings } from '@/lib/cms/settings'
 import { saveSettings, type SettingsUpdate } from '../actions'
 import { I18nInput, TextInput } from '@/app/admin-cls/pages/[slug]/edit/_components/i18n-input'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
 import { EditLangProvider, LangSwitcher } from '@/lib/cms/edit-lang-context'
+import { PageHeader, SettingsGroup, btn } from '@/components/admin/ui'
+import { SaveBar } from '@/components/admin/save-bar'
 
 export function SettingsForm({ initial, codeSection }: { initial: SiteSettings; codeSection?: React.ReactNode }) {
   return (
@@ -18,173 +20,160 @@ export function SettingsForm({ initial, codeSection }: { initial: SiteSettings; 
 
 function SettingsFormInner({ initial, codeSection }: { initial: SiteSettings; codeSection?: React.ReactNode }) {
   const [draft, setDraft] = useState<SettingsUpdate>(stripMeta(initial))
+  // Bản đã lưu gần nhất: nút Huỷ đưa form về đây (không về props `initial`, vì props cũ sau khi đã lưu).
+  const [baseline, setBaseline] = useState<SettingsUpdate>(stripMeta(initial))
   const [isPending, startTransition] = useTransition()
   const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
   const [errorMsg, setErrorMsg] = useState('')
+  const [note, setNote] = useState('')
 
   const update = <K extends keyof SettingsUpdate>(key: K, value: SettingsUpdate[K]) => {
     setDraft((prev) => ({ ...prev, [key]: value }))
     setStatus('dirty')
   }
 
+  const handleCancel = () => {
+    setDraft(baseline)
+    setStatus('idle')
+    setErrorMsg('')
+  }
+
   const handleSave = () => {
+    const sent = draft
     startTransition(async () => {
       // Mã tuỳ chỉnh có chỗ lưu riêng (mục Mã tuỳ chỉnh) và mục SEO ghi vào head_code: không gửi lại 3 cột mã cũ ở đây,
       // kẻo ghi đè bản mới hơn bằng bản đã tải lúc mở trang.
-      const { head_code: _h, body_start_code: _b, body_end_code: _e, ...rest } = draft
+      const { head_code: _h, body_start_code: _b, body_end_code: _e, ...rest } = sent
       const result = await saveSettings(rest as SettingsUpdate)
       if (result?.error) {
         setStatus('error')
         setErrorMsg(result.error)
       } else {
+        setBaseline(sent)
         setStatus('saved')
-        if (result?.warning === 'tracking_columns_missing') {
-          setErrorMsg('Đã lưu các mục khác. Riêng Mã tracking chưa lưu được vì DB thiếu cột — cần chạy migration trước.')
-        }
+        setErrorMsg('')
+        const warn =
+          result?.warning === 'tracking_columns_missing'
+            ? 'Đã lưu các mục khác. Riêng Mã tracking chưa lưu được vì DB thiếu cột, cần chạy migration trước.'
+            : ''
+        setNote(warn)
+        // Chỉ tắt thông báo "Đã lưu"; nếu trong lúc đó anh đã sửa tiếp (status 'dirty') thì giữ thanh Lưu.
         setTimeout(() => {
-          setStatus('idle')
-          setErrorMsg('')
-        }, 4000)
+          setStatus((s) => (s === 'saved' ? 'idle' : s))
+          setNote('')
+        }, warn ? 8000 : 3000)
       }
     })
   }
 
   return (
-    <div className="space-y-3 max-w-[1500px]">
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div>
-          <h1 className="text-base font-semibold text-slate-900 dark:text-white">Cài đặt</h1>
-          <p className="text-[11px] text-slate-500">Thông tin chung của website</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <LangSwitcher />
+    <div className="mx-auto max-w-[1080px] pb-28">
+      <PageHeader
+        title="Cài đặt"
+        description="Thông tin chung của website: nhận diện, liên hệ, mạng xã hội, SEO mặc định và kết nối."
+        actions={<LangSwitcher />}
+      />
 
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              Lỗi
-            </span>
-          )}
-          <button
-            onClick={handleSave}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
-          </button>
-        </div>
-      </div>
-
-      {/* Branding */}
-      <Section icon={<ImageIcon className="w-4 h-4 text-slate-400" />} title="Branding (Logo / Favicon / OG)">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+      <SettingsGroup title="Nhận diện thương hiệu" description="Logo, biểu tượng ở tab trình duyệt và ảnh hiện khi chia sẻ link website.">
+        <div className="space-y-5 [&>div+div]:border-t [&>div+div]:border-[var(--ad-line)] [&>div+div]:pt-5">
           <div>
             <ImagePicker
-              label="Logo chính (header + footer)"
+              label="Logo chính (đầu trang và chân trang)"
               value={draft.logo_url ?? ''}
               onChange={(v) => update('logo_url', v.trim() === '' ? null : v)}
             />
-            <p className="text-[10px] text-slate-500 mt-1">PNG/SVG ngang, ~180×40px</p>
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">PNG hoặc SVG ngang, khoảng 180×40px</p>
           </div>
           <div>
             <ImagePicker
-              label="Favicon (tab browser)"
+              label="Favicon (biểu tượng tab trình duyệt)"
               value={draft.favicon_url ?? ''}
               onChange={(v) => update('favicon_url', v.trim() === '' ? null : v)}
             />
-            <p className="text-[10px] text-slate-500 mt-1">PNG vuông 32×32 hoặc SVG</p>
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">PNG vuông 32×32 hoặc SVG</p>
           </div>
           <div>
             <ImagePicker
-              label="Default OG image (social share)"
+              label="Ảnh chia sẻ mặc định (Facebook, Zalo)"
               value={draft.default_og_image ?? ''}
               onChange={(v) => update('default_og_image', v.trim() === '' ? null : v)}
             />
-            <p className="text-[10px] text-slate-500 mt-1">JPG/PNG 1200×630</p>
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">JPG hoặc PNG 1200×630</p>
           </div>
         </div>
-      </Section>
+      </SettingsGroup>
 
-      {/* Các mục nhập liệu: màn rộng chia 2 cột tự cân bằng, màn hẹp xếp 1 cột */}
-      <div className="xl:columns-2 xl:gap-3 [&>*]:mb-3 [&>*]:break-inside-avoid">
-      {/* General info */}
-      <Section icon={<Globe className="w-4 h-4 text-slate-400" />} title="Thông tin website">
-        <I18nInput label="Tên website" value={draft.site_name} onChange={(v) => update('site_name', v)} />
-        <I18nInput label="Tagline" value={draft.tagline} onChange={(v) => update('tagline', v)} />
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <TextInput label="URL website" value={draft.site_url} onChange={(v) => update('site_url', v)} />
+      <SettingsGroup title="Thông tin website" description="Tên và địa chỉ website, hiện ở tiêu đề tab và khi chia sẻ.">
+        <div className="space-y-4">
+          <I18nInput label="Tên website" value={draft.site_name} onChange={(v) => update('site_name', v)} />
+          <I18nInput label="Tagline" value={draft.tagline} onChange={(v) => update('tagline', v)} />
           {/* Ngôn ngữ không còn chọn ở đây: tiếng Việt ở địa chỉ gốc, tiếng Anh ở /en (xem lib/i18n/locale.ts) */}
+          <TextInput label="URL website" value={draft.site_url} onChange={(v) => update('site_url', v)} />
         </div>
-      </Section>
+      </SettingsGroup>
 
-      {/* Contact */}
-      <Section icon={<Phone className="w-4 h-4 text-slate-400" />} title="Thông tin liên hệ">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <TextInput label="Email liên hệ" value={draft.contact_email} onChange={(v) => update('contact_email', v)} />
-          <TextInput label="Số điện thoại" value={draft.contact_phone} onChange={(v) => update('contact_phone', v)} />
+      <SettingsGroup title="Thông tin liên hệ" description="Hiện ở chân trang và trang Liên hệ.">
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <TextInput label="Email liên hệ" value={draft.contact_email} onChange={(v) => update('contact_email', v)} />
+            <TextInput label="Số điện thoại" value={draft.contact_phone} onChange={(v) => update('contact_phone', v)} />
+          </div>
+          <I18nInput label="Địa chỉ" value={draft.address} onChange={(v) => update('address', v)} />
+          <TextInput label="Múi giờ" value={draft.timezone} onChange={(v) => update('timezone', v)} hint="Ví dụ: Asia/Ho_Chi_Minh" />
         </div>
-        <I18nInput label="Địa chỉ" value={draft.address} onChange={(v) => update('address', v)} />
-        <TextInput label="Múi giờ" value={draft.timezone} onChange={(v) => update('timezone', v)} hint="VD: Asia/Ho_Chi_Minh" />
-      </Section>
+      </SettingsGroup>
 
-      {/* Social */}
-      <Section icon={<Share2 className="w-4 h-4 text-slate-400" />} title="Mạng xã hội">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-          <TextInput label="Facebook URL" value={draft.facebook_url ?? ''} onChange={(v) => update('facebook_url', v.trim() === '' ? null : v)} />
-          <TextInput label="Twitter / X URL" value={draft.twitter_url ?? ''} onChange={(v) => update('twitter_url', v.trim() === '' ? null : v)} />
-          <TextInput label="LinkedIn URL" value={draft.linkedin_url ?? ''} onChange={(v) => update('linkedin_url', v.trim() === '' ? null : v)} />
-          <TextInput label="Instagram URL" value={draft.instagram_url ?? ''} onChange={(v) => update('instagram_url', v.trim() === '' ? null : v)} />
-          <TextInput label="YouTube URL" value={draft.youtube_url ?? ''} onChange={(v) => update('youtube_url', v.trim() === '' ? null : v)} />
+      <SettingsGroup title="Mạng xã hội" description="Để trống mục nào thì website ẩn nút của mục đó.">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <TextInput label="Facebook" value={draft.facebook_url ?? ''} onChange={(v) => update('facebook_url', v.trim() === '' ? null : v)} />
+          <TextInput label="Twitter / X" value={draft.twitter_url ?? ''} onChange={(v) => update('twitter_url', v.trim() === '' ? null : v)} />
+          <TextInput label="LinkedIn" value={draft.linkedin_url ?? ''} onChange={(v) => update('linkedin_url', v.trim() === '' ? null : v)} />
+          <TextInput label="Instagram" value={draft.instagram_url ?? ''} onChange={(v) => update('instagram_url', v.trim() === '' ? null : v)} />
+          <TextInput label="YouTube" value={draft.youtube_url ?? ''} onChange={(v) => update('youtube_url', v.trim() === '' ? null : v)} />
           <TextInput
-            label="Zalo URL"
+            label="Zalo"
             value={draft.zalo_url ?? ''}
             onChange={(v) => update('zalo_url', v.trim() === '' ? null : v)}
-            hint="VD: https://zalo.me/0383406735 — để trống sẽ ẩn nút Zalo trên website"
+            hint="Ví dụ: https://zalo.me/0383406735"
           />
         </div>
-      </Section>
+      </SettingsGroup>
 
-      {/* Default SEO */}
-      <Section title="Default SEO (cho các trang không override)">
-        <I18nInput
-          label="Default Meta Title"
-          value={draft.default_seo_title ?? { vi: '', en: '' }}
-          onChange={(v) => update('default_seo_title', v)}
-        />
-        <I18nInput
-          label="Default Meta Description"
-          multiline
-          rows={2}
-          value={draft.default_seo_description ?? { vi: '', en: '' }}
-          onChange={(v) => update('default_seo_description', v)}
-        />
-        <p className="text-[10px] text-slate-500">
-          OG image mặc định: cấu hình ở mục "Branding" ở đầu trang.
-        </p>
-      </Section>
+      <SettingsGroup title="SEO mặc định" description="Dùng cho các trang chưa có tiêu đề và mô tả SEO riêng. Ảnh chia sẻ mặc định đặt ở mục Nhận diện thương hiệu.">
+        <div className="space-y-4">
+          <I18nInput
+            label="Tiêu đề SEO mặc định"
+            value={draft.default_seo_title ?? { vi: '', en: '' }}
+            onChange={(v) => update('default_seo_title', v)}
+          />
+          <I18nInput
+            label="Mô tả SEO mặc định"
+            multiline
+            rows={2}
+            value={draft.default_seo_description ?? { vi: '', en: '' }}
+            onChange={(v) => update('default_seo_description', v)}
+          />
+        </div>
+      </SettingsGroup>
 
-      {/* Kết nối CRM */}
-      <Section icon={<Database className="w-4 h-4 text-slate-400" />} title="Kết nối CRM (crm.clickstar.vn)">
-        <CrmConnectionSection
-          enabled={draft.crm_sync_enabled}
-          onToggle={(v) => update('crm_sync_enabled', v)}
-        />
-      </Section>
-      </div>
+      <SettingsGroup title="Kết nối CRM" description="Đẩy khách đăng ký ở website sang crm.clickstar.vn.">
+        <CrmConnectionSection enabled={draft.crm_sync_enabled} onToggle={(v) => update('crm_sync_enabled', v)} />
+      </SettingsGroup>
 
       {/* Mã tuỳ chỉnh (head, body, footer): quản lý và lưu riêng, xem code-snippets-manager.tsx */}
-      <Section icon={<Code2 className="w-4 h-4 text-slate-400" />} title="Mã tuỳ chỉnh (head, body, footer)">
-        <p className="text-[10px] text-slate-500">Mục này lưu ngay khi bấm từng nút, không cần nút Lưu ở trên.</p>
+      <SettingsGroup title="Mã tuỳ chỉnh" description="Thêm mã vào đầu trang, đầu thân và cuối trang. Mục này lưu ngay khi bấm từng nút, không dùng nút Lưu thay đổi.">
         {codeSection}
-      </Section>
+      </SettingsGroup>
+
+      <SaveBar
+        show={status === 'dirty' || status === 'error' || isPending}
+        saving={isPending}
+        saved={status === 'saved'}
+        savedNote={note || undefined}
+        error={status === 'error' ? errorMsg : null}
+        onSave={handleSave}
+        onCancel={handleCancel}
+      />
     </div>
   )
 }
@@ -234,83 +223,65 @@ function CrmConnectionSection({
 
   return (
     <div className="space-y-4">
-      <p className="text-xs text-slate-500 leading-relaxed">
-        Khi khách đăng ký ở form <code className="bg-slate-100 px-1 rounded">/contact</code>, hệ thống
-        tự tạo hồ sơ khách hàng bên CRM (nguồn <strong>"Website"</strong>, trạng thái{' '}
-        <strong>"Mới"</strong>). Tự động chống trùng theo số điện thoại.
+      <p className="text-[13.5px] leading-relaxed text-[var(--ad-fg-3)]">
+        Khi khách đăng ký ở form <code className="rounded bg-[var(--ad-fill)] px-1.5 py-0.5 text-[12.5px]">/contact</code>, hệ thống tự tạo hồ sơ khách hàng bên CRM
+        (nguồn <strong>Website</strong>, trạng thái <strong>Mới</strong>). Tự động chống trùng theo số điện thoại.
       </p>
 
-      <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-200">
-        <div>
-          <div className="text-sm font-medium text-slate-900">Tự động đẩy lead sang CRM</div>
-          <div className="text-[11px] text-slate-500">
-            Tắt = chỉ lưu lead nội bộ, không tạo hồ sơ CRM
-          </div>
+      <div className="flex items-center justify-between gap-4 rounded-xl bg-[var(--ad-fill-soft)] px-4 py-3">
+        <div className="min-w-0">
+          <div className="text-[14.5px] font-medium text-[var(--ad-fg)]">Tự động đẩy lead sang CRM</div>
+          <div className="text-[13px] text-[var(--ad-fg-3)]">Tắt thì chỉ lưu lead nội bộ, không tạo hồ sơ bên CRM</div>
         </div>
         <button
           type="button"
+          role="switch"
+          aria-checked={enabled}
+          aria-label="Tự động đẩy lead sang CRM"
           onClick={() => onToggle(!enabled)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-            enabled ? 'bg-emerald-500' : 'bg-slate-300'
+          className={`relative inline-flex h-[28px] w-[48px] flex-none items-center rounded-full transition-colors ${
+            enabled ? 'bg-[#34c759]' : 'bg-[rgba(120,120,128,.32)]'
           }`}
-          aria-pressed={enabled}
         >
           <span
-            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-              enabled ? 'translate-x-6' : 'translate-x-1'
+            className={`inline-block h-6 w-6 transform rounded-full bg-white shadow-[0_2px_4px_rgba(0,0,0,.25)] transition-transform ${
+              enabled ? 'translate-x-[22px]' : 'translate-x-0.5'
             }`}
           />
         </button>
       </div>
 
-      <div className="p-3 rounded-lg border border-slate-200">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-slate-600">
-            Trạng thái kết nối
-          </span>
-          <button
-            type="button"
-            onClick={runTest}
-            disabled={testing}
-            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-primary border border-primary/30 rounded hover:bg-primary/5 disabled:opacity-50"
-          >
-            {testing ? (
-              <Loader2 className="w-3.5 h-3.5 animate-spin" />
-            ) : (
-              <RefreshCw className="w-3.5 h-3.5" />
-            )}
-            {testing ? 'Đang test…' : 'Test kết nối'}
+      <div className="rounded-xl border border-[var(--ad-line)] p-4">
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <span className="text-[14px] font-medium text-[var(--ad-fg)]">Trạng thái kết nối</span>
+          <button type="button" onClick={runTest} disabled={testing} className={btn('secondary', 'sm')}>
+            {testing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <RefreshCw className="h-3.5 w-3.5" />}
+            {testing ? 'Đang kiểm tra' : 'Kiểm tra kết nối'}
           </button>
         </div>
 
         {status === null ? (
-          <p className="text-xs text-slate-400">Đang kiểm tra…</p>
+          <p className="text-[13px] text-[var(--ad-fg-3)]">Đang kiểm tra…</p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             <div
-              className={`flex items-start gap-2 px-3 py-2 rounded-md text-xs ${
-                status.reachable
-                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                  : 'bg-red-50 text-red-800 border border-red-200'
+              className={`flex items-start gap-2 rounded-xl px-3.5 py-2.5 text-[13.5px] ${
+                status.reachable ? 'bg-[rgba(52,199,89,.12)] text-[#248a3d]' : 'bg-[rgba(255,59,48,.10)] text-[#d70015]'
               }`}
             >
-              {status.reachable ? (
-                <CheckCircle2 className="w-4 h-4 shrink-0 mt-px" />
-              ) : (
-                <XCircle className="w-4 h-4 shrink-0 mt-px" />
-              )}
+              {status.reachable ? <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" /> : <XCircle className="mt-0.5 h-4 w-4 shrink-0" />}
               <span>{status.message}</span>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-[11px] text-slate-600">
+            <div className="grid grid-cols-1 gap-x-4 gap-y-1.5 text-[13px] text-[var(--ad-fg-2)] sm:grid-cols-3">
               <EnvRow label="CRM URL" ok={status.env.url} extra={status.crmHost} />
               <EnvRow label="Anon key" ok={status.env.anonKey} />
               <EnvRow label="Secret" ok={status.env.secret} />
             </div>
 
             {!status.configured && (
-              <p className="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1.5">
-                ⚠ Một số cấu hình CRM còn thiếu. Báo kỹ thuật bổ sung biến môi trường để kích hoạt.
+              <p className="rounded-xl bg-[rgba(255,159,10,.14)] px-3.5 py-2.5 text-[13px] text-[#b25e00]">
+                Một số cấu hình CRM còn thiếu. Báo kỹ thuật bổ sung biến môi trường để kích hoạt.
               </p>
             )}
           </div>
@@ -323,35 +294,9 @@ function CrmConnectionSection({
 function EnvRow({ label, ok, extra }: { label: string; ok: boolean; extra?: string | null }) {
   return (
     <div className="flex items-center gap-1.5">
-      {ok ? (
-        <CheckCircle2 className="w-3 h-3 text-emerald-500 shrink-0" />
-      ) : (
-        <XCircle className="w-3 h-3 text-red-400 shrink-0" />
-      )}
+      {ok ? <CheckCircle2 className="h-3.5 w-3.5 shrink-0 text-[#34c759]" /> : <XCircle className="h-3.5 w-3.5 shrink-0 text-[#ff3b30]" />}
       <span className="font-medium">{label}:</span>
-      <span className={ok ? 'text-emerald-600' : 'text-red-500'}>
-        {ok ? extra || 'OK' : 'thiếu'}
-      </span>
-    </div>
-  )
-}
-
-function Section({
-  icon,
-  title,
-  children,
-}: {
-  icon?: React.ReactNode
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-      <div className="flex items-center gap-2">
-        {icon}
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{title}</h2>
-      </div>
-      {children}
+      <span className={ok ? 'text-[#248a3d]' : 'text-[#d70015]'}>{ok ? extra || 'OK' : 'thiếu'}</span>
     </div>
   )
 }

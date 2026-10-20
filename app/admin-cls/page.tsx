@@ -1,19 +1,9 @@
 import { AI_MODULE_ENABLED } from '@/lib/ai/module-flag'
 import Link from 'next/link'
-import {
-  Users,
-  FileText,
-  Globe,
-  TrendingUp,
-  ArrowRight,
-  ExternalLink,
-  UserPlus,
-  Edit3,
-  Plus,
-  Activity,
-} from 'lucide-react'
+import { Users, FileText, Edit3, Plus, Activity, UserPlus, ExternalLink, ChevronRight, Bot } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { getAdminProfile } from '@/lib/admin-cls/auth'
+import { Card, SectionCard, StatCard, EmptyState, btn } from '@/components/admin/ui'
 
 export const dynamic = 'force-dynamic'
 
@@ -104,53 +94,55 @@ export default async function AdminDashboard() {
   })
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6">
-      <div>
-        <p className="text-sm text-slate-500 capitalize">{today}</p>
-        <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-1">
-          {getGreeting()}, <span className="text-slate-900">{userName}</span>
+    <div className="mx-auto max-w-7xl space-y-6">
+      <header>
+        <p className="text-[14px] capitalize text-[var(--ad-fg-3)]">{today}</p>
+        <h1 className="mt-1 text-[32px] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--ad-fg)] lg:text-[36px]">
+          {getGreeting()}, {userName}
         </h1>
-      </div>
+      </header>
 
-      <div>
-        <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-3">
-          Tổng quan
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-          <StatCard label="Tổng leads" value={stats.leadsTotal} icon={<Users className="w-4 h-4" />} href="/admin-cls/leads" />
-          <StatCard label="Leads 24h" value={stats.leadsNew24h} icon={<TrendingUp className="w-4 h-4" />} href="/admin-cls/leads" highlight={stats.leadsNew24h > 0} />
-          <StatCard label="Leads 7 ngày" value={stats.leads7d} icon={<Activity className="w-4 h-4" />} href="/admin-cls/leads" />
-          <StatCard label="Tỷ lệ chuyển đổi" value={`${conversionRate}%`} icon={<TrendingUp className="w-4 h-4" />} />
-          <StatCard label="Bài viết đã đăng" value={stats.posts} icon={<FileText className="w-4 h-4" />} href="/admin-cls/posts" />
-          <StatCard label="Trang CMS" value={stats.pages} icon={<Globe className="w-4 h-4" />} href="/admin-cls/pages" />
-        </div>
-      </div>
+      <section aria-label="Số liệu tổng quan" className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
+        <StatCard
+          label="Tổng leads"
+          value={stats.leadsTotal}
+          href="/admin-cls/leads"
+        />
+        <StatCard
+          label="Leads 24 giờ"
+          value={stats.leadsNew24h}
+          note={stats.leadsNew24h > 0 ? 'Có khách mới' : undefined}
+          tone="ok"
+          href="/admin-cls/leads"
+        />
+        <StatCard label="Leads 7 ngày" value={stats.leads7d} href="/admin-cls/leads" />
+        <StatCard label="Tỷ lệ chuyển đổi" value={`${conversionRate}%`} note={`${stats.leadsWon} thành công`} />
+        <StatCard label="Bài viết đã đăng" value={stats.posts} href="/admin-cls/posts" />
+        <StatCard label="Trang CMS" value={stats.pages} href="/admin-cls/pages" />
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-4">
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <div className="px-5 py-3 border-b border-slate-200 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Activity className="w-4 h-4 text-slate-500" />
-              <h2 className="text-sm font-semibold text-slate-900">Hoạt động gần đây</h2>
-            </div>
-            <span className="text-xs text-slate-500">{activity.length} mục mới nhất</span>
-          </div>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <SectionCard
+          title="Hoạt động gần đây"
+          description={`${activity.length} mục mới nhất`}
+          bodyClassName="px-0 pb-2 pt-2"
+        >
           {activity.length === 0 ? (
-            <p className="text-center text-sm text-slate-500 py-12">Chưa có hoạt động nào</p>
+            <EmptyState icon={<Activity className="h-5 w-5" />} title="Chưa có hoạt động nào" description="Khi có khách để lại thông tin hoặc có bài viết mới, mục này sẽ hiện ở đây." />
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul>
               {activity.map((a) => (
-                <li key={a.id}>
+                <li key={a.id} className="border-t border-[var(--ad-line)] first:border-t-0">
                   <Link
                     href={a.href}
-                    className="flex items-start gap-3 px-5 py-3 hover:bg-slate-50 transition-colors"
+                    className="flex items-center gap-3 px-5 py-3 transition-colors hover:bg-[var(--ad-fill-soft)]"
                   >
                     <ActivityIcon type={a.type} />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-slate-900 truncate">{a.title}</p>
-                      <p className="text-xs text-slate-500 mt-0.5 truncate">{a.subtitle}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-[14.5px] font-medium text-[var(--ad-fg)]">{a.title}</p>
+                      <p className="mt-0.5 truncate text-[13px] text-[var(--ad-fg-3)]">{a.subtitle}</p>
                     </div>
-                    <span className="text-[11px] text-slate-400 flex-shrink-0 whitespace-nowrap">
+                    <span className="flex-shrink-0 whitespace-nowrap text-[12.5px] text-[var(--ad-fg-3)]">
                       {relativeTime(a.ts)}
                     </span>
                   </Link>
@@ -158,73 +150,37 @@ export default async function AdminDashboard() {
               ))}
             </ul>
           )}
-        </div>
+        </SectionCard>
 
-        <div className="bg-white rounded-xl border border-slate-200 p-4">
-          <h2 className="text-sm font-semibold text-slate-900 mb-3">Lối tắt</h2>
-          <div className="space-y-1">
-            <QuickAction href="/admin-cls/posts/new" icon={<Plus className="w-4 h-4" />} label="Viết bài mới" orange />
-            <QuickAction href="/admin-cls/pages/home/edit" icon={<Edit3 className="w-4 h-4" />} label="Sửa trang chủ" />
-            <QuickAction href="/admin-cls/users/new" icon={<UserPlus className="w-4 h-4" />} label="Thêm admin user" />
-            <QuickAction href="/admin-cls/ai" icon={<Activity className="w-4 h-4" />} label={AI_MODULE_ENABLED ? 'AI Assistant' : 'Chatbot website'} />
-            <QuickAction href="/" icon={<ExternalLink className="w-4 h-4" />} label="Xem website public" external />
+        <Card className="h-fit p-5">
+          <h2 className="text-[16px] font-semibold tracking-[-0.018em] text-[var(--ad-fg)]">Lối tắt</h2>
+          <Link href="/admin-cls/posts/new" className={btn('primary', 'lg') + ' mt-3 w-full'}>
+            <Plus className="h-4 w-4" />
+            Viết bài mới
+          </Link>
+          <div className="mt-2 -mx-2">
+            <QuickAction href="/admin-cls/pages/home/edit" icon={<Edit3 className="h-4 w-4" />} label="Sửa trang chủ" />
+            <QuickAction href="/admin-cls/users/new" icon={<UserPlus className="h-4 w-4" />} label="Thêm quản trị viên" />
+            <QuickAction href="/admin-cls/ai" icon={<Bot className="h-4 w-4" />} label={AI_MODULE_ENABLED ? 'AI Assistant' : 'Chatbot website'} />
+            <QuickAction href="/" icon={<ExternalLink className="h-4 w-4" />} label="Xem website" external />
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )
-}
-
-function StatCard({
-  label,
-  value,
-  icon,
-  href,
-  highlight,
-}: {
-  label: string
-  value: string | number
-  icon: React.ReactNode
-  href?: string
-  highlight?: boolean
-}) {
-  const inner = (
-    <div
-      className={
-        'bg-white rounded-xl border p-4 transition-all hover:shadow-md hover:-translate-y-0.5 ' +
-        (highlight ? 'border-orange-300 ring-1 ring-orange-100' : 'border-slate-200')
-      }
-    >
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-[11px] text-slate-500 uppercase tracking-wider font-medium">
-          {label}
-        </span>
-        <div
-          className={
-            'w-7 h-7 rounded-md flex items-center justify-center ' +
-            (highlight ? 'bg-orange-50 text-orange-600' : 'bg-slate-50 text-slate-500')
-          }
-        >
-          {icon}
-        </div>
-      </div>
-      <div className="text-2xl font-bold text-slate-900">{value}</div>
-    </div>
-  )
-  if (href) return <Link href={href}>{inner}</Link>
-  return inner
 }
 
 function ActivityIcon({ type }: { type: 'lead' | 'post' | 'page' }) {
   const map = {
-    lead: { icon: <Users className="w-3.5 h-3.5" />, bg: 'bg-blue-100', text: 'text-blue-600' },
-    post: { icon: <FileText className="w-3.5 h-3.5" />, bg: 'bg-purple-100', text: 'text-purple-600' },
-    page: { icon: <Edit3 className="w-3.5 h-3.5" />, bg: 'bg-emerald-100', text: 'text-emerald-600' },
+    lead: { icon: <Users className="h-4 w-4" />, bg: 'rgba(30,109,218,.10)', fg: '#1e6dda' },
+    post: { icon: <FileText className="h-4 w-4" />, bg: 'rgba(175,82,222,.12)', fg: '#8944ab' },
+    page: { icon: <Edit3 className="h-4 w-4" />, bg: 'rgba(52,199,89,.14)', fg: '#248a3d' },
   }
   const cfg = map[type]
   return (
     <div
-      className={`w-7 h-7 rounded-full ${cfg.bg} ${cfg.text} flex items-center justify-center flex-shrink-0`}
+      className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full"
+      style={{ background: cfg.bg, color: cfg.fg }}
     >
       {cfg.icon}
     </div>
@@ -235,31 +191,24 @@ function QuickAction({
   href,
   icon,
   label,
-  orange,
   external,
 }: {
   href: string
   icon: React.ReactNode
   label: string
-  orange?: boolean
   external?: boolean
 }) {
   return (
     <Link
       href={href}
       target={external ? '_blank' : undefined}
-      className={
-        'flex items-center justify-between gap-2 px-3 py-2.5 text-sm rounded-md transition-colors ' +
-        (orange
-          ? 'bg-orange-50 text-orange-700 hover:bg-orange-100 font-medium'
-          : 'text-slate-700 hover:bg-slate-100')
-      }
+      className="flex items-center justify-between gap-2 rounded-xl px-2 py-2.5 text-[14.5px] text-[var(--ad-fg)] transition-colors hover:bg-[var(--ad-fill-soft)]"
     >
-      <span className="flex items-center gap-2.5">
+      <span className="flex items-center gap-2.5 text-[var(--ad-fg-2)]">
         {icon}
-        {label}
+        <span className="text-[var(--ad-fg)]">{label}</span>
       </span>
-      <ArrowRight className="w-3.5 h-3.5 opacity-50" />
+      <ChevronRight className="h-4 w-4 text-[var(--ad-fg-3)]" />
     </Link>
   )
 }

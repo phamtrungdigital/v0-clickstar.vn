@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Plus, FileText } from 'lucide-react'
 import { listPostsForAdmin } from '@/lib/cms/posts'
+import { Card, EmptyState, PageHeader, btn } from '@/components/admin/ui'
 import { PostsTable } from './_components/posts-table'
 
 export const dynamic = 'force-dynamic'
@@ -9,26 +10,32 @@ export default async function AdminPostsList() {
   const posts = await listPostsForAdmin()
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">Bài viết</h1>
-          <p className="text-xs text-slate-500">Quản lý bài blog ({posts.length})</p>
-        </div>
-        <Link
-          href="/admin-cls/posts/new"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          Thêm bài viết
-        </Link>
-      </div>
+    <div className="mx-auto max-w-7xl">
+      <PageHeader
+        title="Bài viết"
+        description={`Quản lý bài blog, hiện có ${posts.length} bài.`}
+        actions={
+          <Link href="/admin-cls/posts/new" className={btn('primary')}>
+            <Plus className="h-4 w-4" />
+            Thêm bài viết
+          </Link>
+        }
+      />
 
       {posts.length === 0 ? (
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
-          <FileText className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-          <p className="text-sm text-slate-500">Chưa có bài viết nào</p>
-        </div>
+        <Card>
+          <EmptyState
+            icon={<FileText className="h-5 w-5" />}
+            title="Chưa có bài viết nào"
+            description="Bài đầu tiên sẽ hiện ở đây sau khi anh tạo."
+            action={
+              <Link href="/admin-cls/posts/new" className={btn('primary')}>
+                <Plus className="h-4 w-4" />
+                Viết bài đầu tiên
+              </Link>
+            }
+          />
+        </Card>
       ) : (
         <PostsTable posts={posts} />
       )}

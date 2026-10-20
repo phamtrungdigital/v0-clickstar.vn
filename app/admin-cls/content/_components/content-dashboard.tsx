@@ -6,6 +6,7 @@ import { Check, ChevronDown, Copy, ExternalLink, Lightbulb } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { CARD, TONE_TEXT } from '@/app/admin-cls/seo/_components/seo-panel'
 import { scoreTone } from '@/lib/seo/admin-seo'
+import { Segmented } from '@/components/admin/segmented'
 import {
   KINDS,
   KIND_LIST,
@@ -22,16 +23,15 @@ import {
 const stageLabel = (id: StageId | null) => STAGES.find((s) => s.id === id)?.label ?? ''
 const fmt = (n: number) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 
-const CHIP = 'inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap'
-const CHIP_MUTED = 'bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300'
-const SEG_WRAP = 'inline-flex flex-wrap gap-0.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 p-0.5'
+const CHIP = 'inline-flex items-center rounded-full px-2.5 py-0.5 text-[12px] font-medium whitespace-nowrap'
+const CHIP_MUTED = 'bg-[var(--ad-fill)] text-[var(--ad-fg-2)]'
 
 function CardHead({ title, hint, children }: { title: string; hint?: string; children?: React.ReactNode }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-3 px-4 pt-3.5 pb-2">
+    <div className="flex flex-wrap items-end justify-between gap-3 px-5 pt-4 pb-2">
       <div>
-        <h2 className="text-sm font-semibold text-slate-900 dark:text-white">{title}</h2>
-        {hint && <p className="mt-0.5 text-xs text-slate-500">{hint}</p>}
+        <h2 className="text-[16px] font-semibold tracking-[-0.018em] text-[var(--ad-fg)]">{title}</h2>
+        {hint && <p className="mt-0.5 text-[13px] text-[var(--ad-fg-3)]">{hint}</p>}
       </div>
       {children}
     </div>
@@ -39,52 +39,20 @@ function CardHead({ title, hint, children }: { title: string; hint?: string; chi
 }
 
 function Label({ children }: { children: React.ReactNode }) {
-  return <p className="mb-1 text-[10px] font-bold uppercase tracking-wider text-slate-500">{children}</p>
+  return <p className="mb-1 text-[12px] font-medium text-[var(--ad-fg-3)]">{children}</p>
 }
 
-function Seg<T extends string>({
-  value,
-  options,
-  onChange,
-}: {
-  value: T
-  options: { id: T; label: string; disabled?: boolean; title?: string }[]
-  onChange: (id: T) => void
-}) {
-  return (
-    <div className={SEG_WRAP}>
-      {options.map((o) => (
-        <button
-          key={o.id}
-          type="button"
-          disabled={o.disabled}
-          title={o.title}
-          aria-pressed={value === o.id}
-          onClick={() => onChange(o.id)}
-          className={cn(
-            'rounded-md px-2.5 py-1 text-xs font-semibold transition-colors',
-            value === o.id
-              ? 'bg-white text-primary shadow-sm dark:bg-slate-700'
-              : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200',
-            o.disabled && 'cursor-not-allowed opacity-40 hover:text-slate-500'
-          )}
-        >
-          {o.label}
-        </button>
-      ))}
-    </div>
-  )
-}
+const Seg = Segmented
 
 function StatBox({ label, value, suffix, note }: { label: string; value: string; suffix?: string; note?: string }) {
   return (
-    <div className={cn(CARD, 'px-3.5 py-3')}>
-      <div className="text-[11px] text-slate-500">{label}</div>
-      <div className="mt-0.5 flex items-baseline gap-1">
-        <span className="text-2xl font-semibold tabular-nums text-slate-900 dark:text-white">{value}</span>
-        {suffix && <span className="text-xs text-slate-500">{suffix}</span>}
+    <div className={cn(CARD, 'px-5 py-4')}>
+      <div className="text-[13px] text-[var(--ad-fg-2)]">{label}</div>
+      <div className="mt-1 flex items-baseline gap-1.5">
+        <span className="text-[28px] font-semibold leading-[1.1] tracking-[-0.03em] tabular-nums text-[var(--ad-fg)]">{value}</span>
+        {suffix && <span className="text-[13px] text-[var(--ad-fg-3)]">{suffix}</span>}
       </div>
-      {note && <div className="mt-0.5 text-[11px] text-slate-500 line-clamp-1">{note}</div>}
+      {note && <div className="mt-1 line-clamp-1 text-[12.5px] text-[var(--ad-fg-3)]">{note}</div>}
     </div>
   )
 }
@@ -780,22 +748,16 @@ export function ContentDashboard({ data }: { data: ContentAnalysis }) {
 
       <section className={CARD}>
         <CardHead title="Toàn bộ bài viết" hint="Bấm tên bài để mở trình sửa." />
-        <div className="flex flex-wrap gap-1.5 px-4 pb-2">
-          {([{ id: 'all', label: 'Tất cả' }, ...pillars] as { id: PillarId | 'all'; label: string }[]).map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => setPillarFilter(p.id)}
-              className={cn(
-                'rounded-full border px-2.5 py-1 text-xs',
-                pillarFilter === p.id
-                  ? 'border-primary/40 bg-primary/10 text-primary'
-                  : 'border-slate-300 text-slate-600 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-700/40'
-              )}
-            >
-              {p.label}
-            </button>
-          ))}
+        <div className="px-5 pb-3">
+          <Seg
+            ariaLabel="Lọc theo nhóm chủ đề"
+            value={pillarFilter}
+            onChange={setPillarFilter}
+            options={([{ id: 'all', label: 'Tất cả' }, ...pillars] as { id: PillarId | 'all'; label: string }[]).map((p) => ({
+              id: p.id,
+              label: p.label,
+            }))}
+          />
         </div>
         <div className="overflow-x-auto">
           <table className="w-full min-w-[900px] text-sm">

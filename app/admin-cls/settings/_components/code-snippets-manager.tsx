@@ -27,14 +27,14 @@ import {
   type SnippetPatch,
 } from '../code-actions'
 
-const BTN = 'inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium disabled:cursor-not-allowed disabled:opacity-50'
-const BTN_PLAIN = 'border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-700/40'
-const BTN_PRIMARY = 'border-primary bg-primary text-white hover:bg-primary/90'
+const BTN = 'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-[12.5px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50'
+const BTN_PLAIN = 'bg-[var(--ad-fill)] text-[var(--ad-fg)] hover:bg-[var(--ad-fill-2)]'
+const BTN_PRIMARY = 'bg-[var(--ad-accent)] text-white hover:bg-[var(--ad-accent-d)]'
 const INPUT =
-  'w-full rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary/40 dark:border-slate-600 dark:bg-slate-900 dark:text-white'
+  'w-full rounded-[10px] border border-[var(--ad-line-2)] bg-[var(--ad-surface)] px-3 py-2 text-[14px] text-[var(--ad-fg)]'
 const CODE =
-  'w-full rounded-md bg-slate-900 p-3 font-mono text-xs leading-relaxed text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary/50'
-const CHIP = 'inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium whitespace-nowrap'
+  'w-full rounded-xl bg-[#1d1d1f] p-3.5 font-mono text-xs leading-relaxed text-[#f5f5f7] focus:outline-none focus:ring-2 focus:ring-[var(--ad-accent)]'
+const CHIP = 'inline-flex items-center rounded-full px-2.5 py-0.5 text-[12px] font-medium whitespace-nowrap'
 
 type Live = { found: Record<string, boolean>; checkedAt: string } | null
 
@@ -380,7 +380,7 @@ function SnippetItem({
         </button>
         {confirmDelete ? (
           <span className="flex items-center gap-1.5">
-            <button type="button" disabled={pending} className={cn(BTN, 'border-red-600 bg-red-600 text-white hover:bg-red-700')} onClick={onDelete}>
+            <button type="button" disabled={pending} className={cn(BTN, 'bg-[#d70015] text-white hover:bg-[#b80012]')} onClick={onDelete}>
               Xoá hẳn
             </button>
             <button type="button" className={cn(BTN, BTN_PLAIN)} onClick={onCancelDelete}>

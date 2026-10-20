@@ -28,9 +28,9 @@ export const TONE_TEXT: Record<Level, string> = {
 }
 export const TONE_BAR: Record<Level, string> = { ok: 'bg-emerald-500', warn: 'bg-amber-500', bad: 'bg-red-500' }
 
-export const CARD = 'bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700'
+export const CARD = 'rounded-2xl border border-[var(--ad-line)] bg-[var(--ad-surface)] shadow-[var(--ad-shadow)]'
 export const INPUT =
-  'w-full rounded-md border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-2.5 py-1.5 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/40 read-only:bg-slate-50 read-only:text-slate-500 dark:read-only:bg-slate-900/60'
+  'w-full rounded-[10px] border border-[var(--ad-line-2)] bg-[var(--ad-surface)] px-3 py-2 text-[14px] text-[var(--ad-fg)] placeholder:text-[var(--ad-fg-3)] read-only:bg-[var(--ad-fill-soft)] read-only:text-[var(--ad-fg-3)]'
 
 export function FieldHead({ label, count, max, level }: { label: string; count: number; max: number; level: Level }) {
   return (
