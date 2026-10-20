@@ -64,7 +64,7 @@ export function AboutValuesSection({ content }: { content: AboutValuesContent })
                       </span>
                       <span className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7db8ff]">{x.label}</span>
                     </div>
-                    <p className="text-xl font-semibold leading-snug tracking-[-0.01em] text-white lg:text-[26px]">
+                    <p className="text-xl font-semibold leading-normal tracking-[-0.01em] text-white lg:text-[26px]">
                       {x.text ? t(x.text.vi, x.text.en) : ''}
                     </p>
                   </div>

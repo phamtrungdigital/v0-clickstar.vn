@@ -70,7 +70,7 @@ function MilestoneItem({ it, now, soft }: { it: TimelineEntry; now?: boolean; so
         )}
       </p>
       <h3 className={`mt-2 text-[15px] font-semibold ${soft ? 'text-[#e5e5ea]' : 'text-white'}`}>{t(it.title.vi, it.title.en)}</h3>
-      <p className="mt-1.5 text-[13.5px] leading-snug text-[#b0b0b6]">{t(it.description.vi, it.description.en)}</p>
+      <p className="mt-1.5 text-[13.5px] leading-normal text-[#b0b0b6]">{t(it.description.vi, it.description.en)}</p>
     </li>
   )
 }
@@ -167,7 +167,7 @@ export function AboutSection({
               </p>
               <h2
                 data-cms-field="heading"
-                className="mt-3 text-[34px] sm:text-[48px] lg:text-[56px] font-semibold leading-[1.08] tracking-[-0.035em] text-white text-balance"
+                className="mt-3 text-[34px] sm:text-[48px] lg:text-[56px] font-semibold leading-[1.22] tracking-[-0.035em] text-white text-balance"
               >
                 {t(content.heading_lead.vi, content.heading_lead.en)}
                 <span className="text-[#7db8ff]">{t(content.heading_highlight.vi, content.heading_highlight.en)}</span>
@@ -193,7 +193,7 @@ export function AboutSection({
                   <dt className="text-[34px] sm:text-[42px] lg:text-[32px] xl:text-[42px] 2xl:text-[46px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-white">
                     <Counter value={s.v} run={seen} />
                   </dt>
-                  <dd className="mt-2 text-[13px] leading-snug text-[#b0b0b6]">{t(s.l.vi, s.l.en)}</dd>
+                  <dd className="mt-2 text-[13px] leading-normal text-[#b0b0b6]">{t(s.l.vi, s.l.en)}</dd>
                 </div>
               ))}
             </dl>

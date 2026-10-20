@@ -35,7 +35,7 @@ export function PageHero({ fallback }: { fallback?: PageHeroContent }) {
 
           <h1
             data-cms-field="heading"
-            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.1] tracking-tight mb-6 text-balance"
+            className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.2] tracking-tight mb-6 text-balance"
           >
             {t(content.heading.vi, content.heading.en)}
           </h1>

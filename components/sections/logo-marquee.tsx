@@ -192,11 +192,11 @@ function GroupRow({ count, dot, title, items, language, className = '' }: { coun
     <div className={`flex items-center gap-5 ${className}`}>
       <span className="w-[72px] text-[52px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-white">{String(count).padStart(2, '0')}</span>
       <div className="min-w-0">
-        <p className="flex items-center gap-2.5 text-[20px] font-semibold leading-tight tracking-[-0.01em] text-white">
+        <p className="flex items-center gap-2.5 text-[20px] font-semibold leading-normal tracking-[-0.01em] text-white">
           <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: dot, boxShadow: `0 0 12px ${dot}` }} />
           {title}
         </p>
-        <p className="mt-1.5 text-[15px] leading-snug text-[#a1a1a6]">
+        <p className="mt-1.5 text-[15px] leading-normal text-[#a1a1a6]">
           {shown.join(' · ')}
           {more > 0 && <span className="text-[#7db8ff]"> +{more}</span>}
         </p>

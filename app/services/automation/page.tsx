@@ -271,7 +271,7 @@ export default function AIAutomationPage() {
                 <Bot className="h-4 w-4" />
                 {t('TẠI SAO CẦN AUTOMATION', 'WHY AUTOMATION')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Tự động hóa là', 'Automation is')} <span className="text-[#7db8ff]">{t('xu hướng tất yếu', 'the inevitable next step')}</span>
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
@@ -304,7 +304,7 @@ export default function AIAutomationPage() {
                 <Workflow className="h-4 w-4" />
                 Workflow Automation
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Sơ đồ Automation với AI', 'The AI automation flow')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
@@ -345,7 +345,7 @@ export default function AIAutomationPage() {
                 <Sparkles className="h-4 w-4" />
                 Use Cases
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Ứng dụng AI Automation', 'AI Automation in action')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
@@ -390,7 +390,7 @@ export default function AIAutomationPage() {
                 <Layers className="h-4 w-4" />
                 TECH STACK
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Công nghệ', 'Our')} <span className="text-[#7db8ff]">{t('Automation', 'Automation stack')}</span>
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
@@ -429,7 +429,7 @@ export default function AIAutomationPage() {
                 <Settings className="h-4 w-4" />
                 {t('Quy trình', 'Our process')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Triển khai AI Automation', 'Deploying AI Automation')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">

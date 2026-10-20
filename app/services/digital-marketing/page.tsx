@@ -370,7 +370,7 @@ export default function DigitalMarketingPage() {
                   <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Doanh nghiệp của bạn đang', 'Is your business')}{' '}
                   <span className="text-[#1859b8]">{t('gặp khó khăn?', 'struggling?')}</span>
                 </h2>
@@ -392,13 +392,13 @@ export default function DigitalMarketingPage() {
                           <span className="inline-flex rounded-full bg-[#f5f5f7] px-2.5 py-0.5 text-xs font-medium text-[#515154]">
                             {t('Vấn đề', 'Problem')}
                           </span>
-                          <p className="mt-1.5 text-[15px] leading-snug text-[#515154]">{item.problem}</p>
+                          <p className="mt-1.5 text-[15px] leading-normal text-[#515154]">{item.problem}</p>
                         </div>
                         <div>
                           <span className="inline-flex rounded-full bg-[#1e6dda] px-2.5 py-0.5 text-xs font-medium text-white">
                             {t('Giải pháp', 'Solution')}
                           </span>
-                          <p className="mt-1.5 text-base font-semibold leading-snug text-[#1d1d1f]">{item.solution}</p>
+                          <p className="mt-1.5 text-base font-semibold leading-normal text-[#1d1d1f]">{item.solution}</p>
                         </div>
                       </div>
                     </div>
@@ -423,7 +423,7 @@ export default function DigitalMarketingPage() {
                 <Zap className="w-4 h-4" />
                 {t('DỊCH VỤ CHI TIẾT', 'DETAILED SERVICES')}
               </Eyebrow>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1d1d1f] leading-[1.15] tracking-[-0.005em]">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1d1d1f] leading-[1.22] tracking-[-0.005em]">
                 {t('Giải pháp', 'Solutions')}{' '}
                 <span className="text-[#1859b8]">{t('toàn diện', 'comprehensive')}</span>
               </h2>
@@ -467,7 +467,7 @@ export default function DigitalMarketingPage() {
                 <Rocket className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </Eyebrow>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.15] tracking-[-0.005em] text-white">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.22] tracking-[-0.005em] text-white">
                 {t('Quy trình làm việc', 'Working process')}{' '}
                 <span className="text-[#7db8ff]">{t('minh bạch', 'transparent')}</span>
               </h2>
@@ -499,7 +499,7 @@ export default function DigitalMarketingPage() {
                       <div className="my-5 h-px w-full bg-white/20" />
                       <ul className="space-y-3">
                         {step.tasks.map((task, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-snug text-[#f5f5f7]">
+                          <li key={idx} className="flex items-start gap-2.5 text-[15px] leading-normal text-[#f5f5f7]">
                             <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-[#1e6dda]">
                               <Check className="h-3 w-3 text-white" strokeWidth={3} />
                             </span>
@@ -524,7 +524,7 @@ export default function DigitalMarketingPage() {
                   <Settings className="h-4 w-4" />
                   {t('CLICKSTAR PORTAL', 'CLICKSTAR PORTAL')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                   {t('Theo dõi chiến dịch', 'Track campaigns')}{' '}
                   <span className="text-[#1859b8]">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
                 </h2>
@@ -611,7 +611,7 @@ export default function DigitalMarketingPage() {
                 <TrendingUp className="h-4 w-4" />
                 {t('CASE STUDIES', 'CASE STUDIES')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Kết quả', 'Results')}{' '}
                 <span className="text-[#1859b8]">{t('thực tế', 'in action')}</span>
               </h2>

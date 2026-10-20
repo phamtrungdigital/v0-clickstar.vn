@@ -48,7 +48,7 @@ export async function BlogListView({ lang }: { lang: Lang }) {
               <span className="w-2 h-2 bg-primary rounded-full" />
               {t('Tin tức & Bài viết', 'News & Articles')}
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground mb-4 text-balance">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-foreground leading-[1.2] mb-4 text-balance">
               {t('Kiến thức ', 'Knowledge on ')}
               <span className="text-[#1859b8]">
                 {t('chuyển đổi số', 'digital transformation')}

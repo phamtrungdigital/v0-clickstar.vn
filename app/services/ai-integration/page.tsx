@@ -378,8 +378,8 @@ export default function AIIntegrationPage() {
               {transformationStats.map((stat, index) => (
                 <div key={index} className="rounded-[18px] border border-[#d2d2d7] bg-white p-6 text-center">
                   <p className="text-[40px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-[#1859b8]">{stat.value}</p>
-                  <p className="mt-3 text-[15px] font-semibold leading-snug text-[#1d1d1f]">{t(stat.label.vi, stat.label.en)}</p>
-                  <p className="mt-1 text-[13px] leading-snug text-[#515154]">{t(stat.desc.vi, stat.desc.en)}</p>
+                  <p className="mt-3 text-[15px] font-semibold leading-normal text-[#1d1d1f]">{t(stat.label.vi, stat.label.en)}</p>
+                  <p className="mt-1 text-[13px] leading-normal text-[#515154]">{t(stat.desc.vi, stat.desc.en)}</p>
                 </div>
               ))}
             </div>
@@ -394,7 +394,7 @@ export default function AIIntegrationPage() {
                 <Zap className="h-4 w-4" />
                 {t('TẠI SAO CẦN AI', 'WHY AI')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('AI đang thay đổi', 'AI is changing')} <span className="text-[#7db8ff]">{t('cuộc chơi', 'the game')}</span> {t('kinh doanh', 'in business')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
@@ -427,7 +427,7 @@ export default function AIIntegrationPage() {
                 <Sparkles className="h-4 w-4" />
                 {t('Ứng dụng AI', 'AI in action')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('AI có thể làm gì cho doanh nghiệp bạn?', 'What can AI do for your business?')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
@@ -470,7 +470,7 @@ export default function AIIntegrationPage() {
                 <Brain className="h-4 w-4" />
                 {t('HỆ SINH THÁI AI', 'THE AI ECOSYSTEM')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Công cụ AI', "The world's")} <span className="text-[#7db8ff]">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
@@ -518,7 +518,7 @@ export default function AIIntegrationPage() {
                 <Layers className="h-4 w-4" />
                 {t('Quy trình', 'Our process')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Quy trình tích hợp AI', 'The AI integration process')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
@@ -551,7 +551,7 @@ export default function AIIntegrationPage() {
                   <FileText className="h-4 w-4" />
                   {t('TIN TỨC AI', 'AI NEWS')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Bài viết', 'Our')} <span className="text-[#1859b8]">{t('mới nhất', 'latest')}</span> {t('về AI', 'AI articles')}
                 </h2>
               </div>

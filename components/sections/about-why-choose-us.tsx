@@ -71,7 +71,7 @@ export function AboutWhyChooseUsSection({ content }: { content: AboutWhyChooseUs
           >
             {t(content.eyebrow.vi, content.eyebrow.en)}
           </p>
-          <h2 data-cms-field="heading" className="mt-3 text-[32px] sm:text-[44px] font-semibold leading-[1.1] tracking-[-0.03em] text-[#1d1d1f] text-balance">
+          <h2 data-cms-field="heading" className="mt-3 text-[32px] sm:text-[44px] font-semibold leading-[1.2] tracking-[-0.03em] text-[#1d1d1f] text-balance">
             {t(content.heading_lead.vi, content.heading_lead.en)}{' '}
             <span className="text-[#1859b8]">{t(content.heading_highlight.vi, content.heading_highlight.en)}</span>
           </h2>
@@ -150,7 +150,7 @@ function Pane({ index, on, title }: { index: number; on: boolean; title: string 
   const { t } = useLanguage()
   const cls = `absolute inset-0 flex flex-col justify-between p-7 sm:p-9 transition-all duration-500 ${on ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-4 opacity-0'}`
   const label = (txt: string) => <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#7db8ff]">{txt}</p>
-  const foot = (txt: string) => <p className="pr-28 text-[13.5px] leading-snug text-[#c7c7cc]">{txt}</p>
+  const foot = (txt: string) => <p className="pr-28 text-[13.5px] leading-normal text-[#c7c7cc]">{txt}</p>
 
   switch (index) {
     case 0:
@@ -232,7 +232,7 @@ function Pane({ index, on, title }: { index: number; on: boolean; title: string 
       return (
         <div className={cls} aria-hidden={!on}>
           {label(t('Vì sao chọn chúng tôi', 'Why choose us'))}
-          <p className="text-[34px] font-semibold leading-tight tracking-[-0.03em]">{title}</p>
+          <p className="text-[34px] font-semibold leading-normal tracking-[-0.03em]">{title}</p>
           <span />
         </div>
       )
