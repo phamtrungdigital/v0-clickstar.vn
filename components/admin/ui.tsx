@@ -23,11 +23,11 @@ export function PageHeader({
 }) {
   return (
     <div className={cn('mb-5 flex flex-wrap items-end justify-between gap-3', className)}>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1 basis-80">
         <h1 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.025em] text-[var(--ad-fg)]">{title}</h1>
         {description ? <p className="mt-1 text-[14.5px] leading-snug text-[var(--ad-fg-2)]">{description}</p> : null}
       </div>
-      {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+      {actions ? <div className="flex flex-none flex-wrap items-center gap-2">{actions}</div> : null}
     </div>
   )
 }

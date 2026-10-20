@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import { Construction, ArrowLeft } from 'lucide-react'
+import { Hourglass } from 'lucide-react'
+import { Card, Chip, PageHeader, btn } from '@/components/admin/ui'
 
+/** Màn chưa có chức năng: nói rõ là sắp có, kèm điều kiện để làm tiếp. */
 export function ComingSoon({
   title,
   description,
@@ -11,22 +13,19 @@ export function ComingSoon({
   plannedFor?: string
 }) {
   return (
-    <div className="max-w-xl mx-auto py-12 text-center space-y-4">
-      <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-50 text-amber-500 mb-2">
-        <Construction className="w-7 h-7" />
-      </div>
-      <h1 className="text-xl font-bold text-slate-900 dark:text-white">{title}</h1>
-      <p className="text-sm text-slate-600 dark:text-slate-400">{description}</p>
-      {plannedFor && (
-        <p className="text-xs text-slate-500">📋 Dự kiến: {plannedFor}</p>
-      )}
-      <Link
-        href="/admin-cls"
-        className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline"
-      >
-        <ArrowLeft className="w-3 h-3" />
-        Quay lại Dashboard
-      </Link>
+    <div className="mx-auto max-w-7xl">
+      <PageHeader title={title} />
+      <Card className="mx-auto max-w-2xl px-8 py-14 text-center">
+        <div className="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-[var(--ad-fill)] text-[var(--ad-fg-3)]">
+          <Hourglass className="h-6 w-6" />
+        </div>
+        <Chip tone="blue">Sắp ra mắt</Chip>
+        <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-[var(--ad-fg-2)]">{description}</p>
+        {plannedFor ? <p className="mx-auto mt-2 max-w-md text-[13.5px] text-[var(--ad-fg-3)]">Dự kiến: {plannedFor}</p> : null}
+        <Link href="/admin-cls" className={btn('secondary') + ' mt-6'}>
+          Về Tổng quan
+        </Link>
+      </Card>
     </div>
   )
 }

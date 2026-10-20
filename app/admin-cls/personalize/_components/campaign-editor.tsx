@@ -2,15 +2,26 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Save, CheckCircle2, AlertCircle, ArrowLeft, Plus, Trash2, Eye } from 'lucide-react'
+import { Loader2 } from 'lucide-react'
 import type { PersonalizeCampaign } from '@/lib/personalize/campaign-types'
+import { EditorBar, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
+import { Segmented } from '@/components/admin/segmented'
+import { Switch } from '@/components/admin/switch'
 import { createCampaign, updateCampaign, type CampaignFormData } from '../actions'
 
 const POSITIONS = ['bottom-right', 'bottom-left', 'bottom-center', 'top-banner'] as const
 const SIZES = ['compact', 'default', 'expanded'] as const
 const COLOR_THEMES = ['primary', 'orange', 'dark', 'custom'] as const
 const DEVICES = ['all', 'desktop', 'mobile'] as const
+const POSITION_LABEL: Record<string, string> = {
+  'bottom-right': 'Góc dưới phải',
+  'bottom-left': 'Góc dưới trái',
+  'bottom-center': 'Giữa phía dưới',
+  'top-banner': 'Dải đầu trang',
+}
+const SIZE_LABEL: Record<string, string> = { compact: 'Gọn', default: 'Mặc định', expanded: 'Rộng' }
+const THEME_LABEL: Record<string, string> = { primary: 'Xanh thương hiệu', orange: 'Cam', dark: 'Tối', custom: 'Tự chọn màu' }
+const DEVICE_LABEL: Record<string, string> = { all: 'Mọi thiết bị', desktop: 'Máy tính', mobile: 'Điện thoại' }
 const ICONS = ['Sparkles', 'Bot', 'Gift', 'Bell', 'Megaphone', 'Star', 'Heart', 'Rocket', 'Zap']
 
 const THEME_PRESETS: Record<string, { from: string; to: string; button: string }> = {
@@ -120,52 +131,25 @@ export function CampaignEditor({
   const excludePagesStr = (draft.conditions.exclude_current_pages ?? []).join('\n')
 
   return (
-    <div className="space-y-3 max-w-4xl">
-      {/* Sticky toolbar */}
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link href="/admin-cls/personalize" className="text-slate-500 hover:text-slate-700">
-            <ArrowLeft className="w-4 h-4" />
-          </Link>
-          <div>
-            <h1 className="text-base font-semibold text-slate-900 dark:text-white">
-              {mode === 'new' ? 'Campaign mới' : draft.name || '(không tên)'}
-            </h1>
-            <p className="text-[11px] text-slate-500">
-              Hiển thị banner cá nhân hóa cho khách dựa trên lịch sử truy cập
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              {errorMsg.slice(0, 40)}
-            </span>
-          )}
-          <button
-            onClick={handleSave}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu'}
-          </button>
-        </div>
-      </div>
+    <div>
+      <EditorBar
+        backHref="/admin-cls/personalize"
+        title={mode === 'new' ? 'Chiến dịch mới' : draft.name || '(không tên)'}
+        subtitle="Banner cá nhân hóa hiện cho khách dựa trên các trang họ đã xem"
+      >
+        <SaveStatus status={status} errorMsg={errorMsg} />
+        <button onClick={handleSave} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu'}
+        </button>
+      </EditorBar>
 
+      <div className="mx-auto max-w-4xl space-y-4">
       {/* Section: Basic */}
       <Section title="Thông tin chung">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_120px_120px] gap-3">
           <div>
-            <Label required>Tên campaign (nội bộ)</Label>
+            <Label required>Tên chiến dịch (chỉ dùng nội bộ)</Label>
             <input
               type="text"
               value={draft.name}
@@ -175,34 +159,29 @@ export function CampaignEditor({
             />
           </div>
           <div>
-            <Label>Priority</Label>
+            <Label>Độ ưu tiên</Label>
             <input
               type="number"
               value={draft.priority}
               onChange={(e) => update('priority', parseInt(e.target.value) || 0)}
               className={inputCls}
             />
-            <p className="text-[10px] text-slate-500 mt-0.5">Cao trước</p>
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">Số cao hiện trước</p>
           </div>
           <div>
             <Label>Trạng thái</Label>
-            <label className="flex items-center gap-2 h-9 mt-0.5">
-              <input
-                type="checkbox"
-                checked={draft.enabled}
-                onChange={(e) => update('enabled', e.target.checked)}
-                className="w-4 h-4"
-              />
-              <span className="text-sm">{draft.enabled ? 'Bật' : 'Tắt'}</span>
-            </label>
+            <div className="mt-0.5 flex h-9 items-center gap-2.5">
+              <Switch checked={draft.enabled} onChange={(v) => update('enabled', v)} label="Bật chiến dịch" />
+              <span className="text-[14px] text-[var(--ad-fg)]">{draft.enabled ? 'Bật' : 'Tắt'}</span>
+            </div>
           </div>
         </div>
       </Section>
 
       {/* Section: Conditions */}
-      <Section title="🎯 Điều kiện hiển thị">
+      <Section title="Điều kiện hiển thị">
         <div>
-          <Label>Đã ghé thăm trang nào (mỗi dòng 1 path)</Label>
+          <Label>Khách đã xem trang nào (mỗi dòng một đường dẫn)</Label>
           <textarea
             value={visitedPagesStr}
             onChange={(e) =>
@@ -215,13 +194,13 @@ export function CampaignEditor({
             className={inputCls + ' font-mono text-xs'}
             placeholder="/pricing&#10;/services/ai-integration"
           />
-          <p className="text-[10px] text-slate-500 mt-1">
-            Banner show khi user đã visit ≥ 1 trong các paths này (bỏ trống = không check)
+          <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
+            Banner hiện khi khách đã xem ít nhất một trong các trang này. Để trống thì không kiểm tra.
           </p>
         </div>
 
         <div>
-          <Label>KHÔNG hiển thị trên trang (mỗi dòng 1 path)</Label>
+          <Label>Không hiện ở trang nào (mỗi dòng một đường dẫn)</Label>
           <textarea
             value={excludePagesStr}
             onChange={(e) =>
@@ -238,7 +217,7 @@ export function CampaignEditor({
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <Label>Tối thiểu N trang đã xem</Label>
+            <Label>Số trang đã xem tối thiểu</Label>
             <input
               type="number"
               value={draft.conditions.min_pages_visited ?? 0}
@@ -255,31 +234,30 @@ export function CampaignEditor({
             >
               {DEVICES.map((d) => (
                 <option key={d} value={d}>
-                  {d}
+                  {DEVICE_LABEL[d]}
                 </option>
               ))}
             </select>
           </div>
           <div>
-            <Label>Returning visitor</Label>
-            <label className="flex items-center gap-2 h-9 mt-0.5">
-              <input
-                type="checkbox"
+            <Label>Khách quay lại</Label>
+            <div className="mt-0.5 flex h-9 items-center gap-2.5">
+              <Switch
                 checked={!!draft.conditions.returning_visitor}
-                onChange={(e) => updateCondition('returning_visitor', e.target.checked)}
-                className="w-4 h-4"
+                onChange={(v) => updateCondition('returning_visitor', v)}
+                label="Chỉ hiện khi khách quay lại từ lần thứ hai"
               />
-              <span className="text-sm">Chỉ khi quay lại lần 2+</span>
-            </label>
+              <span className="text-[14px] text-[var(--ad-fg)]">Chỉ từ lần thứ hai trở đi</span>
+            </div>
           </div>
         </div>
       </Section>
 
       {/* Section: Content */}
-      <Section title="💬 Nội dung banner">
+      <Section title="Nội dung banner">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
           <div>
-            <Label>Header label</Label>
+            <Label>Dòng nhỏ trên đầu banner</Label>
             <input
               type="text"
               value={draft.content.header_label}
@@ -289,7 +267,7 @@ export function CampaignEditor({
             />
           </div>
           <div>
-            <Label>Icon (Lucide name)</Label>
+            <Label>Biểu tượng</Label>
             <select
               value={draft.content.icon}
               onChange={(e) => updateContent('icon', e.target.value)}
@@ -305,23 +283,18 @@ export function CampaignEditor({
         </div>
 
         <div>
-          <Label>Dùng AI gen message?</Label>
-          <label className="flex items-center gap-2 mt-1">
-            <input
-              type="checkbox"
-              checked={draft.content.use_ai}
-              onChange={(e) => updateContent('use_ai', e.target.checked)}
-              className="w-4 h-4"
-            />
-            <span className="text-sm">
-              {draft.content.use_ai ? '✓ Claude gen message dựa trên lịch sử' : 'Dùng message tĩnh bên dưới'}
+          <Label>Nhờ AI viết lời nhắn</Label>
+          <div className="mt-1 flex items-center gap-2.5">
+            <Switch checked={draft.content.use_ai} onChange={(v) => updateContent('use_ai', v)} label="Nhờ AI viết lời nhắn" />
+            <span className="text-[14px] text-[var(--ad-fg)]">
+              {draft.content.use_ai ? 'Claude viết lời nhắn dựa trên các trang khách đã xem' : 'Dùng lời nhắn cố định bên dưới'}
             </span>
-          </label>
+          </div>
         </div>
 
         {draft.content.use_ai && (
           <div>
-            <Label>Gợi ý prompt cho AI (tùy chọn)</Label>
+            <Label>Gợi ý thêm cho AI (không bắt buộc)</Label>
             <textarea
               value={draft.content.ai_prompt_hint ?? ''}
               onChange={(e) => updateContent('ai_prompt_hint', e.target.value)}
@@ -333,9 +306,7 @@ export function CampaignEditor({
         )}
 
         <div>
-          <Label required={!draft.content.use_ai}>
-            Message tĩnh (fallback khi AI fail hoặc use_ai=false)
-          </Label>
+          <Label required={!draft.content.use_ai}>Lời nhắn cố định (dùng khi AI lỗi hoặc khi tắt AI)</Label>
           <textarea
             value={draft.content.fallback_message}
             onChange={(e) => updateContent('fallback_message', e.target.value)}
@@ -347,7 +318,7 @@ export function CampaignEditor({
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
           <div>
-            <Label>CTA label</Label>
+            <Label>Chữ trên nút</Label>
             <input
               type="text"
               value={draft.content.cta_label}
@@ -356,7 +327,7 @@ export function CampaignEditor({
             />
           </div>
           <div>
-            <Label>CTA href</Label>
+            <Label>Đường dẫn của nút</Label>
             <input
               type="text"
               value={draft.content.cta_href}
@@ -366,13 +337,13 @@ export function CampaignEditor({
             />
           </div>
           <div>
-            <Label>Service param (?service=)</Label>
+            <Label>Dịch vụ gắn kèm (?service=)</Label>
             <select
               value={draft.content.service_param ?? ''}
               onChange={(e) => updateContent('service_param', e.target.value)}
               className={inputCls}
             >
-              <option value="">— Không append —</option>
+              <option value="">Không gắn kèm</option>
               {SERVICE_OPTIONS.map((s) => (
                 <option key={s} value={s}>
                   {s}
@@ -384,7 +355,7 @@ export function CampaignEditor({
       </Section>
 
       {/* Section: Styles */}
-      <Section title="🎨 Giao diện">
+      <Section title="Giao diện">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           <div>
             <Label>Vị trí</Label>
@@ -395,7 +366,7 @@ export function CampaignEditor({
             >
               {POSITIONS.map((p) => (
                 <option key={p} value={p}>
-                  {p}
+                  {POSITION_LABEL[p]}
                 </option>
               ))}
             </select>
@@ -409,13 +380,13 @@ export function CampaignEditor({
             >
               {SIZES.map((s) => (
                 <option key={s} value={s}>
-                  {s}
+                  {SIZE_LABEL[s]}
                 </option>
               ))}
             </select>
           </div>
           <div>
-            <Label>Color theme preset</Label>
+            <Label>Bộ màu có sẵn</Label>
             <select
               value={draft.styles.color_theme ?? 'primary'}
               onChange={(e) => {
@@ -427,22 +398,22 @@ export function CampaignEditor({
             >
               {COLOR_THEMES.map((t) => (
                 <option key={t} value={t}>
-                  {t}
+                  {THEME_LABEL[t]}
                 </option>
               ))}
             </select>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
+        <div className="grid grid-cols-1 gap-3.5 rounded-xl border border-[var(--ad-line)] bg-[var(--ad-fill-soft)] p-4 sm:grid-cols-3">
           <div>
-            <Label>Gradient from (hex)</Label>
+            <Label>Màu đầu của dải chuyển sắc</Label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
                 value={draft.styles.gradient_from ?? '#1B7BFF'}
                 onChange={(e) => updateStyle('gradient_from', e.target.value)}
-                className="w-10 h-9 border border-slate-200 rounded"
+                className="h-9 w-10 cursor-pointer rounded-lg border border-[var(--ad-line-2)] bg-transparent p-0.5"
               />
               <input
                 type="text"
@@ -453,13 +424,13 @@ export function CampaignEditor({
             </div>
           </div>
           <div>
-            <Label>Gradient to (hex)</Label>
+            <Label>Màu cuối của dải chuyển sắc</Label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
                 value={draft.styles.gradient_to ?? '#0055d4'}
                 onChange={(e) => updateStyle('gradient_to', e.target.value)}
-                className="w-10 h-9 border border-slate-200 rounded"
+                className="h-9 w-10 cursor-pointer rounded-lg border border-[var(--ad-line-2)] bg-transparent p-0.5"
               />
               <input
                 type="text"
@@ -470,13 +441,13 @@ export function CampaignEditor({
             </div>
           </div>
           <div>
-            <Label>Button color (hex)</Label>
+            <Label>Màu nút</Label>
             <div className="flex items-center gap-2">
               <input
                 type="color"
                 value={draft.styles.button_color ?? '#FF6B35'}
                 onChange={(e) => updateStyle('button_color', e.target.value)}
-                className="w-10 h-9 border border-slate-200 rounded"
+                className="h-9 w-10 cursor-pointer rounded-lg border border-[var(--ad-line-2)] bg-transparent p-0.5"
               />
               <input
                 type="text"
@@ -489,10 +460,8 @@ export function CampaignEditor({
         </div>
 
         {/* Visual preview */}
-        <div className="mt-3 p-4 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800 rounded-lg">
-          <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-3 font-semibold">
-            🔍 Live Preview
-          </div>
+        <div className="mt-3 rounded-2xl bg-[var(--ad-fill)] p-5">
+          <div className="mb-3 text-[13px] font-medium text-[var(--ad-fg-3)]">Xem trước</div>
           <div
             className="max-w-[360px] mx-auto bg-white rounded-2xl shadow-2xl border-2 overflow-hidden"
             style={{ borderColor: draft.styles.gradient_from }}
@@ -526,10 +495,10 @@ export function CampaignEditor({
       </Section>
 
       {/* Section: Frequency + Display timing */}
-      <Section title="⏱ Tần suất + thời gian hiển thị">
+      <Section title="Tần suất và thời gian hiển thị">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <Label>Delay xuất hiện (ms)</Label>
+            <Label>Hiện sau (ms)</Label>
             <input
               type="number"
               min={0}
@@ -538,7 +507,7 @@ export function CampaignEditor({
               onChange={(e) => update('delay_ms', parseInt(e.target.value) || 0)}
               className={inputCls}
             />
-            <p className="text-[10px] text-slate-500 mt-0.5">Mặc định 1200ms (1.2s sau khi vào trang)</p>
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">Mặc định 1200ms, tức 1,2 giây sau khi khách vào trang</p>
           </div>
           <div>
             <Label>Tự đóng sau (ms)</Label>
@@ -551,14 +520,14 @@ export function CampaignEditor({
               className={inputCls}
               placeholder="0 = không tự đóng"
             />
-            <p className="text-[10px] text-slate-500 mt-0.5">
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
               {draft.auto_dismiss_ms === 0
-                ? '0 = giữ mãi tới khi user dismiss'
-                : `Tự đóng sau ${(draft.auto_dismiss_ms / 1000).toFixed(1)}s`}
+                ? '0 nghĩa là giữ đến khi khách tự đóng'
+                : `Tự đóng sau ${(draft.auto_dismiss_ms / 1000).toFixed(1)} giây`}
             </p>
           </div>
           <div>
-            <Label>Ẩn lại sau dismiss (ngày)</Label>
+            <Label>Ẩn lại sau khi khách đóng (ngày)</Label>
             <input
               type="number"
               min={1}
@@ -566,56 +535,47 @@ export function CampaignEditor({
               onChange={(e) => update('dismiss_days', parseInt(e.target.value) || 7)}
               className={inputCls}
             />
-            <p className="text-[10px] text-slate-500 mt-0.5">Mặc định 7 ngày</p>
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">Mặc định 7 ngày</p>
           </div>
         </div>
 
-        {/* Quick presets cho auto_dismiss */}
-        <div className="flex items-center gap-2 flex-wrap text-xs">
-          <span className="text-slate-500">Presets nhanh tự đóng:</span>
-          {[
-            { label: 'Không tự đóng', ms: 0 },
-            { label: '8s', ms: 8000 },
-            { label: '15s', ms: 15000 },
-            { label: '30s', ms: 30000 },
-            { label: '1 phút', ms: 60000 },
-          ].map((p) => (
-            <button
-              key={p.ms}
-              type="button"
-              onClick={() => update('auto_dismiss_ms', p.ms)}
-              className={`px-2 py-0.5 rounded ${
-                draft.auto_dismiss_ms === p.ms
-                  ? 'bg-primary text-white font-semibold'
-                  : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
+        {/* Chọn nhanh thời gian tự đóng */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          <span className="text-[13px] text-[var(--ad-fg-3)]">Chọn nhanh thời gian tự đóng:</span>
+          <Segmented
+            ariaLabel="Chọn nhanh thời gian tự đóng"
+            value={String(draft.auto_dismiss_ms)}
+            onChange={(v) => update('auto_dismiss_ms', Number(v))}
+            options={[
+              { id: '0', label: 'Không tự đóng' },
+              { id: '8000', label: '8 giây' },
+              { id: '15000', label: '15 giây' },
+              { id: '30000', label: '30 giây' },
+              { id: '60000', label: '1 phút' },
+            ]}
+          />
         </div>
       </Section>
+      </div>
     </div>
   )
 }
 
-const inputCls =
-  'w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary'
+const inputCls = fieldInputClass
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+    <label className={fieldLabelClass}>
       {children}
-      {required && <span className="text-red-500 ml-0.5">*</span>}
+      {required && <span className="ml-0.5 text-[#d70015]">*</span>}
     </label>
   )
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{title}</h2>
+    <SectionCard title={title} bodyClassName="space-y-3.5 px-5 pb-5 pt-3">
       {children}
-    </div>
+    </SectionCard>
   )
 }
