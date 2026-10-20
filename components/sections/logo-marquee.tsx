@@ -6,13 +6,15 @@ import { useLanguage } from '@/contexts/language-context'
 import type { LogoMarqueeContent, ClientLogoItem } from '@/lib/cms/types'
 
 /**
- * Khối "Technology & AI we integrate" (18/10/2026, phương án B do anh chọn):
- * Máy tính: Click Star ở giữa, mô hình AI ở vòng trong, kênh và hạ tầng ở vòng ngoài, hai vòng quay
- * ngược chiều rất chậm, thẻ luôn thẳng đứng, rê chuột thì dừng.
+ * Khối "Technology & AI we integrate" (20/10/2026, phương án "Quỹ đạo tinh gọn" do anh chọn):
+ * Máy tính: chữ và số "17" ở bên trái kèm chú giải hai vòng; bên phải là quỹ đạo: Click Star ở giữa,
+ * mô hình AI ở vòng trong, kênh và hạ tầng ở vòng ngoài. Mỗi công nghệ là một huy hiệu tròn chỉ có logo
+ * (tên hiện khi rê chuột, người đọc màn hình nghe danh sách đầy đủ), phát sáng theo màu hãng; hai vòng quay
+ * ngược chiều rất chậm, huy hiệu luôn thẳng đứng, rê chuột thì dừng.
  * Điện thoại và máy tính bảng (dưới 1024px): lưới thẻ màu thương hiệu, hiện dần lần lượt.
  * Màu thẻ là màu nhận diện của chính hãng (ngoại lệ có chủ đích so với bảng "một màu xanh" của site).
  * Tôn trọng prefers-reduced-motion: vòng đứng yên, số không đếm. Không có logo thì không render.
- * Mọi trường CMS (eyebrow, sub, showNames, strips) vẫn sửa được như cũ.
+ * Mọi trường CMS (eyebrow, sub, strips) vẫn sửa được như cũ; cờ showNames chỉ còn tác dụng ở lưới thẻ điện thoại.
  */
 
 const BRAND: Record<string, string> = {
@@ -77,7 +79,7 @@ const CSS = `
 `
 
 export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [ref, seen] = useInView<HTMLElement>()
 
   const items = (content.strips ?? []).flatMap((s) => (s.items ?? []).filter((i) => i.logo))
@@ -86,7 +88,6 @@ export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
 
   const inner = items.filter(isAi)
   const outer = items.filter((i) => !isAi(i))
-  const showNames = content.showNames ?? true
   const sub = content.sub?.vi ? t(content.sub.vi, content.sub.en) : ''
   const m = sub.match(/^\s*(\d+)\s+([\s\S]*)$/)
   const subRest = m ? m[2] : sub
@@ -104,54 +105,61 @@ export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
     >
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
-      <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {content.eyebrow?.vi && (
-          <p
-            data-cms-field="eyebrow"
-            className={reveal}
-            // style nội tuyến vì globals.css có luật ép mọi nhãn data-cms-field=eyebrow về chữ xám thường
-            style={{ color: '#7db8ff', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 0 }}
-          >
-            {t(content.eyebrow.vi, content.eyebrow.en)}
-          </p>
-        )}
-        <div className={`mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-5 ${reveal}`} style={{ transitionDelay: '120ms' }}>
-          {m && (
-            <span className="text-[56px] sm:text-[72px] font-semibold leading-none tracking-[-0.04em] tabular-nums text-white" aria-label={m[1]}>
-              {counted}
-            </span>
-          )}
-          {subRest && (
-            <p data-cms-field="sub" className="max-w-[28ch] text-lg sm:text-xl leading-snug text-[#d2d2d7] sm:text-left">
-              {subRest}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Máy tính: quỹ đạo */}
-      <div className={`hidden lg:block ${reveal}`} style={{ transitionDelay: '260ms' }} aria-hidden>
-        <div className="cs-orbit relative mx-auto mt-2" style={{ height: 720, maxWidth: 1080 }}>
-          <div className="absolute left-1/2 top-1/2 rounded-full border border-dashed border-[#4a4a4f]" style={{ width: 340, height: 340, translate: '-50% -50%' }} />
-          <div className="absolute left-1/2 top-1/2 rounded-full border border-dashed border-[#4a4a4f]" style={{ width: 600, height: 600, translate: '-50% -50%' }} />
-          {outer.length > 0 && <Ring items={outer} radius={300} seconds={110} reverse showNames={showNames} />}
-          {inner.length > 0 && <Ring items={inner} radius={170} seconds={70} showNames={showNames} />}
-          <div className="absolute left-1/2 top-1/2 z-[3]" style={{ width: 150, height: 150, translate: '-50% -50%' }}>
-            <span className="cs-pulse" />
-            <span className="cs-pulse" style={{ animationDelay: '1.6s' }} />
-            <div className="relative z-[2] grid h-full w-full place-content-center rounded-full bg-[#1e6dda] text-center">
-              <span className="text-[20px] font-semibold tracking-[-0.02em]">Click Star</span>
-              <span className="mt-0.5 text-[12px] text-white">{t('một hệ thống', 'one system')}</span>
+      <div className="max-w-[1080px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_500px] lg:items-center lg:gap-8">
+          {/* Chữ: giữa trang ở điện thoại, bên trái ở máy tính */}
+          <div className="text-center lg:text-left">
+            {content.eyebrow?.vi && (
+              <p
+                data-cms-field="eyebrow"
+                className={reveal}
+                // style nội tuyến vì globals.css có luật ép mọi nhãn data-cms-field=eyebrow về chữ xám thường
+                style={{ color: '#7db8ff', fontSize: 13, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 0 }}
+              >
+                {t(content.eyebrow.vi, content.eyebrow.en)}
+              </p>
+            )}
+            <div
+              className={`mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-5 lg:flex-col lg:items-start lg:justify-start lg:gap-3 ${reveal}`}
+              style={{ transitionDelay: '120ms' }}
+            >
+              {m && (
+                <span className="text-[56px] sm:text-[72px] lg:text-[128px] font-semibold leading-[0.9] tracking-[-0.045em] tabular-nums text-white" aria-label={m[1]}>
+                  {counted}
+                </span>
+              )}
+              {subRest && (
+                <p data-cms-field="sub" className="max-w-[28ch] text-lg sm:text-xl lg:text-[30px] lg:font-semibold leading-[1.2] lg:tracking-[-0.02em] text-[#d2d2d7] lg:text-white sm:text-left">
+                  {subRest}
+                </p>
+              )}
+            </div>
+            <div className={`mt-9 hidden border-t border-white/10 pt-7 lg:block ${reveal}`} style={{ transitionDelay: '200ms' }} aria-hidden>
+              <GroupRow count={outer.length} dot="#7db8ff" title={t('Kênh và hạ tầng', 'Channels and infrastructure')} items={outer} language={language} />
+              <GroupRow count={inner.length} dot="#D97757" title={t('Mô hình AI', 'AI models')} items={inner} language={language} className="mt-6" />
             </div>
           </div>
-          <p className="absolute bottom-6 left-2 text-sm text-[#d2d2d7]">
-            <b className="mr-1 text-[28px] font-semibold text-white">{inner.length}</b>
-            {t('mô hình AI', 'AI models')}
-          </p>
-          <p className="absolute bottom-6 right-2 text-sm text-[#d2d2d7]">
-            <b className="mr-1 text-[28px] font-semibold text-white">{outer.length}</b>
-            {t('kênh và hạ tầng', 'channels and infrastructure')}
-          </p>
+
+          {/* Máy tính: quỹ đạo tinh gọn */}
+          <div className={`hidden lg:block ${reveal}`} style={{ transitionDelay: '260ms' }} aria-hidden>
+            <div className="cs-orbit relative mx-auto" style={{ width: 500, height: 500 }}>
+              <div className="absolute left-1/2 top-1/2 rounded-full border border-dashed border-white/15" style={{ width: 280, height: 280, translate: '-50% -50%' }} />
+              <div className="absolute left-1/2 top-1/2 rounded-full border border-dashed border-white/15" style={{ width: 460, height: 460, translate: '-50% -50%' }} />
+              {outer.length > 0 && <Ring items={outer} radius={230} seconds={110} reverse />}
+              {inner.length > 0 && <Ring items={inner} radius={140} seconds={70} />}
+              <div className="absolute left-1/2 top-1/2 z-[3]" style={{ width: 118, height: 118, translate: '-50% -50%' }}>
+                <span className="cs-pulse" />
+                <span className="cs-pulse" style={{ animationDelay: '1.6s' }} />
+                <div
+                  className="relative z-[2] grid h-full w-full place-content-center rounded-full text-center"
+                  style={{ background: 'radial-gradient(circle at 30% 25%, #3b8bf0, #144c97)', boxShadow: '0 0 0 8px rgba(30,109,218,.15), 0 0 48px rgba(30,109,218,.55)' }}
+                >
+                  <span className="text-[18px] font-semibold tracking-[-0.02em]">Click Star</span>
+                  <span className="mt-0.5 text-[11px] text-[#cfe1fb]">{t('một hệ thống', 'one system')}</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -176,7 +184,28 @@ export function LogoMarquee({ content }: { content: LogoMarqueeContent }) {
   )
 }
 
-function Ring({ items, radius, seconds, reverse = false, showNames }: { items: ClientLogoItem[]; radius: number; seconds: number; reverse?: boolean; showNames: boolean }) {
+/** Một nhóm công nghệ ở cột chữ: số lớn, tên nhóm, vài tên tiêu biểu (chấm màu khớp màu vòng trên quỹ đạo) */
+function GroupRow({ count, dot, title, items, language, className = '' }: { count: number; dot: string; title: string; items: ClientLogoItem[]; language: string; className?: string }) {
+  const shown = items.slice(0, 4).map((it) => nameOf(it, language)).filter(Boolean)
+  const more = items.length - shown.length
+  return (
+    <div className={`flex items-center gap-5 ${className}`}>
+      <span className="w-[72px] text-[52px] font-semibold leading-none tracking-[-0.03em] tabular-nums text-white">{String(count).padStart(2, '0')}</span>
+      <div className="min-w-0">
+        <p className="flex items-center gap-2.5 text-[20px] font-semibold leading-tight tracking-[-0.01em] text-white">
+          <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: dot, boxShadow: `0 0 12px ${dot}` }} />
+          {title}
+        </p>
+        <p className="mt-1.5 text-[15px] leading-snug text-[#a1a1a6]">
+          {shown.join(' · ')}
+          {more > 0 && <span className="text-[#7db8ff]"> +{more}</span>}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function Ring({ items, radius, seconds, reverse = false }: { items: ClientLogoItem[]; radius: number; seconds: number; reverse?: boolean }) {
   const n = items.length
   const style = {
     width: radius * 2,
@@ -191,9 +220,9 @@ function Ring({ items, radius, seconds, reverse = false, showNames }: { items: C
         const ang = (360 / n) * i
         return (
           <div key={i} className="cs-node" style={{ transform: `rotate(${ang}deg) translateY(-${radius}px)` }}>
-            {/* rotate: bù góc đặt tĩnh; animation cs-spin ngược chiều bù góc quay của vòng → thẻ luôn thẳng */}
+            {/* rotate: bù góc đặt tĩnh; animation cs-spin ngược chiều bù góc quay của vòng → huy hiệu luôn thẳng */}
             <div className="cs-node-in" style={{ rotate: `${-ang}deg` }}>
-              <OrbitChip item={it} showName={showNames} />
+              <OrbitBadge item={it} small={isAi(it)} />
             </div>
           </div>
         )
@@ -206,16 +235,24 @@ function nameOf(item: ClientLogoItem, language: string) {
   return (language === 'en' ? item.name?.en : item.name?.vi) || item.name?.vi || ''
 }
 
-/** Thẻ trắng trên quỹ đạo: logo đúng màu hãng + tên */
-function OrbitChip({ item, showName }: { item: ClientLogoItem; showName: boolean }) {
+/** Huy hiệu tròn trên quỹ đạo: chỉ logo, nền pha màu hãng, viền và quầng sáng theo màu hãng (tên ở title khi rê chuột) */
+function OrbitBadge({ item, small }: { item: ClientLogoItem; small: boolean }) {
   const { language } = useLanguage()
   const name = nameOf(item, language)
   const brand = brandOf(item.logo)
+  const white = BLACK_LOGO.has(slug(item.logo))
   const [wide, setWide] = useState(WIDE_LOGO.has(slug(item.logo)))
+  const size = small ? 46 : 54
   return (
     <span
-      className="flex items-center gap-2.5 whitespace-nowrap rounded-[14px] bg-white py-2.5 pl-3 pr-3.5 text-[#1d1d1f]"
-      style={{ boxShadow: `0 0 0 1.5px ${brand}99` }}
+      className="grid place-items-center rounded-full"
+      style={{
+        width: size,
+        height: size,
+        background: `color-mix(in srgb, ${brand} 20%, #1d1d20)`,
+        border: `1px solid color-mix(in srgb, ${brand} 55%, transparent)`,
+        boxShadow: `0 0 22px color-mix(in srgb, ${brand} 35%, transparent)`,
+      }}
       title={name}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -228,9 +265,9 @@ function OrbitChip({ item, showName }: { item: ClientLogoItem; showName: boolean
           const el = e.currentTarget
           if (el.naturalWidth / Math.max(1, el.naturalHeight) > 2.2) setWide(true)
         }}
-        className={wide ? 'h-[18px] w-auto max-w-[92px]' : 'h-7 w-7 object-contain'}
+        className={wide ? 'h-auto w-[30px]' : small ? 'h-6 w-6 object-contain' : 'h-7 w-7 object-contain'}
+        style={white ? { filter: 'brightness(0) invert(1)' } : undefined}
       />
-      {showName && !wide && <span className="text-[15px] font-semibold tracking-[-0.01em]">{name}</span>}
     </span>
   )
 }
