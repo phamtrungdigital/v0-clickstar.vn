@@ -1,11 +1,9 @@
-import { ComingSoon } from '../_components/coming-soon'
+import { loadReportData } from '@/lib/cms/report-data'
+import { ReportsDashboard } from './_components/reports-dashboard'
 
-export default function ReportsPage() {
-  return (
-    <ComingSoon
-      title="Báo cáo"
-      description="Báo cáo tổng hợp: traffic, conversion, doanh thu, ROI. Sẽ cần tích hợp Google Analytics + dữ liệu sales/leads."
-      plannedFor="Sau khi có Google Analytics integration."
-    />
-  )
+export const dynamic = 'force-dynamic'
+
+export default async function ReportsPage() {
+  const data = await loadReportData()
+  return <ReportsDashboard data={data} />
 }
