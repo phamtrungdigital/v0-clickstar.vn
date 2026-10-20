@@ -73,9 +73,10 @@ export const ROADMAP: RoadmapGroup[] = [
         steps: ['Danh sách chung trang, bài, dự án kèm điểm', 'Tab Kiểm tra toàn site', 'Tab Tiếng Anh cho trang, dịch vụ, bài'],
       },
       {
-        id: 'content-og', title: 'Ảnh chia sẻ riêng cho từng trang', status: 'todo', who: 'Kỹ thuật',
-        why: 'Nhiều trang đang dùng chung một ảnh khi gửi link qua Zalo, email hay tin nhắn nên khó thu hút bấm.',
-        steps: ['Liệt kê trang chưa có ảnh riêng ở màn SEO', 'Tạo ảnh 1200x630 theo thương hiệu cho trang dịch vụ và bài mới', 'Tải lên mục Ảnh chia sẻ ở từng trang'],
+        id: 'content-og', title: 'Ảnh chia sẻ riêng cho từng trang chính', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'Ảnh hiện ra khi gửi link qua Zalo, email hay mạng nội bộ. Ảnh riêng cho từng trang dễ thu hút bấm hơn ảnh chung.',
+        steps: ['13 ảnh 1200x630 (mỗi ảnh có bản tiếng Việt và tiếng Anh): trang chủ, Giới thiệu, Bảng giá, ADS hub, 8 trang dịch vụ và một ảnh mặc định', 'Trang /en tự dùng ảnh tiếng Anh; bài blog dùng ảnh bìa của chính bài', 'Muốn đổi ảnh một trang: Admin, Trang, mục Ảnh chia sẻ'],
+        note: 'Ảnh nguồn nằm trong public/images/og. Dự án (case study) vẫn dùng ảnh bìa riêng hoặc ảnh mặc định.',
       },
       {
         id: 'content-links', title: 'Liên kết nội bộ giữa bài blog và trang dịch vụ liên quan', status: 'done', who: 'Kỹ thuật', date: '20/10',
