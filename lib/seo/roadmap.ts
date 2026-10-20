@@ -173,7 +173,7 @@ export const ROADMAP: RoadmapGroup[] = [
       {
         id: 'ai-facts', title: 'Số liệu có nguồn và ngày cập nhật hiển thị rõ', status: 'todo', who: 'Kỹ thuật',
         why: 'AI ưu tiên nguồn mới và có dẫn chứng. Bài không ghi ngày cập nhật dễ bị bỏ qua.',
-        steps: ['Thêm dòng "Cập nhật lần cuối" vào bài và trang dịch vụ', 'Số liệu thị trường kèm tên nguồn và năm', 'Con số của Click Star (500+ doanh nghiệp...) ghi rõ tính đến tháng nào'],
+        steps: ['Dòng "Cập nhật lần cuối" hiển thị cuối trang đã được gỡ theo yêu cầu của anh (20/10); ngày sửa bài vẫn nằm trong dữ liệu cấu trúc của bài blog', 'Số liệu thị trường kèm tên nguồn và năm', 'Con số của Click Star (500+ doanh nghiệp...) ghi rõ tính đến tháng nào'],
       },
       {
         id: 'ai-tables', title: 'Định nghĩa ngắn và bảng so sánh cho khái niệm hay bị hỏi', status: 'todo', who: 'Kỹ thuật',

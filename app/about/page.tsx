@@ -11,7 +11,6 @@ import { AboutValuesSection } from '@/components/sections/about-values'
 import { AboutTimelineSection } from '@/components/sections/about-timeline'
 import { AboutWhyChooseUsSection } from '@/components/sections/about-why-choose-us'
 import { usePageSection } from '@/lib/cms/page-data-context'
-import { PageUpdated } from '@/components/seo/page-updated'
 
 export default function AboutPage() {
   const statsSection = usePageSection('stats')
@@ -36,7 +35,6 @@ export default function AboutPage() {
       {whyChooseUsSection && <AboutWhyChooseUsSection content={whyChooseUsSection.content} />}
       {ctaSection && <CTASection content={ctaSection.content} />}
 
-      <PageUpdated />
       <Footer />
     </div>
   )

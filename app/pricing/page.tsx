@@ -10,7 +10,6 @@ import { PricingSetupAddons } from '@/components/sections/pricing-setup-addons'
 import { FAQSection } from '@/components/sections/faq-section'
 import { CTASectionDynamic } from '@/components/sections/cta-section-dynamic'
 import { usePageData } from '@/lib/cms/page-data-context'
-import { PageUpdated } from '@/components/seo/page-updated'
 import type { Section } from '@/lib/cms/types'
 
 export default function PricingPage() {
@@ -21,7 +20,6 @@ export default function PricingPage() {
     <div className="min-h-screen">
       <MainNav />
       {sections.map((s) => renderSection(s))}
-      <PageUpdated />
       <Footer />
     </div>
   )

@@ -46,7 +46,6 @@ import {
 import { MainNav } from '@/components/layout/main-nav'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceReadMore } from '@/components/seo/service-answer'
-import { PageUpdated } from '@/components/seo/page-updated'
 import { Footer } from '@/components/layout/footer'
 import { SpeechReportSample } from '@/components/services/speech-report-sample'
 import { ClaudeEngine } from '@/components/services/claude-engine'
@@ -950,7 +949,6 @@ export default function SpeechInsightAiPage() {
         </section>
 
         <ServiceReadMore slug="speech-insight-ai" />
-        <PageUpdated />
 
         {/* ⑭ Kêu gọi hành động cuối: khối tối */}
         <section id="contact" className="ap-tile ap-dark scroll-mt-16">
