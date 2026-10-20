@@ -410,6 +410,8 @@ export default function WebsiteDesignPage() {
                   alt="Website Design Preview"
                   width={1280}
                   height={720}
+                  // Ảnh lớn nhất màn hình đầu (LCP) trên điện thoại: tải ngay, ưu tiên cao
+                  priority
                   className="h-full w-full object-cover"
                   sizes="(max-width: 1024px) 100vw, 860px"
                 />

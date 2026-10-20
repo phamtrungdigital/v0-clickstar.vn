@@ -192,10 +192,10 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
         {post.cover_image && (
           <div className="max-w-[900px] mx-auto px-4 sm:px-6 mt-12">
             <div className="relative">
-              {/* Ánh sáng bao quanh lấy màu từ ảnh bìa */}
+              {/* Ánh sáng bao quanh lấy màu từ ảnh bìa. Ảnh bị làm mờ 38px nên chỉ cần bản nhỏ (~128px, AVIF/WebP qua
+                  next/image): trước đây dùng ảnh PNG gốc nặng nên Chrome chọn chính nó làm phần tử LCP (10 giây trên điện thoại). */}
               <div className="bp-ambient" aria-hidden="true">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={post.cover_image} alt="" className="h-full w-full object-cover rounded-[32px]" loading="lazy" decoding="async" />
+                <Image src={post.cover_image} alt="" fill sizes="128px" quality={75} className="object-cover rounded-[32px]" />
               </div>
               <div className="bp-cover relative aspect-video rounded-3xl overflow-hidden bg-muted shadow-[0_30px_70px_-32px_rgba(15,23,42,0.45)]">
                 <CoverParallax>

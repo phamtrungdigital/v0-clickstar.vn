@@ -769,7 +769,7 @@ export function AnalysisDemo() {
           />
           <div className="p-4 space-y-4 flex-1">
             <div className="rounded-lg bg-slate-900 p-3 overflow-x-auto">
-              <pre className="text-[10.5px] leading-relaxed font-mono text-slate-200 whitespace-pre">{s.json}</pre>
+              <pre className="text-xs leading-relaxed font-mono text-slate-200 whitespace-pre">{s.json}</pre>
             </div>
 
             <div className="space-y-2.5">

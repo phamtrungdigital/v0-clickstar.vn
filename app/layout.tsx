@@ -50,8 +50,8 @@ const interVietnamese = localFont({
   declarations: [{ prop: 'unicode-range', value: 'U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB' }],
 })
 
-// Plus Jakarta chủ yếu dùng ở các khối dưới màn hình đầu: không tải trước, để băng thông lúc mở trang dành cho
-// HTML, phông Inter và JavaScript. Chữ hiện bằng phông dự phòng đã chỉnh cỡ rồi đổi sang, không xô lệch bố cục.
+// Plus Jakarta: phông chính của các trang con (ADS hub, dịch vụ, blog...) nên PHẢI tải trước. Thử không tải trước thì
+// phông về sau lần vẽ đầu, chữ đổi kích thước làm khối mở đầu cao lên và xô lệch bố cục (ADS hub CLS 0,22).
 const plusJakarta = localFont({
   src: [
     { path: './fonts/plus-jakarta-sans-latin.woff2', weight: '400', style: 'normal' },
@@ -62,7 +62,6 @@ const plusJakarta = localFont({
   ],
   variable: '--font-plus-jakarta',
   display: 'swap',
-  preload: false,
   declarations: [{ prop: 'unicode-range', value: 'U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD' }],
 })
 const plusJakartaVietnamese = localFont({
@@ -75,7 +74,6 @@ const plusJakartaVietnamese = localFont({
   ],
   variable: '--font-plus-jakarta-vi',
   display: 'swap',
-  preload: false,
   adjustFontFallback: false,
   declarations: [{ prop: 'unicode-range', value: 'U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB' }],
 })

@@ -69,7 +69,7 @@ export async function BlogListView({ lang }: { lang: Lang }) {
             </p>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {posts.map((post) => {
+              {posts.map((post, i) => {
                 const title = pickI18n(lang, post.title)
                 const excerpt = pickI18n(lang, post.excerpt)
                 return (
@@ -86,6 +86,9 @@ export async function BlogListView({ lang }: { lang: Lang }) {
                           src={post.cover_image}
                           alt={title}
                           fill
+                          // Ảnh bài đầu là phần tử lớn nhất màn hình đầu (LCP) trên điện thoại; 3 bài đầu nằm trong màn hình đầu trên máy tính
+                          priority={i === 0}
+                          loading={i > 0 && i < 3 ? 'eager' : undefined}
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
@@ -111,9 +114,9 @@ export async function BlogListView({ lang }: { lang: Lang }) {
                           {new Date(post.published_at).toLocaleDateString(locale, { timeZone: 'Asia/Ho_Chi_Minh' })}
                         </div>
                       )}
-                      <h3 className="font-bold text-lg text-foreground leading-snug mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-200">
+                      <h2 className="font-bold text-lg text-foreground leading-snug mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-200">
                         <Link href={`/blog/${post.slug}`}>{title}</Link>
-                      </h3>
+                      </h2>
                       {excerpt && (
                         <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{excerpt}</p>
                       )}

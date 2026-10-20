@@ -91,8 +91,9 @@ export function ContactForm({ defaultService }: { defaultService?: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-foreground mb-2">{t('Dịch vụ quan tâm', 'Service of interest')}</label>
+        <label htmlFor="contact-service" className="block text-sm font-semibold text-foreground mb-2">{t('Dịch vụ quan tâm', 'Service of interest')}</label>
         <select
+          id="contact-service"
           name="service"
           defaultValue={defaultService ?? ''}
           className="w-full px-4 py-3 bg-white border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-colors"

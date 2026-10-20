@@ -660,7 +660,7 @@ function Sheet({ children, minWidth, hint, className = 'mt-8' }: { children: Rea
       <div className="rounded-[14px] border border-[#d2d2d7] bg-white overflow-x-auto [-webkit-overflow-scrolling:touch]">
         <div style={{ minWidth }}>{children}</div>
       </div>
-      <p className="mt-2 text-xs text-[#86868b] sm:hidden">{hint}</p>
+      <p className="mt-2 text-xs text-[#6e6e73] sm:hidden">{hint}</p>
     </div>
   )
 }
