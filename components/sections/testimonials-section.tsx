@@ -1,16 +1,9 @@
 'use client'
 
-import { useRef } from 'react'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, FreeMode } from 'swiper/modules'
-import type { Swiper as SwiperType } from 'swiper'
 import { Star, Quote } from 'lucide-react'
 import Image from 'next/image'
 import { useLanguage } from '@/contexts/language-context'
 import type { TestimonialsContent, TestimonialItem } from '@/lib/cms/types'
-
-import 'swiper/css'
-import 'swiper/css/free-mode'
 
 function TestimonialCard({
   testimonial,
@@ -62,8 +55,9 @@ function TestimonialCard({
 }
 
 export function TestimonialsSection({ content }: { content: TestimonialsContent }) {
-  const swiperRef = useRef<SwiperType | null>(null)
   const { t } = useLanguage()
+  // Mỗi thẻ trôi qua khoảng 4 giây (như slider cũ); dải gồm 2 bản để vòng lặp liền mạch.
+  const duration = `${Math.max(1, content.items.length) * 4}s`
 
   return (
     <section data-cms-section="testimonials" className="py-20 lg:py-28 bg-[#eaf2fd] overflow-hidden">
@@ -94,50 +88,49 @@ export function TestimonialsSection({ content }: { content: TestimonialsContent 
         </div>
       </div>
 
-      {/* Slider */}
-      <div
-        className="relative"
-        onMouseEnter={() => swiperRef.current?.autoplay?.stop()}
-        onMouseLeave={() => swiperRef.current?.autoplay?.start()}
-      >
-        <Swiper
-          modules={[Autoplay, FreeMode]}
-          onSwiper={(swiper) => {
-            swiperRef.current = swiper
-          }}
-          slidesPerView={1.2}
-          spaceBetween={20}
-          loop={true}
-          speed={4000}
-          autoplay={{ delay: 0, disableOnInteraction: false }}
-          freeMode={{ enabled: true, momentum: false }}
-          breakpoints={{
-            480: { slidesPerView: 1.5, spaceBetween: 20 },
-            640: { slidesPerView: 2.2, spaceBetween: 24 },
-            768: { slidesPerView: 2.8, spaceBetween: 24 },
-            1024: { slidesPerView: 3.5, spaceBetween: 28 },
-            1280: { slidesPerView: 4.2, spaceBetween: 28 },
-            1536: { slidesPerView: 5, spaceBetween: 32 },
-          }}
-          className="!px-4 sm:!px-6 lg:!px-8"
-        >
-          {[...content.items, ...content.items].map((testimonial, index) => {
-            const realIdx = index % content.items.length
-            return (
-              <SwiperSlide key={`${realIdx}-${index}`} className="!h-auto">
-                <TestimonialCard
-                  testimonial={testimonial}
-                  quote={t(testimonial.quote.vi, testimonial.quote.en)}
-                  source={t(testimonial.source.vi, testimonial.source.en)}
-                  itemIndex={index < content.items.length ? realIdx : undefined}
-                />
-              </SwiperSlide>
-            )
-          })}
-        </Swiper>
+      {/* Dải đánh giá trôi liên tục bằng CSS (không dùng thư viện trượt): dừng khi rê chuột hoặc chạm.
+          Người dùng bật giảm chuyển động thì không trôi, thay bằng cuộn ngang. */}
+      <div className="relative">
+        <div className="tm-viewport overflow-hidden px-4 sm:px-6 lg:px-8">
+          <div className="tm-track flex w-max" style={{ ['--tm-dur' as string]: duration }}>
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0" aria-hidden={copy === 1 ? true : undefined}>
+                {content.items.map((testimonial, index) => (
+                  <div key={`${copy}-${index}`} className="tm-card shrink-0">
+                    <TestimonialCard
+                      testimonial={testimonial}
+                      quote={t(testimonial.quote.vi, testimonial.quote.en)}
+                      source={t(testimonial.source.vi, testimonial.source.en)}
+                      itemIndex={copy === 0 ? index : undefined}
+                    />
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 lg:w-24 bg-[#f5f5f7] z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 lg:w-24 bg-[#f5f5f7] z-10 pointer-events-none" />
+
+        <style>{`
+          .tm-card{width:calc((100vw - 32px) / 1.2 - 20px);margin-right:20px}
+          @media (min-width:480px){.tm-card{width:calc((100vw - 32px) / 1.5 - 20px)}}
+          @media (min-width:640px){.tm-card{width:calc((100vw - 48px) / 2.2 - 24px);margin-right:24px}}
+          @media (min-width:768px){.tm-card{width:calc((100vw - 48px) / 2.8 - 24px)}}
+          @media (min-width:1024px){.tm-card{width:calc((100vw - 64px) / 3.5 - 28px);margin-right:28px}}
+          @media (min-width:1280px){.tm-card{width:calc((100vw - 64px) / 4.2 - 28px)}}
+          @media (min-width:1536px){.tm-card{width:calc((100vw - 64px) / 5 - 32px);margin-right:32px}}
+          .tm-track{animation:tm-marquee var(--tm-dur) linear infinite}
+          .tm-viewport:hover .tm-track,.tm-viewport:active .tm-track,.tm-viewport:focus-within .tm-track{animation-play-state:paused}
+          @keyframes tm-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+          @media (prefers-reduced-motion:reduce){
+            .tm-viewport{overflow-x:auto;scroll-snap-type:x mandatory}
+            .tm-track{animation:none}
+            .tm-track>[aria-hidden]{display:none}
+            .tm-card{scroll-snap-align:start}
+          }
+        `}</style>
       </div>
     </section>
   )
