@@ -108,7 +108,7 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-plus-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-sans: var(--font-plus-jakarta-vi), var(--font-plus-jakarta), 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'Geist Mono', monospace;
   
   /* Custom colors for Tailwind */
@@ -166,7 +166,7 @@
    + áp đầy đủ Clickstar Growth OS design system (đây là "dashboard" của web).
    Override các biến theme THẬT để giao diện đổi nhận diện, không chỉ token chết. */
 .admin-scope {
-  --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: var(--font-inter-vi), var(--font-inter), 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-family: var(--font-sans);
 
   /* Surfaces & text */
@@ -263,7 +263,7 @@ html {
   --border: #e0e0e0;
   --input: #e0e0e0;
   --ring: #0071e3;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', var(--font-inter), 'Inter', system-ui, 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', var(--font-inter-vi), var(--font-inter), 'Inter', system-ui, 'Segoe UI', sans-serif;
   letter-spacing: -0.011em;
 }
 .theme-apple h1,
