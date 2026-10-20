@@ -957,6 +957,102 @@ footer .wrap { color: var(--on-dark-muted); }
 .cover .wrap > *:nth-child(6) { animation-delay: .36s; } .cover .wrap > *:nth-child(7) { animation-delay: .46s; }
 @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; translate: none; transition: none; } .cover .wrap > * { animation: none; } .card, .case, .stat, .values div, .ptile, .dcard { transition: none; } }
 @media print { .rv { opacity: 1 !important; translate: none !important; } .cover .wrap > * { animation: none; } .tile.dark::before, .tile.dark-2::before { display: none; } }
+
+/* ===== Trình xem sản phẩm: chọn ứng dụng, bấm từng bước để xem màn hình (21/10/2026) ===== */
+.pd-tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.pd-tab { display: inline-flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 18px 6px 6px; border: 1px solid var(--hairline); border-radius: 9999px; background: #fff; color: var(--ink-80); font: inherit; font-size: 15px; cursor: pointer; transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, color .2s ease; }
+.pd-tab:hover { border-color: rgba(30,109,218,0.5); color: var(--ink); }
+.pd-ti { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-wash); color: var(--accent-ink); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; flex: none; }
+.pd-tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 12px 26px -14px rgba(30,109,218,0.9); }
+.pd-tab[aria-selected="true"] .pd-ti { background: rgba(255,255,255,0.22); color: #fff; }
+@media (max-width: 700px) {
+  .pd-tabs { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; margin-inline: calc(var(--gutter) * -1); padding: 2px var(--gutter) 8px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .pd-tabs::-webkit-scrollbar { display: none; }
+  .pd-tab { flex: none; }
+}
+.pd-panels { display: grid; }
+.pd { display: grid; gap: 28px; }
+.pd[hidden] { display: none; }
+.pd-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 40px; align-items: start; }
+@media (max-width: 960px) { .pd-grid { grid-template-columns: 1fr; gap: 28px; } }
+.pd-info { display: grid; gap: 14px; align-content: start; text-align: left; }
+.pd-info .kicker { font-size: var(--t-caption); font-weight: 600; color: var(--accent-ink); }
+.pd-info h3 { font-size: 30px; letter-spacing: -0.025em; line-height: 1.15; }
+.pd-desc { color: var(--ink-80); }
+.pd-stags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.pd-stl { font-size: 12px; color: var(--ink-48); margin-right: 4px; }
+.pd-stag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 9999px; background: var(--accent-wash); color: var(--accent-ink); font-size: 12px; font-weight: 600; }
+.pd-stag b { color: var(--accent); font-variant-numeric: tabular-nums; }
+.pd-steps { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.pd-step { width: 100%; display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; text-align: left; padding: 12px 14px; border: 1px solid transparent; border-radius: 14px; background: transparent; color: var(--ink-80); font: inherit; font-size: 15px; line-height: 1.45; cursor: pointer; transition: background .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.pd-step:hover { background: #fff; }
+.pd-step.on { background: #fff; border-color: rgba(30,109,218,0.35); box-shadow: 0 16px 32px -22px rgba(30,109,218,0.75); }
+.pd-step b { color: var(--ink); font-weight: 600; }
+.pd-sn { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: #EAECF2; color: var(--ink-48); font-size: 12px; font-weight: 700; transition: background .2s ease, color .2s ease; }
+.pd-step.on .pd-sn { background: var(--accent); color: #fff; }
+.pd-stage { display: grid; gap: 10px; min-width: 0; position: sticky; top: 76px; }
+@media (max-width: 960px) { .pd-stage { position: static; } }
+.pd-screens { position: relative; min-height: 420px; background: #fff; }
+.pd-screen { display: none; }
+.pd-screen.on { display: block; animation: pd-in .4s ease both; }
+@keyframes pd-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.pd-prog { height: 3px; border-radius: 3px; background: #E1E5EE; overflow: hidden; }
+.pd-prog i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-on-dark)); }
+.pd-prog.run i { animation: pd-bar var(--pd-dur, 7s) linear forwards; }
+.pd-prog.off { visibility: hidden; }
+@keyframes pd-bar { from { width: 0; } to { width: 100%; } }
+@media (max-width: 960px) {
+  .pd-grid { display: flex; flex-direction: column; gap: 18px; }
+  .pd-info { display: contents; }
+  .pd-info > .kicker, .pd-info > h3, .pd-info > .pd-desc, .pd-info > .pd-stags { order: 1; }
+  .pd-stage { order: 2; }
+  .pd-steps { order: 3; }
+}
+.pd-cap { font-size: 14px; line-height: 1.5; color: var(--ink-80); min-height: 3em; }
+
+/* Luồng dữ liệu của ứng dụng: nhận từ, lõi, tạo ra, giá trị khi kết nối */
+.pd-logic { display: grid; grid-template-columns: minmax(0, 1fr) 28px auto 28px minmax(0, 1fr); gap: 14px; align-items: center; padding: 20px 24px; border-radius: 20px; background: #fff; border: 1px solid var(--hairline); text-align: left; }
+.pd-lcol h4, .pd-lval h4 { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-48); margin-bottom: 8px; }
+.pd-lcs { display: flex; flex-wrap: wrap; gap: 6px; }
+.pd-lc { display: inline-flex; padding: 5px 11px; border-radius: 9999px; border: 1px solid #DCE6F8; background: #F4F8FF; color: var(--ink-80); font-size: 13px; font-weight: 500; }
+.pd-lcore { padding: 12px 18px; border-radius: 14px; background: linear-gradient(135deg, #1d1d1f, #0d2142); color: #fff; font-weight: 600; text-align: center; box-shadow: 0 0 0 4px rgba(30,109,218,0.12), 0 14px 30px -14px rgba(30,109,218,0.9); }
+.pd-larrow { position: relative; height: 2px; background: linear-gradient(90deg, rgba(30,109,218,.15), var(--accent)); border-radius: 2px; }
+.pd-larrow::after { content: ""; position: absolute; right: -1px; top: 50%; width: 8px; height: 8px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); transform: translateY(-50%) rotate(45deg); }
+.pd-lval { grid-column: 1 / -1; padding-top: 14px; border-top: 1px solid var(--hairline); }
+.pd-lval p { color: var(--accent-ink); font-weight: 600; }
+@media (max-width: 760px) {
+  .pd-logic { grid-template-columns: 1fr; }
+  .pd-larrow { width: 2px; height: 22px; margin: 0 auto; background: linear-gradient(180deg, rgba(30,109,218,.15), var(--accent)); }
+  .pd-larrow::after { right: 50%; top: auto; bottom: -1px; transform: translateX(50%) rotate(135deg); }
+  .pd-lcore { justify-self: center; }
+}
+
+/* Thành phần dùng trong các màn hình mẫu */
+.pdx-list { display: grid; gap: 8px; }
+.pdx-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; border: 1px solid #EEF0F4; border-radius: 10px; background: #fff; }
+.pdx-row .l { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.pdx-ico { width: 30px; height: 30px; border-radius: 9px; background: var(--accent-wash); color: var(--accent-ink); display: grid; place-items: center; font-weight: 700; font-size: 12px; flex: none; }
+.pdx-ck { width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid #C5CBD8; flex: none; }
+.pdx-box { border: 1px solid #E6E9F0; border-radius: 12px; padding: 12px; background: #fff; }
+.pdx-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 520px) { .pdx-two { grid-template-columns: 1fr; } }
+.pdx-hbars { display: grid; gap: 10px; }
+.pdx-hbar { display: grid; grid-template-columns: 104px 1fr 40px; gap: 10px; align-items: center; font-size: 12px; }
+.pdx-hbar .tr { height: 8px; border-radius: 4px; background: #EEF0F4; overflow: hidden; }
+.pdx-hbar .tr i { display: block; height: 100%; background: var(--accent); border-radius: 4px; }
+.pdx-hbar .tr i.hi { background: var(--ok); }
+.pdx-hbar b { text-align: right; font-variant-numeric: tabular-nums; }
+.pdx-mail { border: 1px solid #E6E9F0; border-radius: 12px; overflow: hidden; }
+.pdx-mail .eh { background: #F7F8FB; padding: 10px 12px; display: grid; gap: 2px; }
+.pdx-mail .eb { padding: 12px; display: grid; gap: 10px; }
+.btnrow { display: flex; gap: 8px; }
+.mbtn { padding: 8px 14px; border-radius: 999px; font-weight: 600; font-size: 12px; background: var(--accent); color: #fff; }
+.mbtn.g { background: #EEF0F4; color: var(--ink-80); }
+.pdx-field { display: grid; gap: 4px; }
+.pdx-field label { font-size: 11px; color: var(--ink-48); }
+.pdx-field div { border: 1px solid #DDE1EA; border-radius: 10px; padding: 9px 10px; background: #fff; font-size: 13px; }
+@media print { .pd[hidden] { display: grid !important; } .pd-tabs, .pd-prog { display: none; } .pd-stage { position: static; } .pd-screen { display: none; } .pd-screen.on { display: block; animation: none; } }
+@media (prefers-reduced-motion: reduce) { .pd-screen.on { animation: none; } .pd-prog { display: none; } }
 </style>
 </head>
 <body>
@@ -1552,11 +1648,30 @@ footer .wrap { color: var(--on-dark-muted); }
     <div class="head">
       <p class="eyebrow"><span class="vi">Ứng dụng thực tế</span><span class="en">Products in action</span></p>
       <h2 class="h2"><span class="vi">Sáu ứng dụng, mỗi ứng dụng phụ trách một khâu trong hành trình khách hàng.</span><span class="en">Six apps, each owning one stage of the customer journey.</span></h2>
+      <p class="lead"><span class="vi">Chọn một ứng dụng, bấm từng bước để xem cách nó hoạt động.</span><span class="en">Pick an app and click through the steps to see how it works.</span></p>
     </div>
-    <div class="apps">
-      <div class="app">
-        <div class="mock-wrap">
-          <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span>app.clickstar.vn</span></div><div class="mock-body">
+    <div class="apps pd-wrap">
+<div class="pd-tabs" role="tablist" aria-label="Sản phẩm / Products">
+<button type="button" class="pd-tab" role="tab" id="pd-tab-0" aria-controls="pd-0" aria-selected="true" data-i="0"><span class="pd-ti">AI</span><span class="pd-tn">AI Bot Clickstar</span></button>
+<button type="button" class="pd-tab" role="tab" id="pd-tab-1" aria-controls="pd-1" aria-selected="false" data-i="1"><span class="pd-ti">OS</span><span class="pd-tn">Clickstar Growth OS</span></button>
+<button type="button" class="pd-tab" role="tab" id="pd-tab-2" aria-controls="pd-2" aria-selected="false" data-i="2"><span class="pd-ti">CA</span><span class="pd-tn">AI Call Analysis</span></button>
+<button type="button" class="pd-tab" role="tab" id="pd-tab-3" aria-controls="pd-3" aria-selected="false" data-i="3"><span class="pd-ti">DB</span><span class="pd-tn">Dashboard đa nguồn</span></button>
+<button type="button" class="pd-tab" role="tab" id="pd-tab-4" aria-controls="pd-4" aria-selected="false" data-i="4"><span class="pd-ti">AH</span><span class="pd-tn">ADS Hub</span></button>
+<button type="button" class="pd-tab" role="tab" id="pd-tab-5" aria-controls="pd-5" aria-selected="false" data-i="5"><span class="pd-ti">CI</span><span class="pd-tn">App Check-in sự kiện</span></button>
+</div>
+<div class="pd-panels">
+<article class="pd on" id="pd-0" role="tabpanel" aria-labelledby="pd-tab-0">
+  <div class="pd-grid">
+    <div class="pd-info">
+      <span class="kicker"><span class="vi">Đón khách</span><span class="en">Welcome</span></span>
+      <h3>AI Bot Clickstar</h3>
+      <p class="pd-desc"><span class="vi">Chatbot tư vấn gắn trên website, fanpage và Zalo OA. Bot được huấn luyện bằng tài liệu riêng của doanh nghiệp, hỏi đúng thông tin cần thiết rồi chuyển lead đã đủ dữ liệu sang CRM.</span><span class="en">A sales chatbot for website, fan page and Zalo OA, trained on your own documents. It asks the right questions and hands complete leads to CRM.</span></p>
+      <div class="pd-stags"><span class="pd-stl"><span class="vi">Giai đoạn trong hành trình</span><span class="en">Journey stage</span></span><span class="pd-stag"><b>02</b><span class="vi">Đón khách</span><span class="en">Welcome</span></span></div>
+      <ol class="pd-steps" role="tablist" aria-label="Các bước / Steps"><li><button type="button" class="pd-step on" role="tab" aria-selected="true" data-k="0" data-url="app.clickstar.vn/bot/kenh" data-cap-vi="Bước 1 · Khách nhắn tới từ ba kênh. AI bot đón tin mọi lúc, kể cả ngoài giờ." data-cap-en="Step 1 · Customers write in from three channels. The bot answers at any hour."><span class="pd-sn">1</span><span class="pd-st"><span class="vi"><b>Khách nhắn</b> từ website, fanpage hoặc Zalo bất kỳ giờ nào.</span><span class="en"><b>Customer messages</b> from website, fan page or Zalo, any time.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="1" data-url="app.clickstar.vn/bot/hoi-thoai" data-cap-vi="Bước 2 · AI trả lời dựa trên kho kiến thức riêng của doanh nghiệp, hỏi khu vực và xin số điện thoại." data-cap-en="Step 2 · The bot answers from your own knowledge base, asks the area and the phone number."><span class="pd-sn">2</span><span class="pd-st"><span class="vi"><b>AI trả lời</b> dựa trên kho kiến thức: học phí, lịch, chương trình.</span><span class="en"><b>AI answers</b> from the knowledge base: fees, schedules, programmes.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="2" data-url="app.clickstar.vn/bot/thu-thap" data-cap-vi="Bước 3 · Thông tin được thu thập theo kịch bản, đủ điều kiện mới chuyển sang CRM." data-cap-en="Step 3 · Details are collected by script; a lead moves to CRM only when complete."><span class="pd-sn">3</span><span class="pd-st"><span class="vi"><b>Thu thập thông tin</b> theo kịch bản: nhu cầu, khu vực, số điện thoại.</span><span class="en"><b>Collects details</b> by script: needs, area, phone.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="3" data-url="app.clickstar.vn/leads/MA-0218" data-cap-vi="Bước 4 · Lead được tạo trong CRM kèm nguồn quảng cáo và toàn bộ hội thoại, tự giao cho đúng người." data-cap-en="Step 4 · The lead is created in CRM with ad source and full transcript, assigned automatically."><span class="pd-sn">4</span><span class="pd-st"><span class="vi"><b>Tạo lead trong CRM</b> kèm nguồn quảng cáo và toàn bộ hội thoại.</span><span class="en"><b>Creates the CRM lead</b> with ad source and full transcript.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="4" data-url="app.clickstar.vn/bot/chuyen-nguoi" data-cap-vi="Bước 5 · Câu hỏi vượt phạm vi, bot chuyển cho người thật và tư vấn viên tiếp quản ngay trong cùng cuộc trò chuyện." data-cap-en="Step 5 · Out-of-scope questions are handed to a person inside the same conversation."><span class="pd-sn">5</span><span class="pd-st"><span class="vi"><b>Chuyển người thật</b> khi khách cần hoặc câu hỏi vượt phạm vi.</span><span class="en"><b>Hands over to a person</b> when needed or out of scope.</span></span></button></li></ol>
+    </div>
+    <div class="pd-stage">
+      <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span class="pd-url">app.clickstar.vn/bot/kenh</span></div>
+        <div class="pd-screens"><div class="pd-screen on" data-k="0"><div class="mock-body"><div class="mrow"><div><div class="mt">Kênh đón khách</div><div class="ms2">Một kịch bản, dùng chung cho mọi kênh</div></div><span class="chip ok">3 kênh hoạt động</span></div><div class="pdx-list"><div class="pdx-row"><div class="l"><span class="pdx-ico">W</span><div><div class="mt">Website</div><div class="ms2">Khung chat trên clickstar.vn</div></div></div><span class="chip ok">Đang hoạt động</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">F</span><div><div class="mt">Fanpage Messenger</div><div class="ms2">Trả lời tin nhắn trang</div></div></div><span class="chip ok">Đang hoạt động</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">Z</span><div><div class="mt">Zalo OA</div><div class="ms2">Trả lời tin nhắn OA</div></div></div><span class="chip ok">Đang hoạt động</span></div></div><div class="chat"><div class="bub me" style="justify-self:start;background:#F1F3F8;color:var(--ink);border-bottom-left-radius:4px;border-bottom-right-radius:16px">Mình muốn tìm hiểu chương trình lớp 6 cho con</div></div><div class="ms2">Tin mới · 20:15 · nguồn quảng cáo TikTok · AI đang soạn câu trả lời…</div></div></div><div class="pd-screen" data-k="1"><div class="mock-body">
   <div class="mrow"><div class="mrow" style="justify-content:flex-start"><div class="avatar">AI</div><div><div class="mt">Trợ lý tư vấn</div><div class="ms2">Trả lời trong vài giây</div></div></div><span class="chip ok">Đang hoạt động</span></div>
   <div class="chat">
     <div class="bub bot">Chào chị, em có thể giúp gì cho chị ạ?</div>
@@ -1568,19 +1683,34 @@ footer .wrap { color: var(--on-dark-muted); }
   </div>
   <div class="toast">Lead mới đã vào CRM · Nguồn: TikTok / STEM-video-03 · Giao cho: Tư vấn viên Cầu Giấy</div>
   <div class="inputbar"><div>Nhập tin nhắn...</div><span class="send"></span></div>
-</div></div>
-          <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
-        </div>
-        <div class="app-info">
-          <span class="kicker"><span class="vi">Đón khách</span><span class="en">Welcome</span></span>
-          <h3>AI Bot Clickstar</h3>
-          <p><span class="vi">Chatbot tư vấn gắn trên website, fanpage và Zalo OA. Bot được huấn luyện bằng tài liệu riêng của doanh nghiệp, hỏi đúng thông tin cần thiết rồi chuyển lead đã đủ dữ liệu sang CRM.</span><span class="en">A sales chatbot for website, fan page and Zalo OA, trained on your own documents. It asks the right questions and hands complete leads to CRM.</span></p>
-          <ol class="flow"><li><span><span class="vi"><b>Khách nhắn</b> từ website, fanpage hoặc Zalo bất kỳ giờ nào.</span><span class="en"><b>Customer messages</b> from website, fan page or Zalo, any time.</span></span></li><li><span><span class="vi"><b>AI trả lời</b> dựa trên kho kiến thức: học phí, lịch, chương trình.</span><span class="en"><b>AI answers</b> from the knowledge base: fees, schedules, programmes.</span></span></li><li><span><span class="vi"><b>Thu thập thông tin</b> theo kịch bản: nhu cầu, khu vực, số điện thoại.</span><span class="en"><b>Collects details</b> by script: needs, area, phone.</span></span></li><li><span><span class="vi"><b>Tạo lead trong CRM</b> kèm nguồn quảng cáo và toàn bộ hội thoại.</span><span class="en"><b>Creates the CRM lead</b> with ad source and full transcript.</span></span></li><li><span><span class="vi"><b>Chuyển người thật</b> khi khách cần hoặc câu hỏi vượt phạm vi.</span><span class="en"><b>Hands over to a person</b> when needed or out of scope.</span></span></li></ol>
-        </div>
+</div></div><div class="pd-screen" data-k="2"><div class="mock-body"><div class="mrow"><div><div class="mt">Thông tin đã thu thập</div><div class="ms2">Hội thoại #MA-0218</div></div><span class="chip ">3/4 thông tin</span></div><div class="kv"><div><span>Nhu cầu</span><span>Lớp 6, bán trú <span class="chip ok">Đã có</span></span></div><div><span>Khu vực</span><span>Cầu Giấy <span class="chip ok">Đã có</span></span></div><div><span>Số điện thoại</span><span>09xx xxx 218 <span class="chip ok">Đã có</span></span></div><div><span>Giờ muốn được gọi</span><span><span class="chip grey">Chưa có</span></span></div></div><div class="chat"><div class="bub bot">Chị muốn tư vấn viên gọi vào khung giờ nào ạ?</div></div><div class="quick"><span>Sáng</span><span>Chiều</span><span>Tối</span></div><div class="tip">Kịch bản chỉ hỏi những câu cần thiết, tối đa vài câu để khách không bị mệt.</div></div></div><div class="pd-screen" data-k="3"><div class="mock-body"><div class="toast">Lead mới đã vào CRM · Nguồn: TikTok / STEM-video-03 · Giao cho: Tư vấn viên Cầu Giấy</div><div class="mrow"><div><div class="mt">Nguyễn Minh Anh</div><div class="ms2">Phụ huynh · 09xx xxx 218</div></div><span class="chip ">Mới</span></div><div class="kv"><div><span>Nguồn</span><span>TikTok Ads</span></div><div><span>Chiến dịch</span><span>STEM-video-03</span></div><div><span>Nhu cầu</span><span>Lớp 6, bán trú</span></div><div><span>Cơ sở</span><span>Cầu Giấy</span></div><div><span>Phụ trách</span><span>Trần Thu Hà</span></div><div><span>Hội thoại</span><span><span class="chip ">Đính kèm đầy đủ</span></span></div></div></div></div><div class="pd-screen" data-k="4"><div class="mock-body"><div class="mrow"><div><div class="mt">Hội thoại cần người thật</div><div class="ms2">Cầu Giấy · 20:31</div></div><span class="chip warn">Chờ tiếp quản</span></div><div class="chat"><div class="bub me">Bên mình có xe đưa đón khu Trung Kính không?</div><div class="bub bot">Câu hỏi này em chuyển tư vấn viên hỗ trợ chị ngay ạ.</div></div><div class="toast" style="background:var(--warn-wash);color:var(--warn)">Ngoài phạm vi kho kiến thức · chuyển người thật</div><div class="pdx-row"><div class="l"><span class="pdx-ico">TH</span><div><div class="mt">Trần Thu Hà đã tham gia hội thoại</div><div class="ms2">Xem được toàn bộ tin nhắn trước đó</div></div></div><span class="chip ok">Đã tiếp quản</span></div></div></div></div>
       </div>
-      <div class="app">
-        <div class="mock-wrap">
-          <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span>app.clickstar.vn/leads/MA-0218</span></div><div class="mock-body">
+      <div class="pd-prog" aria-hidden="true"><i></i></div>
+      <p class="mock-cap pd-cap"><span class="vi">Bước 1 · Khách nhắn tới từ ba kênh. AI bot đón tin mọi lúc, kể cả ngoài giờ.</span><span class="en">Step 1 · Customers write in from three channels. The bot answers at any hour.</span></p>
+      <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
+    </div>
+  </div>
+  <div class="pd-logic" aria-label="Luồng dữ liệu / Data flow">
+    <div class="pd-lcol"><h4><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Website</span><span class="en">Website</span></span><span class="pd-lc"><span class="vi">Fanpage</span><span class="en">Fan page</span></span><span class="pd-lc"><span class="vi">Zalo OA</span><span class="en">Zalo OA</span></span></div></div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcore">AI Bot Clickstar</div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcol"><h4><span class="vi">Tạo ra</span><span class="en">Produces</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Nhu cầu</span><span class="en">Needs</span></span><span class="pd-lc"><span class="vi">Liên hệ</span><span class="en">Contact</span></span><span class="pd-lc"><span class="vi">Lịch hẹn</span><span class="en">Bookings</span></span></div></div>
+    <div class="pd-lval"><h4><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></h4><p><span class="vi">Tư vấn viên nhận lead đã có sẵn nhu cầu.</span><span class="en">Reps receive leads with needs already captured.</span></p></div>
+  </div>
+</article>
+<article class="pd" id="pd-1" role="tabpanel" aria-labelledby="pd-tab-1" hidden>
+  <div class="pd-grid">
+    <div class="pd-info">
+      <span class="kicker"><span class="vi">Quản trị khách hàng</span><span class="en">Customer management</span></span>
+      <h3>Clickstar Growth OS</h3>
+      <p class="pd-desc"><span class="vi">CRM và CDP trên cùng một hồ sơ. Mọi điểm chạm của khách từ quảng cáo, chat, cuộc gọi đến check-in đều hiện trên một dòng thời gian.</span><span class="en">CRM and CDP on one profile. Every touchpoint, from ad to chat, call and check-in, sits on a single timeline.</span></p>
+      <div class="pd-stags"><span class="pd-stl"><span class="vi">Giai đoạn trong hành trình</span><span class="en">Journey stage</span></span><span class="pd-stag"><b>03</b><span class="vi">Tư vấn</span><span class="en">Consult</span></span><span class="pd-stag"><b>05</b><span class="vi">Chăm khách</span><span class="en">Care</span></span><span class="pd-stag"><b>06</b><span class="vi">Giữ chân</span><span class="en">Retain</span></span></div>
+      <ol class="pd-steps" role="tablist" aria-label="Các bước / Steps"><li><button type="button" class="pd-step on" role="tab" aria-selected="true" data-k="0" data-url="app.clickstar.vn/cdp/hop-nhat" data-cap-vi="Bước 1 · Lead từ mọi nguồn về một nơi; hai bản ghi cùng số điện thoại được gộp thành một hồ sơ." data-cap-en="Step 1 · Leads from every source land in one place; duplicates by phone are merged."><span class="pd-sn">1</span><span class="pd-st"><span class="vi"><b>Hợp nhất lead</b> từ mọi nguồn, tự động chống trùng theo số điện thoại.</span><span class="en"><b>Unifies leads</b> from every source, de-duplicated by phone.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="1" data-url="app.clickstar.vn/crm/chia-lead" data-cap-vi="Bước 2 · Quy tắc chia lead theo khu vực, cơ sở và ca làm việc, không cần phân công tay." data-cap-en="Step 2 · Routing rules by area, location and shift. No manual assignment."><span class="pd-sn">2</span><span class="pd-st"><span class="vi"><b>Chia lead tự động</b> theo khu vực, cơ sở, ca làm việc.</span><span class="en"><b>Auto-assigns</b> by area, location and shift.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="2" data-url="app.clickstar.vn/crm/sla" data-cap-vi="Bước 3 · Hệ thống nhắc ngay khi lead chưa được gọi quá 5 phút và báo cho quản lý." data-cap-en="Step 3 · Alerts fire when a lead waits more than 5 minutes, and the manager is notified."><span class="pd-sn">3</span><span class="pd-st"><span class="vi"><b>Nhắc SLA</b> khi lead chưa được gọi sau 5 phút.</span><span class="en"><b>SLA alerts</b> when a lead waits more than 5 minutes.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="3" data-url="app.clickstar.vn/leads/MA-0218" data-cap-vi="Bước 4 · Hồ sơ khách hàng: mọi điểm chạm từ quảng cáo, chat, cuộc gọi đến check-in nằm trên một dòng thời gian." data-cap-en="Step 4 · The customer profile: every touchpoint on a single timeline."><span class="pd-sn">4</span><span class="pd-st"><span class="vi"><b>Theo dõi pipeline</b> từ lead mới đến khách hàng chính thức.</span><span class="en"><b>Tracks the pipeline</b> from new lead to customer.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="4" data-url="app.clickstar.vn/ads/dong-bo-tep" data-cap-vi="Bước 5 · Tệp khách đã chốt được đồng bộ ngược lên nền tảng quảng cáo để tìm khách tương tự và ngừng quảng cáo tới người đã mua." data-cap-en="Step 5 · Converted audiences sync back to ad platforms for lookalikes and to stop ads to buyers."><span class="pd-sn">5</span><span class="pd-st"><span class="vi"><b>Đồng bộ ngược</b> tệp khách đã chốt lên nền tảng quảng cáo.</span><span class="en"><b>Syncs back</b> converted customers to ad platforms.</span></span></button></li></ol>
+    </div>
+    <div class="pd-stage">
+      <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span class="pd-url">app.clickstar.vn/cdp/hop-nhat</span></div>
+        <div class="pd-screens"><div class="pd-screen on" data-k="0"><div class="mock-body"><div class="mrow"><div><div class="mt">Lead mới hôm nay</div><div class="ms2">Hợp nhất từ 4 nguồn</div></div><span class="chip ">Chống trùng bật</span></div><div class="tscroll"><table class="atable"><thead><tr><th>Nguồn</th><th>Họ tên</th><th>Số điện thoại</th><th>Kết quả</th></tr></thead><tbody><tr><td>Meta · Form</td><td>Nguyễn Minh Anh</td><td>09xx xxx 218</td><td><span class="chip ok">Mới</span></td></tr><tr><td>TikTok · Form</td><td>Nguyễn M. Anh</td><td>09xx xxx 218</td><td><span class="chip warn">Trùng, đã gộp</span></td></tr><tr><td>Zalo OA</td><td>Lê Hoàng</td><td>09xx xxx 640</td><td><span class="chip ok">Mới</span></td></tr><tr><td>Website</td><td>Phạm Quang</td><td>09xx xxx 075</td><td><span class="chip ok">Mới</span></td></tr></tbody></table></div><div class="tip">Hai bản ghi cùng số điện thoại được gộp thành một hồ sơ, giữ cả hai nguồn quảng cáo để đo đúng.</div></div></div><div class="pd-screen" data-k="1"><div class="mock-body"><div class="mrow"><div><div class="mt">Quy tắc chia lead</div><div class="ms2">Áp dụng cho lead mới</div></div><span class="chip ok">Đang chạy</span></div><div class="pdx-list"><div class="pdx-row"><div><div class="mt">Khu vực Cầu Giấy</div><div class="ms2">Ca tối 18:00 đến 22:00</div></div><span class="mt">Trần Thu Hà</span></div><div class="pdx-row"><div><div class="mt">Khu vực Long Biên</div><div class="ms2">Ca sáng 08:00 đến 12:00</div></div><span class="mt">Tổ tư vấn Long Biên</span></div><div class="pdx-row"><div><div class="mt">Ngoài khung giờ</div><div class="ms2">Không có ai trực</div></div><span class="mt">Hàng chờ đầu ca sau</span></div></div><div class="toast">Lead MA-0218 đã giao cho Trần Thu Hà trong 12 giây</div></div></div><div class="pd-screen" data-k="2"><div class="mock-body"><div class="mrow"><div><div class="mt">Lead chờ gọi</div><div class="ms2">Mục tiêu: gọi trong 5 phút</div></div><span class="chip warn">2 lead cần xử lý</span></div><div class="pdx-list"><div class="pdx-row"><div><div class="mt">MA-0218 · Nguyễn Minh Anh</div><div class="ms2">Cầu Giấy · TikTok</div></div><span class="chip ok">3:12 · trong SLA</span></div><div class="pdx-row"><div><div class="mt">MA-0231 · Lê Hoàng</div><div class="ms2">Long Biên · Zalo OA</div></div><span class="chip bad">5:40 · quá SLA</span></div><div class="pdx-row"><div><div class="mt">MA-0233 · Phạm Quang</div><div class="ms2">Hà Đông · Website</div></div><span class="chip bad">6:05 · quá SLA</span></div></div><div class="tip">Quản lý nhận thông báo và có thể chuyển lead sang người đang rảnh chỉ bằng một lần bấm.</div></div></div><div class="pd-screen" data-k="3"><div class="mock-body">
   <div class="mrow"><div class="mrow" style="justify-content:flex-start"><div class="avatar">MA</div><div><div class="mt">Nguyễn Minh Anh</div><div class="ms2">Phụ huynh · 09xx xxx 218</div></div></div><span class="chip">Điểm lead 82</span></div>
   <div class="pipe"><div class="done">Mới</div><div class="done">Đã liên hệ</div><div class="on">Hẹn gặp</div><div>Giữ chỗ</div><div>Nhập học</div></div>
   <div class="crm-grid">
@@ -1600,19 +1730,34 @@ footer .wrap { color: var(--on-dark-muted); }
       <div><b>08:31</b><span><span class="chip ok">Đã check-in Open Day</span></span></div>
     </div>
   </div>
-</div></div>
-          <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
-        </div>
-        <div class="app-info">
-          <span class="kicker"><span class="vi">Quản trị khách hàng</span><span class="en">Customer management</span></span>
-          <h3>Clickstar Growth OS</h3>
-          <p><span class="vi">CRM và CDP trên cùng một hồ sơ. Mọi điểm chạm của khách từ quảng cáo, chat, cuộc gọi đến check-in đều hiện trên một dòng thời gian.</span><span class="en">CRM and CDP on one profile. Every touchpoint, from ad to chat, call and check-in, sits on a single timeline.</span></p>
-          <ol class="flow"><li><span><span class="vi"><b>Hợp nhất lead</b> từ mọi nguồn, tự động chống trùng theo số điện thoại.</span><span class="en"><b>Unifies leads</b> from every source, de-duplicated by phone.</span></span></li><li><span><span class="vi"><b>Chia lead tự động</b> theo khu vực, cơ sở, ca làm việc.</span><span class="en"><b>Auto-assigns</b> by area, location and shift.</span></span></li><li><span><span class="vi"><b>Nhắc SLA</b> khi lead chưa được gọi sau 5 phút.</span><span class="en"><b>SLA alerts</b> when a lead waits more than 5 minutes.</span></span></li><li><span><span class="vi"><b>Theo dõi pipeline</b> từ lead mới đến khách hàng chính thức.</span><span class="en"><b>Tracks the pipeline</b> from new lead to customer.</span></span></li><li><span><span class="vi"><b>Đồng bộ ngược</b> tệp khách đã chốt lên nền tảng quảng cáo.</span><span class="en"><b>Syncs back</b> converted customers to ad platforms.</span></span></li></ol>
-        </div>
+</div></div><div class="pd-screen" data-k="4"><div class="mock-body"><div class="mrow"><div><div class="mt">Tệp khách hàng đồng bộ</div><div class="ms2">Nguồn: CRM, trạng thái "Giữ chỗ"</div></div><span class="chip ">Tự động hằng ngày</span></div><div class="pdx-list"><div class="pdx-row"><div class="l"><span class="pdx-ico">M</span><div><div class="mt">Meta Ads</div><div class="ms2">Tệp "Đã giữ chỗ · Cầu Giấy"</div></div></div><span class="chip ok">Đã đồng bộ</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">T</span><div><div class="mt">TikTok Ads</div><div class="ms2">Tệp "Đã giữ chỗ · Cầu Giấy"</div></div></div><span class="chip ok">Đã đồng bộ</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">G</span><div><div class="mt">Google Ads</div><div class="ms2">Danh sách khách hàng</div></div></div><span class="chip ok">Đã đồng bộ</span></div></div><div class="kv"><div><span>Dùng để</span><span>Tìm khách tương tự</span></div><div><span>Đồng thời</span><span>Loại trừ người đã mua</span></div></div></div></div></div>
       </div>
-      <div class="app">
-        <div class="mock-wrap">
-          <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span>app.clickstar.vn/calls/4821</span></div><div class="mock-body">
+      <div class="pd-prog" aria-hidden="true"><i></i></div>
+      <p class="mock-cap pd-cap"><span class="vi">Bước 1 · Lead từ mọi nguồn về một nơi; hai bản ghi cùng số điện thoại được gộp thành một hồ sơ.</span><span class="en">Step 1 · Leads from every source land in one place; duplicates by phone are merged.</span></p>
+      <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
+    </div>
+  </div>
+  <div class="pd-logic" aria-label="Luồng dữ liệu / Data flow">
+    <div class="pd-lcol"><h4><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Mọi điểm chạm</span><span class="en">Every touchpoint</span></span><span class="pd-lc"><span class="vi">Cổng tuyển sinh</span><span class="en">Admissions portal</span></span><span class="pd-lc"><span class="vi">Check-in</span><span class="en">Check-in</span></span></div></div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcore">Clickstar Growth OS</div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcol"><h4><span class="vi">Tạo ra</span><span class="en">Produces</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Hồ sơ hợp nhất</span><span class="en">Unified profile</span></span><span class="pd-lc"><span class="vi">Phân khúc</span><span class="en">Segments</span></span><span class="pd-lc"><span class="vi">Pipeline, SLA</span><span class="en">Pipeline, SLA</span></span></div></div>
+    <div class="pd-lval"><h4><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></h4><p><span class="vi">Một khách hàng, một hồ sơ. Chia việc tự động, không bỏ sót lead.</span><span class="en">One customer, one profile. Automatic routing, no lead left behind.</span></p></div>
+  </div>
+</article>
+<article class="pd" id="pd-2" role="tabpanel" aria-labelledby="pd-tab-2" hidden>
+  <div class="pd-grid">
+    <div class="pd-info">
+      <span class="kicker"><span class="vi">Tư vấn</span><span class="en">Consultation</span></span>
+      <h3>AI Call Analysis</h3>
+      <p class="pd-desc"><span class="vi">Mọi cuộc gọi tư vấn được chuyển thành văn bản và chấm điểm theo kịch bản riêng. Quản lý biết ngay ai cần kèm cặp, khách đang băn khoăn điều gì.</span><span class="en">Every sales call is transcribed and scored against your script. Managers see who needs coaching and what customers worry about.</span></p>
+      <div class="pd-stags"><span class="pd-stl"><span class="vi">Giai đoạn trong hành trình</span><span class="en">Journey stage</span></span><span class="pd-stag"><b>03</b><span class="vi">Tư vấn</span><span class="en">Consult</span></span></div>
+      <ol class="pd-steps" role="tablist" aria-label="Các bước / Steps"><li><button type="button" class="pd-step on" role="tab" aria-selected="true" data-k="0" data-url="app.clickstar.vn/calls" data-cap-vi="Bước 1 · Ghi âm từ tổng đài, mỗi cuộc gọi tự gắn với lead trong CRM." data-cap-en="Step 1 · Recordings from the call centre, each linked to its CRM lead."><span class="pd-sn">1</span><span class="pd-st"><span class="vi"><b>Ghi âm</b> từ tổng đài, tự gắn với lead trong CRM.</span><span class="en"><b>Records</b> from the call centre, linked to the CRM lead.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="1" data-url="app.clickstar.vn/calls/4821/van-ban" data-cap-vi="Bước 2 · Giọng nói tiếng Việt được chuyển thành văn bản, tách lời tư vấn viên và khách." data-cap-en="Step 2 · Vietnamese speech is transcribed, split between rep and customer."><span class="pd-sn">2</span><span class="pd-st"><span class="vi"><b>Chuyển giọng nói</b> thành văn bản tiếng Việt.</span><span class="en"><b>Transcribes</b> Vietnamese speech to text.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="2" data-url="app.clickstar.vn/calls/4821" data-cap-vi="Bước 3 · Chấm điểm theo từng tiêu chí trong kịch bản tư vấn riêng của doanh nghiệp." data-cap-en="Step 3 · Scored against each criterion in your own call script."><span class="pd-sn">3</span><span class="pd-st"><span class="vi"><b>Chấm điểm</b> theo từng tiêu chí trong kịch bản.</span><span class="en"><b>Scores</b> each criterion in the script.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="3" data-url="app.clickstar.vn/calls/4821/hanh-dong" data-cap-vi="Bước 4 · AI gợi ý hành động tiếp theo và tạo nhắc việc cho tư vấn viên ngay trong CRM." data-cap-en="Step 4 · The AI suggests next steps and creates a task for the rep in CRM."><span class="pd-sn">4</span><span class="pd-st"><span class="vi"><b>Gợi ý hành động</b> và tạo nhắc việc cho tư vấn viên.</span><span class="en"><b>Suggests next steps</b> and creates tasks for the rep.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="4" data-url="app.clickstar.vn/calls/tong-hop" data-cap-vi="Bước 5 · Điểm tổng hợp theo người, theo đội và theo tuần để biết ai cần kèm cặp ở tiêu chí nào." data-cap-en="Step 5 · Scores rolled up by rep, team and week to show who needs coaching on which criterion."><span class="pd-sn">5</span><span class="pd-st"><span class="vi"><b>Tổng hợp</b> điểm theo người, theo đội, theo tuần.</span><span class="en"><b>Rolls up</b> scores by rep, team and week.</span></span></button></li></ol>
+    </div>
+    <div class="pd-stage">
+      <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span class="pd-url">app.clickstar.vn/calls</span></div>
+        <div class="pd-screens"><div class="pd-screen on" data-k="0"><div class="mock-body"><div class="mrow"><div><div class="mt">Cuộc gọi hôm nay</div><div class="ms2">Từ tổng đài, không cần đổi hệ thống</div></div><span class="chip ok">Đang đồng bộ</span></div><div class="tscroll"><table class="atable"><thead><tr><th>Mã</th><th>Tư vấn viên</th><th>Thời lượng</th><th>Gắn lead</th></tr></thead><tbody><tr><td>#4821</td><td>Trần Thu Hà</td><td>6:12</td><td><span class="chip ok">MA-0218</span></td></tr><tr><td>#4822</td><td>Lê Văn Nam</td><td>3:40</td><td><span class="chip ok">MA-0231</span></td></tr><tr><td>#4823</td><td>Phạm Thu Trang</td><td>8:05</td><td><span class="chip ok">MA-0233</span></td></tr><tr><td>#4824</td><td>Trần Thu Hà</td><td>2:18</td><td><span class="chip grey">Chờ gắn</span></td></tr></tbody></table></div><div class="tip">Ghi âm được kéo về tự động. Khách gọi bằng số đã có trong CRM thì gắn lead ngay.</div></div></div><div class="pd-screen" data-k="1"><div class="mock-body"><div class="mrow"><div><div class="mt">Cuộc gọi #4821 · Trần Thu Hà</div><div class="ms2">6:12 phút</div></div><span class="chip ok">Đã chuyển văn bản</span></div><svg viewBox="0 0 400 40" style="width:100%;height:40px" aria-hidden="true"><g fill="#A9C9FD"><rect x="2" y="16" width="4" height="8" rx="2"/><rect x="10" y="11" width="4" height="18" rx="2"/><rect x="18" y="14" width="4" height="12" rx="2"/><rect x="26" y="8" width="4" height="24" rx="2"/><rect x="34" y="12" width="4" height="16" rx="2"/><rect x="42" y="6" width="4" height="28" rx="2"/><rect x="50" y="10" width="4" height="20" rx="2"/><rect x="58" y="15" width="4" height="10" rx="2"/><rect x="66" y="9" width="4" height="22" rx="2"/><rect x="74" y="5" width="4" height="30" rx="2"/><rect x="82" y="11" width="4" height="18" rx="2"/><rect x="90" y="14" width="4" height="12" rx="2"/><rect x="98" y="7" width="4" height="26" rx="2"/><rect x="106" y="12" width="4" height="16" rx="2"/><rect x="114" y="16" width="4" height="8" rx="2"/><rect x="122" y="10" width="4" height="20" rx="2"/><rect x="130" y="6" width="4" height="28" rx="2"/><rect x="138" y="13" width="4" height="14" rx="2"/><rect x="146" y="8" width="4" height="24" rx="2"/><rect x="154" y="15" width="4" height="10" rx="2"/><rect x="162" y="11" width="4" height="18" rx="2"/><rect x="170" y="7" width="4" height="26" rx="2"/><rect x="178" y="14" width="4" height="12" rx="2"/><rect x="186" y="10" width="4" height="20" rx="2"/><rect x="194" y="5" width="4" height="30" rx="2"/><rect x="202" y="12" width="4" height="16" rx="2"/><rect x="210" y="15" width="4" height="10" rx="2"/><rect x="218" y="9" width="4" height="22" rx="2"/><rect x="226" y="13" width="4" height="14" rx="2"/><rect x="234" y="8" width="4" height="24" rx="2"/><rect x="242" y="11" width="4" height="18" rx="2"/><rect x="250" y="16" width="4" height="8" rx="2"/><rect x="258" y="7" width="4" height="26" rx="2"/><rect x="266" y="10" width="4" height="20" rx="2"/><rect x="274" y="14" width="4" height="12" rx="2"/><rect x="282" y="6" width="4" height="28" rx="2"/><rect x="290" y="12" width="4" height="16" rx="2"/><rect x="298" y="15" width="4" height="10" rx="2"/><rect x="306" y="9" width="4" height="22" rx="2"/><rect x="314" y="13" width="4" height="14" rx="2"/><rect x="322" y="11" width="4" height="18" rx="2"/><rect x="330" y="8" width="4" height="24" rx="2"/><rect x="338" y="14" width="4" height="12" rx="2"/><rect x="346" y="10" width="4" height="20" rx="2"/><rect x="354" y="16" width="4" height="8" rx="2"/><rect x="362" y="12" width="4" height="16" rx="2"/><rect x="370" y="7" width="4" height="26" rx="2"/><rect x="378" y="11" width="4" height="18" rx="2"/><rect x="386" y="15" width="4" height="10" rx="2"/><rect x="394" y="13" width="4" height="14" rx="2"/></g></svg><div class="trans"><div><span class="who">TV · 00:04</span>Dạ em chào chị, em là Thu Hà ở trường, em gọi theo đăng ký của chị tối qua ạ.</div><div><span class="who">KH · 00:18</span>Ừ, mình muốn hỏi chương trình lớp 6 và có bán trú không.</div><div><span class="who">TV · 00:31</span>Dạ có chị ạ, em trình bày chương trình STEM và lịch bán trú nhé.</div><div><span class="who">KH · 04:50</span>Bên mình có <mark>xe đưa đón</mark> khu Trung Kính không em?</div></div></div></div><div class="pd-screen" data-k="2"><div class="mock-body">
   <div class="mrow"><div><div class="mt">Cuộc gọi #4821 · Trần Thu Hà</div><div class="ms2">6:12 phút · Kịch bản tư vấn tuyển sinh v3</div></div><span class="chip ok">Đạt</span></div>
   <div class="score">
     <svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="36" fill="none" stroke="#EEF0F4" stroke-width="8"/><circle cx="42" cy="42" r="36" fill="none" stroke="#3687FC" stroke-width="8" stroke-linecap="round" stroke-dasharray="194.5 226.2" transform="rotate(-90 42 42)"/><text x="42" y="47" text-anchor="middle" font-size="20" font-weight="600" fill="#0E1B3F" font-family="Inter, sans-serif">86</text></svg>
@@ -1629,19 +1774,34 @@ footer .wrap { color: var(--on-dark-muted); }
     <div><span class="who">TV:</span>Dạ để em kiểm tra lại rồi báo chị sau ạ.</div>
   </div>
   <div class="tip">AI gợi ý: Khách hỏi về xe đưa đón nhưng chưa được giải đáp. Gửi tuyến xe Trung Kính qua Zalo trong hôm nay. Đã tạo nhắc việc trong CRM.</div>
-</div></div>
-          <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
-        </div>
-        <div class="app-info">
-          <span class="kicker"><span class="vi">Tư vấn</span><span class="en">Consultation</span></span>
-          <h3>AI Call Analysis</h3>
-          <p><span class="vi">Mọi cuộc gọi tư vấn được chuyển thành văn bản và chấm điểm theo kịch bản riêng. Quản lý biết ngay ai cần kèm cặp, khách đang băn khoăn điều gì.</span><span class="en">Every sales call is transcribed and scored against your script. Managers see who needs coaching and what customers worry about.</span></p>
-          <ol class="flow"><li><span><span class="vi"><b>Ghi âm</b> từ tổng đài, tự gắn với lead trong CRM.</span><span class="en"><b>Records</b> from the call centre, linked to the CRM lead.</span></span></li><li><span><span class="vi"><b>Chuyển giọng nói</b> thành văn bản tiếng Việt.</span><span class="en"><b>Transcribes</b> Vietnamese speech to text.</span></span></li><li><span><span class="vi"><b>Chấm điểm</b> theo từng tiêu chí trong kịch bản.</span><span class="en"><b>Scores</b> each criterion in the script.</span></span></li><li><span><span class="vi"><b>Gợi ý hành động</b> và tạo nhắc việc cho tư vấn viên.</span><span class="en"><b>Suggests next steps</b> and creates tasks for the rep.</span></span></li><li><span><span class="vi"><b>Tổng hợp</b> điểm theo người, theo đội, theo tuần.</span><span class="en"><b>Rolls up</b> scores by rep, team and week.</span></span></li></ol>
-        </div>
+</div></div><div class="pd-screen" data-k="3"><div class="mock-body"><div class="mrow"><div><div class="mt">Gợi ý sau cuộc gọi</div><div class="ms2">Cuộc gọi #4821</div></div><span class="chip warn">2 việc cần làm</span></div><div class="tip">Khách hỏi về xe đưa đón nhưng chưa được giải đáp. Gửi tuyến xe Trung Kính qua Zalo trong hôm nay.</div><div class="pdx-list"><div class="pdx-row"><div class="l"><span class="pdx-ck"></span><div><div class="mt">Gửi tuyến xe Trung Kính qua Zalo</div><div class="ms2">Hạn: hôm nay · Giao: Trần Thu Hà</div></div></div><span class="chip ok">Đã tạo trong CRM</span></div><div class="pdx-row"><div class="l"><span class="pdx-ck"></span><div><div class="mt">Mời khách dự Open Day Cầu Giấy</div><div class="ms2">Hạn: thứ Sáu · Giao: Trần Thu Hà</div></div></div><span class="chip ok">Đã tạo trong CRM</span></div></div><div class="kv"><div><span>Nhu cầu ẩn ghi vào hồ sơ</span><span>Xe đưa đón, CLB robotics</span></div></div></div></div><div class="pd-screen" data-k="4"><div class="mock-body"><div class="mrow"><div><div class="mt">Điểm trung bình tuần</div><div class="ms2">Đội Cầu Giấy · dữ liệu mẫu</div></div><span class="chip ">Tuần này</span></div><div class="pdx-hbars"><div class="pdx-hbar"><span>Trần Thu Hà</span><div class="tr"><i class="hi" style="width:86%"></i></div><b>86</b></div><div class="pdx-hbar"><span>Phạm Thu Trang</span><div class="tr"><i style="width:79%"></i></div><b>79</b></div><div class="pdx-hbar"><span>Lê Văn Nam</span><div class="tr"><i style="width:68%;background:var(--warn)"></i></div><b>68</b></div></div><div class="tip">Lê Văn Nam điểm thấp nhất ở tiêu chí "Xử lý băn khoăn". Gợi ý kèm cặp ngắn trong tuần này.</div></div></div></div>
       </div>
-      <div class="app">
-        <div class="mock-wrap">
-          <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span>app.clickstar.vn</span></div><div class="mock-body">
+      <div class="pd-prog" aria-hidden="true"><i></i></div>
+      <p class="mock-cap pd-cap"><span class="vi">Bước 1 · Ghi âm từ tổng đài, mỗi cuộc gọi tự gắn với lead trong CRM.</span><span class="en">Step 1 · Recordings from the call centre, each linked to its CRM lead.</span></p>
+      <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
+    </div>
+  </div>
+  <div class="pd-logic" aria-label="Luồng dữ liệu / Data flow">
+    <div class="pd-lcol"><h4><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Tổng đài</span><span class="en">Call centre</span></span><span class="pd-lc"><span class="vi">CRM</span><span class="en">CRM</span></span></div></div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcore">AI Call Analysis</div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcol"><h4><span class="vi">Tạo ra</span><span class="en">Produces</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Điểm cuộc gọi</span><span class="en">Call scores</span></span><span class="pd-lc"><span class="vi">Nhu cầu ẩn</span><span class="en">Hidden needs</span></span></div></div>
+    <div class="pd-lval"><h4><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></h4><p><span class="vi">Nhu cầu khách nói trong cuộc gọi được lưu vào hồ sơ.</span><span class="en">Needs voiced on calls are saved to the customer profile.</span></p></div>
+  </div>
+</article>
+<article class="pd" id="pd-3" role="tabpanel" aria-labelledby="pd-tab-3" hidden>
+  <div class="pd-grid">
+    <div class="pd-info">
+      <span class="kicker"><span class="vi">Đo lường</span><span class="en">Measurement</span></span>
+      <h3>Dashboard đa nguồn</h3>
+      <p class="pd-desc"><span class="vi">Một màn hình cho lãnh đạo và từng cơ sở. Số liệu quảng cáo, CRM và doanh thu được ghép lại, cập nhật tự động và cảnh báo khi có điểm bất thường.</span><span class="en">One screen for leadership and each location. Ads, CRM and revenue data joined, refreshed automatically, with alerts on anomalies.</span></p>
+      <div class="pd-stags"><span class="pd-stl"><span class="vi">Giai đoạn trong hành trình</span><span class="en">Journey stage</span></span><span class="pd-stag"><b>01</b><span class="vi">Thu hút</span><span class="en">Attract</span></span><span class="pd-stag"><b>02</b><span class="vi">Đón khách</span><span class="en">Welcome</span></span><span class="pd-stag"><b>03</b><span class="vi">Tư vấn</span><span class="en">Consult</span></span><span class="pd-stag"><b>04</b><span class="vi">Chốt</span><span class="en">Convert</span></span><span class="pd-stag"><b>05</b><span class="vi">Chăm khách</span><span class="en">Care</span></span><span class="pd-stag"><b>06</b><span class="vi">Giữ chân</span><span class="en">Retain</span></span></div>
+      <ol class="pd-steps" role="tablist" aria-label="Các bước / Steps"><li><button type="button" class="pd-step on" role="tab" aria-selected="true" data-k="0" data-url="app.clickstar.vn/dashboard/nguon" data-cap-vi="Bước 1 · Nguồn quảng cáo, CRM và kế toán nối về một chỗ, mỗi nguồn hiện lần cập nhật gần nhất." data-cap-en="Step 1 · Ads, CRM and accounting data connected in one place, each with its last refresh."><span class="pd-sn">1</span><span class="pd-st"><span class="vi"><b>Kết nối nguồn</b> Meta, Google, TikTok, CRM, kế toán.</span><span class="en"><b>Connects sources</b> Meta, Google, TikTok, CRM, accounting.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="1" data-url="app.clickstar.vn/dashboard/kpi" data-cap-vi="Bước 2 · Một bộ định nghĩa KPI dùng chung toàn công ty, không còn mỗi phòng một bộ số." data-cap-en="Step 2 · One KPI dictionary company-wide, no more separate numbers per team."><span class="pd-sn">2</span><span class="pd-st"><span class="vi"><b>Chuẩn hóa</b> định nghĩa KPI dùng chung toàn công ty.</span><span class="en"><b>Standardises</b> one KPI definition company-wide.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="2" data-url="app.clickstar.vn/dashboard/phan-quyen" data-cap-vi="Bước 3 · Phân quyền theo vai trò: lãnh đạo xem toàn bộ, mỗi cơ sở chỉ thấy số của mình." data-cap-en="Step 3 · Role-based access: leaders see everything, each site sees only its own data."><span class="pd-sn">3</span><span class="pd-st"><span class="vi"><b>Phân quyền</b> mỗi cơ sở chỉ xem dữ liệu của mình.</span><span class="en"><b>Scopes access</b> each site sees only its own data.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="3" data-url="app.clickstar.vn/dashboard" data-cap-vi="Bước 4 · Cảnh báo ngay khi lead quá SLA hoặc chi phí tăng bất thường, hiện trên cùng màn hình số liệu." data-cap-en="Step 4 · Alerts when leads breach SLA or costs spike, on the same screen as the numbers."><span class="pd-sn">4</span><span class="pd-st"><span class="vi"><b>Cảnh báo</b> lead quá SLA, chi phí tăng bất thường.</span><span class="en"><b>Alerts</b> on SLA breaches and cost spikes.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="4" data-url="app.clickstar.vn/dashboard/bao-cao" data-cap-vi="Bước 5 · Báo cáo tự động gửi qua email theo lịch, người nhận không cần đăng nhập mới xem được tóm tắt." data-cap-en="Step 5 · Reports sent by email on a schedule; recipients see the summary without logging in."><span class="pd-sn">5</span><span class="pd-st"><span class="vi"><b>Gửi báo cáo</b> tự động hằng tuần qua email.</span><span class="en"><b>Sends reports</b> weekly by email.</span></span></button></li></ol>
+    </div>
+    <div class="pd-stage">
+      <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span class="pd-url">app.clickstar.vn/dashboard/nguon</span></div>
+        <div class="pd-screens"><div class="pd-screen on" data-k="0"><div class="mock-body"><div class="mrow"><div><div class="mt">Nguồn dữ liệu</div><div class="ms2">5 nguồn đang kết nối</div></div><span class="chip ok">Tất cả bình thường</span></div><div class="pdx-list"><div class="pdx-row"><div class="l"><span class="pdx-ico">M</span><div><div class="mt">Meta Ads</div><div class="ms2">Cập nhật 5 phút trước</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">G</span><div><div class="mt">Google Ads</div><div class="ms2">Cập nhật 5 phút trước</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">T</span><div><div class="mt">TikTok Ads</div><div class="ms2">Cập nhật 8 phút trước</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">C</span><div><div class="mt">CRM Clickstar</div><div class="ms2">Thời gian thực</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">K</span><div><div class="mt">Phần mềm kế toán</div><div class="ms2">Đồng bộ hằng ngày</div></div></div><span class="chip ok">Đã kết nối</span></div></div></div></div><div class="pd-screen" data-k="1"><div class="mock-body"><div class="mrow"><div><div class="mt">Từ điển KPI</div><div class="ms2">Định nghĩa duy nhất cho mọi báo cáo</div></div><span class="chip ok">Đã duyệt</span></div><div class="kv"><div><span>Lead hợp lệ</span><span>Có số điện thoại, không trùng</span></div><div><span>Chi phí / lead (CPL)</span><span>Chi phí quảng cáo ÷ lead hợp lệ</span></div><div><span>Tỷ lệ chốt</span><span>Khách giữ chỗ ÷ lead hợp lệ</span></div><div><span>Lead quá SLA</span><span>Chưa được gọi sau 5 phút</span></div></div><div class="tip">Mọi dashboard, báo cáo email và cảnh báo đều tính theo cùng một định nghĩa này.</div></div></div><div class="pd-screen" data-k="2"><div class="mock-body"><div class="mrow"><div><div class="mt">Xem với vai trò</div></div><span class="chip ">Phân quyền Luật 91/2025</span></div><div class="pdx-two"><div class="pdx-box"><div class="mt">Quản lý Long Biên</div><div class="ms2">Chỉ thấy cơ sở của mình</div><div class="kpis" style="grid-template-columns:1fr 1fr;margin-top:8px"><div><span>Lead</span><b>268</b></div><div><span>Quá SLA</span><b>4</b></div></div></div><div class="pdx-box"><div class="mt">Lãnh đạo</div><div class="ms2">Thấy toàn bộ 6 cơ sở</div><div class="kpis" style="grid-template-columns:1fr 1fr;margin-top:8px"><div><span>Lead</span><b>1.284</b></div><div><span>Quá SLA</span><b>27</b></div></div></div></div><div class="tip">Cùng một dashboard, dữ liệu hiển thị khác nhau tuỳ người đăng nhập.</div></div></div><div class="pd-screen" data-k="3"><div class="mock-body">
   <div class="mrow"><div class="mt">Tổng quan tuyển sinh · Tháng 10</div><span class="chip grey">Cập nhật 5 phút trước</span></div>
   <div class="kpis">
     <div><span>Lead</span><b>1.284</b><em>+18%</em></div>
@@ -1652,19 +1812,34 @@ footer .wrap { color: var(--on-dark-muted); }
   <div class="ms2">Lead theo cơ sở</div>
   <div class="chart"><svg viewBox="0 0 430 170" role="img" aria-label="Lead theo cơ sở"><rect x="10" y="23" width="46" height="107" rx="5" fill="#3687FC"/><text class="v" x="33.0" y="17" text-anchor="middle">312</text><text x="33.0" y="150" text-anchor="middle">Cầu Giấy</text><rect x="78" y="38" width="46" height="92" rx="5" fill="#A9C9FD"/><text class="v" x="101.0" y="32" text-anchor="middle">268</text><text x="101.0" y="150" text-anchor="middle">Long Biên</text><rect x="146" y="47" width="46" height="83" rx="5" fill="#A9C9FD"/><text class="v" x="169.0" y="41" text-anchor="middle">241</text><text x="169.0" y="150" text-anchor="middle">Hà Đông</text><rect x="214" y="60" width="46" height="70" rx="5" fill="#A9C9FD"/><text class="v" x="237.0" y="54" text-anchor="middle">205</text><text x="237.0" y="150" text-anchor="middle">Q.7</text><rect x="282" y="76" width="46" height="54" rx="5" fill="#A9C9FD"/><text class="v" x="305.0" y="70" text-anchor="middle">158</text><text x="305.0" y="150" text-anchor="middle">Thủ Đức</text><rect x="350" y="96" width="46" height="34" rx="5" fill="#A9C9FD"/><text class="v" x="373.0" y="90" text-anchor="middle">100</text><text x="373.0" y="150" text-anchor="middle">Đà Nẵng</text><line x1="0" y1="130.5" x2="430" y2="130.5" stroke="#E6E9F0"/></svg></div>
   <div class="toast" style="background:var(--warn-wash);color:var(--warn)">Cảnh báo: Cơ sở Đà Nẵng có 11 lead chưa được gọi quá 30 phút</div>
-</div></div>
-          <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
-        </div>
-        <div class="app-info">
-          <span class="kicker"><span class="vi">Đo lường</span><span class="en">Measurement</span></span>
-          <h3>Dashboard đa nguồn</h3>
-          <p><span class="vi">Một màn hình cho lãnh đạo và từng cơ sở. Số liệu quảng cáo, CRM và doanh thu được ghép lại, cập nhật tự động và cảnh báo khi có điểm bất thường.</span><span class="en">One screen for leadership and each location. Ads, CRM and revenue data joined, refreshed automatically, with alerts on anomalies.</span></p>
-          <ol class="flow"><li><span><span class="vi"><b>Kết nối nguồn</b> Meta, Google, TikTok, CRM, kế toán.</span><span class="en"><b>Connects sources</b> Meta, Google, TikTok, CRM, accounting.</span></span></li><li><span><span class="vi"><b>Chuẩn hóa</b> định nghĩa KPI dùng chung toàn công ty.</span><span class="en"><b>Standardises</b> one KPI definition company-wide.</span></span></li><li><span><span class="vi"><b>Phân quyền</b> mỗi cơ sở chỉ xem dữ liệu của mình.</span><span class="en"><b>Scopes access</b> each site sees only its own data.</span></span></li><li><span><span class="vi"><b>Cảnh báo</b> lead quá SLA, chi phí tăng bất thường.</span><span class="en"><b>Alerts</b> on SLA breaches and cost spikes.</span></span></li><li><span><span class="vi"><b>Gửi báo cáo</b> tự động hằng tuần qua email.</span><span class="en"><b>Sends reports</b> weekly by email.</span></span></li></ol>
-        </div>
+</div></div><div class="pd-screen" data-k="4"><div class="mock-body"><div class="pdx-mail"><div class="eh"><div class="mt">Báo cáo tuần · Tuyển sinh</div><div class="ms2">Gửi tự động mỗi thứ Hai 08:00 · tới 6 người nhận</div></div><div class="eb"><div class="kv"><div><span>Lead</span><span>1.284 <em style="font-style:normal;color:var(--ok);font-weight:600">+18%</em></span></div><div><span>Chi phí / lead</span><span>182k <em style="font-style:normal;color:var(--ok);font-weight:600">-22%</em></span></div><div><span>Tỷ lệ chốt</span><span>18,4% <em style="font-style:normal;color:var(--ok);font-weight:600">+3,1đ</em></span></div></div><div class="tip">Cảnh báo: Cơ sở Đà Nẵng có 11 lead chưa được gọi quá 30 phút.</div><div class="btnrow"><span class="mbtn">Mở dashboard</span><span class="mbtn g">Tải bản PDF</span></div></div></div></div></div></div>
       </div>
-      <div class="app">
-        <div class="mock-wrap">
-          <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span>app.clickstar.vn</span></div><div class="mock-body">
+      <div class="pd-prog" aria-hidden="true"><i></i></div>
+      <p class="mock-cap pd-cap"><span class="vi">Bước 1 · Nguồn quảng cáo, CRM và kế toán nối về một chỗ, mỗi nguồn hiện lần cập nhật gần nhất.</span><span class="en">Step 1 · Ads, CRM and accounting data connected in one place, each with its last refresh.</span></p>
+      <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
+    </div>
+  </div>
+  <div class="pd-logic" aria-label="Luồng dữ liệu / Data flow">
+    <div class="pd-lcol"><h4><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Tất cả module</span><span class="en">All modules</span></span><span class="pd-lc"><span class="vi">Meta, Google, TikTok</span><span class="en">Meta, Google, TikTok</span></span><span class="pd-lc"><span class="vi">Kế toán</span><span class="en">Accounting</span></span></div></div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcore">Dashboard đa nguồn</div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcol"><h4><span class="vi">Tạo ra</span><span class="en">Produces</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">KPI</span><span class="en">KPIs</span></span><span class="pd-lc"><span class="vi">Cảnh báo</span><span class="en">Alerts</span></span><span class="pd-lc"><span class="vi">Báo cáo</span><span class="en">Reports</span></span></div></div>
+    <div class="pd-lval"><h4><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></h4><p><span class="vi">Ghép doanh thu về đúng quảng cáo ban đầu.</span><span class="en">Ties revenue back to the original ad.</span></p></div>
+  </div>
+</article>
+<article class="pd" id="pd-4" role="tabpanel" aria-labelledby="pd-tab-4" hidden>
+  <div class="pd-grid">
+    <div class="pd-info">
+      <span class="kicker"><span class="vi">Thu hút</span><span class="en">Attraction</span></span>
+      <h3>ADS Hub</h3>
+      <p class="pd-desc"><span class="vi">Quản lý ngân sách nhiều tài khoản quảng cáo trên một màn hình. Theo dõi tiến độ chi tiêu so với kế hoạch tháng và đề xuất chuyển ngân sách sang kênh hiệu quả hơn.</span><span class="en">Budget control across many ad accounts on one screen, pacing against the monthly plan and suggesting shifts to better channels.</span></p>
+      <div class="pd-stags"><span class="pd-stl"><span class="vi">Giai đoạn trong hành trình</span><span class="en">Journey stage</span></span><span class="pd-stag"><b>01</b><span class="vi">Thu hút</span><span class="en">Attract</span></span><span class="pd-stag"><b>06</b><span class="vi">Giữ chân</span><span class="en">Retain</span></span></div>
+      <ol class="pd-steps" role="tablist" aria-label="Các bước / Steps"><li><button type="button" class="pd-step on" role="tab" aria-selected="true" data-k="0" data-url="app.clickstar.vn/ads/tai-khoan" data-cap-vi="Bước 1 · Các tài khoản quảng cáo Meta, Google, TikTok, Zalo gom về một màn hình." data-cap-en="Step 1 · Meta, Google, TikTok and Zalo ad accounts on one screen."><span class="pd-sn">1</span><span class="pd-st"><span class="vi"><b>Gom tài khoản</b> Meta, Google, TikTok, Zalo về một nơi.</span><span class="en"><b>Brings accounts together</b> Meta, Google, TikTok, Zalo.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="1" data-url="app.clickstar.vn/ads/ngan-sach" data-cap-vi="Bước 2 · Lập ngân sách theo tháng, theo cơ sở và theo kênh để so với thực chi." data-cap-en="Step 2 · Plan budgets by month, location and channel to compare with actual spend."><span class="pd-sn">2</span><span class="pd-st"><span class="vi"><b>Lập ngân sách</b> theo tháng, theo cơ sở, theo kênh.</span><span class="en"><b>Plans budget</b> by month, location and channel.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="2" data-url="app.clickstar.vn/ads" data-cap-vi="Bước 3 · Tiến độ chi tiêu so với kế hoạch: nhanh, đúng nhịp hay chậm, kèm CPL của từng tài khoản." data-cap-en="Step 3 · Spend pacing against plan, with CPL for each account."><span class="pd-sn">3</span><span class="pd-st"><span class="vi"><b>Theo dõi tiến độ</b> chi nhanh hay chậm so với kế hoạch.</span><span class="en"><b>Tracks pacing</b> ahead of or behind plan.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="3" data-url="app.clickstar.vn/ads/so-sanh" data-cap-vi="Bước 4 · So sánh CPL giữa các kênh bằng dữ liệu chốt thật từ CRM, không chỉ số liệu của nền tảng quảng cáo." data-cap-en="Step 4 · Compare CPL across channels using real CRM outcomes, not just platform numbers."><span class="pd-sn">4</span><span class="pd-st"><span class="vi"><b>So sánh CPL</b> giữa các kênh bằng dữ liệu chốt từ CRM.</span><span class="en"><b>Compares CPL</b> across channels using CRM outcomes.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="4" data-url="app.clickstar.vn/ads/de-xuat" data-cap-vi="Bước 5 · Hệ thống đề xuất chuyển ngân sách, người phụ trách duyệt rồi mới áp dụng." data-cap-en="Step 5 · The system proposes a budget shift; the owner approves before it is applied."><span class="pd-sn">5</span><span class="pd-st"><span class="vi"><b>Đề xuất</b> điều chỉnh ngân sách cho người phụ trách duyệt.</span><span class="en"><b>Recommends</b> budget changes for approval.</span></span></button></li></ol>
+    </div>
+    <div class="pd-stage">
+      <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span class="pd-url">app.clickstar.vn/ads/tai-khoan</span></div>
+        <div class="pd-screens"><div class="pd-screen on" data-k="0"><div class="mock-body"><div class="mrow"><div><div class="mt">Tài khoản quảng cáo</div><div class="ms2">5 tài khoản</div></div><span class="chip ok">Đã kết nối đủ</span></div><div class="pdx-list"><div class="pdx-row"><div class="l"><span class="pdx-ico">M</span><div><div class="mt">Meta · Hà Nội</div><div class="ms2">Tài khoản quảng cáo</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">M</span><div><div class="mt">Meta · TP.HCM</div><div class="ms2">Tài khoản quảng cáo</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">G</span><div><div class="mt">Google Search</div><div class="ms2">Tài khoản quảng cáo</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">T</span><div><div class="mt">TikTok</div><div class="ms2">Tài khoản quảng cáo</div></div></div><span class="chip ok">Đã kết nối</span></div><div class="pdx-row"><div class="l"><span class="pdx-ico">Z</span><div><div class="mt">Zalo Ads</div><div class="ms2">Tài khoản quảng cáo</div></div></div><span class="chip ok">Đã kết nối</span></div></div></div></div><div class="pd-screen" data-k="1"><div class="mock-body"><div class="mrow"><div><div class="mt">Kế hoạch ngân sách</div><div class="ms2">Tháng 10</div></div><span class="chip ok">Đã khoá kế hoạch</span></div><div class="tscroll"><table class="atable"><thead><tr><th>Kênh</th><th>Hà Nội</th><th>TP.HCM</th><th>Tổng</th></tr></thead><tbody><tr><td>Meta</td><td>180tr</td><td>150tr</td><td>330tr</td></tr><tr><td>Google Search</td><td>60tr</td><td>30tr</td><td>90tr</td></tr><tr><td>TikTok</td><td>40tr</td><td>20tr</td><td>60tr</td></tr><tr><td>Zalo Ads</td><td>20tr</td><td>10tr</td><td>30tr</td></tr></tbody></table></div><div class="tip">Kế hoạch có thể chia theo từng cơ sở để mỗi quản lý theo dõi phần của mình.</div></div></div><div class="pd-screen" data-k="2"><div class="mock-body">
   <div class="mrow"><div class="mt">ADS Hub · Ngân sách tháng 10</div><span class="chip">Ngày 18/31</span></div>
   <div class="tscroll"><table class="atable">
     <thead><tr><th>Tài khoản</th><th>Ngân sách</th><th>Đã chi</th><th>Tiến độ</th><th>CPL</th><th>Trạng thái</th></tr></thead>
@@ -1677,19 +1852,34 @@ footer .wrap { color: var(--on-dark-muted); }
     </tbody>
   </table></div>
   <div class="tip">Đề xuất: Chuyển 15tr từ Meta TP.HCM sang TikTok. TikTok đang có CPL thấp nhất nhưng mới chi 35% ngân sách.</div>
-</div></div>
-          <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
-        </div>
-        <div class="app-info">
-          <span class="kicker"><span class="vi">Thu hút</span><span class="en">Attraction</span></span>
-          <h3>ADS Hub</h3>
-          <p><span class="vi">Quản lý ngân sách nhiều tài khoản quảng cáo trên một màn hình. Theo dõi tiến độ chi tiêu so với kế hoạch tháng và đề xuất chuyển ngân sách sang kênh hiệu quả hơn.</span><span class="en">Budget control across many ad accounts on one screen, pacing against the monthly plan and suggesting shifts to better channels.</span></p>
-          <ol class="flow"><li><span><span class="vi"><b>Gom tài khoản</b> Meta, Google, TikTok, Zalo về một nơi.</span><span class="en"><b>Brings accounts together</b> Meta, Google, TikTok, Zalo.</span></span></li><li><span><span class="vi"><b>Lập ngân sách</b> theo tháng, theo cơ sở, theo kênh.</span><span class="en"><b>Plans budget</b> by month, location and channel.</span></span></li><li><span><span class="vi"><b>Theo dõi tiến độ</b> chi nhanh hay chậm so với kế hoạch.</span><span class="en"><b>Tracks pacing</b> ahead of or behind plan.</span></span></li><li><span><span class="vi"><b>So sánh CPL</b> giữa các kênh bằng dữ liệu chốt từ CRM.</span><span class="en"><b>Compares CPL</b> across channels using CRM outcomes.</span></span></li><li><span><span class="vi"><b>Đề xuất</b> điều chỉnh ngân sách cho người phụ trách duyệt.</span><span class="en"><b>Recommends</b> budget changes for approval.</span></span></li></ol>
-        </div>
+</div></div><div class="pd-screen" data-k="3"><div class="mock-body"><div class="mrow"><div><div class="mt">Chi phí / lead theo kênh</div><div class="ms2">Tháng 10 · dữ liệu CRM</div></div><span class="chip ok">Thấp nhất: TikTok</span></div><div class="pdx-hbars"><div class="pdx-hbar"><span>TikTok</span><div class="tr"><i class="hi" style="width:58%"></i></div><b>121k</b></div><div class="pdx-hbar"><span>Google Search</span><div class="tr"><i style="width:68%"></i></div><b>142k</b></div><div class="pdx-hbar"><span>Meta · Hà Nội</span><div class="tr"><i style="width:79%"></i></div><b>165k</b></div><div class="pdx-hbar"><span>Meta · TP.HCM</span><div class="tr"><i style="width:94%;background:var(--warn)"></i></div><b>198k</b></div><div class="pdx-hbar"><span>Zalo Ads</span><div class="tr"><i style="width:100%;background:var(--warn)"></i></div><b>210k</b></div></div></div></div><div class="pd-screen" data-k="4"><div class="mock-body"><div class="mrow"><div><div class="mt">Đề xuất điều chỉnh</div><div class="ms2">Ngày 18/31</div></div><span class="chip warn">Chờ duyệt</span></div><div class="pdx-box"><div class="mt">Chuyển 15tr từ Meta TP.HCM sang TikTok</div><div class="ms2" style="margin-top:4px">TikTok đang có CPL thấp nhất nhưng mới chi 35% ngân sách. Meta TP.HCM đang chi nhanh với CPL 198k.</div><div class="kv" style="margin-top:10px"><div><span>Meta · TP.HCM</span><span>Ngân sách 150tr → 135tr</span></div><div><span>TikTok</span><span>Ngân sách 60tr → 75tr</span></div></div><div class="btnrow" style="margin-top:12px"><span class="mbtn">Duyệt đề xuất</span><span class="mbtn g">Bỏ qua</span></div></div></div></div></div>
       </div>
-      <div class="app">
-        <div class="mock-wrap">
-          <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span>app.clickstar.vn</span></div><div class="mock-body" style="background:#F3F5F9">
+      <div class="pd-prog" aria-hidden="true"><i></i></div>
+      <p class="mock-cap pd-cap"><span class="vi">Bước 1 · Các tài khoản quảng cáo Meta, Google, TikTok, Zalo gom về một màn hình.</span><span class="en">Step 1 · Meta, Google, TikTok and Zalo ad accounts on one screen.</span></p>
+      <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
+    </div>
+  </div>
+  <div class="pd-logic" aria-label="Luồng dữ liệu / Data flow">
+    <div class="pd-lcol"><h4><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Dashboard</span><span class="en">Dashboard</span></span><span class="pd-lc"><span class="vi">CDP</span><span class="en">CDP</span></span></div></div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcore">ADS Hub</div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcol"><h4><span class="vi">Tạo ra</span><span class="en">Produces</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Lead</span><span class="en">Leads</span></span><span class="pd-lc"><span class="vi">Chi phí</span><span class="en">Cost</span></span><span class="pd-lc"><span class="vi">Nguồn chiến dịch</span><span class="en">Campaign source</span></span></div></div>
+    <div class="pd-lval"><h4><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></h4><p><span class="vi">Nhận tệp khách đã chốt để tìm khách tương tự, ngừng quảng cáo tới người đã mua.</span><span class="en">Takes converted audiences to find lookalikes and stop ads to buyers.</span></p></div>
+  </div>
+</article>
+<article class="pd" id="pd-5" role="tabpanel" aria-labelledby="pd-tab-5" hidden>
+  <div class="pd-grid">
+    <div class="pd-info">
+      <span class="kicker"><span class="vi">Chuyển đổi</span><span class="en">Conversion</span></span>
+      <h3>App Check-in sự kiện</h3>
+      <p class="pd-desc"><span class="vi">Dành cho Open Day, lớp học thử, hội thảo. Khách đăng ký online, nhận mã QR, nhân viên quét tại cổng và tư vấn viên nhận thông báo ngay khi khách đến.</span><span class="en">For open days, trial classes and seminars. Guests register online and get a QR code; staff scan at the door and the rep is notified on arrival.</span></p>
+      <div class="pd-stags"><span class="pd-stl"><span class="vi">Giai đoạn trong hành trình</span><span class="en">Journey stage</span></span><span class="pd-stag"><b>04</b><span class="vi">Chốt</span><span class="en">Convert</span></span></div>
+      <ol class="pd-steps" role="tablist" aria-label="Các bước / Steps"><li><button type="button" class="pd-step on" role="tab" aria-selected="true" data-k="0" data-url="app.clickstar.vn/su-kien/dang-ky" data-cap-vi="Bước 1 · Khách đăng ký online qua landing page hoặc chatbot chỉ với vài thông tin." data-cap-en="Step 1 · Guests register online via a landing page or the chatbot with just a few details."><span class="pd-sn">1</span><span class="pd-st"><span class="vi"><b>Đăng ký online</b> qua landing page hoặc chatbot.</span><span class="en"><b>Online registration</b> via landing page or chatbot.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="1" data-url="app.clickstar.vn/su-kien/ve" data-cap-vi="Bước 2 · Mã QR gửi qua email và Zalo ZNS, kèm nhắc lịch trước sự kiện." data-cap-en="Step 2 · The QR code is sent by email and Zalo ZNS, with a reminder before the event."><span class="pd-sn">2</span><span class="pd-st"><span class="vi"><b>Gửi mã QR</b> qua email và Zalo ZNS, nhắc lịch trước sự kiện.</span><span class="en"><b>Sends the QR</b> by email and Zalo ZNS, with reminders.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="2" data-url="app.clickstar.vn/su-kien/quet" data-cap-vi="Bước 3 · Nhân viên quét mã ngay tại cổng bằng điện thoại, không cần thiết bị riêng." data-cap-en="Step 3 · Staff scan at the door on any phone, no dedicated hardware."><span class="pd-sn">3</span><span class="pd-st"><span class="vi"><b>Quét tại cổng</b> bằng điện thoại, không cần thiết bị riêng.</span><span class="en"><b>Scans at the door</b> on any phone.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="3" data-url="app.clickstar.vn/thong-bao" data-cap-vi="Bước 4 · Tư vấn viên nhận thông báo ngay khi khách của mình vừa đến, kèm hồ sơ để chào đúng tên." data-cap-en="Step 4 · The rep is notified the moment their guest arrives, with the profile to greet them by name."><span class="pd-sn">4</span><span class="pd-st"><span class="vi"><b>Báo tư vấn viên</b> khách của mình vừa đến.</span><span class="en"><b>Notifies the rep</b> that their guest has arrived.</span></span></button></li><li><button type="button" class="pd-step" role="tab" aria-selected="false" data-k="4" data-url="app.clickstar.vn/su-kien/bao-cao" data-cap-vi="Bước 5 · Dữ liệu có mặt trở về CRM: tỷ lệ tham dự theo nguồn và theo chiến dịch." data-cap-en="Step 5 · Attendance flows back into CRM: show-up rates by source and campaign."><span class="pd-sn">5</span><span class="pd-st"><span class="vi"><b>Cập nhật CRM</b> tỷ lệ tham dự theo nguồn và theo chiến dịch.</span><span class="en"><b>Updates CRM</b> attendance by source and campaign.</span></span></button></li></ol>
+    </div>
+    <div class="pd-stage">
+      <div class="mock"><div class="mock-bar"><i></i><i></i><i></i><span class="pd-url">app.clickstar.vn/su-kien/dang-ky</span></div>
+        <div class="pd-screens"><div class="pd-screen on" data-k="0"><div class="mock-body" style="background:#F3F5F9"><div class="phone"><div class="screen"><div class="mrow"><div class="mt">Đăng ký Open Day</div><span class="chip ">Cầu Giấy</span></div><div class="pdx-field"><label>Họ và tên</label><div>Nguyễn Minh Anh</div></div><div class="pdx-field"><label>Số điện thoại</label><div>09xx xxx 218</div></div><div class="pdx-field"><label>Số người tham dự</label><div>2 người</div></div><div class="pdx-field"><label>Buổi tham dự</label><div>Sáng thứ Bảy 09/11</div></div><div class="pbtn">Đăng ký tham dự</div></div></div></div></div><div class="pd-screen" data-k="1"><div class="mock-body" style="background:#F3F5F9"><div class="phone"><div class="screen"><div class="mrow"><div class="mt">Vé Open Day · Cầu Giấy</div><span class="chip ok">Đã xác nhận</span></div><div class="scanbox" style="background:#fff;border:1px solid #E6E9F0"><svg viewBox="0 0 66 66" width="112" height="112" role="img" aria-label="Mã QR mẫu" fill="#0E1B3F"><rect x="0" y="0" width="6" height="6"/><rect x="6" y="0" width="6" height="6"/><rect x="12" y="0" width="6" height="6"/><rect x="18" y="0" width="6" height="6"/><rect x="24" y="0" width="6" height="6"/><rect x="0" y="6" width="6" height="6"/><rect x="24" y="6" width="6" height="6"/><rect x="0" y="12" width="6" height="6"/><rect x="12" y="12" width="6" height="6"/><rect x="24" y="12" width="6" height="6"/><rect x="0" y="18" width="6" height="6"/><rect x="24" y="18" width="6" height="6"/><rect x="0" y="24" width="6" height="6"/><rect x="6" y="24" width="6" height="6"/><rect x="12" y="24" width="6" height="6"/><rect x="18" y="24" width="6" height="6"/><rect x="24" y="24" width="6" height="6"/><rect x="36" y="0" width="6" height="6"/><rect x="42" y="0" width="6" height="6"/><rect x="48" y="0" width="6" height="6"/><rect x="54" y="0" width="6" height="6"/><rect x="60" y="0" width="6" height="6"/><rect x="36" y="6" width="6" height="6"/><rect x="60" y="6" width="6" height="6"/><rect x="36" y="12" width="6" height="6"/><rect x="48" y="12" width="6" height="6"/><rect x="60" y="12" width="6" height="6"/><rect x="36" y="18" width="6" height="6"/><rect x="60" y="18" width="6" height="6"/><rect x="36" y="24" width="6" height="6"/><rect x="42" y="24" width="6" height="6"/><rect x="48" y="24" width="6" height="6"/><rect x="54" y="24" width="6" height="6"/><rect x="60" y="24" width="6" height="6"/><rect x="0" y="36" width="6" height="6"/><rect x="6" y="36" width="6" height="6"/><rect x="12" y="36" width="6" height="6"/><rect x="18" y="36" width="6" height="6"/><rect x="24" y="36" width="6" height="6"/><rect x="0" y="42" width="6" height="6"/><rect x="24" y="42" width="6" height="6"/><rect x="0" y="48" width="6" height="6"/><rect x="12" y="48" width="6" height="6"/><rect x="24" y="48" width="6" height="6"/><rect x="0" y="54" width="6" height="6"/><rect x="24" y="54" width="6" height="6"/><rect x="0" y="60" width="6" height="6"/><rect x="6" y="60" width="6" height="6"/><rect x="12" y="60" width="6" height="6"/><rect x="18" y="60" width="6" height="6"/><rect x="24" y="60" width="6" height="6"/><rect x="36" y="36" width="6" height="6"/><rect x="48" y="36" width="6" height="6"/><rect x="54" y="36" width="6" height="6"/><rect x="36" y="42" width="6" height="6"/><rect x="54" y="42" width="6" height="6"/><rect x="60" y="42" width="6" height="6"/><rect x="36" y="48" width="6" height="6"/><rect x="48" y="48" width="6" height="6"/><rect x="36" y="54" width="6" height="6"/><rect x="48" y="54" width="6" height="6"/><rect x="54" y="54" width="6" height="6"/><rect x="42" y="60" width="6" height="6"/><rect x="54" y="60" width="6" height="6"/><rect x="60" y="60" width="6" height="6"/></svg></div><div class="okbig"><b>OD-CG-0218</b><span>Nguyễn Minh Anh · 2 người</span><span class="ms2">Sáng thứ Bảy 09/11 · Cổng A</span></div><div class="kv"><div><span>Nhắc lịch</span><span><span class="chip grey">Trước 1 ngày</span></span></div></div></div></div></div></div><div class="pd-screen" data-k="2"><div class="mock-body" style="background:#F3F5F9">
   <div class="phone"><div class="screen">
     <div class="mrow"><div class="mt">Open Day · Cầu Giấy</div><span class="chip">142/180</span></div>
     <div class="scanbox"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 12V4h8M28 4h8v8M36 28v8h-8M12 36H4v-8" fill="none" stroke="#3687FC" stroke-width="2.5" stroke-linecap="round"/><path d="M12 20l5 5 11-11" fill="none" stroke="#1F9D55" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -1700,16 +1890,23 @@ footer .wrap { color: var(--on-dark-muted); }
     </div>
     <div class="pbtn">Quét khách tiếp theo</div>
   </div></div>
-</div></div>
-          <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
-        </div>
-        <div class="app-info">
-          <span class="kicker"><span class="vi">Chuyển đổi</span><span class="en">Conversion</span></span>
-          <h3>App Check-in sự kiện</h3>
-          <p><span class="vi">Dành cho Open Day, lớp học thử, hội thảo. Khách đăng ký online, nhận mã QR, nhân viên quét tại cổng và tư vấn viên nhận thông báo ngay khi khách đến.</span><span class="en">For open days, trial classes and seminars. Guests register online and get a QR code; staff scan at the door and the rep is notified on arrival.</span></p>
-          <ol class="flow"><li><span><span class="vi"><b>Đăng ký online</b> qua landing page hoặc chatbot.</span><span class="en"><b>Online registration</b> via landing page or chatbot.</span></span></li><li><span><span class="vi"><b>Gửi mã QR</b> qua email và Zalo ZNS, nhắc lịch trước sự kiện.</span><span class="en"><b>Sends the QR</b> by email and Zalo ZNS, with reminders.</span></span></li><li><span><span class="vi"><b>Quét tại cổng</b> bằng điện thoại, không cần thiết bị riêng.</span><span class="en"><b>Scans at the door</b> on any phone.</span></span></li><li><span><span class="vi"><b>Báo tư vấn viên</b> khách của mình vừa đến.</span><span class="en"><b>Notifies the rep</b> that their guest has arrived.</span></span></li><li><span><span class="vi"><b>Cập nhật CRM</b> tỷ lệ tham dự theo nguồn và theo chiến dịch.</span><span class="en"><b>Updates CRM</b> attendance by source and campaign.</span></span></li></ol>
-        </div>
+</div></div><div class="pd-screen" data-k="3"><div class="mock-body" style="background:#F3F5F9"><div class="phone"><div class="screen"><div class="mrow"><div class="mt">Thông báo</div><span class="chip ">Mới</span></div><div class="pdx-box"><div class="mt">Khách của bạn vừa đến</div><div class="ms2" style="margin-top:2px">08:31 · Cổng A · Open Day Cầu Giấy</div><div class="kv" style="margin-top:10px"><div><span>Khách</span><span>Nguyễn Minh Anh</span></div><div><span>Số người</span><span>2</span></div><div><span>Quan tâm</span><span>Lớp 6, bán trú, CLB robotics</span></div></div></div><div class="pbtn">Mở hồ sơ khách</div></div></div></div></div><div class="pd-screen" data-k="4"><div class="mock-body"><div class="mrow"><div><div class="mt">Tỷ lệ tham dự Open Day</div><div class="ms2">Cầu Giấy · 142/180 có mặt · dữ liệu mẫu</div></div><span class="chip ok">79%</span></div><div class="pdx-hbars"><div class="pdx-hbar"><span>Zalo OA</span><div class="tr"><i class="hi" style="width:88%"></i></div><b>88%</b></div><div class="pdx-hbar"><span>Website</span><div class="tr"><i style="width:81%"></i></div><b>81%</b></div><div class="pdx-hbar"><span>Meta Ads</span><div class="tr"><i style="width:76%"></i></div><b>76%</b></div><div class="pdx-hbar"><span>TikTok Ads</span><div class="tr"><i style="width:68%;background:var(--warn)"></i></div><b>68%</b></div></div><div class="tip">TikTok đăng ký nhiều nhưng ít người đến. Có thể thêm nhắc lịch bằng ZNS cho nhóm này.</div></div></div></div>
       </div>
+      <div class="pd-prog" aria-hidden="true"><i></i></div>
+      <p class="mock-cap pd-cap"><span class="vi">Bước 1 · Khách đăng ký online qua landing page hoặc chatbot chỉ với vài thông tin.</span><span class="en">Step 1 · Guests register online via a landing page or the chatbot with just a few details.</span></p>
+      <p class="mock-cap"><span class="vi">Giao diện sản phẩm Clickstar · thông tin khách hàng đã được thay bằng dữ liệu mẫu</span><span class="en">Clickstar product interface · customer details replaced with sample data</span></p>
+    </div>
+  </div>
+  <div class="pd-logic" aria-label="Luồng dữ liệu / Data flow">
+    <div class="pd-lcol"><h4><span class="vi">Nhận dữ liệu từ</span><span class="en">Receives from</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Landing page</span><span class="en">Landing page</span></span><span class="pd-lc"><span class="vi">AI Bot</span><span class="en">AI Bot</span></span></div></div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcore">App Check-in sự kiện</div>
+    <div class="pd-larrow" aria-hidden="true"></div>
+    <div class="pd-lcol"><h4><span class="vi">Tạo ra</span><span class="en">Produces</span></h4><div class="pd-lcs"><span class="pd-lc"><span class="vi">Có mặt</span><span class="en">Attendance</span></span><span class="pd-lc"><span class="vi">Tỷ lệ tham dự</span><span class="en">Attendance rate</span></span></div></div>
+    <div class="pd-lval"><h4><span class="vi">Giá trị khi kết nối</span><span class="en">Value when connected</span></h4><p><span class="vi">Tư vấn viên biết ngay khách đã đến; CRM có tỷ lệ tham dự theo nguồn và chiến dịch.</span><span class="en">Reps know when a guest arrives; CRM gets attendance by source and campaign.</span></p></div>
+  </div>
+</article>
+</div>
     </div>
   </div>
 </section>
@@ -2315,7 +2512,7 @@ footer .wrap { color: var(--on-dark-muted); }
   btns.forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
 
   try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('svg.fx').forEach(function (v) { v.pauseAnimations && v.pauseAnimations(); }); } catch (e) {}
-  var tabs = document.querySelectorAll('[role="tab"]');
+  var tabs = document.querySelectorAll('.tabs [role="tab"]');
   tabs.forEach(function (t) {
     t.addEventListener('click', function () {
       tabs.forEach(function (x) {
@@ -2341,6 +2538,85 @@ footer .wrap { color: var(--on-dark-muted); }
     if (el.getBoundingClientRect().top < vh * 0.92) return;
     el.classList.add('rv'); io.observe(el);
   });
+})();
+</script>
+<script>
+/* Trình xem sản phẩm: chọn ứng dụng, bấm từng bước; tự chạy lần lượt cho đến khi người xem bấm. */
+(function () {
+  var root = document.getElementById('apps');
+  if (!root) return;
+  var tabs = [].slice.call(root.querySelectorAll('.pd-tab'));
+  var panels = [].slice.call(root.querySelectorAll('.pd'));
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var DUR = 7000, touched = false, cur = 0, state = panels.map(function () { return 0; }), timer = null, visible = false, hovering = false;
+
+  function setCap(panel, btn) {
+    var cap = panel.querySelector('.pd-cap');
+    cap.innerHTML = '<span class="vi"></span><span class="en"></span>';
+    cap.firstChild.textContent = btn.getAttribute('data-cap-vi');
+    cap.lastChild.textContent = btn.getAttribute('data-cap-en');
+  }
+  function restartBar(panel) {
+    var bar = panel.querySelector('.pd-prog');
+    bar.classList.remove('run');
+    if (touched || reduce) { bar.classList.add('off'); return; }
+    bar.classList.remove('off');
+    void bar.offsetWidth;
+    bar.classList.add('run');
+  }
+  function selectStep(i, k) {
+    var panel = panels[i], btns = [].slice.call(panel.querySelectorAll('.pd-step'));
+    state[i] = k;
+    btns.forEach(function (b, n) { b.classList.toggle('on', n === k); b.setAttribute('aria-selected', n === k ? 'true' : 'false'); b.tabIndex = n === k ? 0 : -1; });
+    [].slice.call(panel.querySelectorAll('.pd-screen')).forEach(function (sc, n) { sc.classList.toggle('on', n === k); });
+    panel.querySelector('.pd-url').textContent = btns[k].getAttribute('data-url');
+    setCap(panel, btns[k]);
+    restartBar(panel);
+  }
+  function showProduct(i, focus) {
+    cur = i;
+    tabs.forEach(function (t, n) { t.setAttribute('aria-selected', n === i ? 'true' : 'false'); t.tabIndex = n === i ? 0 : -1; });
+    panels.forEach(function (p, n) { if (n === i) p.removeAttribute('hidden'); else p.setAttribute('hidden', ''); });
+    selectStep(i, 0);
+    if (focus) tabs[i].focus();
+    schedule();
+  }
+  function schedule() {
+    clearTimeout(timer);
+    if (touched || reduce || !visible || hovering) return;
+    timer = setTimeout(function () {
+      var n = panels[cur].querySelectorAll('.pd-step').length;
+      selectStep(cur, (state[cur] + 1) % n);
+      schedule();
+    }, DUR);
+  }
+  function stop() { touched = true; clearTimeout(timer); panels.forEach(function (p) { var b = p.querySelector('.pd-prog'); b.classList.remove('run'); b.classList.add('off'); }); }
+
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { stop(); showProduct(i, false); if (t.scrollIntoView) t.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); });
+    t.addEventListener('keydown', function (e) {
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (!d) return; e.preventDefault(); stop(); showProduct((i + d + tabs.length) % tabs.length, true);
+    });
+  });
+  panels.forEach(function (panel, i) {
+    var btns = [].slice.call(panel.querySelectorAll('.pd-step'));
+    btns.forEach(function (b, k) {
+      b.addEventListener('click', function () { stop(); selectStep(i, k); if (window.innerWidth <= 960) { var st = panel.querySelector('.pd-stage'); if (st && st.scrollIntoView) st.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } });
+      b.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0;
+        if (!d) return; e.preventDefault(); stop(); var n = (k + d + btns.length) % btns.length; selectStep(i, n); btns[n].focus();
+      });
+    });
+    panel.addEventListener('mouseenter', function () { hovering = true; clearTimeout(timer); });
+    panel.addEventListener('mouseleave', function () { hovering = false; schedule(); });
+    panel.addEventListener('focusin', function () { hovering = true; clearTimeout(timer); });
+    panel.addEventListener('focusout', function () { hovering = false; schedule(); });
+  });
+  showProduct(0, false);
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) { restartBar(panels[cur]); } schedule(); }, { threshold: 0.25 }).observe(root.querySelector('.pd-panels'));
+  } else { visible = true; schedule(); }
 })();
 </script>
 </body>
