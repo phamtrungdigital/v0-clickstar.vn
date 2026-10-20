@@ -17,6 +17,8 @@ import {
 import { cn } from '@/lib/utils'
 import { CARD, INPUT, Note, SeoPanel, TONE_BAR, TONE_TEXT } from './seo-panel'
 import { SeoRoadmap } from './seo-roadmap'
+import { SeoContent } from './seo-content'
+import type { ContentAnalysis } from '@/lib/seo/content-plan'
 import { roadmapCounts } from '@/lib/seo/roadmap'
 import {
   KIND_LABEL,
@@ -57,16 +59,18 @@ export function SeoWorkspace({
   checks,
   siteUrl,
   role,
+  content,
 }: {
   items: SeoItem[]
   checks: SiteCheck[]
   siteUrl: string
   role: string
+  content: ContentAnalysis
 }) {
   const [items, setItems] = useState(initialItems)
   useEffect(() => setItems(initialItems), [initialItems])
 
-  const [tab, setTab] = useState<'list' | 'site' | 'roadmap'>('list')
+  const [tab, setTab] = useState<'list' | 'content' | 'site' | 'roadmap'>('list')
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
   const [lowFirst, setLowFirst] = useState(false)
@@ -129,6 +133,7 @@ export function SeoWorkspace({
         {(
           [
             ['list', 'Trang và bài viết'],
+            ['content', 'Nội dung bài viết'],
             ['site', 'Kiểm tra toàn site'],
             ['roadmap', 'Lộ trình SEO'],
           ] as const
@@ -295,6 +300,8 @@ export function SeoWorkspace({
             nhập riêng nên hệ thống đang lấy từ tên hoặc tóm tắt. Mức tốt: tiêu đề 30 đến {TITLE_MAX}, mô tả 110 đến {DESC_MAX}.
           </p>
         </>
+      ) : tab === 'content' ? (
+        <SeoContent data={content} />
       ) : tab === 'roadmap' ? (
         <SeoRoadmap />
       ) : (
