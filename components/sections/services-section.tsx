@@ -13,6 +13,12 @@ import type { ServicesContent } from '@/lib/cms/types'
  * Lộ trình khách hàng (khớp phần "Định vị" trong hồ sơ năng lực): mỗi dịch vụ thuộc một tầng, thẻ hiển thị theo thứ tự tầng.
  * Gán theo đoạn cuối của đường dẫn dịch vụ; dịch vụ lạ (chưa có trong bảng) xếp cuối và không có nhãn tầng.
  */
+const LEGACY_PIPELINE_SRC = '/images/clickstar-pipeline.svg'
+const PIPELINE_DARK = {
+  vi: { desktop: '/images/clickstar-pipeline-dark.svg', mobile: '/images/clickstar-pipeline-dark-m.svg' },
+  en: { desktop: '/images/clickstar-pipeline-dark-en.svg', mobile: '/images/clickstar-pipeline-dark-m-en.svg' },
+}
+
 const LAYERS = [
   { vi: 'Thu hút khách hàng', en: 'Attract customers' },
   { vi: 'Chuyển đổi khách hàng', en: 'Convert customers' },
@@ -51,7 +57,11 @@ function parseChain(text: string): { steps: string[]; note: string } {
 }
 
 export function ServicesSection({ content }: { content: ServicesContent }) {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
+  const lang = language === 'en' ? 'en' : 'vi'
+  // Ảnh cũ (nền sáng, chữ nhỏ): CMS còn trỏ vào thì tự dùng sơ đồ tối mới có bản mobile dọc và bản tiếng Anh; chọn ảnh khác thì hiện ảnh đó
+  const darkPipeline = !content.pipeline_image_src || content.pipeline_image_src === LEGACY_PIPELINE_SRC
+  const pipelineAlt = t(content.pipeline_image_alt.vi, content.pipeline_image_alt.en)
 
   return (
     <div data-cms-section="services">
@@ -120,31 +130,52 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
           </Reveal>
 
           <Reveal delay={120}>
-            {/* Khung sơ đồ kiểu cửa sổ ứng dụng; điện thoại: vuốt ngang để xem hết sơ đồ */}
-            <div className="mx-auto mt-10 max-w-[1180px] overflow-hidden rounded-[20px] bg-white shadow-[0_40px_90px_-40px_rgba(30,109,218,0.75)] ring-1 ring-white/15 sm:mt-14">
-              <div className="flex items-center justify-between gap-3 border-b border-[#e8e8ed] bg-[#f5f5f7] px-4 py-2.5">
+            {/* Khung sơ đồ kiểu cửa sổ ứng dụng. Sơ đồ tối có bản dọc cho điện thoại; ảnh khác (nền sáng) thì cho vuốt ngang */}
+            <div
+              className={`mx-auto mt-10 max-w-[1180px] overflow-hidden rounded-[20px] shadow-[0_40px_90px_-40px_rgba(30,109,218,0.75)] ring-1 ring-white/15 sm:mt-14 ${darkPipeline ? 'bg-[#0b1020]' : 'bg-white'}`}
+            >
+              <div
+                className={`flex items-center justify-between gap-3 border-b px-4 py-2.5 ${darkPipeline ? 'border-white/10 bg-white/[0.05]' : 'border-[#e8e8ed] bg-[#f5f5f7]'}`}
+              >
                 <span className="flex items-center gap-1.5" aria-hidden="true">
                   <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
                   <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
                   <i className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
                 </span>
-                <span className="truncate text-[12px] font-medium text-[#6e6e73]">clickstar · data pipeline</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#28c840]/15 px-2.5 py-1 text-[11px] font-semibold text-[#1d7a34]">
+                <span className={`truncate text-[12px] font-medium ${darkPipeline ? 'text-[#8e9bb5]' : 'text-[#6e6e73]'}`}>clickstar · data pipeline</span>
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ${darkPipeline ? 'bg-[#28c840]/15 text-[#7ee08f]' : 'bg-[#28c840]/15 text-[#1d7a34]'}`}>
                   <span className="h-1.5 w-1.5 rounded-full bg-[#28c840]" />
                   {t('Trực tuyến', 'Live')}
                 </span>
               </div>
-              <div className="overflow-x-auto">
-                <div className="min-w-[860px] sm:min-w-0">
+              {darkPipeline ? (
+                <>
                   <InlineSvgImage
-                    src={content.pipeline_image_src}
-                    alt={t(content.pipeline_image_alt.vi, content.pipeline_image_alt.en)}
-                    className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
+                    src={PIPELINE_DARK[lang].desktop}
+                    alt={pipelineAlt}
+                    className="hidden w-full h-auto sm:block [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                   />
+                  <InlineSvgImage
+                    src={PIPELINE_DARK[lang].mobile}
+                    alt={pipelineAlt}
+                    className="w-full h-auto sm:hidden [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
+                  />
+                </>
+              ) : (
+                <div className="overflow-x-auto">
+                  <div className="min-w-[860px] sm:min-w-0">
+                    <InlineSvgImage
+                      src={content.pipeline_image_src}
+                      alt={pipelineAlt}
+                      className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
-            <p className="mt-4 text-center text-[13px] text-[#a1a1a6] sm:hidden">{t('Vuốt ngang để xem toàn bộ sơ đồ', 'Swipe sideways to see the full diagram')}</p>
+            {!darkPipeline && (
+              <p className="mt-4 text-center text-[13px] text-[#a1a1a6] sm:hidden">{t('Vuốt ngang để xem toàn bộ sơ đồ', 'Swipe sideways to see the full diagram')}</p>
+            )}
             <p className="mx-auto mt-5 max-w-[680px] text-balance text-center text-[15px] leading-[1.55] text-[#a1a1a6]">
               {t(
                 'Dữ liệu chảy liên tục từ quảng cáo đến báo cáo. Kết quả đo được ở cuối quay lại điều chỉnh ngân sách và nội dung ở đầu.',
