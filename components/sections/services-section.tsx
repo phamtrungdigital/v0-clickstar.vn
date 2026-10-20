@@ -14,12 +14,12 @@ import type { ServicesContent } from '@/lib/cms/types'
  * Gán theo đoạn cuối của đường dẫn dịch vụ; dịch vụ lạ (chưa có trong bảng) xếp cuối và không có nhãn tầng.
  */
 const LAYERS = [
-  { vi: 'Thu hút', en: 'Attract' },
-  { vi: 'Chuyển đổi', en: 'Convert' },
-  { vi: 'Quản trị', en: 'Manage' },
-  { vi: 'Đo lường', en: 'Measure' },
-  { vi: 'AI', en: 'AI' },
-  { vi: 'Xây riêng', en: 'Custom' },
+  { vi: 'Thu hút khách hàng', en: 'Attract customers' },
+  { vi: 'Chuyển đổi khách hàng', en: 'Convert customers' },
+  { vi: 'Quản trị khách hàng', en: 'Manage customers' },
+  { vi: 'Đo lường hiệu quả', en: 'Measure results' },
+  { vi: 'Ứng dụng AI', en: 'Apply AI' },
+  { vi: 'Phần mềm riêng', en: 'Custom software' },
 ]
 const SLUG_LAYER: Record<string, number> = {
   'digital-marketing': 0,
@@ -105,14 +105,14 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
 
           {/* Lộ trình 6 tầng: từ thu hút khách đến nền tảng riêng. Chỉ hiện từ màn hình vừa trở lên. */}
           <Reveal delay={100} className="hidden md:block">
-            <ol className="relative mx-auto mt-10 flex max-w-[1000px] list-none items-center justify-between p-0 sm:mt-12" aria-hidden="true">
-              <span className="absolute left-4 right-4 top-[15px] h-px bg-gradient-to-r from-transparent via-[#1e6dda]/45 to-transparent" />
+            <ol className="relative mx-auto mt-10 grid max-w-[1000px] list-none grid-cols-6 p-0 sm:mt-12" aria-hidden="true">
+              <span className="absolute left-[8.33%] right-[8.33%] top-[15px] h-px bg-gradient-to-r from-[#1e6dda]/20 via-[#1e6dda]/50 to-[#1e6dda]/20" />
               {LAYERS.map((l, i) => (
-                <li key={i} className="relative flex flex-col items-center gap-2">
+                <li key={i} className="relative flex flex-col items-center gap-2.5 px-1">
                   <span className="grid h-[31px] w-[31px] place-items-center rounded-full border border-[#1e6dda]/40 bg-white text-[12px] font-semibold tabular-nums text-[#1e6dda] shadow-[0_0_0_4px_rgba(245,245,247,1)]">
                     {String(i + 1).padStart(2, '0')}
                   </span>
-                  <span className="text-[12px] font-semibold uppercase tracking-[0.1em] text-[#144c97]">{t(l.vi, l.en)}</span>
+                  <span className="max-w-[124px] text-balance text-center text-[14px] font-semibold leading-tight tracking-[-0.01em] text-[#144c97]">{t(l.vi, l.en)}</span>
                 </li>
               ))}
             </ol>

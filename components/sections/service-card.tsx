@@ -49,15 +49,15 @@ export function ServiceCard({ icon, title, description, tag, href, badge, moreLa
         </span>
         {step && (
           <>
-            {/* Số mờ cùng nhịp với các nút lộ trình phía trên; tên tầng dành cho người đọc màn hình */}
+            {/* Số mờ cùng nhịp với các nút lộ trình phía trên */}
             <span aria-hidden="true" className="select-none text-[46px] font-semibold leading-[0.9] tracking-[-0.04em] tabular-nums text-[#1e6dda]/[0.16] transition-colors duration-300 group-hover:text-[#1e6dda]/45">
               {step}
             </span>
-            {layer && <span className="sr-only">{layer}</span>}
           </>
         )}
       </div>
 
+      {layer && <p className="mb-1.5 text-[13px] font-semibold leading-none tracking-[-0.005em] text-[#1e6dda]">{layer}</p>}
       <h3 className="flex items-center gap-2 text-[21px] font-semibold leading-tight tracking-[0.005em] text-foreground">
         {title}
         {badge && (
