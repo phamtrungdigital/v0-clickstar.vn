@@ -3,18 +3,11 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import {
-  Save,
-  CheckCircle2,
-  AlertCircle,
-  ArrowLeft,
-  Plus,
-  Trash2,
-  ExternalLink,
-} from 'lucide-react'
+import { Loader2, Plus, Trash2, ExternalLink } from 'lucide-react'
 import type { CaseStudy, CaseStudyMetric, CaseStudyStatus } from '@/lib/cms/case-studies-types'
 import { slugify } from '@/lib/cms/case-studies-types'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
+import { EditorBar, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
 import { createProject, updateProject, type ProjectFormData } from '../actions'
 
 const STATUS_OPTIONS: { value: CaseStudyStatus; label: string }[] = [
@@ -99,68 +92,30 @@ export function ProjectEditor({
   }
 
   return (
-    <div className="space-y-3 max-w-4xl">
-      {/* Sticky toolbar */}
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/admin-cls/projects"
-            className="text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
-          >
-            <ArrowLeft className="w-4 h-4" />
+    <div>
+      <EditorBar
+        backHref="/admin-cls/projects"
+        title={mode === 'new' ? 'Dự án mới' : draft.title_vi || '(không tên)'}
+        subtitle={mode === 'edit' && project ? `/projects/${draft.slug}` : 'Điền thông tin rồi bấm Lưu'}
+      >
+        {mode === 'edit' && project && draft.status === 'published' && (
+          <Link href={`/projects/${draft.slug}`} target="_blank" className={btn('ghost')}>
+            Xem trên website <ExternalLink className="h-3.5 w-3.5" />
           </Link>
-          <div>
-            <h1 className="text-base font-semibold text-slate-900 dark:text-white">
-              {mode === 'new' ? 'Dự án mới' : draft.title_vi || '(không tên)'}
-            </h1>
-            <p className="text-[11px] text-slate-500">
-              {mode === 'edit' && project ? `/projects/${draft.slug}` : 'Điền thông tin và lưu'}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          {mode === 'edit' && project && draft.status === 'published' && (
-            <Link
-              href={`/projects/${draft.slug}`}
-              target="_blank"
-              className="text-xs text-primary hover:underline flex items-center gap-1"
-            >
-              Xem public <ExternalLink className="w-3 h-3" />
-            </Link>
-          )}
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" />
-              {errorMsg.slice(0, 40)}
-            </span>
-          )}
-          {mode === 'new' && (
-            <button
-              onClick={() => handleSave(true)}
-              disabled={isPending}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 text-white text-xs font-medium rounded hover:bg-emerald-700 disabled:opacity-50"
-            >
-              Lưu & Đăng
-            </button>
-          )}
-          <button
-            onClick={() => handleSave(false)}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu'}
+        )}
+        <SaveStatus status={status} errorMsg={errorMsg} />
+        {mode === 'new' && (
+          <button onClick={() => handleSave(true)} disabled={isPending} className={btn('secondary')}>
+            Lưu và đăng
           </button>
-        </div>
-      </div>
+        )}
+        <button onClick={() => handleSave(false)} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu'}
+        </button>
+      </EditorBar>
 
+      <div className="mx-auto max-w-4xl space-y-4">
       {/* Status + Sort */}
       <Section title="Trạng thái">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -341,6 +296,7 @@ export function ProjectEditor({
           </div>
         </div>
       </Section>
+      </div>
     </div>
   )
 }
@@ -361,7 +317,7 @@ function MetricsEditor({
   return (
     <div className="space-y-2">
       {metrics.length === 0 && (
-        <p className="text-xs text-slate-500 italic">Chưa có metric. Click "Thêm" để bắt đầu.</p>
+        <p className="text-[13px] text-[var(--ad-fg-3)]">Chưa có số liệu nào. Bấm "Thêm số liệu" để bắt đầu.</p>
       )}
       {metrics.map((m, idx) => (
         <div key={idx} className="grid grid-cols-1 sm:grid-cols-[1fr_1fr_120px_36px] gap-2">
@@ -388,40 +344,38 @@ function MetricsEditor({
           />
           <button
             onClick={() => remove(idx)}
-            className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded"
+            type="button"
+            aria-label="Xoá số liệu"
+            title="Xoá số liệu"
+            className="grid h-9 w-9 place-items-center rounded-full text-[var(--ad-fg-3)] hover:bg-[rgba(255,59,48,.10)] hover:text-[#d70015]"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="h-4 w-4" />
           </button>
         </div>
       ))}
-      <button
-        onClick={add}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-primary border border-dashed border-primary/40 rounded hover:bg-primary/5"
-      >
-        <Plus className="w-3.5 h-3.5" />
-        Thêm metric
+      <button type="button" onClick={add} className={btn('ghost')}>
+        <Plus className="h-4 w-4" />
+        Thêm số liệu
       </button>
     </div>
   )
 }
 
-const inputCls =
-  'w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary'
+const inputCls = fieldInputClass
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+    <label className={fieldLabelClass}>
       {children}
-      {required && <span className="text-red-500 ml-0.5">*</span>}
+      {required && <span className="ml-0.5 text-[#d70015]">*</span>}
     </label>
   )
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-600">{title}</h2>
+    <SectionCard title={title} bodyClassName="space-y-3.5 px-5 pb-5 pt-3">
       {children}
-    </div>
+    </SectionCard>
   )
 }

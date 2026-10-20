@@ -18,33 +18,30 @@ export function SeoForm({
   onChange: (next: SeoFields) => void
 }) {
   return (
-    <details className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
-      <summary className="flex items-center gap-2 px-3 py-2.5 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700">
-        <Search className="w-4 h-4 text-slate-400" />
-        <span className="text-sm font-semibold text-slate-900 dark:text-white">
-          SEO & Social Share
-        </span>
-        <span className="text-[10px] uppercase font-mono text-slate-400 ml-auto">seo</span>
+    <details className="group rounded-2xl border border-[var(--ad-line)] bg-[var(--ad-surface)] shadow-[var(--ad-shadow)]">
+      <summary className="flex cursor-pointer select-none items-center gap-2 px-4 py-3 group-open:border-b group-open:border-[var(--ad-line)]">
+        <Search className="h-4 w-4 text-[var(--ad-fg-3)]" />
+        <span className="text-[14.5px] font-semibold text-[var(--ad-fg)]">SEO và chia sẻ mạng xã hội</span>
       </summary>
 
-      <div className="p-4 space-y-3">
+      <div className="space-y-3.5 p-5">
         <I18nInput
-          label="Meta Title (hiện ở tab trình duyệt + Google search)"
+          label="Tiêu đề SEO (hiện ở tab trình duyệt và kết quả Google)"
           value={value.seo_title}
           onChange={(v) => onChange({ ...value, seo_title: v })}
         />
         <I18nInput
-          label="Meta Description (hiện dưới title trong Google)"
+          label="Mô tả SEO (hiện dưới tiêu đề trong Google)"
           multiline
           rows={2}
           value={value.seo_description}
           onChange={(v) => onChange({ ...value, seo_description: v })}
         />
         <ImagePicker
-          label="OG Image (ảnh khi share Facebook/Zalo/Twitter)"
+          label="Ảnh chia sẻ (hiện khi gửi link lên Facebook, Zalo)"
           value={value.og_image ?? ''}
           onChange={(v) => onChange({ ...value, og_image: v.trim() === '' ? null : v })}
-          hint="Tỷ lệ tốt nhất: 1200×630px (1.91:1)"
+          hint="Tỷ lệ tốt nhất 1200×630px"
         />
       </div>
     </details>

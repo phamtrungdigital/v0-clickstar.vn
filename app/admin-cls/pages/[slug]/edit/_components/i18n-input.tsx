@@ -6,6 +6,7 @@ import { Sparkles } from 'lucide-react'
 import type { I18n } from '@/lib/cms/types'
 import { useEditLang } from '@/lib/cms/edit-lang-context'
 import { AiCompose } from './ai-compose'
+import { fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
 
 type Props = {
   label: string
@@ -22,15 +23,14 @@ export function I18nInput({ label, value, onChange, multiline, rows = 3, pageCon
   const flag = lang === 'vi' ? '🇻🇳' : '🇬🇧'
   const [aiOpen, setAiOpen] = useState(false)
 
-  const inputClass =
-    'w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary'
+  const inputClass = fieldInputClass
 
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="flex items-center gap-1.5 text-xs font-medium text-slate-700 dark:text-slate-300">
+        <label className="flex items-center gap-1.5 text-[13px] font-medium text-[var(--ad-fg-2)]">
           <span>{label}</span>
-          <span className="text-[10px] text-slate-400 font-normal">
+          <span className="text-[11.5px] font-normal text-[var(--ad-fg-3)]">
             {flag} {lang.toUpperCase()}
           </span>
         </label>
@@ -38,10 +38,10 @@ export function I18nInput({ label, value, onChange, multiline, rows = 3, pageCon
         <button
           type="button"
           onClick={() => setAiOpen((v) => !v)}
-          className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded transition-colors ${
+          className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-medium transition-colors ${
             aiOpen
-              ? 'bg-violet-500 text-white'
-              : 'text-violet-600 hover:bg-violet-100 dark:hover:bg-violet-950/30'
+              ? 'bg-[var(--ad-accent)] text-white'
+              : 'text-[var(--ad-accent)] hover:bg-[var(--ad-accent-soft)]'
           }`}
           title="AI viết hộ"
         >
@@ -102,17 +102,17 @@ export function TextInput({
   return (
     <div>
       <div className="flex items-center justify-between mb-1.5">
-        <label className="block text-xs font-medium text-slate-700 dark:text-slate-300">
+        <label className="block text-[13px] font-medium text-[var(--ad-fg-2)]">
           {label}
         </label>
         {enableAi && AI_MODULE_ENABLED && (
           <button
             type="button"
             onClick={() => setAiOpen((v) => !v)}
-            className={`inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded transition-colors ${
+            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[12px] font-medium transition-colors ${
               aiOpen
-                ? 'bg-violet-500 text-white'
-                : 'text-violet-600 hover:bg-violet-100'
+                ? 'bg-[var(--ad-accent)] text-white'
+                : 'text-[var(--ad-accent)] hover:bg-[var(--ad-accent-soft)]'
             }`}
             title="AI viết hộ"
           >
@@ -126,9 +126,9 @@ export function TextInput({
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full px-3 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+        className={fieldInputClass}
       />
-      {hint && <p className="text-[10px] text-slate-500 mt-1">{hint}</p>}
+      {hint && <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">{hint}</p>}
 
       {enableAi && AI_MODULE_ENABLED && aiOpen && (
         <AiCompose

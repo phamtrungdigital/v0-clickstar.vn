@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Plus, Briefcase } from 'lucide-react'
 import { listCaseStudiesForAdmin } from '@/lib/cms/case-studies'
+import { Card, EmptyState, PageHeader, btn } from '@/components/admin/ui'
 import { ProjectsTable } from './_components/projects-table'
 
 export const dynamic = 'force-dynamic'
@@ -9,33 +10,32 @@ export default async function AdminProjectsList() {
   const projects = await listCaseStudiesForAdmin()
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">Dự án</h1>
-          <p className="text-xs text-slate-500">Quản lý case studies hiển thị tại /projects ({projects.length})</p>
-        </div>
-        <Link
-          href="/admin-cls/projects/new"
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          Thêm dự án
-        </Link>
-      </div>
+    <div className="mx-auto max-w-7xl">
+      <PageHeader
+        title="Dự án"
+        description={`Các dự án tiêu biểu hiển thị ở trang /projects, hiện có ${projects.length} dự án.`}
+        actions={
+          <Link href="/admin-cls/projects/new" className={btn('primary')}>
+            <Plus className="h-4 w-4" />
+            Thêm dự án
+          </Link>
+        }
+      />
 
       {projects.length === 0 ? (
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
-          <Briefcase className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-          <p className="text-sm text-slate-500 mb-3">Chưa có dự án nào</p>
-          <Link
-            href="/admin-cls/projects/new"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            Tạo dự án đầu tiên
-          </Link>
-        </div>
+        <Card>
+          <EmptyState
+            icon={<Briefcase className="h-5 w-5" />}
+            title="Chưa có dự án nào"
+            description="Dự án đầu tiên sẽ hiện ở đây sau khi anh tạo."
+            action={
+              <Link href="/admin-cls/projects/new" className={btn('primary')}>
+                <Plus className="h-4 w-4" />
+                Tạo dự án đầu tiên
+              </Link>
+            }
+          />
+        </Card>
       ) : (
         <ProjectsTable items={projects} />
       )}

@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { PanelBottom, Megaphone, Save, CheckCircle2, AlertCircle, Plus, Trash2 } from 'lucide-react'
+import { Loader2, Plus, Trash2 } from 'lucide-react'
+import { EditorBar, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
+import { Segmented } from '@/components/admin/segmented'
 import { saveWebContent } from '../actions'
 import {
   CTA_SLUGS,
@@ -63,54 +65,32 @@ export function FooterCtaForm({ initial }: { initial: WebContent | null }) {
   }
 
   return (
-    <div className="space-y-3 max-w-4xl">
-      {/* Header */}
-      <div className="sticky top-11 z-20 -mx-3 lg:-mx-4 px-3 lg:px-4 py-2 bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-        <div>
-          <h1 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-            <PanelBottom className="w-4 h-4 text-primary" />
-            Footer &amp; CTA
-          </h1>
-          <p className="text-[11px] text-slate-500">Nội dung footer toàn site + khối kêu gọi (CTA) các trang dịch vụ</p>
-        </div>
-        <div className="flex items-center gap-2">
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Đã lưu
-            </span>
-          )}
-          {status === 'dirty' && <span className="text-xs text-amber-600">● Chưa lưu</span>}
-          {status === 'error' && (
-            <span className="flex items-center gap-1 text-xs text-red-600" title={errorMsg}>
-              <AlertCircle className="w-3.5 h-3.5" /> Lỗi
-            </span>
-          )}
-          <button
-            onClick={handleSave}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
-          </button>
-        </div>
-      </div>
+    <div>
+      <EditorBar title="Footer và CTA" subtitle="Nội dung chân trang toàn website và khối kêu gọi (CTA) ở các trang dịch vụ">
+        <SaveStatus status={status} errorMsg={errorMsg} />
+        <button onClick={handleSave} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu thay đổi'}
+        </button>
+      </EditorBar>
 
-      {/* Tabs */}
-      <div className="flex gap-2">
-        <TabBtn active={tab === 'footer'} onClick={() => setTab('footer')} icon={<PanelBottom className="w-4 h-4" />}>
-          Footer
-        </TabBtn>
-        <TabBtn active={tab === 'cta'} onClick={() => setTab('cta')} icon={<Megaphone className="w-4 h-4" />}>
-          CTA dịch vụ
-        </TabBtn>
-      </div>
+      <div className="mx-auto max-w-4xl space-y-4">
+        <Segmented
+          ariaLabel="Chọn phần nội dung"
+          value={tab}
+          onChange={setTab}
+          options={[
+            { id: 'footer', label: 'Footer' },
+            { id: 'cta', label: 'CTA dịch vụ' },
+          ]}
+        />
 
-      {tab === 'footer' ? (
-        <FooterTab footer={draft.footer} setFooter={setFooter} />
-      ) : (
-        <CtaTab ctas={draft.service_ctas} setCta={setCta} />
-      )}
+        {tab === 'footer' ? (
+          <FooterTab footer={draft.footer} setFooter={setFooter} />
+        ) : (
+          <CtaTab ctas={draft.service_ctas} setCta={setCta} />
+        )}
+      </div>
     </div>
   )
 }
@@ -187,7 +167,7 @@ function FooterTab({
       <Section title="Thanh dưới (bản quyền & chính sách)">
         <I18nField label="Dòng bản quyền (tự thêm © + năm)" value={footer.copyright} onChange={(v) => setFooter({ copyright: v })} />
         <div>
-          <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">Link chính sách</label>
+          <label className={fieldLabelClass}>Link chính sách</label>
           <LinkListEditor list={footer.policy_links} onChange={(l) => setFooter({ policy_links: l })} />
         </div>
       </Section>
@@ -213,15 +193,15 @@ function CtaTab({
           <Section key={slug} title={CTA_LABELS[slug] || slug}>
             <I18nField label="Tiêu đề" value={c.heading} onChange={(v) => setCta(slug, { heading: v })} />
             <I18nField label="Mô tả" value={c.description} onChange={(v) => setCta(slug, { description: v })} textarea />
-            <div className="border-t border-slate-200 dark:border-slate-700 pt-3 mt-1">
-              <p className="text-xs font-semibold text-slate-500 mb-2">Nút chính</p>
+            <div className="mt-1 space-y-3.5 border-t border-[var(--ad-line)] pt-4">
+              <p className="text-[13px] font-semibold text-[var(--ad-fg)]">Nút chính</p>
               <I18nField label="Nhãn nút" value={c.primary.label} onChange={(v) => setCta(slug, { primary: { ...c.primary, label: v } })} />
               <Field label="Đường dẫn (vd /contact hoặc tel:0383406735)">
                 <TextInput value={c.primary.href} onChange={(v) => setCta(slug, { primary: { ...c.primary, href: v } })} />
               </Field>
             </div>
-            <div className="border-t border-slate-200 dark:border-slate-700 pt-3">
-              <p className="text-xs font-semibold text-slate-500 mb-2">Nút phụ</p>
+            <div className="space-y-3.5 border-t border-[var(--ad-line)] pt-4">
+              <p className="text-[13px] font-semibold text-[var(--ad-fg)]">Nút phụ</p>
               <I18nField label="Nhãn nút" value={c.secondary.label} onChange={(v) => setCta(slug, { secondary: { ...c.secondary, label: v } })} />
               <Field label="Đường dẫn">
                 <TextInput value={c.secondary.href} onChange={(v) => setCta(slug, { secondary: { ...c.secondary, href: v } })} />
@@ -238,17 +218,16 @@ function CtaTab({
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-      <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</h2>
+    <SectionCard title={title} bodyClassName="space-y-3.5 px-5 pb-5 pt-3">
       {children}
-    </div>
+    </SectionCard>
   )
 }
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">{label}</label>
+      <label className={fieldLabelClass}>{label}</label>
       {children}
     </div>
   )
@@ -269,7 +248,7 @@ function TextInput({
       value={value}
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm"
+      className={fieldInputClass}
     />
   )
 }
@@ -286,12 +265,11 @@ function I18nField({
   onChange: (v: I18n) => void
   textarea?: boolean
 }) {
-  const cls =
-    'w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm'
+  const cls = fieldInputClass
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">{label}</label>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      <label className={fieldLabelClass}>{label}</label>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {(['vi', 'en'] as const).map((lng) =>
           textarea ? (
             <textarea
@@ -328,74 +306,29 @@ function LinkListEditor({ list, onChange }: { list: LinkItem[]; onChange: (l: Li
   const updateLabel = (i: number, lng: 'vi' | 'en', v: string) =>
     update(i, { label: { ...list[i].label, [lng]: v } })
 
+  const cell = fieldInputClass + ' flex-1 min-w-0 !py-1.5 !text-[13.5px]'
+
   return (
     <div className="space-y-2">
       {list.map((item, i) => (
         <div key={i} className="flex items-center gap-2">
-          <input
-            type="text"
-            value={item.label.vi}
-            placeholder="Nhãn VI"
-            onChange={(e) => updateLabel(i, 'vi', e.target.value)}
-            className="flex-1 min-w-0 px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs"
-          />
-          <input
-            type="text"
-            value={item.label.en}
-            placeholder="Nhãn EN"
-            onChange={(e) => updateLabel(i, 'en', e.target.value)}
-            className="flex-1 min-w-0 px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs"
-          />
-          <input
-            type="text"
-            value={item.href}
-            placeholder="/duong-dan"
-            onChange={(e) => update(i, { href: e.target.value })}
-            className="flex-1 min-w-0 px-2.5 py-1.5 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs font-mono"
-          />
+          <input type="text" value={item.label.vi} placeholder="Nhãn VI" onChange={(e) => updateLabel(i, 'vi', e.target.value)} className={cell} />
+          <input type="text" value={item.label.en} placeholder="Nhãn EN" onChange={(e) => updateLabel(i, 'en', e.target.value)} className={cell} />
+          <input type="text" value={item.href} placeholder="/duong-dan" onChange={(e) => update(i, { href: e.target.value })} className={cell + ' font-mono'} />
           <button
             type="button"
             onClick={() => onChange(list.filter((_, idx) => idx !== i))}
-            className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded"
-            aria-label="Xoá"
+            className="grid h-8 w-8 flex-none place-items-center rounded-full text-[var(--ad-fg-3)] hover:bg-[rgba(255,59,48,.10)] hover:text-[#d70015]"
+            aria-label="Xoá dòng"
+            title="Xoá dòng"
           >
-            <Trash2 className="w-3.5 h-3.5" />
+            <Trash2 className="h-4 w-4" />
           </button>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() => onChange([...list, { label: { vi: '', en: '' }, href: '' }])}
-        className="inline-flex items-center gap-1 px-2 py-1 text-[11px] text-primary hover:bg-primary/5 rounded"
-      >
-        <Plus className="w-3 h-3" /> Thêm dòng
+      <button type="button" onClick={() => onChange([...list, { label: { vi: '', en: '' }, href: '' }])} className={btn('ghost', 'sm')}>
+        <Plus className="h-3.5 w-3.5" /> Thêm dòng
       </button>
     </div>
-  )
-}
-
-function TabBtn({
-  active,
-  onClick,
-  icon,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  icon: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium rounded-lg border transition-colors ${
-        active
-          ? 'bg-primary/5 border-primary/40 text-primary'
-          : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-500 hover:text-slate-700'
-      }`}
-    >
-      {icon}
-      {children}
-    </button>
   )
 }
