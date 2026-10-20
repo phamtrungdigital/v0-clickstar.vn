@@ -143,11 +143,13 @@ export function MainNav() {
             <Image
               src={branding.logoUrl || '/images/logo-clickstar.png'}
               alt={branding.siteName}
-              width={120}
-              height={30}
+              width={151}
+              height={22}
+              quality={95}
+              sizes="151px"
               className="h-[22px] w-auto"
               priority
-              unoptimized
+              fetchPriority="high"
             />
           </Link>
 

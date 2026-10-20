@@ -53,7 +53,7 @@ function TestimonialCard({
           <Image quality={95} src={testimonial.avatar} alt={testimonial.name} fill className="object-cover" sizes="48px" />
         </div>
         <div>
-          <h4 className="font-semibold text-foreground">{testimonial.name}</h4>
+          <h3 className="font-semibold text-foreground">{testimonial.name}</h3>
           <p className="text-sm text-muted-foreground">{source}</p>
         </div>
       </div>

@@ -13,7 +13,7 @@ import type { HeroContent } from '@/lib/cms/types'
  */
 /** Hiệu ứng vào nhẹ khi tải trang: từng lớp trượt lên và hiện dần, lần lượt; tắt khi chọn giảm chuyển động. */
 const HERO_CSS = `
-@keyframes cs-hero-in { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes cs-hero-in { from { transform: translateY(12px) } to { transform: none } }
 @keyframes cs-hero-rise { from { opacity: 0; transform: translateY(26px) scale(.985) } to { opacity: 1; transform: none } }
 .cs-hero-in { animation: cs-hero-in .7s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d, 0) * 1ms) }
 .cs-hero-rise { animation: cs-hero-rise .9s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--d, 0) * 1ms) }
@@ -105,9 +105,9 @@ export function HeroSection({ content }: { content: HeroContent }) {
                 cmsField="image"
                 src={PLATFORM_SRC[lang].desktop}
                 alt={imageAlt}
-                className={`hidden sm:block ${imgClass}`}
+                className={`hidden sm:block aspect-[1080/600] ${imgClass}`}
               />
-              <InlineSvgImage src={PLATFORM_SRC[lang].mobile} alt={imageAlt} className={`sm:hidden ${imgClass}`} />
+              <InlineSvgImage src={PLATFORM_SRC[lang].mobile} alt={imageAlt} className={`sm:hidden aspect-[480/652] ${imgClass}`} />
             </>
           ) : (
             <InlineSvgImage cmsField="image" src={imageSrc} alt={imageAlt} className={imgClass} />

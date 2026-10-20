@@ -50,10 +50,11 @@ export function Footer() {
               <Image
                 src={branding.logoUrl || '/images/logo-clickstar.png'}
                 alt={branding.siteName}
-                width={140}
-                height={35}
+                width={247}
+                height={36}
+                quality={95}
+                sizes="247px"
                 className="h-9 w-auto brightness-0 invert"
-                unoptimized
               />
             </Link>
             <p className="text-[#d2d2d7] text-sm leading-relaxed mb-6">{footer.description[language]}</p>
@@ -79,10 +80,10 @@ export function Footer() {
 
           {/* Column 2: Services */}
           <div>
-            <h4 className="text-lg font-bold mb-6 relative">
+            <h3 className="text-lg font-bold mb-6 relative">
               {footer.services_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {footer.services_links.map((service) => (
                 <li key={service.href + service.label[language]}>
@@ -100,10 +101,10 @@ export function Footer() {
 
           {/* Column 3: Useful Links */}
           <div>
-            <h4 className="text-lg font-bold mb-6 relative">
+            <h3 className="text-lg font-bold mb-6 relative">
               {footer.quick_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
-            </h4>
+            </h3>
             <ul className="space-y-3">
               {footer.quick_links.map((link) => (
                 <li key={link.href + link.label[language]}>
@@ -121,10 +122,10 @@ export function Footer() {
 
           {/* Column 4: Contact Info */}
           <div>
-            <h4 className="text-lg font-bold mb-6 relative">
+            <h3 className="text-lg font-bold mb-6 relative">
               {footer.contact_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
-            </h4>
+            </h3>
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <span className="w-9 h-9 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -160,10 +161,10 @@ export function Footer() {
 
           {/* Column 5: Newsletter */}
           <div>
-            <h4 className="text-lg font-bold mb-6 relative">
+            <h3 className="text-lg font-bold mb-6 relative">
               {footer.newsletter_title[language]}
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
-            </h4>
+            </h3>
             <p className="text-[#d2d2d7] text-sm mb-4">{footer.newsletter_desc[language]}</p>
             <form onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">

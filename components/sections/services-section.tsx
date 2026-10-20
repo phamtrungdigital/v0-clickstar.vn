@@ -139,7 +139,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                   <InlineSvgImage
                     src={content.pipeline_image_src}
                     alt={t(content.pipeline_image_alt.vi, content.pipeline_image_alt.en)}
-                    className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
+                    className={`w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block ${content.pipeline_image_src === '/images/clickstar-pipeline.svg' ? 'aspect-[1700/820]' : ''}`}
                   />
                 </div>
               </div>
