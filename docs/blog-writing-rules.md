@@ -93,7 +93,7 @@ Nền tảng: tài liệu "AI features and your website" và hướng dẫn nộ
 
 Khi viết bài, để căn đều đẹp:
 - Không đặt căn chỉnh thủ công trong nội dung; để giao diện xử lý.
-- Đoạn văn vừa phải, khoảng 3 đến 6 câu. Tránh chuỗi dài không có khoảng trắng (URL dài, mã) trong đoạn văn; đưa vào danh sách hoặc bỏ.
+- Đoạn văn ngắn để mắt dễ chịu, nhất là trên điện thoại (anh yêu cầu 21/10/2026): mỗi đoạn tối đa 2 đến 3 câu, khoảng 300 ký tự (không quá 350), xuống dòng bằng một dòng trống giữa các đoạn. Câu dài nối bằng dấu chấm phẩy thì tách thành các câu riêng. Đoạn mở đầu cũng theo luật này, tách thành 2 đến 3 đoạn: bối cảnh, phạm vi và nguồn, rồi điều bài sẽ trả lời. Tránh chuỗi dài không có khoảng trắng (URL dài, mã) trong đoạn văn; đưa vào danh sách hoặc bỏ.
 - Danh sách dùng gạch đầu dòng ngắn gọn, mỗi mục một ý.
 - Kiểm tra bài trên giao diện máy tính trước khi báo xong: không có dòng bị giãn chữ bất thường.
 
@@ -157,6 +157,7 @@ Khi viết bài, để căn đều đẹp:
 - [ ] Có Điểm chính, mục phân tích theo khung, khối "Đánh giá của Click Star", việc nên làm, sai lầm thường gặp, đoạn kết chỉ dẫn đọc nguyên bản.
 - [ ] Mỗi số có nguồn và ngày trong câu; không có mục Nguồn, không có [n]; số thứ cấp được ghi rõ; chủ đề pháp lý, tài chính có nhắc đối chiếu văn bản gốc.
 - [ ] Không emoji, không "—", không "chúng tôi/we/our", không sáo ngữ, không tự khen, không suy giới tính từ tên.
+- [ ] Không có đoạn nào quá khoảng 350 ký tự (kể cả đoạn mở đầu); mỗi đoạn 2 đến 3 câu; có dòng trống giữa các đoạn, ở cả bản VI và EN.
 - [ ] Có bản EN đầy đủ và khớp bản VI.
 - [ ] Ảnh bìa và 3 infographic VI/EN đã xem từng ảnh; chữ khớp bài; chân ảnh có nguồn; alt có nghĩa; mỗi ảnh dưới 1 MB.
 - [ ] md5 và độ dài nội dung trong DB khớp tệp; cache đã xóa; production 200 ở VI và EN; ảnh 200.
