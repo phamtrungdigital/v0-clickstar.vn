@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/language-context'
 import { InlineSvgImage } from '@/components/inline-svg-image'
 import { Reveal } from '@/components/ui/reveal'
 import { iconByName } from '@/lib/icons'
-import { Sparkles } from 'lucide-react'
+import { ArrowRight, RefreshCw, Sparkles } from 'lucide-react'
 import type { ServicesContent } from '@/lib/cms/types'
 
 /**
@@ -43,34 +43,114 @@ const layerOf = (href: string) => {
  * Các trường CMS (eyebrow, heading, description, services, footer_link, pipeline_*) giữ nguyên.
  * Màu/biểu tượng riêng từng dịch vụ (service.color, service.icon) không còn dùng: thiết kế một màu xanh.
  */
+/** Tách "A → B → C, ghi chú" thành các chặng và phần ghi chú; không đúng dạng thì trả steps rỗng để hiện nguyên câu. */
+function parseChain(text: string): { steps: string[]; note: string } {
+  const [chain, ...rest] = text.split(/,\s*/)
+  const steps = chain.split(/\s*→\s*/).map((x) => x.trim()).filter(Boolean)
+  return steps.length >= 3 ? { steps, note: rest.join(', ') } : { steps: [], note: text }
+}
+
 export function ServicesSection({ content }: { content: ServicesContent }) {
   const { t } = useLanguage()
 
   return (
     <div data-cms-section="services">
-      {/* Khối tối: pipeline */}
-      <section data-cms-field="pipeline" className="ap-tile ap-dark" id="pipeline">
+      {/* Khối tối: pipeline dữ liệu thời gian thực */}
+      <section data-cms-field="pipeline" className="ap-tile ap-dark relative isolate overflow-hidden" id="pipeline">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            backgroundImage:
+              'radial-gradient(55% 45% at 50% 0%, rgba(30,109,218,0.30), rgba(30,109,218,0) 70%), linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)',
+            backgroundSize: '100% 100%, 44px 44px, 44px 44px',
+            maskImage: 'linear-gradient(180deg, #000 0%, #000 65%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(180deg, #000 0%, #000 65%, transparent 100%)',
+          }}
+        />
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal>
             <div className="ap-stack">
-              <p className="text-sm text-[#d2d2d7] tracking-[-0.016em]">
+              <p className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-[12px] font-semibold uppercase tracking-[0.06em] text-[#7db8ff]">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#34d058] opacity-60 motion-reduce:hidden" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-[#34d058]" />
+                </span>
                 {t(content.pipeline_eyebrow.vi, content.pipeline_eyebrow.en)}
               </p>
               <h2 className="ap-display">{t(content.pipeline_heading.vi, content.pipeline_heading.en)}</h2>
-              <p className="ap-lead max-w-[820px]">
-                {t(content.pipeline_subtitle.vi, content.pipeline_subtitle.en)}
-              </p>
+              {(() => {
+                const { steps, note } = parseChain(t(content.pipeline_subtitle.vi, content.pipeline_subtitle.en))
+                if (steps.length === 0) {
+                  return <p className="max-w-[640px] text-balance text-[17px] leading-[1.55] text-[#d2d2d7] sm:text-[19px]">{note}</p>
+                }
+                return (
+                  <>
+                    {/* Các chặng của luồng dữ liệu: hai chặng giữa (lõi) nổi bật */}
+                    <ol className="m-0 mt-1 flex max-w-[980px] list-none flex-wrap items-center justify-center gap-x-2 gap-y-3 p-0" aria-label={steps.join(' → ')}>
+                      {steps.map((st, i) => {
+                        const core = steps.length === 5 && (i === 2 || i === 3)
+                        return (
+                          <li key={i} className="flex items-center gap-2">
+                            <span
+                              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[14px] font-semibold leading-none sm:text-[15px] ${
+                                core
+                                  ? 'border-[#7db8ff]/55 bg-[#1e6dda]/25 text-white shadow-[0_0_24px_-6px_rgba(30,109,218,0.9)]'
+                                  : 'border-white/15 bg-white/[0.06] text-[#e5e5ea]'
+                              }`}
+                            >
+                              <span className={`text-[11px] tabular-nums ${core ? 'text-[#a9d0ff]' : 'text-[#7db8ff]'}`}>{String(i + 1).padStart(2, '0')}</span>
+                              {st}
+                            </span>
+                            {i < steps.length - 1 && <ArrowRight aria-hidden="true" className="hidden h-4 w-4 shrink-0 text-[#7db8ff]/70 sm:block" />}
+                          </li>
+                        )
+                      })}
+                    </ol>
+                    {note && (
+                      <p className="inline-flex items-center gap-2 text-[14px] text-[#a1a1a6] sm:text-[15px]">
+                        <RefreshCw aria-hidden="true" className="h-4 w-4 text-[#7db8ff] [animation:spin_6s_linear_infinite] motion-reduce:animate-none" />
+                        {note.charAt(0).toUpperCase() + note.slice(1)}
+                      </p>
+                    )}
+                  </>
+                )
+              })()}
             </div>
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="ap-product max-w-[1180px] mt-10 sm:mt-14">
-              <InlineSvgImage
-                src={content.pipeline_image_src}
-                alt={t(content.pipeline_image_alt.vi, content.pipeline_image_alt.en)}
-                className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
-              />
+            {/* Khung sơ đồ kiểu cửa sổ ứng dụng; điện thoại: vuốt ngang để xem hết sơ đồ */}
+            <div className="mx-auto mt-10 max-w-[1180px] overflow-hidden rounded-[20px] bg-white shadow-[0_40px_90px_-40px_rgba(30,109,218,0.75)] ring-1 ring-white/15 sm:mt-14">
+              <div className="flex items-center justify-between gap-3 border-b border-[#e8e8ed] bg-[#f5f5f7] px-4 py-2.5">
+                <span className="flex items-center gap-1.5" aria-hidden="true">
+                  <i className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
+                  <i className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
+                  <i className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+                </span>
+                <span className="truncate text-[12px] font-medium text-[#6e6e73]">clickstar · data pipeline</span>
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-[#28c840]/15 px-2.5 py-1 text-[11px] font-semibold text-[#1d7a34]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#28c840]" />
+                  {t('Trực tuyến', 'Live')}
+                </span>
+              </div>
+              <div className="overflow-x-auto">
+                <div className="min-w-[860px] sm:min-w-0">
+                  <InlineSvgImage
+                    src={content.pipeline_image_src}
+                    alt={t(content.pipeline_image_alt.vi, content.pipeline_image_alt.en)}
+                    className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
+                  />
+                </div>
+              </div>
             </div>
+            <p className="mt-4 text-center text-[13px] text-[#a1a1a6] sm:hidden">{t('Vuốt ngang để xem toàn bộ sơ đồ', 'Swipe sideways to see the full diagram')}</p>
+            <p className="mx-auto mt-5 max-w-[680px] text-balance text-center text-[15px] leading-[1.55] text-[#a1a1a6]">
+              {t(
+                'Dữ liệu chảy liên tục từ quảng cáo đến báo cáo. Kết quả đo được ở cuối quay lại điều chỉnh ngân sách và nội dung ở đầu.',
+                'Data flows continuously from ads to reports. What we measure at the end feeds back into budget and content at the start.'
+              )}
+            </p>
           </Reveal>
         </div>
       </section>
