@@ -94,7 +94,10 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                 {t(content.heading_lead.vi, content.heading_lead.en)}
                 {t(content.heading_highlight.vi, content.heading_highlight.en)}
               </h2>
-              <p data-cms-field="description" className="ap-lead max-w-[760px]">
+              <p
+                data-cms-field="description"
+                className="max-w-[640px] text-balance text-[17px] leading-[1.55] tracking-[-0.01em] text-[#515154] sm:text-[19px]"
+              >
                 {t(content.description.vi, content.description.en)}
               </p>
             </div>

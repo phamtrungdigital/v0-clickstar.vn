@@ -47,11 +47,14 @@ export function ServiceCard({ icon, title, description, tag, href, badge, moreLa
         <span className="grid h-12 w-12 shrink-0 place-items-center rounded-[14px] border border-[#cfe0fa] bg-gradient-to-br from-[#eaf2fd] to-white text-[#1e6dda] shadow-[0_6px_16px_-8px_rgba(30,109,218,0.5)] transition-transform duration-300 group-hover:scale-105 [&>svg]:h-6 [&>svg]:w-6">
           {icon}
         </span>
-        {step && layer && (
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-[#eaf2fd] px-2.5 py-1 text-[11px] font-semibold uppercase leading-none tracking-[0.1em] text-[#144c97]">
-            <span className="tabular-nums text-[#1e6dda]">{step}</span>
-            {layer}
-          </span>
+        {step && (
+          <>
+            {/* Số mờ cùng nhịp với các nút lộ trình phía trên; tên tầng dành cho người đọc màn hình */}
+            <span aria-hidden="true" className="select-none text-[46px] font-semibold leading-[0.9] tracking-[-0.04em] tabular-nums text-[#1e6dda]/[0.16] transition-colors duration-300 group-hover:text-[#1e6dda]/45">
+              {step}
+            </span>
+            {layer && <span className="sr-only">{layer}</span>}
+          </>
         )}
       </div>
 
