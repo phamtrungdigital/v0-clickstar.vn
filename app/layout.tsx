@@ -83,8 +83,12 @@ export async function generateMetadata(): Promise<Metadata> {
   const favicon = settings?.favicon_url
   const ogImage = settings?.default_og_image
 
+  // Favicon tải lên CMS là ảnh gốc (hiện 1,5 MB PNG): mọi khách mới đều tải về. Đưa qua bộ tối ưu ảnh của Next
+  // (64px cho tab, 256px cho biểu tượng iPhone; WebP/AVIF nếu trình duyệt nhận). Ảnh trong /public giữ nguyên.
+  const sizedIcon = (url: string, w: 64 | 256) =>
+    /^https?:\/\//.test(url) ? `/_next/image?url=${encodeURIComponent(url)}&w=${w}&q=75` : url
   const icons = favicon
-    ? { icon: favicon, apple: favicon }
+    ? { icon: sizedIcon(favicon, 64), apple: sizedIcon(favicon, 256) }
     : {
         icon: [
           { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
