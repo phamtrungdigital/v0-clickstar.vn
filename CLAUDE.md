@@ -134,3 +134,19 @@ Chạy với `run_in_background: true` để không block khi đợi.
 **Commit:** abc1234
 **Fix:** tóm tắt 1-2 dòng
 ```
+
+---
+
+## QUY ĐỊNH 6 — Viết bài blog: đọc `docs/blog-writing-rules.md` trước (anh thiết lập 20/10/2026)
+
+Mọi bài đăng ở `/blog` (VI và EN) phải theo file **`docs/blog-writing-rules.md`**. Đọc file đó trước khi viết, và đối chiếu checklist ở cuối file trước khi đăng. Bảy tiêu chí bắt buộc:
+
+1. Chuẩn SEO (một bài một ý định tìm kiếm, từ khóa chính đúng chỗ, `seo_title` 34-46 ký tự, `seo_description` tối đa 160 ký tự).
+2. Đáp ứng yếu tố của Google (nội dung hữu ích, E-E-A-T, nguồn chính, thận trọng với chủ đề pháp lý và tài chính).
+3. Giọng văn chuyên gia, nghiêm túc (xưng "Click Star", không emoji, không "—", không sáo ngữ, không tự khen).
+4. Chữ căn đều hai bên ở máy tính (đã áp ở code từ 640px; mobile căn trái).
+5. Bài chất lượng, mang lại giá trị (mỗi bài có việc làm được ngay; mỗi số có nguồn và ngày trong câu; không mục Nguồn, không [n]).
+6. Hình ảnh mô tả được giá trị nội dung (ảnh bìa + 3 infographic VI/EN, dữ liệu khớp 100% bài, có nguồn ở chân ảnh, xem từng ảnh trước khi đăng).
+7. Phân tích chuyên sâu (khoảng 11.000-14.000 ký tự mỗi bản, khung bối cảnh, bằng chứng, ý nghĩa, phương án, rủi ro, việc nên làm, cách đo).
+
+Quyền đăng: anh đã cho phép đăng luôn bài viết, không cần duyệt từng bài. Thay đổi code hoặc schema vẫn theo preview-before-prod.
