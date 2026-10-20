@@ -11,6 +11,7 @@ import { CTASection } from '@/components/sections/cta-section'
 import { ClientLogos } from '@/components/sections/client-logos'
 import { LogoMarquee } from '@/components/sections/logo-marquee'
 import { Footer } from '@/components/layout/footer'
+import { Reveal } from '@/components/ui/reveal'
 // EditModeOverlay moved to app/layout.tsx — covers all pages now
 import { getPublishedPage } from '@/lib/cms/queries'
 import { getLatestPosts, type LatestPost } from '@/lib/cms/posts'
@@ -93,9 +94,13 @@ export async function HomeView({ lang = 'vi' }: { lang?: Lang }) {
           AI vẫn có nút nổi (FloatingAiServiceRouter); muốn bật lại banner/ô AI chỉ cần thêm lại 2 dòng này. */}
       <MainNav />
 
-      {orderNewsAfterLogos(page.sections).map((section) => (
-        <div key={section.id}>{renderSection(section, extra, latestPosts)}</div>
-      ))}
+      {orderNewsAfterLogos(page.sections).map((section) => {
+        const node = renderSection(section, extra, latestPosts)
+        if (!node) return <div key={section.id} />
+        // Hiện dần khi cuộn tới. Không bọc: hero (có hiệu ứng vào riêng), thanh logo/công nghệ và khối dịch vụ, FAQ (đã tự có hiệu ứng bên trong).
+        const own = ['hero', 'logo_marquee', 'services', 'faq'].includes(section.type)
+        return <div key={section.id}>{own ? node : <Reveal>{node}</Reveal>}</div>
+      })}
 
       <Footer />
     </div>
