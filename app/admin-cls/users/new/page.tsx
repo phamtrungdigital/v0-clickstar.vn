@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { ArrowLeft, UserCheck, Edit3 } from 'lucide-react'
+import { ArrowLeft, UserCheck, Pencil } from 'lucide-react'
+import { Card, PageHeader, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
 import { createAdminUser } from '../actions'
 
 export default function NewUserPage({
@@ -43,46 +44,34 @@ async function NewUserInner({
   }
 
   return (
-    <div className="max-w-xl space-y-3">
-      <Link
-        href="/admin-cls/users"
-        className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-700"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Quay lại
+    <div className="mx-auto max-w-xl">
+      <Link href="/admin-cls/users" className="mb-3 inline-flex items-center gap-1.5 text-[13.5px] text-[var(--ad-fg-3)] hover:text-[var(--ad-fg)]">
+        <ArrowLeft className="h-4 w-4" />
+        Quay lại danh sách
       </Link>
 
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-4">
-        <h1 className="text-lg font-bold text-slate-900 dark:text-white">Thêm người dùng admin</h1>
+      <PageHeader title="Thêm người dùng" description="Tạo tài khoản mới để vào khu quản trị." />
 
+      <Card className="space-y-4 p-6">
         {isDuplicate && existingId && (
-          <div className="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-2.5">
-            <div className="flex items-start gap-2.5">
-              <UserCheck className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="space-y-3 rounded-2xl bg-[rgba(255,159,10,.14)] p-4">
+            <div className="flex items-start gap-3">
+              <UserCheck className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#b25e00]" />
               <div className="flex-1">
-                <p className="text-sm font-semibold text-amber-900">
-                  Email{' '}
-                  <span className="font-mono">{existingEmail}</span>{' '}
-                  đã tồn tại trong hệ thống
+                <p className="text-[14.5px] font-semibold text-[#8a4a00]">
+                  Email <span className="font-mono">{existingEmail}</span> đã có trong hệ thống
                 </p>
-                <p className="text-xs text-amber-800 mt-1">
-                  Người dùng này đã được tạo trước đó. Anh có thể mở trang chỉnh sửa để đổi role,
-                  reset mật khẩu, hoặc disable tài khoản.
+                <p className="mt-1 text-[13.5px] text-[#8a4a00]">
+                  Tài khoản này đã được tạo trước đó. Anh mở trang chỉnh sửa để đổi vai trò, đặt lại mật khẩu hoặc khoá tài khoản.
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 pl-7">
-              <Link
-                href={`/admin-cls/users/${existingId}/edit`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded"
-              >
-                <Edit3 className="w-3.5 h-3.5" />
+            <div className="flex flex-wrap items-center gap-3 pl-8">
+              <Link href={`/admin-cls/users/${existingId}/edit`} className={btn('primary', 'sm')}>
+                <Pencil className="h-3.5 w-3.5" />
                 Mở trang chỉnh sửa
               </Link>
-              <Link
-                href="/admin-cls/users/new"
-                className="text-xs text-amber-800 hover:text-amber-900 underline"
-              >
+              <Link href="/admin-cls/users/new" className="text-[13.5px] text-[#8a4a00] underline">
                 Hoặc dùng email khác
               </Link>
             </div>
@@ -90,71 +79,49 @@ async function NewUserInner({
         )}
 
         {error && !isDuplicate && (
-          <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700">
-            {error}
-          </div>
+          <div className="rounded-xl bg-[rgba(255,59,48,.10)] px-4 py-2.5 text-[13.5px] text-[#d70015]">{error}</div>
         )}
 
-        <form action={action} className="space-y-3">
+        <form action={action} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium mb-1.5">Email</label>
-            <input
-              type="email"
-              name="email"
-              required
-              autoFocus
-              placeholder="email@clickstar.vn"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm"
-            />
+            <label className={fieldLabelClass}>Email</label>
+            <input type="email" name="email" required autoFocus placeholder="email@clickstar.vn" className={fieldInputClass} />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1.5">Họ tên</label>
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder="Nguyễn Văn A"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm"
-            />
+            <label className={fieldLabelClass}>Họ tên</label>
+            <input type="text" name="name" required placeholder="Nguyễn Văn A" className={fieldInputClass} />
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1.5">Mật khẩu tạm</label>
+            <label className={fieldLabelClass}>Mật khẩu tạm</label>
             <input
               type="text"
               name="password"
               required
               minLength={8}
               placeholder="Tối thiểu 8 ký tự"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm font-mono"
+              className={fieldInputClass + ' font-mono'}
             />
-            <p className="text-[10px] text-slate-500 mt-1">
-              Anh share mật khẩu này cho user qua kênh bảo mật, họ sẽ đổi sau khi login lần đầu.
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
+              Anh gửi mật khẩu này cho người dùng qua kênh bảo mật, họ nên đổi sau khi đăng nhập lần đầu.
             </p>
           </div>
           <div>
-            <label className="block text-xs font-medium mb-1.5">Vai trò</label>
-            <select
-              name="role"
-              defaultValue="admin"
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm"
-            >
-              <option value="admin">Admin — toàn quyền</option>
-              <option value="editor">Editor — edit content (chưa enforce)</option>
-              <option value="viewer">Viewer — chỉ xem (chưa enforce)</option>
+            <label className={fieldLabelClass}>Vai trò</label>
+            <select name="role" defaultValue="admin" className={fieldInputClass}>
+              <option value="admin">Quản trị viên: toàn quyền</option>
+              <option value="editor">Biên tập viên: sửa nội dung (chưa áp dụng)</option>
+              <option value="viewer">Người xem: chỉ xem (chưa áp dụng)</option>
             </select>
-            <p className="text-[10px] text-slate-500 mt-1">
-              Hiện tại tất cả role đều có quyền edit. Phân quyền sẽ bổ sung phase sau.
+            <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
+              Hiện mọi vai trò đều có quyền sửa. Phân quyền theo vai trò sẽ làm ở giai đoạn sau.
             </p>
           </div>
 
-          <button
-            type="submit"
-            className="w-full bg-primary text-white text-sm font-medium py-2 rounded hover:bg-primary/90"
-          >
+          <button type="submit" className={btn('primary', 'lg') + ' w-full'}>
             Tạo người dùng
           </button>
         </form>
-      </div>
+      </Card>
     </div>
   )
 }

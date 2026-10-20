@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import Link from 'next/link'
-import { ArrowLeft, Save, KeyRound, CheckCircle2, AlertCircle } from 'lucide-react'
+import { KeyRound, Loader2 } from 'lucide-react'
 import { updateAdminUser, resetAdminPassword } from '../../../actions'
 import type { AdminUser } from '@/lib/cms/users'
+import { EditorBar, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
+import { Switch } from '@/components/admin/switch'
 
 export function UserEditor({ user, isSelf }: { user: AdminUser; isSelf: boolean }) {
   const [name, setName] = useState(user.full_name ?? '')
@@ -33,123 +34,86 @@ export function UserEditor({ user, isSelf }: { user: AdminUser; isSelf: boolean 
       setMsg({ type: 'err', text: 'Mật khẩu mới phải tối thiểu 8 ký tự' })
       return
     }
-    if (!confirm(`Reset password cho ${user.email}?`)) return
+    if (!confirm(`Đặt lại mật khẩu cho ${user.email}?`)) return
     startTransition(async () => {
       const result = await resetAdminPassword(user.user_id, newPassword)
       if (result?.error) setMsg({ type: 'err', text: result.error })
       else {
-        setMsg({ type: 'ok', text: `Đã reset password. Share cho user: ${newPassword}` })
+        setMsg({ type: 'ok', text: `Đã đặt lại mật khẩu. Gửi cho người dùng: ${newPassword}` })
         setNewPassword('')
       }
     })
   }
 
   return (
-    <div className="max-w-xl space-y-3">
-      <Link
-        href="/admin-cls/users"
-        className="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-700"
-      >
-        <ArrowLeft className="w-3.5 h-3.5" />
-        Quay lại danh sách
-      </Link>
+    <div>
+      <EditorBar backHref="/admin-cls/users" title={user.full_name || user.email} subtitle={user.email}>
+        <button onClick={save} disabled={isPending} className={btn('primary')}>
+          {isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
+          {isPending ? 'Đang lưu' : 'Lưu thay đổi'}
+        </button>
+      </EditorBar>
 
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-4">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">
-            {user.full_name || user.email}
-          </h1>
-          <p className="text-xs text-slate-500 font-mono">{user.email}</p>
-        </div>
-
+      <div className="mx-auto max-w-xl space-y-4">
         {msg && (
           <div
-            className={`flex items-center gap-1.5 px-3 py-2 rounded text-xs ${
-              msg.type === 'ok'
-                ? 'bg-emerald-50 border border-emerald-200 text-emerald-700'
-                : 'bg-red-50 border border-red-200 text-red-700'
+            role="status"
+            className={`rounded-xl px-4 py-2.5 text-[13.5px] ${
+              msg.type === 'ok' ? 'bg-[rgba(52,199,89,.12)] text-[#248a3d]' : 'bg-[rgba(255,59,48,.10)] text-[#d70015]'
             }`}
           >
-            {msg.type === 'ok' ? (
-              <CheckCircle2 className="w-3.5 h-3.5" />
-            ) : (
-              <AlertCircle className="w-3.5 h-3.5" />
-            )}
             {msg.text}
           </div>
         )}
 
-        <div>
-          <label className="block text-xs font-medium mb-1.5">Họ tên</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm"
-          />
-        </div>
+        <SectionCard title="Thông tin tài khoản" bodyClassName="space-y-4 px-5 pb-5 pt-4">
+          <div>
+            <label className={fieldLabelClass}>Họ tên</label>
+            <input type="text" value={name} onChange={(e) => setName(e.target.value)} className={fieldInputClass} />
+          </div>
 
-        <div>
-          <label className="block text-xs font-medium mb-1.5">Vai trò</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value as AdminUser['role'])}
-            className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm"
-          >
-            <option value="admin">Admin</option>
-            <option value="editor">Editor</option>
-            <option value="viewer">Viewer</option>
-          </select>
-        </div>
+          <div>
+            <label className={fieldLabelClass}>Vai trò</label>
+            <select value={role} onChange={(e) => setRole(e.target.value as AdminUser['role'])} className={fieldInputClass}>
+              <option value="admin">Quản trị viên</option>
+              <option value="editor">Biên tập viên</option>
+              <option value="viewer">Người xem</option>
+            </select>
+          </div>
 
-        <div>
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
+          <div className="flex items-center gap-3">
+            <Switch
               checked={isActive}
-              onChange={(e) => setIsActive(e.target.checked)}
+              onChange={setIsActive}
               disabled={isSelf}
-              className="w-4 h-4"
+              label="Cho phép đăng nhập"
             />
-            Active (cho phép đăng nhập)
-            {isSelf && (
-              <span className="text-[10px] text-slate-500">— không thể disable chính mình</span>
-            )}
-          </label>
-        </div>
+            <div>
+              <div className="text-[14px] text-[var(--ad-fg)]">Cho phép đăng nhập</div>
+              {isSelf && <div className="text-[12.5px] text-[var(--ad-fg-3)]">Không thể khoá chính mình.</div>}
+            </div>
+          </div>
+        </SectionCard>
 
-        <button
-          onClick={save}
-          disabled={isPending}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
+        <SectionCard
+          title="Đặt lại mật khẩu"
+          description="Tạo mật khẩu mới cho người dùng này, rồi gửi cho họ qua kênh an toàn."
+          bodyClassName="px-5 pb-5 pt-4"
         >
-          <Save className="w-3.5 h-3.5" />
-          {isPending ? 'Đang lưu…' : 'Lưu thay đổi'}
-        </button>
-      </div>
-
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-6 space-y-3">
-        <h2 className="text-sm font-semibold text-slate-900 dark:text-white">Reset mật khẩu</h2>
-        <p className="text-xs text-slate-500">
-          Tạo mật khẩu mới cho user này. Sau khi reset, share password cho user qua kênh an toàn.
-        </p>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            placeholder="Mật khẩu mới (≥8 ký tự)"
-            className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm font-mono"
-          />
-          <button
-            onClick={resetPwd}
-            disabled={isPending || newPassword.length < 8}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-amber-500 text-white text-xs font-medium rounded hover:bg-amber-600 disabled:opacity-50"
-          >
-            <KeyRound className="w-3.5 h-3.5" />
-            Reset
-          </button>
-        </div>
+          <div className="flex flex-wrap gap-2">
+            <input
+              type="text"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Mật khẩu mới (từ 8 ký tự)"
+              className={fieldInputClass + ' min-w-0 flex-1 font-mono'}
+            />
+            <button onClick={resetPwd} disabled={isPending || newPassword.length < 8} className={btn('secondary')}>
+              <KeyRound className="h-4 w-4" />
+              Đặt lại
+            </button>
+          </div>
+        </SectionCard>
       </div>
     </div>
   )

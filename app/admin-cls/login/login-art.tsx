@@ -1,6 +1,6 @@
 /**
- * Ngôi sao pha lê của trang đăng nhập: năm cánh, mỗi cánh hai mặt sáng và tối, quầng sáng xanh thở chậm,
- * vòng quỹ đạo mảnh với chấm cam, vài dấu lấp lánh thưa. Thuần SVG và CSS (không ảnh, không thư viện),
+ * Ngôi sao pha lê của trang đăng nhập: năm cánh, mỗi cánh hai mặt sáng và tối, quầng sáng xanh thở chậm (nền sáng),
+ * vòng quỹ đạo mảnh với chấm xanh, vài dấu lấp lánh thưa. Thuần SVG và CSS (không ảnh, không thư viện),
  * tự tắt chuyển động khi người dùng bật chế độ giảm chuyển động.
  */
 const CX = 150
@@ -39,7 +39,7 @@ export function LoginArt({ className }: { className?: string }) {
       <style>{CSS}</style>
       <defs>
         <radialGradient id="cs-bg" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stopColor="#3b82f6" stopOpacity=".42" />
+          <stop offset="0" stopColor="#3b82f6" stopOpacity=".28" />
           <stop offset=".5" stopColor="#3b82f6" stopOpacity=".12" />
           <stop offset="1" stopColor="#3b82f6" stopOpacity="0" />
         </radialGradient>
@@ -60,8 +60,8 @@ export function LoginArt({ className }: { className?: string }) {
         <circle cx="150" cy="150" r="148" fill="url(#cs-bg)" />
       </g>
       <g className="cs-rg">
-        <ellipse cx="150" cy="150" rx="128" ry="46" fill="none" stroke="#7db8ff" strokeOpacity=".28" strokeWidth="1" transform="rotate(-24 150 150)" />
-        <circle cx="278" cy="150" r="3.5" fill="#fb923c" transform="rotate(-24 150 150)" />
+        <ellipse cx="150" cy="150" rx="128" ry="46" fill="none" stroke="#1e6dda" strokeOpacity=".22" strokeWidth="1" transform="rotate(-24 150 150)" />
+        <circle cx="278" cy="150" r="3.5" fill="#1e6dda" transform="rotate(-24 150 150)" />
       </g>
 
       <g className="cs-fa">
@@ -81,10 +81,10 @@ export function LoginArt({ className }: { className?: string }) {
       </g>
 
       <g className="cs-sp" style={{ animationDelay: '1.2s' }}>
-        <path d="M255 58v16M247 66h16" stroke="#cfe3ff" strokeWidth="1.4" strokeLinecap="round" />
+        <path d="M255 58v16M247 66h16" stroke="#8db8f5" strokeWidth="1.4" strokeLinecap="round" />
       </g>
       <g className="cs-sp" style={{ animationDelay: '2.6s' }}>
-        <path d="M52 232v12M46 238h12" stroke="#cfe3ff" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M52 232v12M46 238h12" stroke="#8db8f5" strokeWidth="1.2" strokeLinecap="round" />
       </g>
     </svg>
   )

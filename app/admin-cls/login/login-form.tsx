@@ -14,7 +14,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="w-full h-11 rounded-lg bg-orange-500 hover:bg-orange-600 disabled:opacity-70 disabled:cursor-wait text-white text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2"
+      className="h-11 w-full rounded-full bg-[var(--ad-accent)] text-[15px] font-medium text-white transition-colors hover:bg-[var(--ad-accent-d)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ad-accent)] focus-visible:ring-offset-2 disabled:cursor-wait disabled:opacity-70"
     >
       {pending ? 'Signing in…' : 'Sign in'}
     </button>
@@ -77,18 +77,18 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
       <input type="hidden" name="redirect" value={redirectTo} />
 
       {error && (
-        <div role="alert" className="flex items-start gap-2 px-3 py-2.5 rounded-lg bg-red-50 border border-red-200 text-[13px] text-red-700">
+        <div role="alert" className="flex items-start gap-2 rounded-xl bg-[rgba(255,59,48,.10)] px-3.5 py-2.5 text-[13px] text-[#d70015]">
           <AlertCircle className="w-4 h-4 mt-px shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       <div>
-        <label htmlFor="email" className="block text-[13px] font-medium text-slate-700 mb-2">
+        <label htmlFor="email" className="block text-[13px] font-medium text-[var(--ad-fg-2)] mb-2">
           Email
         </label>
         <div className="relative">
-          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
+          <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[var(--ad-fg-3)]" />
           <input
             ref={emailRef}
             id="email"
@@ -99,18 +99,18 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
             placeholder="name@clickstar.vn"
             aria-invalid={!!errs.email}
             onChange={() => errs.email && setErrs((p) => ({ ...p, email: undefined }))}
-            className="w-full h-11 pl-11 pr-3 rounded-lg bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 aria-[invalid=true]:border-red-400"
+            className="w-full h-11 pl-11 pr-3 rounded-xl bg-white border border-[var(--ad-line-2)] text-[15px] text-[var(--ad-fg)] placeholder-[var(--ad-fg-3)] focus:outline-none aria-[invalid=true]:border-[#ff3b30]"
           />
         </div>
-        {errs.email && <p className="mt-1.5 text-xs text-red-600">{errs.email}</p>}
+        {errs.email && <p className="mt-1.5 text-xs text-[#d70015]">{errs.email}</p>}
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-[13px] font-medium text-slate-700 mb-2">
+        <label htmlFor="password" className="block text-[13px] font-medium text-[var(--ad-fg-2)] mb-2">
           Password
         </label>
         <div className="relative">
-          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
+          <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-[var(--ad-fg-3)]" />
           <input
             ref={passwordRef}
             id="password"
@@ -120,26 +120,26 @@ export function LoginForm({ redirectTo, error }: { redirectTo: string; error: st
             placeholder="Enter your password"
             aria-invalid={!!errs.password}
             onChange={() => errs.password && setErrs((p) => ({ ...p, password: undefined }))}
-            className="w-full h-11 pl-11 pr-12 rounded-lg bg-white border border-slate-300 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 aria-[invalid=true]:border-red-400"
+            className="w-full h-11 pl-11 pr-12 rounded-xl bg-white border border-[var(--ad-line-2)] text-[15px] text-[var(--ad-fg)] placeholder-[var(--ad-fg-3)] focus:outline-none aria-[invalid=true]:border-[#ff3b30]"
           />
           <button
             type="button"
             onClick={() => setShow((v) => !v)}
             aria-label={show ? 'Hide password' : 'Show password'}
-            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-md flex items-center justify-center text-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40"
+            className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center text-[var(--ad-fg-3)] hover:bg-[var(--ad-fill)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ad-accent)]"
           >
             {show ? <EyeOff className="w-[18px] h-[18px]" /> : <Eye className="w-[18px] h-[18px]" />}
           </button>
         </div>
-        {errs.password && <p className="mt-1.5 text-xs text-red-600">{errs.password}</p>}
+        {errs.password && <p className="mt-1.5 text-xs text-[#d70015]">{errs.password}</p>}
       </div>
 
-      <label className="flex items-center gap-2 text-[13px] text-slate-600 cursor-pointer select-none">
+      <label className="flex cursor-pointer select-none items-center gap-2 text-[13px] text-[var(--ad-fg-2)]">
         <input
           type="checkbox"
           checked={remember}
           onChange={(e) => setRemember(e.target.checked)}
-          className="h-4 w-4 rounded border-slate-300 accent-orange-500"
+          className="h-4 w-4 rounded"
         />
         Remember my email on this device
       </label>
