@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { Upload, X, ImageIcon, Loader2 } from 'lucide-react'
 import { uploadMedia } from '@/lib/cms/upload'
+import { btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
 
 export function ImagePicker({
   label,
@@ -45,32 +46,31 @@ export function ImagePicker({
 
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">
-        {label}
-      </label>
+      <label className={fieldLabelClass}>{label}</label>
 
       <div className="flex gap-3 items-start">
         {/* Preview */}
         <div
           onDrop={onDrop}
           onDragOver={(e) => e.preventDefault()}
-          className="w-32 h-24 flex-shrink-0 rounded-md border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 flex items-center justify-center overflow-hidden relative group"
+          className="group relative flex h-24 w-32 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-dashed border-[var(--ad-line-2)] bg-[var(--ad-fill-soft)]"
         >
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={value} alt="" className="w-full h-full object-cover" />
           ) : (
-            <ImageIcon className="w-6 h-6 text-slate-300" />
+            <ImageIcon className="h-6 w-6 text-[var(--ad-fg-3)]" />
           )}
 
           {value && (
             <button
               type="button"
               onClick={() => onChange('')}
-              className="absolute top-1 right-1 p-1 bg-white/90 hover:bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
-              title="Xoá"
+              aria-label="Xoá ảnh"
+              className="absolute right-1 top-1 rounded-full bg-white/90 p-1 opacity-0 shadow-sm transition-opacity hover:bg-white group-hover:opacity-100 focus-visible:opacity-100"
+              title="Xoá ảnh"
             >
-              <X className="w-3 h-3 text-slate-700" />
+              <X className="h-3 w-3 text-[var(--ad-fg-2)]" />
             </button>
           )}
         </div>
@@ -89,7 +89,7 @@ export function ImagePicker({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={uploading}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
+            className={btn('primary', 'sm')}
           >
             {uploading ? (
               <>
@@ -109,11 +109,11 @@ export function ImagePicker({
             value={value}
             placeholder="https://… hoặc kéo thả ảnh vào ô bên trái"
             onChange={(e) => onChange(e.target.value)}
-            className="w-full px-2 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs truncate"
+            className={fieldInputClass + ' truncate !py-1.5 !text-[13px]'}
           />
 
-          {error && <p className="text-[10px] text-red-600">⚠ {error}</p>}
-          {hint && !error && <p className="text-[10px] text-slate-500">{hint}</p>}
+          {error && <p className="text-[12.5px] text-[#d70015]">{error}</p>}
+          {hint && !error && <p className="text-[12.5px] text-[var(--ad-fg-3)]">{hint}</p>}
         </div>
       </div>
     </div>

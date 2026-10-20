@@ -1,12 +1,27 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Mail, Phone, Trash2, ChevronDown } from 'lucide-react'
+import { Mail, Phone, Trash2, ChevronDown, Search, Users } from 'lucide-react'
 import type { Lead, LeadStatus } from '@/lib/cms/leads-shared'
-import { LEAD_STATUS_LABEL, LEAD_STATUS_COLOR } from '@/lib/cms/leads-shared'
+import { LEAD_STATUS_LABEL } from '@/lib/cms/leads-shared'
+import { Card, EmptyState, PageHeader, Toolbar, btn, fieldInputClass, searchInputClass } from '@/components/admin/ui'
+import { Segmented } from '@/components/admin/segmented'
 import { updateLeadStatus, deleteLead, updateLeadNotes } from '../actions'
 
 const ALL_STATUS: LeadStatus[] = ['new', 'contacted', 'qualified', 'quoted', 'won', 'lost']
+
+/** Màu nhãn trạng thái: mỗi trạng thái một sắc riêng nhưng cùng độ nhạt, chữ đủ tương phản. */
+const STATUS_STYLE: Record<LeadStatus, string> = {
+  new: 'bg-[var(--ad-accent-soft)] text-[var(--ad-accent)]',
+  contacted: 'bg-[rgba(255,159,10,.16)] text-[#b25e00]',
+  qualified: 'bg-[rgba(175,82,222,.14)] text-[#8944ab]',
+  quoted: 'bg-[rgba(50,173,230,.16)] text-[#0a6e9e]',
+  won: 'bg-[rgba(52,199,89,.14)] text-[#248a3d]',
+  lost: 'bg-[var(--ad-fill)] text-[var(--ad-fg-3)]',
+}
+
+const ICON_BTN =
+  'grid h-8 w-8 place-items-center rounded-full text-[var(--ad-fg-3)] transition-colors hover:bg-[var(--ad-fill)] hover:text-[var(--ad-fg)] disabled:opacity-50'
 
 export function LeadsTable({ leads }: { leads: Lead[] }) {
   const [filterStatus, setFilterStatus] = useState<LeadStatus | 'all'>('all')
@@ -38,92 +53,63 @@ export function LeadsTable({ leads }: { leads: Lead[] }) {
   for (const l of leads) counts[l.status]++
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between gap-3 flex-wrap">
-        <div>
-          <h1 className="text-lg font-bold text-slate-900 dark:text-white">Leads</h1>
-          <p className="text-xs text-slate-500">Quản lý khách hàng tiềm năng ({leads.length})</p>
-        </div>
+    <div className="mx-auto max-w-7xl">
+      <PageHeader title="Leads" description={`Khách hàng tiềm năng đã để lại thông tin, hiện có ${leads.length} lead.`} />
 
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Tìm tên / email / phone / công ty…"
-          className="flex-1 max-w-xs px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-sm"
+      <Toolbar>
+        <Segmented
+          ariaLabel="Lọc theo trạng thái"
+          value={filterStatus}
+          onChange={setFilterStatus}
+          options={[
+            { id: 'all', label: 'Tất cả', count: counts.all },
+            ...ALL_STATUS.map((s) => ({ id: s, label: LEAD_STATUS_LABEL[s], count: counts[s] })),
+          ]}
         />
-      </div>
-
-      {/* Status tabs */}
-      <div className="flex flex-wrap gap-1.5">
-        <FilterTab
-          active={filterStatus === 'all'}
-          onClick={() => setFilterStatus('all')}
-          label={`Tất cả (${counts.all})`}
-        />
-        {ALL_STATUS.map((s) => (
-          <FilterTab
-            key={s}
-            active={filterStatus === s}
-            onClick={() => setFilterStatus(s)}
-            label={`${LEAD_STATUS_LABEL[s]} (${counts[s]})`}
-            badgeColor={LEAD_STATUS_COLOR[s]}
+        <label className="relative ml-auto block w-full sm:w-72">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--ad-fg-3)]" />
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Tìm theo tên, email, số điện thoại, công ty"
+            aria-label="Tìm lead"
+            className={searchInputClass + ' w-full pl-9'}
           />
-        ))}
-      </div>
+        </label>
+      </Toolbar>
 
       {filtered.length === 0 ? (
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-8 text-center">
-          <p className="text-sm text-slate-500">Không có lead nào khớp filter</p>
-        </div>
+        <Card>
+          <EmptyState icon={<Users className="h-5 w-5" />} title="Không có lead nào khớp bộ lọc" />
+        </Card>
       ) : (
-        <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700">
-              <tr className="text-left text-[11px] uppercase font-semibold text-slate-500">
-                <th className="px-4 py-2.5">Khách hàng</th>
-                <th className="px-4 py-2.5">Công ty</th>
-                <th className="px-4 py-2.5">Nguồn</th>
-                <th className="px-4 py-2.5">Giá trị</th>
-                <th className="px-4 py-2.5">Trạng thái</th>
-                <th className="px-4 py-2.5">Ngày tạo</th>
-                <th className="px-4 py-2.5 text-right"></th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-700">
-              {filtered.map((lead) => (
-                <LeadRow key={lead.id} lead={lead} />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <Card className="overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[900px] text-sm">
+              <thead>
+                <tr className="border-b border-[var(--ad-line)] text-left">
+                  <th className="px-5 py-3">Khách hàng</th>
+                  <th className="px-3 py-3">Công ty</th>
+                  <th className="px-3 py-3">Nguồn</th>
+                  <th className="px-3 py-3">Giá trị dự kiến</th>
+                  <th className="px-3 py-3">Trạng thái</th>
+                  <th className="px-3 py-3">Ngày tạo</th>
+                  <th className="px-5 py-3 text-right">
+                    <span className="sr-only">Thao tác</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((lead) => (
+                  <LeadRow key={lead.id} lead={lead} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
       )}
     </div>
-  )
-}
-
-function FilterTab({
-  active,
-  onClick,
-  label,
-  badgeColor,
-}: {
-  active: boolean
-  onClick: () => void
-  label: string
-  badgeColor?: string
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`text-xs font-medium px-3 py-1.5 rounded-full transition-colors ${
-        active
-          ? 'bg-primary text-white'
-          : badgeColor ?? 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
-      }`}
-    >
-      {label}
-    </button>
   )
 }
 
@@ -154,37 +140,38 @@ function LeadRow({ lead }: { lead: Lead }) {
 
   return (
     <>
-      <tr className="hover:bg-slate-50 dark:hover:bg-slate-900/30">
-        <td className="px-4 py-3">
-          <div className="font-medium text-slate-900 dark:text-white">{lead.name}</div>
-          <div className="flex items-center gap-3 text-[11px] text-slate-500 mt-0.5">
+      <tr className="border-t border-[var(--ad-line)] first:border-t-0">
+        <td className="px-5 py-3">
+          <div className="text-[14.5px] font-medium text-[var(--ad-fg)]">{lead.name}</div>
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[12.5px] text-[var(--ad-fg-3)]">
             {lead.email && (
-              <a href={`mailto:${lead.email}`} className="inline-flex items-center gap-1 hover:text-primary">
-                <Mail className="w-3 h-3" />
+              <a href={`mailto:${lead.email}`} className="inline-flex items-center gap-1 hover:text-[var(--ad-accent)]">
+                <Mail className="h-3.5 w-3.5" />
                 {lead.email}
               </a>
             )}
             {lead.phone && (
-              <a href={`tel:${lead.phone}`} className="inline-flex items-center gap-1 hover:text-primary">
-                <Phone className="w-3 h-3" />
+              <a href={`tel:${lead.phone}`} className="inline-flex items-center gap-1 hover:text-[var(--ad-accent)]">
+                <Phone className="h-3.5 w-3.5" />
                 {lead.phone}
               </a>
             )}
           </div>
         </td>
-        <td className="px-4 py-3 text-xs text-slate-600 dark:text-slate-300">{lead.company || '—'}</td>
-        <td className="px-4 py-3 text-xs text-slate-600 dark:text-slate-300">{lead.source}</td>
-        <td className="px-4 py-3 text-xs text-slate-600 dark:text-slate-300">
+        <td className="px-3 py-3 text-[13.5px] text-[var(--ad-fg-2)]">{lead.company || '—'}</td>
+        <td className="px-3 py-3 text-[13.5px] text-[var(--ad-fg-2)]">{lead.source}</td>
+        <td className="whitespace-nowrap px-3 py-3 text-[13.5px] tabular-nums text-[var(--ad-fg-2)]">
           {lead.value_estimate
             ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumFractionDigits: 0 }).format(lead.value_estimate)
             : '—'}
         </td>
-        <td className="px-4 py-3">
+        <td className="px-3 py-3">
           <select
             value={lead.status}
             disabled={isPending}
             onChange={(e) => onStatusChange(e.target.value as LeadStatus)}
-            className={`text-[11px] font-medium px-2 py-1 rounded-full border-0 cursor-pointer ${LEAD_STATUS_COLOR[lead.status]}`}
+            aria-label={`Trạng thái của ${lead.name}`}
+            className={`cursor-pointer !rounded-full !border-transparent px-3 py-1 text-[12.5px] font-medium ${STATUS_STYLE[lead.status]}`}
           >
             {ALL_STATUS.map((s) => (
               <option key={s} value={s}>
@@ -193,51 +180,45 @@ function LeadRow({ lead }: { lead: Lead }) {
             ))}
           </select>
         </td>
-        <td className="px-4 py-3 text-xs text-slate-500">
+        <td className="whitespace-nowrap px-3 py-3 text-[13px] text-[var(--ad-fg-3)]">
           {new Date(lead.created_at).toLocaleString('vi-VN', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
         </td>
-        <td className="px-4 py-3 text-right">
+        <td className="px-5 py-3 text-right">
           <div className="flex items-center justify-end gap-1">
-            <button
-              onClick={() => setNotesOpen((v) => !v)}
-              className="text-xs text-slate-500 hover:text-slate-700 px-2 py-1"
-            >
-              <ChevronDown className={`w-3 h-3 transition-transform inline mr-0.5 ${notesOpen ? 'rotate-180' : ''}`} />
+            <button onClick={() => setNotesOpen((v) => !v)} aria-expanded={notesOpen} className={btn('ghost', 'sm')}>
               Ghi chú
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${notesOpen ? 'rotate-180' : ''}`} />
             </button>
             <button
               onClick={onDelete}
               disabled={isPending}
-              className="p-1.5 hover:bg-red-50 rounded text-red-500"
+              className={ICON_BTN + ' hover:!text-[#d70015]'}
               title="Xoá lead"
+              aria-label={`Xoá lead ${lead.name}`}
             >
-              <Trash2 className="w-3.5 h-3.5" />
+              <Trash2 className="h-4 w-4" />
             </button>
           </div>
         </td>
       </tr>
       {notesOpen && (
-        <tr className="bg-slate-50 dark:bg-slate-900/30">
-          <td colSpan={7} className="px-4 py-3 space-y-2">
+        <tr className="bg-[var(--ad-fill-soft)]">
+          <td colSpan={7} className="space-y-2.5 px-5 py-4">
             {lead.message && (
-              <div className="text-xs">
-                <span className="font-semibold">Lời nhắn:</span>{' '}
-                <span className="text-slate-600 dark:text-slate-300">{lead.message}</span>
+              <div className="text-[13.5px]">
+                <span className="font-medium text-[var(--ad-fg)]">Lời nhắn:</span>{' '}
+                <span className="text-[var(--ad-fg-2)]">{lead.message}</span>
               </div>
             )}
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={2}
-              placeholder="Ghi chú nội bộ về lead này…"
-              className="w-full px-2 py-1.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded text-xs"
+              placeholder="Ghi chú nội bộ về lead này"
+              className={fieldInputClass}
             />
-            <button
-              onClick={onSaveNotes}
-              disabled={isPending}
-              className="px-2 py-1 bg-primary text-white text-xs rounded hover:bg-primary/90"
-            >
-              {isPending ? 'Đang lưu…' : 'Lưu ghi chú'}
+            <button onClick={onSaveNotes} disabled={isPending} className={btn('primary', 'sm')}>
+              {isPending ? 'Đang lưu' : 'Lưu ghi chú'}
             </button>
           </td>
         </tr>

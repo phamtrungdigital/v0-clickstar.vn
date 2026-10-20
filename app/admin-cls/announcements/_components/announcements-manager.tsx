@@ -2,20 +2,7 @@
 
 import { useState, useTransition, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import {
-  Bell,
-  Plus,
-  Pencil,
-  Trash2,
-  Save,
-  X,
-  CheckCircle2,
-  AlertCircle,
-  Upload,
-  Loader2,
-  Eye,
-  ImageIcon,
-} from 'lucide-react'
+import { Plus, Pencil, Trash2, X, AlertCircle, Upload, Loader2, Eye, ImageIcon } from 'lucide-react'
 import {
   createAnnouncement,
   updateAnnouncement,
@@ -37,6 +24,8 @@ import {
   type AnnouncementSettingsUpdate,
 } from '@/lib/cms/announcements-shared'
 import type { I18n } from '@/lib/cms/types'
+import { Card, Chip, EmptyState, PageHeader, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
+import { Switch } from '@/components/admin/switch'
 
 function isoToLocal(iso: string | null): string {
   if (!iso) return ''
@@ -93,25 +82,17 @@ export function AnnouncementsManager({
   }
 
   return (
-    <div className="space-y-4 max-w-4xl">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-base font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-            <Bell className="w-4 h-4 text-primary" />
-            Thông báo / Popup
-          </h1>
-          <p className="text-[11px] text-slate-500">
-            Tin social-proof hiện cho khách (ký hợp đồng, logo mới, đối tác…). Giao diện popup công khai sẽ làm ở Phần 2.
-          </p>
-        </div>
-        <button
-          onClick={startNew}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90"
-        >
-          <Plus className="w-3.5 h-3.5" /> Thêm thông báo
-        </button>
-      </div>
+    <div className="mx-auto max-w-4xl space-y-4">
+      <PageHeader
+        className="mb-1"
+        title="Thông báo và popup"
+        description="Tin tạo uy tín hiện cho khách khi vào website (ký hợp đồng, logo mới, đối tác). Giao diện popup công khai sẽ làm ở phần sau."
+        actions={
+          <button onClick={startNew} className={btn('primary')}>
+            <Plus className="h-4 w-4" /> Thêm thông báo
+          </button>
+        }
+      />
 
       {/* Editor */}
       {editing && (
@@ -128,74 +109,67 @@ export function AnnouncementsManager({
       )}
 
       {/* List */}
-      <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700">
+      <Card className="divide-y divide-[var(--ad-line)]">
         {list.length === 0 && (
-          <div className="p-6 text-center text-sm text-slate-400">
-            Chưa có thông báo nào. Bấm “Thêm thông báo”.
-          </div>
+          <EmptyState
+            icon={<ImageIcon className="h-5 w-5" />}
+            title="Chưa có thông báo nào"
+            description="Bấm “Thêm thông báo” để tạo tin đầu tiên."
+          />
         )}
         {list.map((a) => {
           const meta = typeMeta(a.type)
           return (
-            <div key={a.id} className="flex items-center gap-3 p-3">
-              <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
+            <div key={a.id} className="flex items-center gap-3.5 px-5 py-3.5">
+              <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--ad-fill)]">
                 {a.image_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={a.image_url} alt="" className="w-full h-full object-cover" />
+                  <img src={a.image_url} alt="" className="h-full w-full object-cover" />
                 ) : (
-                  <ImageIcon className="w-4 h-4 text-slate-400" />
+                  <ImageIcon className="h-4 w-4 text-[var(--ad-fg-3)]" />
                 )}
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary/10 text-primary font-medium">
-                    {meta.label}
-                  </span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-500">
-                    {a.display_mode === 'toast' ? 'Toast' : 'Modal'}
-                  </span>
-                  {(a.starts_at || a.ends_at) && (
-                    <span className="text-[10px] text-amber-600">⏱ có lịch</span>
-                  )}
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <Chip tone="blue">{meta.label}</Chip>
+                  <Chip>{a.display_mode === 'toast' ? 'Toast' : 'Modal'}</Chip>
+                  {(a.starts_at || a.ends_at) && <Chip tone="warn">Có lịch</Chip>}
                 </div>
-                <div className="text-sm font-medium text-slate-900 dark:text-white truncate mt-0.5">
+                <div className="mt-1 truncate text-[14.5px] font-medium text-[var(--ad-fg)]">
                   {a.title.vi || a.title.en || '(chưa có tiêu đề)'}
                 </div>
-                {a.body.vi && <div className="text-[11px] text-slate-500 truncate">{a.body.vi}</div>}
+                {a.body.vi && <div className="truncate text-[13px] text-[var(--ad-fg-3)]">{a.body.vi}</div>}
               </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <button
-                  onClick={() => onToggle(a)}
+              <div className="flex flex-shrink-0 items-center gap-1">
+                <Switch
+                  checked={a.enabled}
                   disabled={busyId === a.id}
-                  className={`px-2 py-1 text-[11px] font-medium rounded transition-colors ${
-                    a.enabled
-                      ? 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100'
-                      : 'bg-slate-100 text-slate-400 hover:bg-slate-200'
-                  }`}
-                  title={a.enabled ? 'Đang bật — bấm để tắt' : 'Đang tắt — bấm để bật'}
-                >
-                  {a.enabled ? 'Bật' : 'Tắt'}
-                </button>
+                  onChange={() => onToggle(a)}
+                  label={a.enabled ? 'Đang bật, bấm để tắt' : 'Đang tắt, bấm để bật'}
+                  title={a.enabled ? 'Đang bật, bấm để tắt' : 'Đang tắt, bấm để bật'}
+                />
                 <button
                   onClick={() => startEdit(a)}
-                  className="p-1.5 text-slate-400 hover:text-primary hover:bg-slate-50 dark:hover:bg-slate-700 rounded"
+                  className="grid h-8 w-8 place-items-center rounded-full text-[var(--ad-fg-3)] hover:bg-[var(--ad-fill)] hover:text-[var(--ad-accent)]"
                   aria-label="Sửa"
+                  title="Sửa"
                 >
-                  <Pencil className="w-3.5 h-3.5" />
+                  <Pencil className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => onDelete(a)}
                   disabled={busyId === a.id}
-                  className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded"
+                  className="grid h-8 w-8 place-items-center rounded-full text-[var(--ad-fg-3)] hover:bg-[rgba(255,59,48,.10)] hover:text-[#d70015] disabled:opacity-50"
                   aria-label="Xoá"
+                  title="Xoá"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             </div>
           )
         })}
-      </div>
+      </Card>
 
       {/* Settings */}
       <SettingsPanel initial={initialSettings} onSaved={() => router.refresh()} />
@@ -233,13 +207,18 @@ function AnnouncementEditor({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border-2 border-primary/30 p-4 space-y-3">
+    <Card className="space-y-4 p-5 ring-2 ring-[var(--ad-accent-soft)]">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-slate-900 dark:text-white">
+        <h2 className="text-[16px] font-semibold tracking-[-0.018em] text-[var(--ad-fg)]">
           {id ? 'Sửa thông báo' : 'Thông báo mới'}
         </h2>
-        <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-700 rounded">
-          <X className="w-4 h-4" />
+        <button
+          onClick={onClose}
+          className="grid h-8 w-8 place-items-center rounded-full text-[var(--ad-fg-3)] hover:bg-[var(--ad-fill)] hover:text-[var(--ad-fg)]"
+          aria-label="Đóng"
+          title="Đóng"
+        >
+          <X className="h-4 w-4" />
         </button>
       </div>
 
@@ -334,60 +313,53 @@ function AnnouncementEditor({
         </Field>
       </div>
 
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" checked={draft.enabled} onChange={(e) => up('enabled', e.target.checked)} className="w-4 h-4" />
-        <span className="text-sm text-slate-700 dark:text-slate-300">Bật hiển thị tin này</span>
-      </label>
+      <div className="flex items-center gap-3">
+        <Switch checked={draft.enabled} onChange={(v) => up('enabled', v)} label="Bật hiển thị tin này" />
+        <span className="text-[14px] text-[var(--ad-fg)]">Bật hiển thị tin này</span>
+      </div>
 
       {/* Preview nội dung (giao diện cuối ở Phần 2) */}
       <ContentPreview draft={draft} />
 
       {error && (
-        <div className="px-3 py-2 bg-red-50 border border-red-200 rounded text-xs text-red-700 flex items-center gap-1.5">
-          <AlertCircle className="w-3.5 h-3.5" /> {error}
+        <div className="flex items-center gap-1.5 rounded-xl bg-[rgba(255,59,48,.10)] px-3.5 py-2.5 text-[13.5px] text-[#d70015]">
+          <AlertCircle className="h-4 w-4" /> {error}
         </div>
       )}
 
       <div className="flex justify-end gap-2 pt-1">
-        <button onClick={onClose} className="px-3 py-1.5 text-xs text-slate-500 hover:text-slate-700">
+        <button onClick={onClose} className={btn('secondary')}>
           Huỷ
         </button>
-        <button
-          onClick={save}
-          disabled={isPending}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-        >
-          <Save className="w-3.5 h-3.5" />
-          {isPending ? 'Đang lưu…' : id ? 'Cập nhật' : 'Tạo'}
+        <button onClick={save} disabled={isPending} className={btn('primary')}>
+          {isPending ? 'Đang lưu' : id ? 'Cập nhật' : 'Tạo thông báo'}
         </button>
       </div>
-    </div>
+    </Card>
   )
 }
 
 function ContentPreview({ draft }: { draft: AnnouncementInput }) {
   const meta = typeMeta(draft.type)
   return (
-    <div className="border border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-3">
-      <div className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-slate-400 mb-2">
-        <Eye className="w-3 h-3" /> Xem thử nội dung (giao diện popup cuối làm ở Phần 2)
+    <div className="rounded-2xl border border-dashed border-[var(--ad-line-2)] p-4">
+      <div className="mb-2.5 flex items-center gap-1.5 text-[12.5px] font-medium text-[var(--ad-fg-3)]">
+        <Eye className="h-3.5 w-3.5" /> Xem thử nội dung (giao diện popup cuối làm ở phần sau)
       </div>
-      <div className="flex items-start gap-3 bg-slate-50 dark:bg-slate-900 rounded-lg p-3 max-w-sm">
+      <div className="flex max-w-sm items-start gap-3 rounded-xl bg-[var(--ad-fill-soft)] p-3.5">
         {draft.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={draft.image_url} alt="" className="w-10 h-10 rounded object-cover flex-shrink-0" />
+          <img src={draft.image_url} alt="" className="h-10 w-10 flex-shrink-0 rounded-lg object-cover" />
         ) : (
-          <span className="w-10 h-10 rounded bg-primary/10 text-primary flex items-center justify-center flex-shrink-0 text-[10px] font-semibold">
+          <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--ad-accent-soft)] text-[11px] font-semibold text-[var(--ad-accent)]">
             {meta.label.slice(0, 2)}
           </span>
         )}
         <div className="min-w-0">
-          <div className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-            {draft.title.vi || '(tiêu đề)'}
-          </div>
-          <div className="text-xs text-slate-500 line-clamp-2">{draft.body.vi}</div>
+          <div className="truncate text-[14.5px] font-semibold text-[var(--ad-fg)]">{draft.title.vi || '(tiêu đề)'}</div>
+          <div className="line-clamp-2 text-[13px] text-[var(--ad-fg-3)]">{draft.body.vi}</div>
           {draft.link_url && draft.link_label.vi && (
-            <span className="inline-block mt-1 text-[11px] text-primary font-medium">{draft.link_label.vi} →</span>
+            <span className="mt-1 inline-block text-[12.5px] font-medium text-[var(--ad-accent)]">{draft.link_label.vi}</span>
           )}
         </div>
       </div>
@@ -416,10 +388,13 @@ function SettingsPanel({
     show_on_mobile: initial?.show_on_mobile ?? DEFAULT_ANNOUNCEMENT_SETTINGS.show_on_mobile,
   }))
   const [isPending, startTransition] = useTransition()
-  const [status, setStatus] = useState<'idle' | 'saved' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'saved' | 'error' | 'dirty'>('idle')
 
   const up = <K extends keyof AnnouncementSettingsUpdate>(k: K, v: AnnouncementSettingsUpdate[K]) =>
-    setDraft((d) => ({ ...d, [k]: v }))
+    {
+      setDraft((d) => ({ ...d, [k]: v }))
+      setStatus('dirty')
+    }
 
   const save = () => {
     startTransition(async () => {
@@ -427,7 +402,7 @@ function SettingsPanel({
       if (r?.error) setStatus('error')
       else {
         setStatus('saved')
-        setTimeout(() => setStatus('idle'), 2500)
+        setTimeout(() => setStatus((s) => (s === 'saved' ? 'idle' : s)), 2500)
         onSaved()
       }
     })
@@ -436,33 +411,25 @@ function SettingsPanel({
   const sec = (ms: number) => Math.round(ms / 1000)
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 p-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">Cấu hình hiển thị chung</h2>
-        <div className="flex items-center gap-2">
-          {status === 'saved' && (
-            <span className="flex items-center gap-1 text-xs text-emerald-600">
-              <CheckCircle2 className="w-3.5 h-3.5" /> Đã lưu
-            </span>
-          )}
-          {status === 'error' && <span className="text-xs text-red-600">Lỗi</span>}
-          <button
-            onClick={save}
-            disabled={isPending}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium rounded hover:bg-primary/90 disabled:opacity-50"
-          >
-            <Save className="w-3.5 h-3.5" />
-            {isPending ? 'Đang lưu…' : 'Lưu cấu hình'}
+    <SectionCard
+      title="Cấu hình hiển thị chung"
+      description="Áp dụng cho mọi thông báo trên website."
+      actions={
+        <>
+          <SaveStatus status={status} />
+          <button onClick={save} disabled={isPending} className={btn('primary')}>
+            {isPending ? 'Đang lưu' : 'Lưu cấu hình'}
           </button>
-        </div>
+        </>
+      }
+      bodyClassName="space-y-4 px-5 pb-5 pt-4"
+    >
+      <div className="flex items-center gap-3">
+        <Switch checked={draft.enabled} onChange={(v) => up('enabled', v)} label="Bật hệ thống thông báo trên website" />
+        <span className="text-[14px] text-[var(--ad-fg)]">Bật hệ thống thông báo trên website</span>
       </div>
 
-      <label className="flex items-center gap-2 cursor-pointer">
-        <input type="checkbox" checked={draft.enabled} onChange={(e) => up('enabled', e.target.checked)} className="w-4 h-4" />
-        <span className="text-sm text-slate-700 dark:text-slate-300">Bật hệ thống thông báo trên website</span>
-      </label>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
         <Field label="Vị trí toast">
           <select
             value={draft.toast_position}
@@ -499,29 +466,28 @@ function SettingsPanel({
         />
       </Field>
 
-      <div className="flex flex-wrap gap-5">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" checked={draft.show_on_desktop} onChange={(e) => up('show_on_desktop', e.target.checked)} className="w-4 h-4" />
-          <span className="text-sm text-slate-700 dark:text-slate-300">Hiện trên Desktop</span>
-        </label>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" checked={draft.show_on_mobile} onChange={(e) => up('show_on_mobile', e.target.checked)} className="w-4 h-4" />
-          <span className="text-sm text-slate-700 dark:text-slate-300">Hiện trên Mobile</span>
-        </label>
+      <div className="flex flex-wrap gap-x-8 gap-y-3">
+        <div className="flex items-center gap-3">
+          <Switch checked={draft.show_on_desktop} onChange={(v) => up('show_on_desktop', v)} label="Hiện trên máy tính" />
+          <span className="text-[14px] text-[var(--ad-fg)]">Hiện trên máy tính</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <Switch checked={draft.show_on_mobile} onChange={(v) => up('show_on_mobile', v)} label="Hiện trên điện thoại" />
+          <span className="text-[14px] text-[var(--ad-fg)]">Hiện trên điện thoại</span>
+        </div>
       </div>
-    </div>
+    </SectionCard>
   )
 }
 
 /* ───────── shared UI ───────── */
 
-const inputCls =
-  'w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-md text-sm'
+const inputCls = fieldInputClass
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1.5">{label}</label>
+      <label className={fieldLabelClass}>{label}</label>
       {children}
     </div>
   )
@@ -578,12 +544,12 @@ function ImageField({
   return (
     <Field label={label}>
       <div className="flex items-center gap-3">
-        <div className="w-16 h-16 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
+        <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[var(--ad-fill)]">
           {value ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={value} alt="" className="w-full h-full object-cover" />
+            <img src={value} alt="" className="h-full w-full object-cover" />
           ) : (
-            <ImageIcon className="w-5 h-5 text-slate-400" />
+            <ImageIcon className="h-5 w-5 text-[var(--ad-fg-3)]" />
           )}
         </div>
         <div className="flex flex-col gap-1.5">
@@ -602,17 +568,17 @@ function ImageField({
             type="button"
             onClick={() => ref.current?.click()}
             disabled={uploading}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-xs font-medium rounded disabled:opacity-50"
+            className={btn('secondary', 'sm')}
           >
-            {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+            {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
             {uploading ? 'Đang tải…' : 'Tải ảnh lên'}
           </button>
           {value && (
-            <button type="button" onClick={() => onChange(null)} className="text-[11px] text-red-500 hover:underline text-left">
+            <button type="button" onClick={() => onChange(null)} className="text-left text-[12.5px] text-[#d70015] hover:underline">
               Xoá ảnh
             </button>
           )}
-          {err && <span className="text-[11px] text-red-500">{err}</span>}
+          {err && <span className="text-[12.5px] text-[#d70015]">{err}</span>}
         </div>
       </div>
     </Field>

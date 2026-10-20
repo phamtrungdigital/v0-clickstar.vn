@@ -6,6 +6,7 @@
  * Phần có tương tác: components/admin/segmented.tsx, components/admin/save-bar.tsx.
  */
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 /** Tiêu đề trang lớn kiểu Apple: tên trang, một dòng mô tả, các nút hành động bên phải. */
@@ -22,11 +23,11 @@ export function PageHeader({
 }) {
   return (
     <div className={cn('mb-5 flex flex-wrap items-end justify-between gap-3', className)}>
-      <div className="min-w-0">
+      <div className="min-w-0 flex-1 basis-80">
         <h1 className="text-[28px] font-semibold leading-[1.15] tracking-[-0.025em] text-[var(--ad-fg)]">{title}</h1>
         {description ? <p className="mt-1 text-[14.5px] leading-snug text-[var(--ad-fg-2)]">{description}</p> : null}
       </div>
-      {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+      {actions ? <div className="flex flex-none flex-wrap items-center gap-2">{actions}</div> : null}
     </div>
   )
 }
@@ -173,6 +174,62 @@ export function SettingsGroup({
       </div>
       <Card className="min-w-0 p-5">{children}</Card>
     </section>
+  )
+}
+
+/** Lớp CSS cho ô nhập và nhãn ở các trang sửa (bản ghi, cài đặt). */
+export const fieldInputClass =
+  'w-full rounded-[10px] border border-[var(--ad-line-2)] bg-[var(--ad-surface)] px-3 py-2 text-[14px] text-[var(--ad-fg)] placeholder:text-[var(--ad-fg-3)]'
+export const fieldLabelClass = 'mb-1.5 block text-[13px] font-medium text-[var(--ad-fg-2)]'
+
+/** Nhãn trạng thái lưu: "Đã lưu", "Chưa lưu", hoặc lỗi (rê chuột để xem đầy đủ). */
+export function SaveStatus({ status, errorMsg }: { status: 'idle' | 'saved' | 'error' | 'dirty'; errorMsg?: string }) {
+  if (status === 'saved') return <Chip tone="ok">Đã lưu</Chip>
+  if (status === 'dirty') return <Chip tone="warn">Chưa lưu</Chip>
+  if (status === 'error')
+    return (
+      <span title={errorMsg}>
+        <Chip tone="bad">{errorMsg ? `Lỗi: ${errorMsg.slice(0, 40)}` : 'Lỗi'}</Chip>
+      </span>
+    )
+  return null
+}
+
+/**
+ * Thanh đầu trang sửa bản ghi (dự án, thành viên, footer…): dính dưới thanh trên, nền kính mờ,
+ * có nút quay lại, tên, mô tả ngắn và các nút hành động bên phải (nút Lưu do nơi dùng truyền vào).
+ */
+export function EditorBar({
+  backHref,
+  title,
+  subtitle,
+  children,
+}: {
+  backHref?: string
+  title: React.ReactNode
+  subtitle?: React.ReactNode
+  children?: React.ReactNode
+}) {
+  return (
+    <div className="ad-glass sticky top-[52px] z-20 -mx-4 -mt-4 mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-[var(--ad-line)] px-4 py-2.5 lg:-mx-6 lg:-mt-6 lg:px-6">
+      <div className="flex min-w-0 items-center gap-3">
+        {backHref ? (
+          <Link
+            href={backHref}
+            aria-label="Quay lại danh sách"
+            title="Quay lại danh sách"
+            className="grid h-8 w-8 flex-none place-items-center rounded-full bg-[var(--ad-fill)] text-[var(--ad-fg-2)] hover:bg-[var(--ad-fill-2)]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Link>
+        ) : null}
+        <div className="min-w-0">
+          <h1 className="truncate font-semibold tracking-[-0.02em] text-[var(--ad-fg)]">{title}</h1>
+          {subtitle ? <p className="truncate text-[12.5px] text-[var(--ad-fg-3)]">{subtitle}</p> : null}
+        </div>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">{children}</div>
+    </div>
   )
 }
 

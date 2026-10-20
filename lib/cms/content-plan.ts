@@ -100,6 +100,20 @@ export const POST_META: Record<string, Meta> = {
   'tin-cong-nghe-tuan-12-18-10-2026': { pillar: 'news', stage: 'learn', kind: 'news' },
   'tesla-roadster-bay-thu-nghiem-thang-10-2026': { pillar: 'news', stage: 'learn', kind: 'news', offTopic: true },
   'quy-dinh-bao-ve-du-lieu-ca-nhan': { pillar: 'legal', stage: 'decide', kind: 'policy' },
+  'luat-bao-ve-du-lieu-ca-nhan-cap-nhat-2027': { pillar: 'legal', stage: 'learn', kind: 'policy' },
+  'tai-sao-doanh-nghiep-nen-dung-co-so-du-lieu-van-hanh-online': { pillar: 'data', stage: 'learn', kind: 'opinion' },
+  'ui-ux-quan-trong-nhu-the-nao-voi-san-pham-cong-nghe': { pillar: 'build', stage: 'learn', kind: 'opinion' },
+  'tong-hop-10-cong-cu-ai-manh-nhat-hien-nay': { pillar: 'ai', stage: 'guide', kind: 'guide' },
+  'cach-lam-viec-voi-gpt-hieu-qua': { pillar: 'ai', stage: 'guide', kind: 'guide' },
+  'crm-co-thuc-su-quan-trong-voi-doanh-nghiep-khong': { pillar: 'data', stage: 'learn', kind: 'opinion' },
+  'website-chuyen-doi-nhu-the-nao': { pillar: 'build', stage: 'guide', kind: 'guide' },
+  'thach-thuc-marketing-trong-ky-nguyen-ai': { pillar: 'marketing', stage: 'learn', kind: 'opinion' },
+  'cach-prompt-thong-minh-hieu-qua-trong-marketing': { pillar: 'marketing', stage: 'guide', kind: 'guide' },
+  'xu-huong-digital-marketing-5-nam-toi': { pillar: 'marketing', stage: 'learn', kind: 'opinion' },
+  'xu-huong-phat-trien-ai-5-10-nam-toi': { pillar: 'ai', stage: 'learn', kind: 'opinion' },
+  'phan-tich-cac-model-claude-cap-nhat-20-10-2026': { pillar: 'ai', stage: 'guide', kind: 'guide' },
+  'cach-su-dung-ai-toi-uu-token': { pillar: 'ai', stage: 'guide', kind: 'guide' },
+  'thong-ke-su-dung-ai-cac-nuoc-tren-the-gioi': { pillar: 'ai', stage: 'learn', kind: 'opinion' },
 }
 
 /** Nhãn (tag) nhập trong admin quy về nhóm chủ đề: dùng làm gợi ý cho bài chưa có dòng trong POST_META. */
