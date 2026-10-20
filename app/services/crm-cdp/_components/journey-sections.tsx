@@ -46,7 +46,7 @@ function SectionHead({
         {icon}
         {eyebrow}
       </span>
-      <h2 className={`text-3xl font-semibold leading-[1.15] tracking-[-0.005em] sm:text-4xl lg:text-5xl ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
+      <h2 className={`text-3xl font-semibold leading-[1.22] tracking-[-0.005em] sm:text-4xl lg:text-5xl ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
         {title} <span className={dark ? 'text-[#7db8ff]' : 'text-[#1859b8]'}>{accent}</span>
       </h2>
       <p className={`mx-auto mt-5 max-w-3xl text-lg leading-relaxed ${dark ? 'text-[#d2d2d7]' : 'text-[#515154]'}`}>{lead}</p>
@@ -270,7 +270,7 @@ export function JourneySection() {
             <IdentityResolutionIllustration t={t} />
           </DiagramScroll>
           <div>
-            <h3 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
+            <h3 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
               {t('Định danh hoạt động', 'How identification')}{' '}
               <span className="text-[#1859b8]">{t('như thế nào?', 'works')}</span>
             </h3>

@@ -167,7 +167,7 @@ export function AboutSection({
               </p>
               <h2
                 data-cms-field="heading"
-                className="mt-3 text-[34px] sm:text-[48px] lg:text-[56px] font-semibold leading-[1.08] tracking-[-0.035em] text-white text-balance"
+                className="mt-3 text-[34px] sm:text-[48px] lg:text-[56px] font-semibold leading-[1.22] tracking-[-0.035em] text-white text-balance"
               >
                 {t(content.heading_lead.vi, content.heading_lead.en)}
                 <span className="text-[#7db8ff]">{t(content.heading_highlight.vi, content.heading_highlight.en)}</span>

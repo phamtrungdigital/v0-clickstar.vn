@@ -49,7 +49,7 @@ export function AdsHubHero() {
             {/* Heading — smaller, modern with gradient highlight */}
             <h1
               data-cms-field="heading"
-              className="text-[26px] sm:text-3xl lg:text-[38px] xl:text-[44px] font-extrabold text-foreground leading-[1.15] tracking-tight mb-5 text-balance"
+              className="text-[26px] sm:text-3xl lg:text-[38px] xl:text-[44px] font-extrabold text-foreground leading-[1.22] tracking-tight mb-5 text-balance"
             >
               {renderHeading(t(content.heading.vi, content.heading.en))}
             </h1>

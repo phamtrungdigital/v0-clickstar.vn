@@ -785,7 +785,7 @@ export default function SpeechInsightAiPage() {
                   <ShieldCheck className="h-4 w-4" />
                   {t('BẢO MẬT & TUÂN THỦ', 'SECURITY & COMPLIANCE')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Ghi âm là dữ liệu cá nhân của khách hàng bạn. ', 'Recordings are your customers’ personal data. ')}
                   <span className="text-[#1859b8]">{t('Chúng tôi coi đó là mặc định, không phải tuỳ chọn', 'We treat that as the default, not an option')}</span>
                 </h2>
@@ -993,7 +993,7 @@ function Head({ icon, eyebrow, title, lead, dark = false }: { icon: React.ReactN
         {icon}
         {eyebrow}
       </Eyebrow>
-      <h2 className={`mx-auto max-w-5xl text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-balance sm:text-4xl lg:text-5xl ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
+      <h2 className={`mx-auto max-w-5xl text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-balance sm:text-4xl lg:text-5xl ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
         {title}
       </h2>
       {lead && <p className={`mx-auto mt-5 max-w-3xl text-lg ${dark ? 'text-[#d2d2d7]' : 'text-[#515154]'}`}>{lead}</p>}

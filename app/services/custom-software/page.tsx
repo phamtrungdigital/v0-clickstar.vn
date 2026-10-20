@@ -213,7 +213,7 @@ export default function CustomSoftwarePage() {
           <div className="mt-14 grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-8 lg:gap-16 items-start">
             <div>
               <Kicker>{tt(STACK.kicker)}</Kicker>
-              <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.18] tracking-[-0.02em]">{tt(STACK.title)}</h3>
+              <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.22] tracking-[-0.02em]">{tt(STACK.title)}</h3>
               <p className="mt-3 text-base text-[#515154] leading-relaxed max-w-[48ch]">{tt(STACK.lede)}</p>
             </div>
             <div className="rounded-[18px] border border-[#d2d2d7] bg-white overflow-hidden">
@@ -355,7 +355,7 @@ export default function CustomSoftwarePage() {
           </div>
 
           <div className="mt-14">
-            <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.18] tracking-[-0.02em]">{tt(TEAM.practices.title)}</h3>
+            <h3 className="text-2xl sm:text-3xl font-semibold leading-[1.22] tracking-[-0.02em]">{tt(TEAM.practices.title)}</h3>
             <ul className="mt-6 grid grid-cols-1 md:grid-cols-2 md:gap-x-12 border-t border-[#d2d2d7]">
               {TEAM.practices.items.map((it, i) => (
                 <li key={i} className="grid grid-cols-[24px_1fr] gap-3 py-4 border-b border-[#d2d2d7] text-[15px] leading-normal">
@@ -643,7 +643,7 @@ function Kicker({ children, dark = false, numbered = true }: { children: React.R
 
 function H2({ children, dark = false }: { children: React.ReactNode; dark?: boolean }) {
   return (
-    <h2 className={`text-[28px] sm:text-[36px] lg:text-[44px] font-semibold leading-[1.15] tracking-[-0.025em] max-w-[22ch] text-balance ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
+    <h2 className={`text-[28px] sm:text-[36px] lg:text-[44px] font-semibold leading-[1.22] tracking-[-0.025em] max-w-[22ch] text-balance ${dark ? 'text-white' : 'text-[#1d1d1f]'}`}>
       {children}
     </h2>
   )

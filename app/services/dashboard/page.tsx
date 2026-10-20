@@ -260,7 +260,7 @@ export default function DashboardServicePage() {
                   <Target className="h-4 w-4" />
                   {t('TẠI SAO CẦN DASHBOARD?', 'WHY DASHBOARD?')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[44px]">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[44px]">
                   {t('Dữ liệu của bạn đang', 'Your data is')}{' '}
                   <span className="text-[#1859b8]">{t('nằm rải rác?', 'scattered everywhere?')}</span>
                 </h2>
@@ -325,7 +325,7 @@ export default function DashboardServicePage() {
                 <Layers className="h-4 w-4" />
                 {t('MẪU DASHBOARD', 'DASHBOARD TEMPLATES')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Dashboard cho mọi nhu cầu', 'Dashboard for every need')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
@@ -386,7 +386,7 @@ export default function DashboardServicePage() {
                   <Brain className="h-4 w-4" />
                   {t('TÍCH HỢP AI', 'AI INTEGRATION')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                   {t('Phân tích nâng cao với', 'Advanced analytics with')} <span className="text-[#7db8ff]">Claude</span>
                 </h2>
                 <p className="mt-5 text-lg leading-relaxed text-[#d2d2d7]">
@@ -476,7 +476,7 @@ export default function DashboardServicePage() {
                   <Zap className="h-4 w-4" />
                   {t('AN TOÀN & REAL-TIME', 'SECURE & REAL-TIME')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[44px]">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[44px]">
                   {t('Dữ liệu bảo mật,', 'Secure data,')} <span className="text-[#1859b8]">{t('cập nhật tức thì', 'instant updates')}</span>
                 </h2>
                 <p className="mt-5 text-lg leading-relaxed text-[#515154]">
@@ -514,7 +514,7 @@ export default function DashboardServicePage() {
                 <Layers className="h-4 w-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('5 bước đến Dashboard hoàn hảo', '5 steps to the perfect Dashboard')}
               </h2>
             </div>

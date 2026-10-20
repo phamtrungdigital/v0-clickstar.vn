@@ -370,7 +370,7 @@ export default function DigitalMarketingPage() {
                   <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Doanh nghiệp của bạn đang', 'Is your business')}{' '}
                   <span className="text-[#1859b8]">{t('gặp khó khăn?', 'struggling?')}</span>
                 </h2>
@@ -423,7 +423,7 @@ export default function DigitalMarketingPage() {
                 <Zap className="w-4 h-4" />
                 {t('DỊCH VỤ CHI TIẾT', 'DETAILED SERVICES')}
               </Eyebrow>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1d1d1f] leading-[1.15] tracking-[-0.005em]">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#1d1d1f] leading-[1.22] tracking-[-0.005em]">
                 {t('Giải pháp', 'Solutions')}{' '}
                 <span className="text-[#1859b8]">{t('toàn diện', 'comprehensive')}</span>
               </h2>
@@ -467,7 +467,7 @@ export default function DigitalMarketingPage() {
                 <Rocket className="w-4 h-4" />
                 {t('QUY TRÌNH TRIỂN KHAI', 'IMPLEMENTATION PROCESS')}
               </Eyebrow>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.15] tracking-[-0.005em] text-white">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.22] tracking-[-0.005em] text-white">
                 {t('Quy trình làm việc', 'Working process')}{' '}
                 <span className="text-[#7db8ff]">{t('minh bạch', 'transparent')}</span>
               </h2>
@@ -524,7 +524,7 @@ export default function DigitalMarketingPage() {
                   <Settings className="h-4 w-4" />
                   {t('CLICKSTAR PORTAL', 'CLICKSTAR PORTAL')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                   {t('Theo dõi chiến dịch', 'Track campaigns')}{' '}
                   <span className="text-[#1859b8]">{t('mọi lúc, mọi nơi', 'anytime, anywhere')}</span>
                 </h2>
@@ -611,7 +611,7 @@ export default function DigitalMarketingPage() {
                 <TrendingUp className="h-4 w-4" />
                 {t('CASE STUDIES', 'CASE STUDIES')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Kết quả', 'Results')}{' '}
                 <span className="text-[#1859b8]">{t('thực tế', 'in action')}</span>
               </h2>

@@ -452,7 +452,7 @@ export default function WebsiteDesignPage() {
                   <Target className="h-4 w-4" />
                   {t('VẤN ĐỀ & GIẢI PHÁP', 'PROBLEMS & SOLUTIONS')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-[42px]">
                   {t('Website của bạn', 'Is your website')}{' '}
                   <span className="text-[#1859b8]">{t('đang mất khách?', 'losing customers?')}</span>
                 </h2>
@@ -494,7 +494,7 @@ export default function WebsiteDesignPage() {
                 <Layers className="h-4 w-4" />
                 {t('QUY TRÌNH LÀM VIỆC', 'OUR PROCESS')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Quy trình ', 'Transparent ')}
                 <span className="text-[#7db8ff]">{t('minh bạch', 'process')}</span>
               </h2>
@@ -594,7 +594,7 @@ export default function WebsiteDesignPage() {
                 <Layers className="h-4 w-4" />
                 {t('LOẠI WEBSITE', 'WEBSITE TYPES')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Mẫu website ', 'Website templates for ')}
                 <span className="text-[#1859b8]">{t('chuyển đổi cao', 'high conversion')}</span>
               </h2>
@@ -639,7 +639,7 @@ export default function WebsiteDesignPage() {
                 <Sparkles className="h-4 w-4" />
                 {t('DỊCH VỤ BỔ SUNG', 'ADD-ON SERVICES')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('SEO & Ads ', 'SEO & Ads ')}
                 <span className="text-[#1859b8]">{t('tích hợp sẵn', 'ready to go')}</span>
               </h2>
@@ -684,7 +684,7 @@ export default function WebsiteDesignPage() {
                 <Star className="h-4 w-4" />
                 {t('DỰ ÁN TIÊU BIỂU', 'FEATURED PROJECTS')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Kết quả ', 'Results ')}
                 <span className="text-[#1859b8]">{t('thực tế', 'that speak')}</span>
               </h2>

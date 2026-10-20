@@ -343,7 +343,7 @@ export default function CRMCDPPage() {
                 <BrainCircuit className="h-4 w-4" />
                 CDP - CUSTOMER DATA PLATFORM
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-white sm:text-4xl lg:text-5xl">
                 {t('Thấu hiểu khách hàng', 'Understand Customers')}{' '}
                 <span className="text-[#7db8ff]">{t('ở mức sâu nhất', 'at the deepest level')}</span>
               </h2>
@@ -438,7 +438,7 @@ export default function CRMCDPPage() {
                 <Users className="h-4 w-4" />
                 CRM - CUSTOMER RELATIONSHIP MANAGEMENT
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Quản trị quan hệ', 'Customer Relationship')}{' '}
                 <span className="text-[#1859b8]">{t('Khách hàng', 'Management')}</span>
               </h2>
@@ -511,7 +511,7 @@ export default function CRMCDPPage() {
         <section className="py-16 lg:py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12 text-center">
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                 {t('Kênh chăm sóc tự động', 'Automated Care Channels')}
               </h2>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-[#515154]">
@@ -548,7 +548,7 @@ export default function CRMCDPPage() {
                 <Workflow className="h-4 w-4" />
                 {t('TÍCH HỢP TOÀN DIỆN', 'COMPREHENSIVE INTEGRATION')}
               </Eyebrow>
-              <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
+              <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl lg:text-5xl">
                 {t('Đồng bộ dữ liệu', 'Synchronize Data')}{' '}
                 <span className="text-[#1859b8]">{t('CRM - CDP - Website', 'CRM - CDP - Website')}</span>
               </h2>
@@ -613,7 +613,7 @@ export default function CRMCDPPage() {
                   <Sparkles className="h-4 w-4" />
                   {t('KẾT HỢP WEBSITE UX/UI', 'WEBSITE UX/UI INTEGRATION')}
                 </Eyebrow>
-                <h2 className="text-3xl font-semibold leading-[1.15] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
+                <h2 className="text-3xl font-semibold leading-[1.22] tracking-[-0.005em] text-[#1d1d1f] sm:text-4xl">
                   {t('Thiết kế Website', 'Website Design')}{' '}
                   <span className="text-[#1859b8]">{t('tối ưu cho CDP', 'optimized for CDP')}</span>
                 </h2>
