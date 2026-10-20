@@ -70,7 +70,7 @@ export async function POST(req: Request) {
     const targetWords = body.targetWords || settings.blog_target_words || 1200
     const keyword = body.keyword?.trim() || ''
 
-    const systemPrompt = `You are an expert blog content strategist for ClickStar — a Vietnamese digital marketing & technology agency.
+    const systemPrompt = `You are an expert blog content strategist for Click Star — a Vietnamese digital marketing & technology agency.
 
 Generate a JSON outline (NOT the full article) for a blog post. Return ONLY JSON, no markdown fences:
 {

@@ -89,7 +89,7 @@ export async function generateText(input: GenerateInput): Promise<GenerateResult
 
   const systemBase =
     s.inline_system_prompt ||
-    'You are a content writer for ClickStar.'
+    'You are a content writer for Click Star.'
   const system = `${systemBase}\n\nIMPORTANT: Trả về CHỈ nội dung được yêu cầu (${langLabel}). KHÔNG markdown, KHÔNG nháy kép, KHÔNG giải thích thêm.`
 
   const parts: string[] = []

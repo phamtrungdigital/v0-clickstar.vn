@@ -135,7 +135,7 @@ export async function POST(req: Request) {
 
         const baseSystem =
           settings.blog_system_prompt ||
-          'You are an expert blog writer for ClickStar — a Vietnamese digital marketing & technology agency.'
+          'You are an expert blog writer for Click Star — a Vietnamese digital marketing & technology agency.'
 
         const styleHint = style ? `\n\nSTYLE: ${STYLE_PROMPT_HINTS[style]}` : ''
         const keywordHint = keyword

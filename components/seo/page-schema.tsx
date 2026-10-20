@@ -1,5 +1,5 @@
 import { getPublishedPage } from '@/lib/cms/queries'
-import { breadcrumbSchema, serviceSchema, type Crumb } from '@/lib/seo/schema'
+import { aboutPageSchema, breadcrumbSchema, faqPageSchema, pricingSchema, serviceSchema, type Crumb } from '@/lib/seo/schema'
 import { HOME_NAME, SERVICES_NAME, pageDisplayName } from '@/lib/seo/page-names'
 import type { Lang } from '@/lib/i18n/locale'
 import { JsonLd } from './json-ld'
@@ -19,5 +19,21 @@ export async function PageSchema({ slug, service = false, lang = 'vi' }: { slug:
   const description = (lang === 'en' ? page.seo_description?.en : '') || page.seo_description?.vi || undefined
   const nodes: object[] = [breadcrumbSchema(crumbs, lang)]
   if (service) nodes.push(serviceSchema({ name, description, path, lang }))
+  if (slug === 'about') nodes.push(aboutPageSchema({ name, description, path, lang }))
+  if (slug === 'pricing') {
+    // Bảng giá và khối câu hỏi thường gặp lấy thẳng từ các khối đang hiển thị trên trang
+    const sections = (page.sections ?? []).filter((x) => x.enabled)
+    const groups = sections.find((x) => x.type === 'pricing_grouped_tiers')?.content as { groups?: Parameters<typeof pricingSchema>[0] } | undefined
+    const priceNode = pricingSchema(groups?.groups ?? [], lang, path)
+    if (priceNode) nodes.push(priceNode)
+    const faq = sections.find((x) => x.type === 'faq')?.content as
+      | { items?: { question: { vi: string; en: string }; answer: { vi: string; en: string } }[] }
+      | undefined
+    if (faq?.items?.length) {
+      // Trong @graph không lặp @context của từng nút
+      const { '@context': _ctx, ...faqNode } = faqPageSchema(faq.items.map((i) => ({ q: i.question, a: i.answer })), lang)
+      nodes.push(faqNode)
+    }
+  }
   return <JsonLd data={nodes} />
 }

@@ -56,8 +56,8 @@ export async function BlogListView({ lang }: { lang: Lang }) {
             </h1>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               {t(
-                'Xu hướng, mẹo hay và insight từ chuyên gia ClickStar.',
-                'Trends, tips and insights from ClickStar experts.'
+                'Xu hướng, mẹo hay và insight từ chuyên gia Click Star.',
+                'Trends, tips and insights from Click Star experts.'
               )}
             </p>
           </div>

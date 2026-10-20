@@ -84,7 +84,7 @@ export default async function RootLayout({
   const branding: SiteBranding = {
     logoUrl: settings?.logo_url || '/images/logo-clickstar.png',
     faviconUrl: settings?.favicon_url || null,
-    siteName: settings?.site_name?.vi || 'ClickStar',
+    siteName: settings?.site_name?.vi || 'Click Star',
     zaloUrl: settings?.zalo_url || null,
     contactPhone: settings?.contact_phone || null,
     contactEmail: settings?.contact_email || null,

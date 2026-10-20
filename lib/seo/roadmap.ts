@@ -135,6 +135,11 @@ export const ROADMAP: RoadmapGroup[] = [
         steps: ['Tự dựng từ dữ liệu đang đăng: giới thiệu, dịch vụ, bảng giá, dự án, 30 bài mới nhất, liên hệ', 'Làm mới mỗi giờ nên không bị cũ', 'Muốn đổi câu giới thiệu đầu tệp: sửa trong app/llms.txt/route.ts'],
         note: 'Chưa công cụ AI lớn nào cam kết dùng tệp này, nhưng chi phí thấp, làm một lần.',
       },
+      {
+        id: 'ai-pricing', title: 'Bảng giá có dữ liệu có cấu trúc và FAQPage', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'AI hay được hỏi "giá thiết kế website, marketing bao nhiêu". Giá nằm trong dữ liệu máy đọc được thì được trích đúng hơn.',
+        steps: ['Mỗi nhóm dịch vụ là một danh mục gói, gói có giá "từ" kèm mức giá thấp nhất (VND, theo tháng nếu có)', 'Gói chỉ ghi "Liên hệ" hoặc tính theo phút vẫn được liệt kê nhưng không có giá', 'Khối câu hỏi thường gặp của trang giá có FAQPage', 'Dữ liệu tự lấy từ nội dung đang hiển thị, sửa giá trong admin thì dữ liệu tự đổi'],
+      },
     ],
   },
   {
@@ -167,7 +172,8 @@ export const ROADMAP: RoadmapGroup[] = [
       {
         id: 'ai-tables', title: 'Định nghĩa ngắn và bảng so sánh cho khái niệm hay bị hỏi', status: 'todo', who: 'Kỹ thuật',
         why: 'Câu "A khác B thế nào" rất hay gặp (CRM và CDP, Meta Ads và Google Ads). Bảng so sánh gọn dễ được AI lấy nguyên.',
-        steps: ['Chọn 5 cặp khái niệm từ câu hỏi thật của khách', 'Mỗi cặp: một câu định nghĩa, một bảng 4 đến 6 dòng, một câu khuyên chọn khi nào'],
+        steps: ['Trình hiển thị bài đã hỗ trợ bảng (20/10), bảng tự cuộn ngang trên màn hình hẹp', 'Chọn 5 cặp khái niệm từ câu hỏi thật của khách', 'Mỗi cặp: một câu định nghĩa, một bảng 4 đến 6 dòng, một câu khuyên chọn khi nào'],
+        note: 'Phần kỹ thuật đã xong, còn viết nội dung bảng cho từng bài.',
       },
       {
         id: 'ai-author', title: 'Tác giả và người kiểm duyệt cho từng bài (E-E-A-T)', status: 'todo', who: 'Kỹ thuật',
@@ -202,6 +208,16 @@ export const ROADMAP: RoadmapGroup[] = [
         why: 'Khi AI được hỏi "Click Star là gì", nó cần một câu rõ để trích.',
         steps: ['Viết 2 câu: là ai, làm gì, cho ai, ở đâu, từ năm nào', 'Dùng lại đúng câu đó trong mô tả của dữ liệu Organization và llms.txt'],
       },
+      {
+        id: 'ai-brand', title: 'Tên thương hiệu viết thống nhất là "Click Star"', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'Viết "ClickStar" ở chỗ này, "Click Star" ở chỗ khác khiến AI có thể coi là hai thực thể khác nhau.',
+        steps: ['Đã đổi trong mã và nội dung các trang (trang chủ, Tích hợp AI, Automation, CRM và CDP, Dashboard, Bảng giá, Giới thiệu)', 'Gõ nội dung mới trong admin cũng viết "Click Star" có dấu cách'],
+      },
+      {
+        id: 'ai-org', title: 'Dữ liệu tổ chức đầy đủ: năm thành lập, kênh Zalo, trang Giới thiệu', status: 'mine', who: 'Quản trị', prio: 'cao',
+        why: 'Organization đã có tên, địa chỉ, điện thoại, email, mô tả và khu vực phục vụ; AboutPage đã gắn cho trang Giới thiệu. Còn thiếu năm thành lập và liên kết Zalo.',
+        steps: ['Gửi năm thành lập để thêm vào dữ liệu tổ chức và câu định nghĩa thương hiệu', 'Admin, Cài đặt, ô Zalo: dán liên kết Zalo OA; liên kết này tự vào sameAs'],
+      },
     ],
   },
   {
@@ -234,13 +250,14 @@ export const ROADMAP: RoadmapGroup[] = [
       {
         id: 'ai-referrer', title: 'Báo cáo lượt vào từ chatgpt.com, perplexity.ai, gemini, claude.ai, copilot', status: 'todo', who: 'Kỹ thuật',
         why: 'Cho biết AI nào đang đưa khách về và về trang nào.',
-        steps: ['Sau khi có GA4: tạo nhóm kênh "AI" lọc theo nguồn giới thiệu', 'Lập báo cáo tháng đầu'],
-        note: 'Chờ gắn Google Analytics 4.',
+        steps: ['Hiện (13 đến 20/10) chưa có lượt vào nào từ các nguồn AI theo nhật ký Vercel', 'Sau khi có GA4: tạo nhóm kênh "AI" lọc theo nguồn giới thiệu và lập báo cáo tháng đầu'],
+        note: 'Chờ gắn Google Analytics 4. Trong lúc chờ có thể xem tạm bằng: vercel metrics vercel.request.count --group-by referrer_hostname.',
       },
       {
-        id: 'ai-botlog', title: 'Xem bot AI có đang đọc site không', status: 'todo', who: 'Kỹ thuật',
-        why: 'Nếu OAI-SearchBot, PerplexityBot, ClaudeBot không có trong nhật ký truy cập thì chưa thể được nhắc.',
-        steps: ['Lọc nhật ký truy cập Vercel theo tên bot', 'Ghi nhận bot nào đã vào, trang nào được đọc nhiều'],
+        id: 'ai-botlog', title: 'Xem bot AI có đang đọc site không', status: 'done', who: 'Kỹ thuật', date: '20/10',
+        why: 'Nếu bot của AI không có trong nhật ký truy cập thì site chưa thể được nhắc trong câu trả lời.',
+        steps: ['Báo cáo 7 ngày (13 đến 20/10) từ Vercel Observability: GPTBot đã đọc toàn bộ trang chính (khoảng 9 lượt mỗi trang, ngày 18/10) và vài bài blog', 'OAI-SearchBot (bot tìm kiếm của ChatGPT) mới chỉ đọc robots.txt (8 lượt), chưa đọc trang nào; ChatGPT-User 2 lượt', 'PerplexityBot, ClaudeBot, Claude-SearchBot chưa thấy lượt nào; Googlebot, Bingbot, Applebot đều có', 'Chưa có lượt vào site từ chatgpt.com, perplexity.ai, gemini, copilot'],
+        note: 'Xem lại hằng tháng bằng lệnh: vercel metrics vercel.request.count --group-by bot_name --since 7d. Site mới nên bot chưa vào hết là bình thường; nếu sau 4 tuần OAI-SearchBot vẫn chỉ đọc robots.txt thì kiểm tra lại.',
       },
       {
         id: 'ai-monthly', title: 'Mỗi tháng thử hỏi AI 20 câu khách hay hỏi', status: 'todo', who: 'Kỹ thuật',

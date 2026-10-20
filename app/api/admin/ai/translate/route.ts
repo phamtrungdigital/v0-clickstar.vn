@@ -74,7 +74,7 @@ export async function POST(req: Request) {
         const fromName = from === 'vi' ? 'Vietnamese' : 'English'
         const toName = to === 'vi' ? 'Vietnamese' : 'English'
 
-        const systemPrompt = `You are a professional ${fromName} → ${toName} translator for ClickStar, a Vietnamese digital marketing & technology agency.
+        const systemPrompt = `You are a professional ${fromName} → ${toName} translator for Click Star, a Vietnamese digital marketing & technology agency.
 
 Your output MUST be ONLY a JSON object, no preamble, no markdown fences, no explanation outside.
 
@@ -85,7 +85,7 @@ ${keys.map((k) => `  "${k}": "${toName} translation of the ${k}"`).join(',\n')}
 
 Translation rules:
 - Preserve Markdown formatting (headings ##, bold **, lists -, links, code blocks) EXACTLY for content fields.
-- Keep PROPER NOUNS, brand names, product names, technical terms in original (do NOT translate "ClickStar", "Google Ads", "Meta Ads", "CRM", "SEO", "AI", company names).
+- Keep PROPER NOUNS, brand names, product names, technical terms in original (do NOT translate "Click Star", "Google Ads", "Meta Ads", "CRM", "SEO", "AI", company names).
 - Preserve [[IMAGE: ...]] markers exactly as-is (already English, do not translate).
 - Use natural ${toName} idioms, NOT literal word-by-word.
 - For business/marketing content, prefer professional but accessible tone.

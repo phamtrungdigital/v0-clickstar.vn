@@ -431,7 +431,7 @@ export default function AIIntegrationPage() {
                 {t('AI có thể làm gì cho doanh nghiệp bạn?', 'What can AI do for your business?')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#515154]">
-                {t('ClickStar tích hợp AI vào mọi khía cạnh của hoạt động marketing và kinh doanh', 'ClickStar brings AI into every corner of your marketing and business operations')}
+                {t('Click Star tích hợp AI vào mọi khía cạnh của hoạt động marketing và kinh doanh', 'Click Star brings AI into every corner of your marketing and business operations')}
               </p>
             </div>
 
@@ -474,7 +474,7 @@ export default function AIIntegrationPage() {
                 {t('Công cụ AI', "The world's")} <span className="text-[#7db8ff]">{t('hàng đầu', 'leading')}</span> {t('thế giới', 'AI tools')}
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
-                {t('ClickStar làm việc với các nền tảng AI mạnh nhất để mang lại kết quả tối ưu cho doanh nghiệp', 'ClickStar works with the most powerful AI platforms to deliver the best results for your business')}
+                {t('Click Star làm việc với các nền tảng AI mạnh nhất để mang lại kết quả tối ưu cho doanh nghiệp', 'Click Star works with the most powerful AI platforms to deliver the best results for your business')}
               </p>
             </div>
 
@@ -599,8 +599,8 @@ export default function AIIntegrationPage() {
               <h2 className="ap-display max-w-[820px]">{t('Sẵn sàng bứt phá với AI?', 'Ready to break through with AI?')}</h2>
               <p className="ap-lead max-w-[680px]">
                 {t(
-                  'Đừng để đối thủ đi trước. Bắt đầu hành trình chuyển đổi AI ngay hôm nay với sự hỗ trợ từ đội ngũ chuyên gia ClickStar.',
-                  "Don't let competitors get ahead. Start your AI transformation today with the support of ClickStar's expert team."
+                  'Đừng để đối thủ đi trước. Bắt đầu hành trình chuyển đổi AI ngay hôm nay với sự hỗ trợ từ đội ngũ chuyên gia Click Star.',
+                  "Don't let competitors get ahead. Start your AI transformation today with the support of Click Star's expert team."
                 )}
               </p>
               <div className="ap-cta-row mt-2">

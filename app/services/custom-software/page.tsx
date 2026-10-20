@@ -47,6 +47,7 @@ import {
 import { MainNav } from '@/components/layout/main-nav'
 import { Eyebrow } from '@/components/ui/eyebrow'
 import { ServiceReadMore } from '@/components/seo/service-answer'
+import { PageUpdated } from '@/components/seo/page-updated'
 import { Footer } from '@/components/layout/footer'
 import { useLanguage } from '@/contexts/language-context'
 import { useFooterContent } from '@/contexts/web-content-context'
@@ -590,6 +591,7 @@ export default function CustomSoftwarePage() {
         </Section>
 
         <ServiceReadMore slug="custom-software" />
+        <PageUpdated />
 
         {/* ⑭ CTA */}
         <section className="ap-tile ap-dark">

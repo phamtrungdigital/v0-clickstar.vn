@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import { JetBrains_Mono } from 'next/font/google'
 import { pageMetadata } from '@/lib/cms/page-metadata'
 import { PageSchema } from '@/components/seo/page-schema'
+import { PageDataProvider } from '@/lib/cms/page-data-context'
+import { getPublishedPage } from '@/lib/cms/queries'
 import { faqPageSchema } from '@/lib/seo/schema'
 import type { Lang } from '@/lib/i18n/locale'
 import { FAQ, SERVICE_SLUG } from '../_data/content'
@@ -41,12 +43,16 @@ export async function customSoftwareMetadata(lang: Lang = 'vi'): Promise<Metadat
 }
 
 /** Khung của trang Phần mềm theo yêu cầu: font code, FAQPage và Service/breadcrumb đúng ngôn ngữ. */
-export function CustomSoftwareShell({ lang = 'vi', children }: { lang?: Lang; children: ReactNode }) {
+export async function CustomSoftwareShell({ lang = 'vi', children }: { lang?: Lang; children: ReactNode }) {
+  // Cấp dữ liệu trang (ngày cập nhật lần cuối) cho các khối bên trong
+  const page = await getPublishedPage(SERVICE_SLUG)
   return (
+    <PageDataProvider page={page}>
     <div className={mono.variable}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema(FAQ.items, lang)) }} />
       <PageSchema slug={SERVICE_SLUG} service lang={lang} />
       {children}
     </div>
+    </PageDataProvider>
   )
 }

@@ -70,7 +70,7 @@ export async function POST(req: Request) {
         const langLabel = lang === 'vi' ? 'tiếng Việt' : 'English'
         const styleHint = body.style ? `\n\nSTYLE: ${STYLE_PROMPT_HINTS[body.style]}` : ''
 
-        const systemBase = s.inline_system_prompt || 'You are a content writer for ClickStar.'
+        const systemBase = s.inline_system_prompt || 'You are a content writer for Click Star.'
         const system = `${systemBase}${styleHint}\n\nIMPORTANT: Trả về CHỈ nội dung được yêu cầu (${langLabel}). KHÔNG markdown, KHÔNG nháy kép, KHÔNG giải thích thêm.`
 
         const parts: string[] = []

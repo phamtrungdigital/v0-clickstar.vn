@@ -394,7 +394,7 @@ export default function AIAutomationPage() {
                 {t('Công nghệ', 'Our')} <span className="text-[#7db8ff]">{t('Automation', 'Automation stack')}</span>
               </h2>
               <p className="mx-auto mt-5 max-w-3xl text-lg text-[#d2d2d7]">
-                {t('Bộ công cụ automation và AI hàng đầu được ClickStar sử dụng', 'The leading automation and AI toolkit ClickStar builds with')}
+                {t('Bộ công cụ automation và AI hàng đầu được Click Star sử dụng', 'The leading automation and AI toolkit Click Star builds with')}
               </p>
             </div>
 

@@ -378,8 +378,8 @@ export default function CRMCDPPage() {
                   </h3>
                   <p className="mt-2 text-base leading-relaxed text-[#d2d2d7]">
                     {t(
-                      'CDP là một scope rất lớn của doanh nghiệp, đòi hỏi đầu tư về công nghệ và nhân sự. Chi phí triển khai cao nên doanh nghiệp cần cân nhắc kỹ. ClickStar đề xuất các gói nhỏ để khách hàng có thể bắt đầu và tối ưu dần.',
-                      'CDP is a very large scope for businesses, requiring investment in technology and personnel. High implementation costs require careful consideration. ClickStar offers small packages for customers to start and optimize gradually.'
+                      'CDP là một scope rất lớn của doanh nghiệp, đòi hỏi đầu tư về công nghệ và nhân sự. Chi phí triển khai cao nên doanh nghiệp cần cân nhắc kỹ. Click Star đề xuất các gói nhỏ để khách hàng có thể bắt đầu và tối ưu dần.',
+                      'CDP is a very large scope for businesses, requiring investment in technology and personnel. High implementation costs require careful consideration. Click Star offers small packages for customers to start and optimize gradually.'
                     )}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2">

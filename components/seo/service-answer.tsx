@@ -6,6 +6,7 @@ import { ArrowRight, BookOpen, Layers, MessageCircleQuestion, Minus, Plus } from
 import { useLanguage } from '@/contexts/language-context'
 import { serviceFaqItems } from '@/lib/seo/service-faq'
 import { Eyebrow } from '@/components/ui/eyebrow'
+import { PageUpdated } from '@/components/seo/page-updated'
 import { faqPageSchema } from '@/lib/seo/schema'
 
 type Both = { vi: string; en: string }
@@ -61,6 +62,7 @@ export function ServiceBottom({ slug }: { slug: string }) {
     <>
       <ServiceFaq slug={slug} />
       <ServiceReadMore slug={slug} />
+      <PageUpdated />
     </>
   )
 }

@@ -3,6 +3,7 @@ import Link from '@/components/app-link'
 import { Calendar, Clock, ArrowLeft, ArrowRight, MessageCircle, Phone, Sparkles } from 'lucide-react'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { getPublishedPost, listPublishedPosts } from '@/lib/cms/posts'
@@ -228,6 +229,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
 
           <BodyReveal className="bp-prose prose prose-slate dark:prose-invert max-w-none mt-10 prose-lg prose-p:text-[19px] prose-li:text-[19px] prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl lg:prose-h2:text-[28px] prose-h2:mt-14 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-xl prose-h3:mt-8 prose-h3:scroll-mt-24 prose-p:leading-[1.85] prose-li:leading-[1.8] prose-img:rounded-2xl prose-a:text-primary prose-a:no-underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
             <ReactMarkdown
+              remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
               components={{
                 // Trang đã có đúng một <h1> (tiêu đề bài). "# ..." trong nội dung được hạ thành <h2>.
                 h1: ({ children }) => {
@@ -242,6 +244,12 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
                   const id = slugifyId(extractText(children))
                   return <h3 id={id}>{children}</h3>
                 },
+                // Bảng (cú pháp GFM): bọc để cuộn ngang trong khung riêng trên màn hình hẹp, trang không bị tràn ngang
+                table: ({ node: _t, ...props }) => (
+                  <div className="my-6 overflow-x-auto rounded-xl border border-border">
+                    <table {...props} />
+                  </div>
+                ),
                 // Liên kết nội bộ trong bài tự trỏ sang bản /en khi đang xem bản tiếng Anh
                 a: ({ node: _n, ...props }) => <MarkdownLink {...props} />,
                 // Ảnh minh họa trong bài nằm dưới màn hình đầu: tải trễ để không tranh băng thông với ảnh bìa (LCP) và CSS/JS.
