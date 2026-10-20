@@ -46,7 +46,7 @@ export function ServiceFaq({ slug }: { slug: string }) {
                     <Plus className="mt-0.5 h-5 w-5 shrink-0 text-[#515154]" strokeWidth={1.6} />
                   )}
                 </button>
-                <p className={`pb-5 pr-0 sm:pr-10 leading-relaxed text-justify hyphens-auto text-[#515154] ${isOpen ? '' : 'hidden'}`}>{t(item.a.vi, item.a.en)}</p>
+                <p className={`pb-5 pr-0 sm:pr-10 leading-relaxed sm:text-justify hyphens-auto text-[#515154] ${isOpen ? '' : 'hidden'}`}>{t(item.a.vi, item.a.en)}</p>
               </div>
             )
           })}

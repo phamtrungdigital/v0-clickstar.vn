@@ -227,7 +227,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
             </div>
           )}
 
-          <BodyReveal className="bp-prose prose prose-slate dark:prose-invert max-w-none mt-10 prose-lg prose-p:text-[19px] prose-li:text-[19px] prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl lg:prose-h2:text-[28px] prose-h2:mt-14 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-xl prose-h3:mt-8 prose-h3:scroll-mt-24 prose-p:leading-[1.85] prose-li:leading-[1.8] prose-p:text-justify prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-2xl prose-a:text-primary prose-a:no-underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
+          <BodyReveal className="bp-prose prose prose-slate dark:prose-invert max-w-none mt-10 prose-lg prose-p:text-[19px] prose-li:text-[19px] prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-2xl lg:prose-h2:text-[28px] prose-h2:mt-14 prose-h2:mb-4 prose-h2:scroll-mt-24 prose-h3:text-xl prose-h3:mt-8 prose-h3:scroll-mt-24 prose-p:leading-[1.85] prose-li:leading-[1.8] sm:prose-p:text-justify sm:prose-li:text-justify prose-p:hyphens-auto prose-li:hyphens-auto prose-img:rounded-2xl prose-a:text-primary prose-a:no-underline prose-strong:text-foreground prose-blockquote:border-l-primary prose-blockquote:text-foreground/80">
             <ReactMarkdown
               remarkPlugins={[[remarkGfm, { singleTilde: false }]]}
               components={{

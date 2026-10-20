@@ -54,7 +54,7 @@ export function FaqAccordion({
               }`}
             >
               <div className="overflow-hidden min-h-0">
-                <p className="px-5 sm:px-6 pb-5 text-muted-foreground leading-relaxed text-justify hyphens-auto">{item.a[language]}</p>
+                <p className="px-5 sm:px-6 pb-5 text-muted-foreground leading-relaxed sm:text-justify hyphens-auto">{item.a[language]}</p>
               </div>
             </div>
           </div>
