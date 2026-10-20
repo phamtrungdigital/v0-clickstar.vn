@@ -38,6 +38,41 @@ export function AboutValuesSection({ content }: { content: AboutValuesContent })
           </p>
         </div>
 
+        {(content.vision?.vi || content.mission?.vi) && (
+          <div className="mx-auto mb-10 grid max-w-5xl gap-5 md:grid-cols-2 lg:mb-14 lg:gap-6">
+            {[
+              { key: 'vision', icon: 'Compass', label: t('Tầm nhìn', 'Vision'), text: content.vision },
+              { key: 'mission', icon: 'Flag', label: t('Sứ mệnh', 'Mission'), text: content.mission },
+            ]
+              .filter((x) => x.text?.vi)
+              .map((x) => (
+                <div
+                  key={x.key}
+                  data-cms-field={x.key}
+                  className="relative overflow-hidden rounded-3xl p-8 text-white lg:p-10"
+                  style={{ background: 'linear-gradient(135deg, #1d1d1f 0%, #0d2142 100%)' }}
+                >
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full"
+                    style={{ background: 'radial-gradient(circle, rgba(30,109,218,0.45), rgba(30,109,218,0) 70%)' }}
+                  />
+                  <div className="relative">
+                    <div className="mb-5 flex items-center gap-3">
+                      <span className="grid h-10 w-10 place-items-center rounded-full bg-[#1e6dda]/25 text-[#7db8ff] ring-1 ring-[#7db8ff]/40">
+                        {renderIcon(x.icon, 'w-5 h-5')}
+                      </span>
+                      <span className="text-[13px] font-semibold uppercase tracking-[0.14em] text-[#7db8ff]">{x.label}</span>
+                    </div>
+                    <p className="text-xl font-semibold leading-snug tracking-[-0.01em] text-white lg:text-[26px]">
+                      {x.text ? t(x.text.vi, x.text.en) : ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {content.items.map((value, index) => (
             <div

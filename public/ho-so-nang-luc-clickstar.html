@@ -815,6 +815,14 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
   body { font-size: 13px; }
   .card, .case, .plan, .layer, .dcard { break-inside: avoid; }
 }
+
+/* Hành trình 6 mốc: hai hàng ba cột trên màn rộng, mỗi mốc tự vẽ đoạn đường nối của nó */
+@media (min-width: 901px) {
+  .timeline { grid-template-columns: repeat(3, 1fr); row-gap: 44px; }
+  .timeline::before { display: none; }
+  .ms::after { content: ""; position: absolute; left: 22px; right: 0; top: 7px; height: 2px; background: var(--hairline); }
+  .ms:nth-child(3n)::after { right: 24px; }
+}
 </style>
 </head>
 <body>
@@ -899,9 +907,9 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
 
     <div class="stats">
       <div class="stat"><b>10+</b><span class="vi">năm kinh nghiệm của đội ngũ</span><span class="en">years of team experience</span></div>
-      <div class="stat"><b>500+</b><span class="vi">dự án đã triển khai</span><span class="en">projects delivered</span></div>
-      <div class="stat"><b>98%</b><span class="vi">khách hàng hài lòng</span><span class="en">client satisfaction</span></div>
-      <div class="stat"><b>3</b><span class="vi">năm hình thành và phát triển</span><span class="en">years in business</span></div>
+      <div class="stat"><b>100+</b><span class="vi">doanh nghiệp đồng hành</span><span class="en">businesses served</span></div>
+      <div class="stat"><b>90%+</b><span class="vi">khách hàng hài lòng</span><span class="en">client satisfaction</span></div>
+      <div class="stat"><b>2021</b><span class="vi">năm thành lập công ty</span><span class="en">company founded</span></div>
     </div>
 
     <div class="grid g2">
@@ -925,7 +933,7 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
     <dl class="facts">
       <div><dt><span class="vi">Tên công ty</span><span class="en">Legal name</span></dt><dd>Công ty TNHH Click Star Digital<span class="en"> (Click Star Digital Co., Ltd.)</span></dd></div>
       <div><dt><span class="vi">Mã số thuế</span><span class="en">Tax code</span></dt><dd>0111151741</dd></div>
-      <div><dt><span class="vi">Năm thành lập</span><span class="en">Founded</span></dt><dd>2023</dd></div>
+      <div><dt><span class="vi">Năm thành lập</span><span class="en">Founded</span></dt><dd>2021</dd></div>
       <div><dt><span class="vi">Trụ sở</span><span class="en">Office</span></dt><dd><span class="vi">Tầng 6, Tòa MD Complex (Tòa VP), Số 68 Nguyễn Cơ Thạch, Phường Từ Liêm, Thành phố Hà Nội, Việt Nam</span><span class="en">6th floor, MD Complex (Office Tower), 68 Nguyen Co Thach, Tu Liem Ward, Hanoi, Vietnam</span></dd></div>
       <div><dt>Email</dt><dd>admin@clickstar.vn</dd></div>
       <div><dt>Website</dt><dd>clickstar.vn</dd></div>
@@ -938,14 +946,29 @@ html[lang="en"] .fx .vi, html:not([lang="en"]) .fx .en { display: none; }
   <div class="wrap">
     <div class="head">
       <p class="eyebrow"><span class="vi">Hành trình phát triển</span><span class="en">Our journey</span></p>
-      <h2 class="h2"><span class="vi">Ba năm, từ agency quảng cáo đến đối tác chuyển đổi số tích hợp AI.</span><span class="en">Three years, from ad agency to AI-powered transformation partner.</span></h2>
+      <h2 class="h2"><span class="vi">Hơn mười năm, từ hệ thống CRM và CDP đến đối tác chuyển đổi số tích hợp AI.</span><span class="en">Over ten years, from CRM and CDP systems to an AI-powered transformation partner.</span></h2>
     </div>
     <div class="timeline">
       <div class="ms">
-        <span class="yr">2023</span>
-        <h3><span class="vi">Thành lập</span><span class="en">Founded</span></h3>
+        <span class="yr">2016</span>
+        <h3><span class="vi">CRM, CDP và hệ thống trọn bộ</span><span class="en">CRM, CDP and full systems</span></h3>
         <ul>
-          <li><span class="vi">Ra đời tại Hà Nội từ đội ngũ 7 năm kinh nghiệm quảng cáo</span><span class="en">Founded in Hanoi by a team with 7 years in advertising</span></li>
+          <li><span class="vi">Xây dựng CRM, CDP và trọn bộ hệ thống dữ liệu - marketing - bán hàng cho doanh nghiệp</span><span class="en">Building CRM, CDP and complete data, marketing and sales systems for businesses</span></li>
+        </ul>
+      </div>
+      <div class="ms">
+        <span class="yr">2019</span>
+        <h3><span class="vi">Mở agency</span><span class="en">Opening the agency</span></h3>
+        <ul>
+          <li><span class="vi">Đưa kinh nghiệm hệ thống vào dịch vụ agency, làm việc sát cùng từng doanh nghiệp</span><span class="en">Bringing systems experience into agency services, working closely with each business</span></li>
+        </ul>
+      </div>
+      <div class="ms">
+        <span class="yr">2021</span>
+        <h3><span class="vi">Thành lập công ty</span><span class="en">Founded as a company</span></h3>
+        <ul>
+          <li><span class="vi">Agency phát triển thành công ty Click Star tại Hà Nội</span><span class="en">The agency grows into the company Click Star, in Hanoi</span></li>
+          <li><span class="vi">Quy tụ chuyên gia cố vấn và thực thi AI</span><span class="en">A team of experts who advise on and deliver AI</span></li>
           <li><span class="vi">Tập trung Performance Ads cho giáo dục và y tế</span><span class="en">Focused on performance ads for education and healthcare</span></li>
         </ul>
       </div>

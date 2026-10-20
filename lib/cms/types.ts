@@ -325,6 +325,9 @@ export type AboutValuesContent = {
   heading_highlight: I18n
   description: I18n
   items: AboutValueItem[]
+  /** Tầm nhìn / Sứ mệnh: hai thẻ lớn phía trên bốn giá trị. Bỏ trống thì không hiện. */
+  vision?: I18n
+  mission?: I18n
 }
 
 // Timeline: 5 milestones year + title + description (dark theme)

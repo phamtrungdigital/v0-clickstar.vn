@@ -59,6 +59,25 @@ export function AboutValuesForm({
         />
       </div>
 
+      <div id="form-about_values.vision" className="scroll-mt-32">
+        <I18nInput
+          label="Tầm nhìn (thẻ lớn phía trên, để trống thì không hiện)"
+          value={content.vision ?? { vi: '', en: '' }}
+          onChange={(v) => update('vision', v)}
+          multiline
+          rows={2}
+        />
+      </div>
+      <div id="form-about_values.mission" className="scroll-mt-32">
+        <I18nInput
+          label="Sứ mệnh (thẻ lớn phía trên, để trống thì không hiện)"
+          value={content.mission ?? { vi: '', en: '' }}
+          onChange={(v) => update('mission', v)}
+          multiline
+          rows={2}
+        />
+      </div>
+
       <div className="space-y-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-md border border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between">
           <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase">
