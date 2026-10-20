@@ -100,8 +100,8 @@ export default function ServicesIndexPage() {
               </h1>
               <p className="ap-lead max-w-[760px]">
                 {t(
-                  'Tám dịch vụ, một hệ thống tăng trưởng.',
-                  'Eight services. One growth system.'
+                  '8 dịch vụ, một hệ thống tăng trưởng.',
+                  '8 services. One growth system.'
                 )}
               </p>
             </div>

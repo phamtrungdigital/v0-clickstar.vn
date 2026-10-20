@@ -49,8 +49,8 @@ export const FAQ_ITEMS: FaqItem[] = [
       en: 'Which AI model does the analysis run on?',
     },
     a: {
-      vi: 'Phần phân tích chạy trên Claude của Anthropic. Chúng tôi chọn mô hình này vì ba lý do kỹ thuật: hiểu được tiếng Việt đời thường (nói lẫn tiếng Anh, nói tắt, giọng ba miền) chứ không chỉ tiếng Việt chuẩn; đọc trọn một cuộc gọi dài trong cùng một lượt nên không mất mạch hội thoại giữa đầu và cuối cuộc; và trả kết quả về đúng khuôn dữ liệu định sẵn để ghi thẳng vào CRM thay vì trả một đoạn văn. Chúng tôi chọn phiên bản phù hợp với khối lượng và độ khó của từng doanh nghiệp, thay vì áp một cấu hình chung cho mọi khách.',
-      en: 'The analysis runs on Claude by Anthropic. We chose it for three technical reasons: it understands everyday spoken Vietnamese (mixed with English, abbreviated, across regional accents) rather than only textbook Vietnamese; it reads a long call in a single pass, so context between the start and end of the conversation is not lost; and it returns results in a predefined data shape that writes straight into your CRM instead of a block of prose. We match the model tier to each company’s volume and complexity rather than applying one configuration to everyone.',
+      vi: 'Phần phân tích chạy trên Claude của Anthropic. Chúng tôi chọn mô hình này vì 3 lý do kỹ thuật: hiểu được tiếng Việt đời thường (nói lẫn tiếng Anh, nói tắt, giọng ba miền) chứ không chỉ tiếng Việt chuẩn; đọc trọn một cuộc gọi dài trong cùng một lượt nên không mất mạch hội thoại giữa đầu và cuối cuộc; và trả kết quả về đúng khuôn dữ liệu định sẵn để ghi thẳng vào CRM thay vì trả một đoạn văn. Chúng tôi chọn phiên bản phù hợp với khối lượng và độ khó của từng doanh nghiệp, thay vì áp một cấu hình chung cho mọi khách.',
+      en: 'The analysis runs on Claude by Anthropic. We chose it for 3 technical reasons: it understands everyday spoken Vietnamese (mixed with English, abbreviated, across regional accents) rather than only textbook Vietnamese; it reads a long call in a single pass, so context between the start and end of the conversation is not lost; and it returns results in a predefined data shape that writes straight into your CRM instead of a block of prose. We match the model tier to each company’s volume and complexity rather than applying one configuration to everyone.',
     },
   },
   {
@@ -100,7 +100,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     },
     a: {
       vi: 'Giai đoạn chạy thử cho một phòng ban thường khoảng 1–2 tuần. Bạn chỉ cần chuẩn bị 3 thứ: một tập ghi âm mẫu, kịch bản hoặc checklist đánh giá đang dùng, và danh sách trường dữ liệu trong CRM muốn được điền tự động. Phần kết nối kỹ thuật do đội Clickstar làm.',
-      en: 'A pilot for one department typically takes 1–2 weeks. You only need three things: a sample set of recordings, the call script or QA checklist you already use, and the list of CRM fields you want filled automatically. Clickstar handles the technical integration.',
+      en: 'A pilot for one department typically takes 1–2 weeks. You only need 3 things: a sample set of recordings, the call script or QA checklist you already use, and the list of CRM fields you want filled automatically. Clickstar handles the technical integration.',
     },
   },
   {

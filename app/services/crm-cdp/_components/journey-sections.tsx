@@ -135,7 +135,7 @@ export function CrmVsCdpSection() {
           title={t('CDP nhận ra khách,', 'CDP recognizes customers,')}
           accent={t('CRM chăm sóc khách', 'CRM serves them')}
           lead={t(
-            'Hiểu đơn giản: CDP là “radar” theo dõi mọi người ghé website, kể cả khi chưa biết tên. CRM là “sổ khách hàng” để đội sales và chăm sóc làm việc với người đã để lại thông tin. Hai hệ thống nối với nhau đúng lúc khách để lại số điện thoại.',
+            'Hiểu đơn giản: CDP là “radar” theo dõi mọi người ghé website, kể cả khi chưa biết tên. CRM là “sổ khách hàng” để đội sales và chăm sóc làm việc với người đã để lại thông tin. 2 hệ thống nối với nhau đúng lúc khách để lại số điện thoại.',
             'In short: the CDP is a “radar” that follows everyone who visits your website, even before you know their name. The CRM is the “customer book” your sales and care teams use once someone has shared their details. The two connect the moment a customer leaves a phone number.'
           )}
         />
@@ -313,7 +313,7 @@ export function StorySection() {
   const before = [
     { day: t('Ngày 1 · 20:14', 'Day 1 · 20:14'), title: t('Thấy quảng cáo Facebook, bấm vào website', 'Sees a Facebook ad and clicks through'), desc: t('Hệ thống tạo mã ẩn danh. Ghi nguồn: Facebook Ads, thiết bị: iPhone.', 'The system creates an anonymous ID. Source: Facebook Ads, device: iPhone.') },
     { day: t('Ngày 1 · 20:16', 'Day 1 · 20:16'), title: t('Đọc trang dịch vụ CRM, cuộn 80% rồi thoát', 'Reads the CRM service page, scrolls 80% and leaves'), desc: t('Điểm quan tâm bắt đầu tăng. Chưa biết khách là ai.', 'The interest score starts to rise. Still unknown who the visitor is.') },
-    { day: t('Ngày 3 · 09:30', 'Day 3 · 09:30'), title: t('Quay lại bằng máy tính, xem Bảng giá hai lần', 'Returns on a laptop and views Pricing twice'), desc: t('Nhận ra khách quay lại. Điểm quan tâm: 45.', 'Recognizes the return visit. Interest score: 45.') },
+    { day: t('Ngày 3 · 09:30', 'Day 3 · 09:30'), title: t('Quay lại bằng máy tính, xem Bảng giá 2 lần', 'Returns on a laptop and views Pricing twice'), desc: t('Nhận ra khách quay lại. Điểm quan tâm: 45.', 'Recognizes the return visit. Interest score: 45.') },
     { day: t('Ngày 5 · 21:05', 'Day 5 · 21:05'), title: t('Thấy ô “Nhận tư vấn miễn phí”, để lại số điện thoại', 'Sees “Get a free consultation” and leaves a phone number'), desc: t('Điểm chạm định danh: ẩn danh kết thúc ở đây.', 'The identifying moment: the anonymous phase ends here.') },
   ]
   const after = [
@@ -389,7 +389,7 @@ export function UnifiedSection() {
   const principles = [
     { icon: <Users />, title: t('Cùng một hồ sơ cho mọi kênh', 'One profile across every channel'), desc: t('Website, quảng cáo, Zalo, chatbot, tổng đài, cửa hàng đều ghi vào cùng một hồ sơ khách.', 'Website, ads, Zalo, chatbot, call center and stores all write to the same customer record.') },
     { icon: <Fingerprint />, title: t('Nhận diện bằng số điện thoại và email', 'Identified by phone and email'), desc: t('Số điện thoại, email được chuẩn hoá về một định dạng, nên “0901 234 321” và “+84 901 234 321” là cùng một người.', 'Phone and email are normalized, so “0901 234 321” and “+84 901 234 321” are recognized as one person.') },
-    { icon: <FileClock />, title: t('Gộp có kiểm soát, có nhật ký', 'Controlled merging with a log'), desc: t('Mỗi lần gộp hồ sơ đều được ghi lại để kiểm tra, tránh nhập nhằng hai người thành một.', 'Every merge is logged for review, so two different people are not mixed into one.') },
+    { icon: <FileClock />, title: t('Gộp có kiểm soát, có nhật ký', 'Controlled merging with a log'), desc: t('Mỗi lần gộp hồ sơ đều được ghi lại để kiểm tra, tránh nhập nhằng 2 người thành một.', 'Every merge is logged for review, so 2 different people are not mixed into one.') },
     { icon: <ShieldCheck />, title: t('Tôn trọng sự đồng ý của khách', 'Respects customer consent'), desc: t('Chỉ ghi nhận hành vi sau khi khách đồng ý, và dữ liệu thuộc về doanh nghiệp của bạn.', 'Behavior is only recorded after the customer agrees, and the data belongs to your business.') },
   ]
 

@@ -222,7 +222,7 @@ export function RequestFlowDiagram({ className = 'w-full h-auto', label, t }: Pr
   const bw = 136
   const gap = 16
   return (
-    <svg viewBox="0 0 960 300" className={className} role="img" aria-label={label ?? t('Một yêu cầu đi qua sáu chốt kiểm tra', 'Request path with six checkpoints')} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
+    <svg viewBox="0 0 960 300" className={className} role="img" aria-label={label ?? t('Một yêu cầu đi qua 6 chốt kiểm tra', 'Request path with 6 checkpoints')} xmlns="http://www.w3.org/2000/svg" style={{ fontFamily: MONO }}>
       <Defs id={id} />
       <Sheet w={960} h={300} id={id} title={t('LUỒNG MỘT YÊU CẦU', 'REQUEST PATH')} sub={t('6 chốt, thứ tự cố định', '6 checkpoints, fixed order')} />
 

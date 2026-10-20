@@ -647,8 +647,8 @@ export default function SpeechInsightAiPage() {
                 </>
               }
               lead={t(
-                'Chúng tôi nói thẳng mình dùng gì. Bên dưới là bốn lý do kỹ thuật cho lựa chọn đó — và ranh giới rõ ràng giữa việc AI làm và việc con người quyết định.',
-                'We are upfront about what we run on. Below are the four technical reasons for that choice — and a clear line between what the AI does and what people decide.'
+                'Chúng tôi nói thẳng mình dùng gì. Bên dưới là 4 lý do kỹ thuật cho lựa chọn đó — và ranh giới rõ ràng giữa việc AI làm và việc con người quyết định.',
+                'We are upfront about what we run on. Below are the 4 technical reasons for that choice — and a clear line between what the AI does and what people decide.'
               )}
             />
             <ClaudeEngine />
@@ -668,8 +668,8 @@ export default function SpeechInsightAiPage() {
                 </>
               }
               lead={t(
-                'Chọn ngành gần với bạn nhất, rồi đi theo ba bước: nghe đoạn hội thoại, xem AI đọc ra tín hiệu gì, và nhận dữ liệu trả về.',
-                'Pick the industry closest to yours, then follow three steps: read the conversation, see the signals the AI picks up, and get the data back.'
+                'Chọn ngành gần với bạn nhất, rồi đi theo 3 bước: nghe đoạn hội thoại, xem AI đọc ra tín hiệu gì, và nhận dữ liệu trả về.',
+                'Pick the industry closest to yours, then follow 3 steps: read the conversation, see the signals the AI picks up, and get the data back.'
               )}
             />
             <AnalysisDemo />
@@ -752,7 +752,7 @@ export default function SpeechInsightAiPage() {
               <p className="text-lg font-semibold text-white">
                 {t(
                   'Toàn bộ 6 bước chạy tự động. Việc duy nhất con người cần làm là xem những gì AI đã gắn cờ.',
-                  'All six steps run automatically. The only human job is reviewing what AI flagged.'
+                  'All 6 steps run automatically. The only human job is reviewing what AI flagged.'
                 )}
               </p>
               <p className="text-sm text-[#d2d2d7]">
@@ -900,7 +900,7 @@ export default function SpeechInsightAiPage() {
                 eyebrow={t('BẢNG GIÁ', 'PRICING')}
                 title={
                   <>
-                    {t('Ba gói theo ', 'Three plans by ')}
+                    {t('3 gói theo ', '3 plans by ')}
                     <span className="text-[#1859b8]">{t('hạn mức phút', 'minute quota')}</span>
                   </>
                 }

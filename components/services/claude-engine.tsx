@@ -34,8 +34,8 @@ export function ClaudeEngine() {
       icon: <Languages className="w-6 h-6" />,
       title: t('Hiểu tiếng Việt như người Việt nói', 'Understands Vietnamese as people actually speak it'),
       desc: t(
-        'Không phải tiếng Việt sách vở: khách nói lẫn tiếng Anh ("book lịch", "deal"), nói tắt, ngắt quãng, giọng ba miền. Cùng một ý "đắt quá" khách nói mười kiểu khác nhau — hệ thống vẫn gom về đúng một nhóm phản đối.',
-        'Not textbook Vietnamese: customers mix in English, abbreviate, trail off, and speak in three regional accents. The same objection — "too expensive" — comes in ten phrasings; the system still groups them under one label.'
+        'Không phải tiếng Việt sách vở: khách nói lẫn tiếng Anh ("book lịch", "deal"), nói tắt, ngắt quãng, giọng 3 miền. Cùng một ý "đắt quá" khách nói 10 kiểu khác nhau — hệ thống vẫn gom về đúng một nhóm phản đối.',
+        'Not textbook Vietnamese: customers mix in English, abbreviate, trail off, and speak in 3 regional accents. The same objection — "too expensive" — comes in 10 phrasings; the system still groups them under one label.'
       ),
     },
     {

@@ -250,7 +250,7 @@ export const WORK = {
         en: 'Tasks, projects, meetings and reports in one system. Each person sees their own work and leads see the whole team.',
       },
       points: [
-        { vi: 'Ba vai trò Admin, Leader, Nhân viên với quyền khác nhau', en: 'Three roles (admin, lead, member) with distinct permissions' },
+        { vi: '3 vai trò Admin, Leader, Nhân viên với quyền khác nhau', en: '3 roles (admin, lead, member) with distinct permissions' },
         { vi: 'Quyền xem việc kiểm soát ở tầng cơ sở dữ liệu', en: 'Task visibility enforced at the database layer' },
         { vi: 'Việc định kỳ tự tạo theo lịch', en: 'Recurring tasks created on schedule' },
       ],
@@ -357,7 +357,7 @@ export const SECURITY = {
       title: { vi: 'Kiểm soát truy cập', en: 'Access control' },
       items: [
         { vi: 'Phân quyền theo vai trò, kiểm tra ở máy chủ', en: 'Role-based permissions, checked on the server' },
-        { vi: 'Xác thực hai lớp cho tài khoản quản trị', en: 'Two-factor authentication for admin accounts' },
+        { vi: 'Xác thực 2 lớp cho tài khoản quản trị', en: 'Two-factor authentication for admin accounts' },
         { vi: 'Giới hạn đăng nhập sai, tự hết hạn phiên làm việc', en: 'Login rate limiting and session expiry' },
       ],
     },
@@ -507,7 +507,7 @@ export const PROCESS = {
     },
     {
       title: { vi: 'Phát triển theo chặng', en: 'Iterative build' },
-      body: { vi: 'Mỗi chặng 2 tuần, kết thúc bằng buổi demo trên môi trường thử.', en: 'Two-week sprints, each closing with a demo on staging.' },
+      body: { vi: 'Mỗi chặng 2 tuần, kết thúc bằng buổi demo trên môi trường thử.', en: '2-week sprints, each closing with a demo on staging.' },
       gate: { vi: 'Duyệt sau mỗi chặng', en: 'Approved every sprint' },
     },
     {
@@ -609,7 +609,7 @@ export const MODELS = {
       fit: { vi: 'Hệ thống có phạm vi rõ ràng', en: 'A system with a clear scope' },
       pricing: { vi: 'Báo giá cố định sau giai đoạn khảo sát', en: 'Fixed quote after discovery' },
       when: { vi: 'Đã biết rõ cần gì, cần chốt ngân sách trước', en: 'Needs are known and the budget must be fixed' },
-      includes: { vi: 'Đủ 6 giai đoạn, bảo hành sau nghiệm thu', en: 'All six phases, warranty after acceptance' },
+      includes: { vi: 'Đủ 6 giai đoạn, bảo hành sau nghiệm thu', en: 'All 6 phases, warranty after acceptance' },
       recommended: false,
     },
     {

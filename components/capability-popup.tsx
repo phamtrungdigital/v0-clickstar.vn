@@ -165,7 +165,7 @@ export function CapabilityPopup() {
             <div className="pr-10">
               <h3 className="text-base font-bold text-slate-900">{t('Năng lực cốt lõi', 'Core capabilities')}</h3>
               <p className="mt-1 text-[13px] text-[#515154]">
-                {t('Tám nhóm năng lực, triển khai riêng lẻ hoặc trọn gói.', 'Eight capabilities, delivered alone or together.')}
+                {t('8 nhóm năng lực, triển khai riêng lẻ hoặc trọn gói.', '8 capabilities, delivered alone or together.')}
               </p>
             </div>
 

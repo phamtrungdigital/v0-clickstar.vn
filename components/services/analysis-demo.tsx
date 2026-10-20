@@ -417,7 +417,7 @@ export function AnalysisDemo() {
         {
           at: '03:28',
           who: 'sale',
-          line: t('Dạ còn 3 căn tầng 12, 15 và 21 anh ạ.', 'Yes — three units left, on floors 12, 15 and 21.'),
+          line: t('Dạ còn 3 căn tầng 12, 15 và 21 anh ạ.', 'Yes — 3 units left, on floors 12, 15 and 21.'),
         },
         {
           at: '03:40',
@@ -607,7 +607,7 @@ export function AnalysisDemo() {
           tone: 'risk',
           text: t(
             'Trễ tiến độ 3 tuần so với cam kết trong hợp đồng',
-            'Three weeks past the deadline committed to in the contract'
+            '3 weeks past the deadline committed to in the contract'
           ),
         },
         {

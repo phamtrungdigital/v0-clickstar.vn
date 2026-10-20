@@ -29,8 +29,8 @@ export const EVIDENCE = {
   kicker: { vi: 'Mã nguồn thật', en: 'Real source code' },
   title: { vi: 'Đây là cách chúng tôi viết mã', en: 'This is how we write code' },
   lede: {
-    vi: 'Bốn đoạn trích từ kho mã nguồn sản phẩm của Click Star, rút gọn dòng, giữ nguyên logic. Mỗi đoạn kèm lý do nó tồn tại.',
-    en: 'Four excerpts from Click Star’s own product repositories, trimmed for length with the logic untouched. Each says why it exists.',
+    vi: '4 đoạn trích từ kho mã nguồn sản phẩm của Click Star, rút gọn dòng, giữ nguyên logic. Mỗi đoạn kèm lý do nó tồn tại.',
+    en: '4 excerpts from Click Star’s own product repositories, trimmed for length with the logic untouched. Each says why it exists.',
   },
   from: { vi: 'Trích từ', en: 'Excerpt from' },
   proves: { vi: 'Đoạn này bảo đảm', en: 'This guarantees' },
@@ -258,7 +258,7 @@ export const STATS_NOTE = {
 }
 
 export const FLOW = {
-  title: { vi: 'Một yêu cầu đi qua sáu chốt kiểm tra', en: 'One request, six checkpoints' },
+  title: { vi: 'Một yêu cầu đi qua 6 chốt kiểm tra', en: 'One request, 6 checkpoints' },
   lede: {
     vi: 'Các đoạn mã ở trên nằm ở những chốt này. Thứ tự cố định: chốt sau không thay được chốt trước.',
     en: 'The code above lives at these checkpoints. The order is fixed: a later check never replaces an earlier one.',

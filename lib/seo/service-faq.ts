@@ -12,7 +12,7 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
       q: { vi: 'Quy trình thiết kế website của Click Star gồm những bước nào?', en: "What are the steps in Click Star's website design process?" },
       a: {
         vi: 'Gồm 6 bước: khám phá và phân tích (mục tiêu kinh doanh, đối thủ, hành vi người dùng), thiết kế UI/UX trên Figma, hoàn thiện nhận diện thương hiệu, phát triển code kèm CMS và trang quản trị, tối ưu SEO và cài đặt đo lường, cuối cùng là ra mắt và hỗ trợ. Cả quy trình thường khoảng 4 đến 6 tuần. Doanh nghiệp theo dõi tiến độ và duyệt thiết kế trực tuyến qua portal riêng.',
-        en: 'Six steps: discovery and analysis (business goals, competitors, user behaviour), UI/UX design in Figma, brand identity, development with a CMS and admin panel, SEO and measurement setup, then launch and support. The whole process usually takes about 4 to 6 weeks. You follow progress and approve designs online through a dedicated project portal.',
+        en: '6 steps: discovery and analysis (business goals, competitors, user behaviour), UI/UX design in Figma, brand identity, development with a CMS and admin panel, SEO and measurement setup, then launch and support. The whole process usually takes about 4 to 6 weeks. You follow progress and approve designs online through a dedicated project portal.',
       },
     },
     {
@@ -56,7 +56,7 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
       q: { vi: 'Quy trình triển khai gồm những bước nào, bao lâu thì bắt đầu chạy?', en: 'What does the delivery process look like and how soon do campaigns start?' },
       a: {
         vi: 'Gồm 5 bước: khám phá và phân tích (khoảng 1 đến 2 tuần: họp kick-off, audit kênh hiện tại, phân tích đối thủ, chốt KPI), xây chiến lược và kế hoạch, thiết lập tài khoản, pixel và chạy chiến dịch thử, tối ưu và mở rộng liên tục, rồi báo cáo định kỳ. Thường sau 3 đến 4 tuần doanh nghiệp bắt đầu thấy kết quả.',
-        en: 'Five steps: discovery and analysis (about 1 to 2 weeks: kick-off meeting, audit of current channels, competitor analysis, KPIs), strategy and plan, account and pixel setup with a pilot campaign, continuous optimisation and scaling, then regular reporting. Businesses usually see results after 3 to 4 weeks.',
+        en: '5 steps: discovery and analysis (about 1 to 2 weeks: kick-off meeting, audit of current channels, competitor analysis, KPIs), strategy and plan, account and pixel setup with a pilot campaign, continuous optimisation and scaling, then regular reporting. Businesses usually see results after 3 to 4 weeks.',
       },
     },
     {
@@ -85,8 +85,8 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
     {
       q: { vi: 'Click Star tích hợp AI vào những việc gì trong doanh nghiệp?', en: 'What business tasks does Click Star integrate AI into?' },
       a: {
-        vi: 'Sáu nhóm việc chính: tạo nội dung (bài viết, email, quảng cáo), thiết kế hình ảnh, sản xuất video, phân tích dữ liệu và báo cáo tự động, chatbot hỗ trợ khách hàng trên website, Messenger, Zalo và email, và tối ưu quảng cáo (ngân sách, nhắm đối tượng, thử nghiệm mẫu quảng cáo).',
-        en: 'Six main areas: content creation (articles, email, ads), image design, video production, data analysis and automatic reporting, customer support chatbots on the website, Messenger, Zalo and email, and ad optimisation (budget, targeting, creative testing).',
+        vi: '6 nhóm việc chính: tạo nội dung (bài viết, email, quảng cáo), thiết kế hình ảnh, sản xuất video, phân tích dữ liệu và báo cáo tự động, chatbot hỗ trợ khách hàng trên website, Messenger, Zalo và email, và tối ưu quảng cáo (ngân sách, nhắm đối tượng, thử nghiệm mẫu quảng cáo).',
+        en: '6 main areas: content creation (articles, email, ads), image design, video production, data analysis and automatic reporting, customer support chatbots on the website, Messenger, Zalo and email, and ad optimisation (budget, targeting, creative testing).',
       },
     },
     {
@@ -100,7 +100,7 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
       q: { vi: 'Quy trình tích hợp AI gồm những bước nào?', en: 'What are the steps of an AI integration project?' },
       a: {
         vi: 'Gồm 4 bước: khảo sát và đánh giá quy trình hiện tại (khoảng 1 đến 2 tuần), thiết kế giải pháp và chọn công cụ phù hợp (khoảng 1 tuần), triển khai, kết nối API và đào tạo đội ngũ sử dụng (khoảng 2 đến 4 tuần), sau đó đo lường, tinh chỉnh và mở rộng liên tục. Tổng thời gian đến khi chạy khoảng 4 đến 7 tuần.',
-        en: 'Four steps: survey and assessment of current processes (about 1 to 2 weeks), solution design and tool selection (about 1 week), implementation, API connection and team training (about 2 to 4 weeks), then continuous measurement, tuning and scaling. Total time until it runs is about 4 to 7 weeks.',
+        en: '4 steps: survey and assessment of current processes (about 1 to 2 weeks), solution design and tool selection (about 1 week), implementation, API connection and team training (about 2 to 4 weeks), then continuous measurement, tuning and scaling. Total time until it runs is about 4 to 7 weeks.',
       },
     },
     {
@@ -122,8 +122,8 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
     {
       q: { vi: 'Click Star tự động hóa được những quy trình nào?', en: 'Which processes can Click Star automate?' },
       a: {
-        vi: 'Bốn nhóm phổ biến: chăm sóc khách hàng (chatbot AI trả lời 24/7, phân loại yêu cầu, chuyển nhân viên khi cần, lưu vào CRM), thông báo và cảnh báo thông minh từ nhiều nguồn, quy trình nội dung (lên ý tưởng, viết nháp, duyệt, đăng theo lịch) và báo cáo tự động gửi định kỳ.',
-        en: 'Four common groups: customer care (AI chatbot 24/7, request triage, handover to staff when needed, saving to the CRM), smart alerts and notifications from many sources, content workflows (ideas, draft, review, scheduled publishing) and automatic periodic reports.',
+        vi: '4 nhóm phổ biến: chăm sóc khách hàng (chatbot AI trả lời 24/7, phân loại yêu cầu, chuyển nhân viên khi cần, lưu vào CRM), thông báo và cảnh báo thông minh từ nhiều nguồn, quy trình nội dung (lên ý tưởng, viết nháp, duyệt, đăng theo lịch) và báo cáo tự động gửi định kỳ.',
+        en: '4 common groups: customer care (AI chatbot 24/7, request triage, handover to staff when needed, saving to the CRM), smart alerts and notifications from many sources, content workflows (ideas, draft, review, scheduled publishing) and automatic periodic reports.',
       },
     },
     {
@@ -137,7 +137,7 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
       q: { vi: 'Quy trình triển khai AI Automation gồm những bước nào?', en: 'What are the steps of an AI automation project?' },
       a: {
         vi: 'Gồm 4 bước: phân tích quy trình và xác định việc lặp lại có thể tự động hóa (khoảng 1 tuần), thiết kế sơ đồ workflow và chọn AI phù hợp, xây dựng và kết nối trên nền tảng Click Star (khoảng 2 đến 3 tuần), cuối cùng chạy thử, sửa lỗi và tối ưu liên tục.',
-        en: 'Four steps: analyse processes and identify repetitive work that can be automated (about 1 week), design the workflow diagram and pick the right AI, build and connect on the Click Star platform (about 2 to 3 weeks), then test, fix and keep optimising.',
+        en: '4 steps: analyse processes and identify repetitive work that can be automated (about 1 week), design the workflow diagram and pick the right AI, build and connect on the Click Star platform (about 2 to 3 weeks), then test, fix and keep optimising.',
       },
     },
     {
@@ -204,7 +204,7 @@ export const SERVICE_FAQ: Record<string, ServiceFaqItem[]> = {
       q: { vi: 'Quy trình triển khai dashboard gồm những bước nào?', en: 'What are the steps of a dashboard project?' },
       a: {
         vi: 'Gồm 5 bước: khảo sát nguồn dữ liệu và chốt chỉ số quan trọng (khoảng 1 đến 2 tuần), thiết kế giao diện và xác nhận với các bên liên quan (khoảng 1 tuần), tích hợp dữ liệu qua API và đường ống ETL (khoảng 2 đến 3 tuần), cài đặt AI điều chỉnh theo ngành, rồi đưa vào chạy và đào tạo đội ngũ.',
-        en: 'Five steps: survey data sources and agree the key metrics (about 1 to 2 weeks), design the interface and confirm it with stakeholders (about 1 week), integrate data through APIs and ETL pipelines (about 2 to 3 weeks), set up the AI tuned to your industry, then go live and train your team.',
+        en: '5 steps: survey data sources and agree the key metrics (about 1 to 2 weeks), design the interface and confirm it with stakeholders (about 1 week), integrate data through APIs and ETL pipelines (about 2 to 3 weeks), set up the AI tuned to your industry, then go live and train your team.',
       },
     },
     {
@@ -237,7 +237,7 @@ export const SERVICE_QUICK: Record<string, ServiceFaqItem> = {
     q: { vi: 'Thiết kế website tại Click Star mất bao lâu?', en: 'How long does website design at Click Star take?' },
     a: {
       vi: 'Quy trình 6 bước từ khảo sát đến ra mắt thường kéo dài khoảng 4 đến 6 tuần: khảo sát 3 đến 5 ngày, thiết kế UI/UX 7 đến 10 ngày, nhận diện thương hiệu 5 đến 7 ngày, phát triển 14 đến 21 ngày, sau đó tối ưu SEO, cài đo lường và bàn giao. Website thiết kế responsive, tối ưu tốc độ tải và chuẩn SEO kỹ thuật. Chi phí được báo sau buổi tư vấn miễn phí.',
-      en: 'The six-step process from discovery to launch usually takes about 4 to 6 weeks: discovery 3 to 5 days, UI/UX design 7 to 10 days, brand identity 5 to 7 days, development 14 to 21 days, then SEO optimisation, measurement setup and handover. Sites are built responsive, fast-loading and technically SEO-ready. Cost is quoted after a free consultation.',
+      en: 'The 6-step process from discovery to launch usually takes about 4 to 6 weeks: discovery 3 to 5 days, UI/UX design 7 to 10 days, brand identity 5 to 7 days, development 14 to 21 days, then SEO optimisation, measurement setup and handover. Sites are built responsive, fast-loading and technically SEO-ready. Cost is quoted after a free consultation.',
     },
   },
   'digital-marketing': {
@@ -258,7 +258,7 @@ export const SERVICE_QUICK: Record<string, ServiceFaqItem> = {
     q: { vi: 'Tích hợp AI vào quy trình doanh nghiệp mất bao lâu, chi phí bao nhiêu?', en: 'How long does AI integration take and what does it cost?' },
     a: {
       vi: 'Quy trình 4 bước gồm khảo sát 1 đến 2 tuần, thiết kế giải pháp 1 tuần, triển khai và tích hợp 2 đến 4 tuần, rồi tối ưu liên tục, tức khoảng 4 đến 7 tuần cho đến khi chạy. Riêng một quy trình AI riêng đã rõ phạm vi, ví dụ chấm điểm khách hàng tiềm năng hay tự phân loại email, thường mất 2 đến 3 tuần với chi phí từ 15 đến 40 triệu đồng. Click Star tư vấn miễn phí một đối một trước khi báo giá.',
-      en: 'The four-step process is discovery 1 to 2 weeks, solution design 1 week, implementation and integration 2 to 4 weeks, then continuous tuning, so about 4 to 7 weeks until it runs. A single custom AI workflow with a clear scope, such as lead scoring or automatic email sorting, usually takes 2 to 3 weeks and costs 15 to 40 million VND. Click Star gives a free one-to-one consultation before quoting.',
+      en: 'The 4-step process is discovery 1 to 2 weeks, solution design 1 week, implementation and integration 2 to 4 weeks, then continuous tuning, so about 4 to 7 weeks until it runs. A single custom AI workflow with a clear scope, such as lead scoring or automatic email sorting, usually takes 2 to 3 weeks and costs 15 to 40 million VND. Click Star gives a free one-to-one consultation before quoting.',
     },
   },
   automation: {
@@ -271,15 +271,15 @@ export const SERVICE_QUICK: Record<string, ServiceFaqItem> = {
   dashboard: {
     q: { vi: 'Dashboard dữ liệu của Click Star dùng để làm gì, mất bao lâu?', en: 'What is a Click Star data dashboard for, and how long does it take?' },
     a: {
-      vi: 'Dashboard gom số liệu bán hàng, quảng cáo và vận hành từ nhiều nguồn vào một màn hình, tự cập nhật và có báo cáo tự động, để lãnh đạo xem tình hình kinh doanh trong vài giây thay vì tổng hợp thủ công. Ba giai đoạn đầu (khảo sát 1 đến 2 tuần, thiết kế 1 tuần, tích hợp dữ liệu 2 đến 3 tuần) cộng lại khoảng 4 đến 6 tuần, sau đó cài AI, đưa vào chạy và đào tạo đội ngũ. Chi phí được báo sau buổi tư vấn miễn phí.',
-      en: 'A dashboard brings sales, advertising and operations figures from many sources onto one screen, updates itself and sends automatic reports, so leaders see the state of the business in seconds instead of compiling it by hand. The first three phases (discovery 1 to 2 weeks, design 1 week, data integration 2 to 3 weeks) add up to about 4 to 6 weeks, followed by AI setup, go-live and team training. Cost is quoted after a free consultation.',
+      vi: 'Dashboard gom số liệu bán hàng, quảng cáo và vận hành từ nhiều nguồn vào một màn hình, tự cập nhật và có báo cáo tự động, để lãnh đạo xem tình hình kinh doanh trong vài giây thay vì tổng hợp thủ công. 3 giai đoạn đầu (khảo sát 1 đến 2 tuần, thiết kế 1 tuần, tích hợp dữ liệu 2 đến 3 tuần) cộng lại khoảng 4 đến 6 tuần, sau đó cài AI, đưa vào chạy và đào tạo đội ngũ. Chi phí được báo sau buổi tư vấn miễn phí.',
+      en: 'A dashboard brings sales, advertising and operations figures from many sources onto one screen, updates itself and sends automatic reports, so leaders see the state of the business in seconds instead of compiling it by hand. The first 3 phases (discovery 1 to 2 weeks, design 1 week, data integration 2 to 3 weeks) add up to about 4 to 6 weeks, followed by AI setup, go-live and team training. Cost is quoted after a free consultation.',
     },
   },
   'custom-software': {
     q: { vi: 'Làm phần mềm theo yêu cầu mất bao lâu?', en: 'How long does custom software take to build?' },
     a: {
       vi: 'Phiên bản đầu tiên với các chức năng cốt lõi thường mất khoảng 6 đến 10 tuần, tùy phạm vi. Quy trình gồm khảo sát 1 đến 2 tuần, thiết kế 2 đến 3 tuần, phát triển theo từng chặng 2 tuần (thời gian tùy phạm vi), kiểm thử 1 đến 2 tuần và chuyển giao khoảng 1 tuần. Mỗi thay đổi lên môi trường thử để doanh nghiệp duyệt trước khi lên hệ thống chính.',
-      en: 'A first version with the core features usually takes about 6 to 10 weeks, depending on scope. The process is discovery 1 to 2 weeks, design 2 to 3 weeks, build in two-week sprints (duration depends on scope), testing 1 to 2 weeks and handover about 1 week. Every change goes to a test environment for you to approve before it reaches the live system.',
+      en: 'A first version with the core features usually takes about 6 to 10 weeks, depending on scope. The process is discovery 1 to 2 weeks, design 2 to 3 weeks, build in 2-week sprints (duration depends on scope), testing 1 to 2 weeks and handover about 1 week. Every change goes to a test environment for you to approve before it reaches the live system.',
     },
   },
   'speech-insight-ai': {
