@@ -251,7 +251,7 @@ export default function AIAutomationPage() {
                 { v: '100+', l: t('Workflows đã triển khai', 'Workflows deployed') },
               ].map((x) => (
                 <div key={x.l}>
-                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
                   <div className="mt-1 text-[15px] text-[#515154]">{x.l}</div>
                 </div>
               ))}
@@ -361,7 +361,7 @@ export default function AIAutomationPage() {
                       <useCase.icon className="h-6 w-6 text-white" />
                     </div>
                     <div className="text-right">
-                      <p className="text-[32px] font-semibold leading-none tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
+                      <p className="text-[32px] font-semibold leading-[1.2] tracking-[-0.02em] text-[#1859b8]">{useCase.stats}</p>
                       <p className="mt-1 text-[13px] text-[#515154]">{t(useCase.statsLabel.vi, useCase.statsLabel.en)}</p>
                     </div>
                   </div>

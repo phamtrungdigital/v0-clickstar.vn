@@ -435,7 +435,7 @@ export default function SpeechInsightAiPage() {
                 { v: '6', l: t('bước chạy tự động, không ai phải bấm', 'automated steps, zero manual work') },
               ].map((x) => (
                 <div key={x.v}>
-                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
                   <div className="mx-auto mt-1 max-w-[22ch] text-[14px] leading-snug text-[#515154] sm:text-[15px]">{x.l}</div>
                 </div>
               ))}

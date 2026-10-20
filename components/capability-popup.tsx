@@ -140,7 +140,7 @@ export function CapabilityPopup() {
                 <span className="h-1.5 w-1.5 rounded-full bg-white" />
                 {t('Hồ sơ năng lực', 'Capability profile')}
               </span>
-              <Dialog.Title className="mt-4 text-2xl font-extrabold leading-[1.15] tracking-tight md:text-[28px]">
+              <Dialog.Title className="mt-4 text-2xl font-extrabold leading-[1.22] tracking-tight md:text-[28px]">
                 {t('Đối tác tăng trưởng số cho doanh nghiệp Việt.', 'A digital growth partner for Vietnamese businesses.')}
               </Dialog.Title>
               <p className="mt-3 text-sm leading-relaxed text-white">

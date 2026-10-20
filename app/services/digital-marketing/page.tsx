@@ -322,7 +322,7 @@ export default function DigitalMarketingPage() {
             <div className="mt-12 sm:mt-14 grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-8">
               {stats.map((stat, index) => (
                 <div key={index}>
-                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.05] tracking-[-0.03em] tabular-nums text-foreground">
+                  <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-foreground">
                     {stat.value}
                   </div>
                   <div className="mt-1 text-[15px] text-muted-foreground">{stat.label}</div>
