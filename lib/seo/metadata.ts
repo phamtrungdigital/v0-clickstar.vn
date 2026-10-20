@@ -51,13 +51,24 @@ type MetaInput = {
   modifiedTime?: string | null
 }
 
+/**
+ * Ảnh chia sẻ có bản tiếng Anh: ảnh dựng sẵn nằm ở /images/og/<tên>.jpg, bản tiếng Anh là <tên>-en.jpg.
+ * Trang /en tự dùng bản tiếng Anh; ảnh khác (bìa bài viết, ảnh tải lên) giữ nguyên.
+ */
+export function localizeOgImage(url: string, lang: Lang): string {
+  if (lang !== 'en') return url
+  return url.replace(/(\/images\/og\/[a-z0-9-]+)\.jpg(\?.*)?$/i, (_m, base: string, q?: string) =>
+    base.endsWith('-en') ? `${base}.jpg${q ?? ''}` : `${base}-en.jpg${q ?? ''}`
+  )
+}
+
 /** Metadata đầy đủ cho một trang: tiêu đề chuẩn thương hiệu, canonical, hreflang, Open Graph, Twitter. */
 export function buildMetadata(o: MetaInput): Metadata {
   const lang: Lang = o.lang ?? 'vi'
   const hasEn = o.hasEn ?? true
   const title = brandTitle(o.title)
   const description = o.description || undefined
-  const images = (o.images ?? []).filter((x): x is string => !!x)
+  const images = (o.images ?? []).filter((x): x is string => !!x).map((x) => localizeOgImage(x, lang))
   const viPath = o.path
   const selfPath = viPath ? localizePath(viPath, lang) : undefined
   // Bản /en chưa đủ nội dung: không lập chỉ mục (vẫn cho theo liên kết). Canonical vẫn trỏ chính nó: noindex kèm canonical
