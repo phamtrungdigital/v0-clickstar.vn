@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { getAdminProfile } from '@/lib/admin-cls/auth'
 import AdminShell from './_components/admin-shell'
+import { AdminTheme } from './_components/admin-theme'
 
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],
@@ -22,7 +23,10 @@ export default async function AdminLayout({
   const profile = await getAdminProfile()
 
   const wrap = (node: React.ReactNode) => (
-    <div className={`${inter.variable} admin-scope`}>{node}</div>
+    <div className={`${inter.variable} admin-scope`}>
+      <AdminTheme />
+      {node}
+    </div>
   )
 
   if (!profile) {
