@@ -32,9 +32,10 @@ const CSS = `
 .bp-wm{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.14em;margin-bottom:-.14em}
 .bp-w{display:inline-block;animation:bp-word .9s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(.15s + var(--i,0) * 70ms)}
 @keyframes bp-word{from{transform:translateY(112%) rotate(3deg)}to{transform:none}}
-/* Ảnh bìa: ánh sáng bao quanh lấy màu từ chính ảnh, ảnh trượt nhẹ theo cuộn */
+/* Ảnh bìa: ánh sáng bao quanh lấy màu từ chính ảnh, ảnh trượt nhẹ theo cuộn (chỉ từ 640px; trên mobile giữ nguyên khung 16:9 để không cắt ảnh) */
 .bp-ambient{position:absolute;inset:6% 4% -4%;z-index:-1;filter:blur(38px) saturate(1.5);opacity:.55;border-radius:32px;animation:bp-fade 1.8s .5s ease both}
-.bp-par{position:absolute;left:0;right:0;top:-24px;bottom:-24px;transform:translate3d(0,calc(var(--py,0) * 1px),0);will-change:transform}
+.bp-par{position:absolute;inset:0}
+@media (min-width:640px){.bp-par{top:-10px;bottom:-10px;transform:translate3d(0,calc(var(--py,0) * 1px),0);will-change:transform}}
 /* Thân bài: gạch chân liên kết vẽ ra khi rê chuột, ảnh nhấc lên, bôi chọn màu thương hiệu */
 .bp-prose a{background:linear-gradient(currentColor,currentColor) 0 100%/0 1.5px no-repeat;transition:background-size .35s cubic-bezier(.2,.7,.2,1)}
 .bp-prose a:hover{background-size:100% 1.5px}
@@ -203,7 +204,7 @@ export function CoverParallax({ children }: { children: React.ReactNode }) {
       if (!parent) return
       const r = parent.getBoundingClientRect()
       const mid = r.top + r.height / 2 - window.innerHeight / 2
-      el.style.setProperty('--py', String(Math.max(-22, Math.min(22, -mid * 0.05))))
+      el.style.setProperty('--py', String(Math.max(-10, Math.min(10, -mid * 0.05))))
     }
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(update)

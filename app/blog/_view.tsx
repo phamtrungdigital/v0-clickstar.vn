@@ -40,7 +40,7 @@ export async function BlogListView({ lang }: { lang: Lang }) {
       <JsonLd data={breadcrumbSchema([{ name: t('Trang chủ', 'Home'), path: '/' }, { name: 'Blog', path: '/blog' }], lang)} />
       <MainNav />
 
-      <section className="pt-32 pb-16 lg:pt-40 lg:pb-24">
+      <section className="pt-10 pb-16 sm:pt-16 lg:pt-24 lg:pb-24">
         <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12 lg:mb-16">
