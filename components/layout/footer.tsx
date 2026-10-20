@@ -54,7 +54,7 @@ export function Footer() {
                 height={36}
                 quality={95}
                 sizes="247px"
-                className="h-9 w-auto brightness-0 invert"
+                className="h-9 w-auto max-w-full object-contain object-left brightness-0 invert"
               />
             </Link>
             <p className="text-[#d2d2d7] text-sm leading-relaxed mb-6">{footer.description[language]}</p>
