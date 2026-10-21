@@ -12,7 +12,7 @@ import { WebContentProvider } from '@/contexts/web-content-context'
 import { DeferredWidgets } from '@/components/deferred-widgets'
 import { FloatingContact } from '@/components/floating-contact'
 import { HtmlRoot } from '@/components/html-root'
-import { BodyCode, HeadCode } from '@/components/site-code'
+import { BodyCode, HeadCode, SITE_CODE_LIVE } from '@/components/site-code'
 import { getEnabledSnippets } from '@/lib/cms/code-snippets'
 import { SITE_URL, BRAND } from '@/lib/seo/site'
 import './site.css'
@@ -78,7 +78,8 @@ export default async function RootLayout({
     getWebContent(),
     getEnabledSnippets(),
   ])
-  const codeAt = (p: 'head' | 'body_start' | 'body_end') => snippets.filter((s) => s.placement === p)
+  // Bản preview và máy chạy thử không chạy mã tuỳ chỉnh (GA4, CDP...), xem SITE_CODE_LIVE.
+  const codeAt = (p: 'head' | 'body_start' | 'body_end') => (SITE_CODE_LIVE ? snippets.filter((s) => s.placement === p) : [])
   const chatbotConfig = toPublicConfig(chatbot)
   const { footer: footerContent, service_ctas: serviceCtas } = normalizeWebContent(webContent)
   const branding: SiteBranding = {
@@ -96,7 +97,11 @@ export default async function RootLayout({
       bodyClassName={`${plusJakarta.variable} ${inter.variable} font-sans antialiased`}
       // Mã tuỳ chỉnh "Đầu trang" (Cài đặt → Mã tuỳ chỉnh) nằm thật sự trong <head>. head_code là ô Header cũ,
       // còn dùng cho khối Google Analytics 4 do mục SEO ghi vào.
-      head={<HeadCode items={codeAt('head')} legacy={settings?.head_code} />}
+      head={
+        SITE_CODE_LIVE ? (
+          <HeadCode items={codeAt('head')} legacy={settings?.head_code} allCodes={snippets.map((s) => s.code)} />
+        ) : null
+      }
     >
       {/* Mã tuỳ chỉnh "Đầu thân trang": thẻ noscript của GTM, widget chat. body_start_code cũ đã chuyển sang bảng mới. */}
       <BodyCode items={codeAt('body_start')} />
