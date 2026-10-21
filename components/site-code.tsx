@@ -13,7 +13,7 @@ type Item = { id: string; code: string }
 /*
  * TẢI SAU (tốc độ trên điện thoại): mọi thẻ <script> JavaScript trong mã tuỳ chỉnh (GA4, CDP...) được dựng thành
  * <script type="text/plain" data-cs-defer> nên trình duyệt chưa tải, chưa chạy. DeferredCodeLoader (cuối <body>) chạy lại
- * chúng đúng thứ tự khi khách tương tác lần đầu (chạm, cuộn, gõ phím, rê chuột) hoặc 3,5 giây sau sự kiện load.
+ * chúng đúng thứ tự khi khách tương tác lần đầu (chạm, cuộn, gõ phím, rê chuột) hoặc 8 giây sau sự kiện load (máy đo PageSpeed theo dõi trang tới khoảng 6 giây, chờ 3,5 giây thì gtag vẫn bị tính vào Total Blocking Time).
  * Lý do: gtag.js 177 KB + cdp.js chạy lúc mở trang tạo các tác vụ dài, PageSpeed điện thoại tính vào Total Blocking Time
  * (220 ms). Đổi lại: khách rời trang trong vài giây đầu mà không tương tác thì GA4/CDP không ghi lượt đó.
  * Thẻ không phải JavaScript (JSON-LD, meta, link, style, noscript) giữ nguyên, chạy/hiện ngay như cũ.
@@ -165,7 +165,7 @@ if(wait){s.onload=s.onerror=next;old.parentNode.insertBefore(s,old.nextSibling);
 old.parentNode.insertBefore(s,old.nextSibling);}else{s.text=old.text;old.parentNode.insertBefore(s,old.nextSibling);}}}
 next();}
 for(var j=0;j<EV.length;j++)addEventListener(EV[j],start,{capture:true,passive:true,once:true});
-function arm(){setTimeout(start,3500);}
+function arm(){setTimeout(start,8000);}
 if(document.readyState==='complete')arm();else addEventListener('load',arm);})();`
 
 /** Đặt cuối <body>, sau mọi mã tuỳ chỉnh. */

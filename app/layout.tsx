@@ -169,7 +169,7 @@ export default async function RootLayout({
 
       {/* Mã tuỳ chỉnh "Cuối trang": remarketing, công cụ phụ. body_end_code cũ đã chuyển sang bảng mới. */}
       <BodyCode items={codeAt('body_end')} />
-      {/* Chạy các script mã tuỳ chỉnh đã đánh dấu tải sau (lần tương tác đầu hoặc 3,5 giây sau load) */}
+      {/* Chạy các script mã tuỳ chỉnh đã đánh dấu tải sau (lần tương tác đầu hoặc 8 giây sau load) */}
       <DeferredCodeLoader />
     </HtmlRoot>
   )
