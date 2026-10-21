@@ -1,6 +1,6 @@
-// Khung xương (skeleton) hiện NGAY khi bấm sang một trang công khai dựng động (blog, dự án, liên hệ),
-// thay vì đứng ở trang cũ chờ máy chủ dựng xong. Chỉ gắn cho các nhóm trang động (loading.tsx trong app/blog,
-// app/projects, app/contact và bản /en). KHÔNG đặt ở app/loading.tsx: loading ở gốc bọc cả trang tĩnh (trang chủ,
+// Khung xương (skeleton) hiện NGAY khi bấm sang một trang công khai dựng động (hiện chỉ còn trang liên hệ),
+// thay vì đứng ở trang cũ chờ máy chủ dựng xong. Chỉ gắn cho trang động (app/contact/loading.tsx và bản /en);
+// blog và dự án đã thành trang tĩnh (ISR) nên không cần. KHÔNG đặt ở app/loading.tsx: loading ở gốc bọc cả trang tĩnh (trang chủ,
 // dịch vụ...) trong Suspense, HTML gửi khung xương trước còn nội dung thật nằm ẩn cuối trang chờ script của React
 // gỡ ra, nên trình duyệt chỉ vẽ nội dung sau khi tải xong JavaScript (Lighthouse điện thoại: LCP 3 giây, lần tải
 // nguội tới 13 giây).

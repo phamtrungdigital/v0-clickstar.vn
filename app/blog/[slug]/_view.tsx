@@ -6,7 +6,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
-import { getPublishedPost, listPublishedPosts } from '@/lib/cms/posts'
+import { getPublishedPost, listPublishedPostSummaries } from '@/lib/cms/posts'
 import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { getSiteSettings } from '@/lib/cms/settings'
 import { makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
@@ -71,7 +71,7 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
   const headings = parseHeadings(content)
 
   // Related posts: cùng tag, exclude current
-  const allPosts = await listPublishedPosts()
+  const allPosts = await listPublishedPostSummaries()
   const related = allPosts
     .filter((p) => p.id !== post.id && p.tags.some((tag) => post.tags.includes(tag)))
     .slice(0, 3)

@@ -3,8 +3,7 @@ import Link from '@/components/app-link'
 import { Calendar, ArrowRight } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
-import { listPublishedPosts } from '@/lib/cms/posts'
-import { postHasEnglish } from '@/lib/cms/post-i18n'
+import { listPublishedPostSummaries } from '@/lib/cms/posts'
 import { makeT, pickI18n, LOCALES } from '@/lib/i18n/server'
 import type { Lang } from '@/lib/i18n/locale'
 import { tagLabel } from '@/lib/cms/tags'
@@ -31,8 +30,8 @@ export async function blogListMetadata(lang: Lang) {
 /** Danh sách bài viết ở ngôn ngữ `lang`. Bản /en chỉ liệt kê bài đã có bản tiếng Anh đủ nội dung. */
 export async function BlogListView({ lang }: { lang: Lang }) {
   const t = makeT(lang)
-  const all = await listPublishedPosts()
-  const posts = lang === 'en' ? all.filter(postHasEnglish) : all
+  const all = await listPublishedPostSummaries()
+  const posts = lang === 'en' ? all.filter((p) => p.has_en) : all
   const locale = LOCALES[lang]
 
   return (

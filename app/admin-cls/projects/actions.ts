@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { slugify, type CaseStudyMetric, type CaseStudyStatus } from '@/lib/cms/case-studies-types'
@@ -79,6 +79,9 @@ export async function createProject(input: ProjectFormData) {
 
   revalidatePath('/admin-cls/projects')
   revalidatePath('/projects')
+  revalidatePath('/en/projects')
+  // Trang dự án công khai là trang tĩnh (ISR): xoá cache dữ liệu dự án để trang danh sách và trang chi tiết dựng lại
+  updateTag('case_studies')
   return { ok: true, id: data.id }
 }
 
@@ -98,6 +101,8 @@ export async function updateProject(id: string, input: ProjectFormData) {
 
   revalidatePath('/admin-cls/projects')
   revalidatePath('/projects')
+  revalidatePath('/en/projects')
+  updateTag('case_studies')
   revalidatePath(`/projects/${payload.slug}`)
   return { ok: true }
 }
@@ -108,6 +113,8 @@ export async function deleteProject(id: string) {
   if (error) return { error: error.message }
   revalidatePath('/admin-cls/projects')
   revalidatePath('/projects')
+  revalidatePath('/en/projects')
+  updateTag('case_studies')
   return { ok: true }
 }
 
@@ -125,6 +132,8 @@ export async function setProjectStatus(id: string, status: CaseStudyStatus) {
   if (error) return { error: error.message }
   revalidatePath('/admin-cls/projects')
   revalidatePath('/projects')
+  revalidatePath('/en/projects')
+  updateTag('case_studies')
   return { ok: true }
 }
 
