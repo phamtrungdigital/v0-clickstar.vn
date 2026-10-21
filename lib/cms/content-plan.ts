@@ -124,6 +124,14 @@ export const POST_META: Record<string, Meta> = {
   'cap-nhat-meta-2026-cho-nha-quang-cao': { pillar: 'marketing', stage: 'learn', kind: 'news' },
   'phan-tich-du-lieu-bang-ai-bao-ve-du-lieu-khach-hang': { pillar: 'data', stage: 'guide', kind: 'guide' },
   'tai-sao-nen-dung-cdp-trong-marketing-online': { pillar: 'data', stage: 'decide', kind: 'opinion' },
+  'dua-chatbot-ai-len-website-chi-phi-rui-ro-do-luong': { pillar: 'ai', stage: 'decide', kind: 'guide' },
+  'checklist-12-cau-hoi-truoc-khi-chon-phan-mem-crm': { pillar: 'data', stage: 'decide', kind: 'guide' },
+  'phan-tich-cuoc-goi-bang-ai-cho-doi-kinh-doanh': { pillar: 'ai', stage: 'learn', kind: 'guide' },
+  'crm-la-gi-khi-nao-doanh-nghiep-nho-nen-dung-crm': { pillar: 'data', stage: 'learn', kind: 'guide' },
+  'hop-nhat-du-lieu-khach-hang-form-zalo-facebook-cuoc-goi': { pillar: 'data', stage: 'guide', kind: 'guide' },
+  'chi-so-dashboard-dieu-hanh-kinh-doanh-marketing-cskh': { pillar: 'data', stage: 'guide', kind: 'guide' },
+  '6-quy-trinh-ban-hang-cham-soc-khach-nen-tu-dong-hoa-truoc': { pillar: 'ai', stage: 'guide', kind: 'guide' },
+  'toc-do-website-core-web-vitals-anh-huong-doanh-thu': { pillar: 'build', stage: 'learn', kind: 'guide' },
 }
 
 /** Nhãn (tag) nhập trong admin quy về nhóm chủ đề: dùng làm gợi ý cho bài chưa có dòng trong POST_META. */
@@ -166,12 +174,12 @@ export type BacklogItem = {
 
 export const BACKLOG: BacklogItem[] = [
   {
-    id: 'crm-la-gi', slug: 'crm-la-gi-khi-nao-doanh-nghiep-nen-dung', pillar: 'data', service: 'crm-cdp', stage: 'learn', kind: 'guide',
+    id: 'crm-la-gi', slug: 'crm-la-gi-khi-nao-doanh-nghiep-nho-nen-dung-crm', pillar: 'data', service: 'crm-cdp', stage: 'learn', kind: 'guide',
     title: 'CRM là gì? Khi nào doanh nghiệp vừa và nhỏ nên bắt đầu dùng CRM',
     why: 'Câu hỏi gốc của người mới tìm hiểu CRM, dẫn thẳng về trang dịch vụ CRM và CDP.',
   },
   {
-    id: 'chon-phan-mem-crm', slug: 'checklist-chon-phan-mem-crm', pillar: 'data', service: 'crm-cdp', stage: 'decide', kind: 'guide',
+    id: 'chon-phan-mem-crm', slug: 'checklist-12-cau-hoi-truoc-khi-chon-phan-mem-crm', pillar: 'data', service: 'crm-cdp', stage: 'decide', kind: 'guide',
     title: 'Checklist 12 câu hỏi cần hỏi trước khi chọn phần mềm CRM',
     why: 'Người đọc đã gần quyết định mua: bài giúp họ chọn đúng và đưa Click Star vào danh sách cân nhắc.',
   },
@@ -181,7 +189,7 @@ export const BACKLOG: BacklogItem[] = [
     why: 'Đúng thế mạnh của CDP, chưa có bài hướng dẫn thực hành nào.',
   },
   {
-    id: 'cuoc-goi-ai-la-gi', slug: 'phan-tich-cuoc-goi-bang-ai-la-gi', pillar: 'ai', service: 'speech-insight-ai', stage: 'learn', kind: 'guide',
+    id: 'cuoc-goi-ai-la-gi', slug: 'phan-tich-cuoc-goi-bang-ai-cho-doi-kinh-doanh', pillar: 'ai', service: 'speech-insight-ai', stage: 'learn', kind: 'guide',
     title: 'Phân tích cuộc gọi bằng AI là gì và đội kinh doanh dùng để làm gì',
     why: 'Dịch vụ này chưa có bài blog nào dẫn về trang của nó.',
   },
@@ -206,7 +214,7 @@ export const BACKLOG: BacklogItem[] = [
     why: 'Nối hai mảng mạnh của Click Star (website và SEO), có thể dùng chính các việc đã làm trên site này làm ví dụ.',
   },
   {
-    id: 'toc-do-website', slug: 'toc-do-website-anh-huong-doanh-thu-core-web-vitals', pillar: 'build', service: 'website', stage: 'learn', kind: 'guide',
+    id: 'toc-do-website', slug: 'toc-do-website-core-web-vitals-anh-huong-doanh-thu', pillar: 'build', service: 'website', stage: 'learn', kind: 'guide',
     title: 'Tốc độ website ảnh hưởng thế nào đến doanh thu: cách đo và cải thiện Core Web Vitals',
     why: 'Có số liệu thật từ chính website Click Star làm bằng chứng (chữ hiện lần đầu giảm từ 3,0 xuống 0,8 giây).',
   },
@@ -226,7 +234,7 @@ export const BACKLOG: BacklogItem[] = [
     why: 'Nhu cầu cụ thể của quản lý, dẫn đến dịch vụ dashboard dữ liệu.',
   },
   {
-    id: 'kpi-dieu-hanh', slug: 'chi-so-nen-dua-len-dashboard-dieu-hanh', pillar: 'data', service: 'dashboard', stage: 'guide', kind: 'guide',
+    id: 'kpi-dieu-hanh', slug: 'chi-so-dashboard-dieu-hanh-kinh-doanh-marketing-cskh', pillar: 'data', service: 'dashboard', stage: 'guide', kind: 'guide',
     title: 'Nên đưa chỉ số nào lên dashboard điều hành: ví dụ cho kinh doanh, marketing, chăm sóc khách hàng',
     why: 'Bổ sung cho bài Xây dựng dashboard: đi từ chọn chỉ số thay vì chọn công cụ.',
   },
@@ -236,7 +244,7 @@ export const BACKLOG: BacklogItem[] = [
     why: 'Danh sách dễ đọc, dễ được trích dẫn, dẫn về dịch vụ AI Automation.',
   },
   {
-    id: 'chatbot-website', slug: 'chatbot-ai-cho-website-chi-phi-rui-ro-cach-do', pillar: 'ai', service: 'ai-integration', stage: 'decide', kind: 'guide',
+    id: 'chatbot-website', slug: 'dua-chatbot-ai-len-website-chi-phi-rui-ro-do-luong', pillar: 'ai', service: 'ai-integration', stage: 'decide', kind: 'guide',
     title: 'Đưa chatbot AI lên website: chi phí, rủi ro và cách đo kết quả',
     why: 'Click Star đã tự chạy chatbot trên chính website nên có kinh nghiệm thật để chia sẻ.',
   },
