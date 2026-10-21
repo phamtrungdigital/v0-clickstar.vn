@@ -21,7 +21,7 @@ const VOID = new Set<string>(['meta', 'link'])
 const OPEN_TAG = /<([a-zA-Z][a-zA-Z0-9-]*)((?:[^>"']|"[^"]*"|'[^']*')*)>/y
 const ATTR = /([^\s"'<>\/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g
 
-function parseAttrs(src: string): Record<string, string | true> {
+export function parseAttrs(src: string): Record<string, string | true> {
   const out: Record<string, string | true> = {}
   ATTR.lastIndex = 0
   let m: RegExpExecArray | null
