@@ -146,7 +146,7 @@ Khi viết bài, để căn đều đẹp:
 4. Tạo ảnh bìa và 3 infographic VI/EN; xem từng ảnh; sửa đến khi sạch lỗi bố cục.
 5. Copy ảnh vào `public/images/blog/<slug>/`, commit, đẩy `main` (chỉ thêm ảnh, fast-forward). Đợi Vercel production Ready và ảnh trả 200. Nếu build lỗi do Turbopack font tạm thời ("next/font/google queries have exactly one entry"), tạo lại deployment từ bản lỗi với `forceNew=1`.
 6. INSERT bài vào `public.posts` bằng `execute_sql` (project `ffcqkrlzgofptspukrmo`), nội dung đặt trong dấu `$c$...$c$`; trả về độ dài và md5 của `content->>'vi'` và `content->>'en'`, so với md5 của tệp (bỏ ký tự xuống dòng ở cuối).
-7. Xóa cache: `invalidate_by_tags` với `projectIdOrName=prj_Y6WQLTRlGJozqb93HtFHpLshpjl4`, `teamId=team_vgn6bhswntTAUYdVbBVdCfQR`, tags `posts`, `pages`, `page:home`, `target=production`.
+7. Xóa cache (BẮT BUỘC): `invalidate_by_tags` với `projectIdOrName=prj_Y6WQLTRlGJozqb93HtFHpLshpjl4`, `teamId=team_vgn6bhswntTAUYdVbBVdCfQR`, `requestBody {tags: ["posts", "pages", "page:home"], target: "production"}`. Từ 21/10/2026 trang `/blog`, `/blog/<slug>` (và `/en`) là trang tĩnh (ISR): không xóa cache thì danh sách blog chỉ có bài mới sau tối đa 5 phút, bài sửa nội dung chỉ đổi sau tối đa 1 giờ. Sửa dự án bằng SQL cũng xóa tag `case_studies` (hoặc `pages`).
 8. Kiểm production: trang VI và `/en` trả 200, tiêu đề đúng, canonical tự trỏ, không noindex, mọi ảnh tham chiếu trả 200, bài xuất hiện ở `/blog`.
 9. Báo anh: link VI và EN, 2 đến 4 bước test, những điểm cần biết (nguồn thứ cấp, số chưa kiểm chứng được, điều chưa có dữ liệu Việt Nam). Cập nhật ghi chú bộ nhớ.
 
