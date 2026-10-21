@@ -12,7 +12,7 @@ import { Segmented } from '@/components/admin/segmented'
 export type PageRef = { path: string; title: string }
 export type TrafficReport = {
   periodLabel: string
-  kpis: { humans: number; sessions: number; pageviews: number; bouncePct: number; pagesPerSession: number; filteredVisitors: number }
+  kpis: { humans: number; engaged: number; sessions: number; pageviews: number; bouncePct: number; pagesPerSession: number; filteredVisitors: number; leadsLinked: number }
   sources: { label: string; sessions: number; leads: number }[]
   landings: (PageRef & { sessions: number; bouncePct: number })[]
   articles: (PageRef & { views: number; avgReadSec: number; readThroughPct: number; leads: number })[]
@@ -33,7 +33,7 @@ const n = (x: number) => x.toLocaleString('vi-VN')
 
 export function TrafficJourney({ data }: { data: TrafficReport }) {
   const [tab, setTab] = useState<Tab>('traffic')
-  const [article, setArticle] = useState(data.articles[0]?.path ?? '')
+  const [article, setArticle] = useState(data.articles[0]?.path ?? data.transitions[0]?.to.path ?? '')
   const k = data.kpis
 
   return (
@@ -58,13 +58,13 @@ export function TrafficJourney({ data }: { data: TrafficReport }) {
       {tab === 'traffic' && (
         <>
           <section className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-            <StatCard label="Người truy cập thật" value={n(k.humans)} note={`${n(k.sessions)} phiên`} />
+            <StatCard label="Người truy cập thật" value={n(k.humans)} note={`${n(k.engaged)} khách có tương tác · ${n(k.sessions)} phiên`} />
             <StatCard label="Lượt xem trang" value={n(k.pageviews)} note={`${k.pagesPerSession.toLocaleString('vi-VN')} trang mỗi phiên`} />
             <StatCard label="Rời sau một trang" value={`${k.bouncePct}%`} note="Vào một trang rồi thoát" tone={k.bouncePct > 70 ? 'warn' : 'neutral'} />
             <StatCard
-              label="Để lại thông tin"
-              value={n(data.sources.reduce((s, x) => s + x.leads, 0))}
-              note={`${((data.sources.reduce((s, x) => s + x.leads, 0) / Math.max(1, k.sessions)) * 100).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}% số phiên`}
+              label="Lead nối được hành trình"
+              value={n(k.leadsLinked)}
+              note={k.leadsLinked ? `${((k.leadsLinked / Math.max(1, k.sessions)) * 100).toLocaleString('vi-VN', { maximumFractionDigits: 1 })}% số phiên` : 'Tính từ lead gửi sau 21/10/2026'}
             />
           </section>
 
@@ -81,7 +81,7 @@ export function TrafficJourney({ data }: { data: TrafficReport }) {
             </SectionCard>
           </div>
 
-          <SectionCard title="Bài viết được đọc" description="Thời gian đọc là thời gian khách thật sự ở trên trang; đọc hết là cuộn tới 90% bài.">
+          <SectionCard title="Bài viết được đọc" description="Thời gian đọc là lúc khách thật sự ở trên trang (không tính khi chuyển sang tab khác); đọc hết là cuộn qua 75% trang.">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[680px] text-sm">
                 <thead>
@@ -94,6 +94,11 @@ export function TrafficJourney({ data }: { data: TrafficReport }) {
                   </tr>
                 </thead>
                 <tbody>
+                  {data.articles.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-8 text-center text-[13.5px] text-[var(--ad-fg-3)]">Chưa có lượt đọc bài trong kỳ.</td>
+                    </tr>
+                  ) : null}
                   {data.articles.map((a) => (
                     <tr key={a.path} className="border-t border-[var(--ad-line)] first:border-t-0">
                       <td className="py-2.5 pr-3">
@@ -118,8 +123,14 @@ export function TrafficJourney({ data }: { data: TrafficReport }) {
       {tab === 'journeys' && (
         <div className="space-y-4">
           <p className="text-[13.5px] text-[var(--ad-fg-3)]">
-            Mỗi thẻ là đường đi của một khách trước khi để lại thông tin, theo đúng thứ tự thời gian. Chỉ nối được khi khách gửi form liên hệ.
+            Mỗi thẻ là đường đi của một khách trước khi để lại thông tin, theo đúng thứ tự thời gian. Chỉ nối được với lead gửi form liên hệ từ 21/10/2026,
+            trên clickstar.vn chính thức.
           </p>
+          {data.journeys.length === 0 ? (
+            <Card className="px-6 py-10 text-center text-[14px] text-[var(--ad-fg-3)]">
+              Chưa có lead nào trong kỳ nối được hành trình. Khi khách gửi form liên hệ, hành trình của họ sẽ hiện ở đây.
+            </Card>
+          ) : null}
           {data.journeys.map((j) => (
             <Card key={j.id} className="p-5">
               <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -163,6 +174,14 @@ function Flow({ data, article, setArticle }: { data: TrafficReport; article: str
   const before = data.transitions.filter((t) => t.to.path === article).sort((a, b) => b.count - a.count).slice(0, 5)
   const after = data.transitions.filter((t) => t.from.path === article).sort((a, b) => b.count - a.count).slice(0, 5)
   const cur = data.articles.find((a) => a.path === article)
+  // Danh sách chọn: bài viết trước, sau đó các trang có trong đường đi (trang dịch vụ, bảng giá...)
+  const choices = new Map<string, string>()
+  for (const a of data.articles) choices.set(a.path, a.title)
+  for (const t of data.transitions) {
+    if (!choices.has(t.to.path)) choices.set(t.to.path, t.to.title)
+    if (!choices.has(t.from.path)) choices.set(t.from.path, t.from.title)
+  }
+  const curTitle = cur?.title ?? choices.get(article) ?? article
   const maxB = Math.max(1, ...before.map((t) => t.count))
   const maxA = Math.max(1, ...after.map((t) => t.count))
   const top = [...data.transitions].sort((a, b) => b.count - a.count).slice(0, 8)
@@ -171,6 +190,7 @@ function Flow({ data, article, setArticle }: { data: TrafficReport; article: str
   return (
     <div className="space-y-4">
       <SectionCard title="Đường đi phổ biến nhất" description="Khách mở trang bên trái rồi bấm sang trang bên phải.">
+        {top.length === 0 ? <p className="py-6 text-center text-[13.5px] text-[var(--ad-fg-3)]">Chưa có lượt chuyển trang trong kỳ.</p> : null}
         <ul className="space-y-2.5">
           {top.map((t, i) => (
             <li key={i} className="grid grid-cols-[minmax(0,1fr)_20px_minmax(0,1fr)_minmax(60px,160px)] items-center gap-2.5">
@@ -198,9 +218,9 @@ function Flow({ data, article, setArticle }: { data: TrafficReport; article: str
             className="h-8 max-w-[280px] rounded-[10px] border border-[var(--ad-line-2)] bg-[var(--ad-surface)] px-2.5 text-[13px]"
             aria-label="Chọn bài viết"
           >
-            {data.articles.map((a) => (
-              <option key={a.path} value={a.path}>
-                {a.title}
+            {[...choices].map(([path, title]) => (
+              <option key={path} value={path}>
+                {title}
               </option>
             ))}
           </select>
@@ -210,7 +230,7 @@ function Flow({ data, article, setArticle }: { data: TrafficReport; article: str
           <FlowList title="Đến từ" rows={before.map((t) => ({ p: t.from, c: t.count }))} max={maxB} align="right" empty="Chủ yếu vào thẳng từ ngoài (Google, Zalo, Facebook)." />
           <div className="rounded-2xl border border-[var(--ad-accent)] bg-[var(--ad-accent-soft)] p-4 text-center">
             <Globe className="mx-auto mb-1.5 h-5 w-5 text-[var(--ad-accent)]" />
-            <div className="text-[14px] font-semibold text-[var(--ad-fg)]">{cur?.title}</div>
+            <div className="text-[14px] font-semibold text-[var(--ad-fg)]">{curTitle}</div>
             {cur ? (
               <div className="mt-1 text-[12.5px] text-[var(--ad-fg-2)]">
                 {n(cur.views)} lượt xem · đọc {sec(cur.avgReadSec)} · {cur.readThroughPct}% đọc hết
