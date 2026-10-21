@@ -119,6 +119,11 @@ export const POST_META: Record<string, Meta> = {
   'cach-su-dung-claude-cowork-hieu-qua': { pillar: 'ai', stage: 'guide', kind: 'guide' },
   'cach-lam-seo-thoi-dai-ai': { pillar: 'marketing', stage: 'guide', kind: 'guide' },
   'thay-doi-hanh-vi-nguoi-dung-thoi-ai': { pillar: 'marketing', stage: 'learn', kind: 'opinion' },
+  'claude-code-tren-dien-thoai-tinh-nang-moi': { pillar: 'ai', stage: 'guide', kind: 'guide' },
+  'nguyen-ly-googlebot-doc-du-lieu-va-index': { pillar: 'marketing', stage: 'learn', kind: 'guide' },
+  'cap-nhat-meta-2026-cho-nha-quang-cao': { pillar: 'marketing', stage: 'learn', kind: 'news' },
+  'phan-tich-du-lieu-bang-ai-bao-ve-du-lieu-khach-hang': { pillar: 'data', stage: 'guide', kind: 'guide' },
+  'tai-sao-nen-dung-cdp-trong-marketing-online': { pillar: 'data', stage: 'decide', kind: 'opinion' },
 }
 
 /** Nhãn (tag) nhập trong admin quy về nhóm chủ đề: dùng làm gợi ý cho bài chưa có dòng trong POST_META. */
