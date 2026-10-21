@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import robots from '@/app/robots'
-import sitemap from '@/app/sitemap'
+import { sitemapUrlCount } from '@/lib/seo/sitemap-xml'
 import { DEFAULT_HOTLINE, SITE_URL } from './site'
 import { fitTitle } from './metadata'
 import { duplicateGroups, measureTitle, type SeoItem, type SiteCheck } from './admin-seo'
@@ -162,7 +162,7 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
   const supabase = await createClient()
   // Bắt đầu tra DNS ngay, chạy song song với các truy vấn DB (địa chỉ site gần như luôn là SITE_URL).
   const dnsEarly = lookupDnsVerification(hostOf(SITE_URL))
-  const [settingsRes, chatbotRes, sitemapList, snippetsRes] = await Promise.all([
+  const [settingsRes, chatbotRes, sitemapCount, snippetsRes] = await Promise.all([
     supabase
       .from('site_settings')
       .select(
@@ -171,7 +171,7 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
       .eq('id', 1)
       .maybeSingle(),
     supabase.from('chatbot_settings').select('hotline').limit(1).maybeSingle(),
-    sitemap().catch(() => null),
+    sitemapUrlCount().catch(() => null),
     supabase.from('site_code_snippets').select('code').eq('enabled', true),
   ])
   const st = (settingsRes.data ?? {}) as Record<string, string | null>
@@ -200,8 +200,8 @@ export async function loadSiteChecks(items: SeoItem[]): Promise<{ checks: SiteCh
 
   // sitemap
   const published = items.filter((i) => i.published).length
-  if (sitemapList) {
-    const n = sitemapList.length
+  if (sitemapCount !== null) {
+    const n = sitemapCount
     checks.push({
       id: 'sitemap',
       level: n >= published ? 'ok' : 'warn',
