@@ -20,6 +20,10 @@ export type Post = {
   seo_title: I18n | null
   seo_description: I18n | null
   og_image: string | null
+  /** Phân loại nội dung chọn trong trình sửa bài (xem lib/cms/content-plan.ts). null = chưa chọn. */
+  topic_pillar: string | null
+  topic_stage: string | null
+  topic_kind: string | null
   created_at: string
   updated_at: string
 }

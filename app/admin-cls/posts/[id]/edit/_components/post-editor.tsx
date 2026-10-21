@@ -21,6 +21,7 @@ import { AiCoverImage } from './ai-cover-image'
 import { BodyImageReplacer } from './body-image-replacer'
 import { MarkdownEditor } from './markdown-editor'
 import { AutoTranslate } from './auto-translate'
+import { KIND_LIST, PILLARS, STAGES } from '@/lib/cms/content-plan'
 
 const EMPTY_I18N = { vi: '', en: '' }
 
@@ -77,6 +78,9 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
     seo_title: post?.seo_title ?? null,
     seo_description: post?.seo_description ?? null,
     og_image: post?.og_image ?? null,
+    topic_pillar: post?.topic_pillar ?? null,
+    topic_stage: post?.topic_stage ?? null,
+    topic_kind: post?.topic_kind ?? null,
   })
 
   const [isPending, startTransition] = useTransition()
@@ -350,6 +354,31 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
           </SectionCard>
 
           <SectionCard
+            title="Phân loại nội dung"
+            description="Để bài vào đúng biểu đồ ở mục Quản trị bài viết. Chọn đủ 3 ô."
+            bodyClassName="space-y-4 px-5 pb-5 pt-4"
+          >
+            <TopicSelect
+              label="Nhóm chủ đề"
+              value={draft.topic_pillar}
+              options={PILLARS}
+              onChange={(v) => update('topic_pillar', v)}
+            />
+            <TopicSelect
+              label="Giai đoạn người đọc"
+              value={draft.topic_stage}
+              options={STAGES}
+              onChange={(v) => update('topic_stage', v)}
+            />
+            <TopicSelect
+              label="Loại bài"
+              value={draft.topic_kind}
+              options={KIND_LIST}
+              onChange={(v) => update('topic_kind', v)}
+            />
+          </SectionCard>
+
+          <SectionCard
             title="Ảnh bìa"
             actions={
               AI_MODULE_ENABLED ? (
@@ -374,6 +403,34 @@ function PostEditorInner({ post, mode, siteUrl }: { post: Post | null; mode: 'ne
       {status === 'error' && (
         <div className="mt-4 rounded-xl bg-[rgba(255,59,48,.10)] px-4 py-2.5 text-[13.5px] text-[#d70015]">{errorMsg}</div>
       )}
+    </div>
+  )
+}
+
+function TopicSelect({
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  label: string
+  value: string | null
+  options: { id: string; label: string; hint?: string }[]
+  onChange: (v: string | null) => void
+}) {
+  const current = options.find((o) => o.id === value)
+  return (
+    <div>
+      <label className="mb-1.5 block text-[13px] font-medium text-[var(--ad-fg-2)]">{label}</label>
+      <select value={value ?? ''} onChange={(e) => onChange(e.target.value || null)} className={fieldInputClass}>
+        <option value="">Chưa chọn</option>
+        {options.map((o) => (
+          <option key={o.id} value={o.id}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      {current?.hint && <p className="mt-1 text-[12px] text-[var(--ad-fg-3)]">{current.hint}</p>}
     </div>
   )
 }
