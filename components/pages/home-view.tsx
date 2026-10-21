@@ -106,13 +106,16 @@ export async function HomeView({ lang = 'vi' }: { lang?: Lang }) {
           AI vẫn có nút nổi (FloatingAiServiceRouter); muốn bật lại banner/ô AI chỉ cần thêm lại 2 dòng này. */}
       <MainNav />
 
-      {orderNewsAfterLogos(page.sections).map((section) => {
-        const node = renderSection(section, extra, latestPosts)
-        if (!node) return <div key={section.id} />
-        // Hiện dần khi cuộn tới. Không bọc: hero (có hiệu ứng vào riêng), thanh logo/công nghệ và khối dịch vụ, FAQ (đã tự có hiệu ứng bên trong).
-        const own = ['hero', 'logo_marquee', 'services', 'faq'].includes(section.type)
-        return <div key={section.id}>{own ? node : <Reveal>{node}</Reveal>}</div>
-      })}
+      {/* Vùng nội dung chính (mốc <main> cho trình đọc màn hình; Lighthouse trừ điểm hỗ trợ tiếp cận nếu thiếu) */}
+      <main>
+        {orderNewsAfterLogos(page.sections).map((section) => {
+          const node = renderSection(section, extra, latestPosts)
+          if (!node) return <div key={section.id} />
+          // Hiện dần khi cuộn tới. Không bọc: hero (có hiệu ứng vào riêng), thanh logo/công nghệ và khối dịch vụ, FAQ (đã tự có hiệu ứng bên trong).
+          const own = ['hero', 'logo_marquee', 'services', 'faq'].includes(section.type)
+          return <div key={section.id}>{own ? node : <Reveal>{node}</Reveal>}</div>
+        })}
+      </main>
 
       <Footer />
     </div>

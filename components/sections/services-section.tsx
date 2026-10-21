@@ -160,10 +160,11 @@ export function ServicesSection({ content, icons }: { content: ServicesContent; 
                     loading="lazy"
                     className="hidden aspect-[1280/700] w-full h-auto sm:block [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                   />
+                  {/* Trên điện thoại sơ đồ này nằm trong màn hình đầu và là phần tử lớn nhất (LCP theo PageSpeed): tải ngay, ưu tiên cao */}
                   <InlineSvgImage
                     src={PIPELINE_DARK[lang].mobile}
                     alt={pipelineAlt}
-                    loading="lazy"
+                    fetchPriority="high"
                     className="aspect-[480/1490] w-full h-auto sm:hidden [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                   />
                 </>
@@ -173,7 +174,6 @@ export function ServicesSection({ content, icons }: { content: ServicesContent; 
                     <InlineSvgImage
                       src={content.pipeline_image_src}
                       alt={pipelineAlt}
-                      loading="lazy"
                       className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                     />
                   </div>
