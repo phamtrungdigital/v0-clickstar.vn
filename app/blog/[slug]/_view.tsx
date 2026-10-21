@@ -15,6 +15,7 @@ import { SITE_URL } from '@/lib/seo/site'
 import { tagLabel } from '@/lib/cms/tags'
 import { MarkdownLink } from '@/components/markdown-link'
 import { TableOfContents } from './_components/table-of-contents'
+import { SourceBox, splitSourceBox } from './_components/source-box'
 import { BackToTop, BodyReveal, CopyLinkButton, CoverParallax, PostStyles, ReadingProgress } from './_components/post-effects'
 import { parseHeadings, slugifyId } from '@/lib/blog/headings'
 import { buildMetadata } from '@/lib/seo/metadata'
@@ -250,6 +251,11 @@ export async function BlogPostView({ slug, lang }: { slug: string; lang: Lang })
                     <table {...props} />
                   </div>
                 ),
+                // Khối trích dẫn bắt đầu bằng "Nguồn gốc và lưu ý" được vẽ thành khung checklist nguồn (xem docs/blog-writing-rules.md)
+                blockquote: ({ node: _q, children, ...props }) => {
+                  const box = splitSourceBox(children)
+                  return box ? <SourceBox {...box} /> : <blockquote {...props}>{children}</blockquote>
+                },
                 // Liên kết nội bộ trong bài tự trỏ sang bản /en khi đang xem bản tiếng Anh
                 a: ({ node: _n, ...props }) => <MarkdownLink {...props} />,
                 // Ảnh minh họa trong bài nằm dưới màn hình đầu: tải trễ để không tranh băng thông với ảnh bìa (LCP) và CSS/JS.
