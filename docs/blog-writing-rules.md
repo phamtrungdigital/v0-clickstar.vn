@@ -1,7 +1,7 @@
 # Quy định viết bài blog Click Star (SEO, chuyên sâu)
 
 > Áp dụng cho MỌI bài viết đăng ở clickstar.vn/blog (VI và EN). Claude đọc file này trước khi viết bất kỳ bài nào.
-> Cập nhật lần cuối: 20/10/2026, theo yêu cầu của anh Trung. Nếu có xung đột, rule trong file này thắng ghi chú cá nhân của Claude.
+> Cập nhật lần cuối: 21/10/2026, theo yêu cầu của anh Trung. Nếu có xung đột, rule trong file này thắng ghi chú cá nhân của Claude.
 > Quyền đăng: anh đã cho phép đăng luôn bài viết (INSERT `public.posts` ở trạng thái `published`, xóa cache, kiểm production) mà không cần duyệt từng bài. Mọi thay đổi code, SQL schema, cấu hình vẫn theo QUY ĐỊNH 1 của file CLAUDE.md global (preview trước, anh OK rồi mới lên production).
 
 ## Bảy tiêu chí bắt buộc
@@ -112,7 +112,7 @@ Khi viết bài, để căn đều đẹp:
 
 ## 6. Hình ảnh chất lượng, mô tả được giá trị nội dung
 
-**Bộ ảnh tiêu chuẩn cho mỗi bài:** 1 ảnh bìa (1600x900) và 3 infographic (rộng 1400, xuất ở tỷ lệ 1,5), mỗi infographic có bản VI và bản EN, tổng 7 tệp mỗi ngôn ngữ cộng ảnh bìa. Đặt ở `public/images/blog/<slug>/`, tên tệp `cover.png` và `<tên>-vi.png`, `<tên>-en.png`.
+**Bộ ảnh tiêu chuẩn cho mỗi bài (anh yêu cầu 21/10/2026): ít nhất 5 ảnh**, gồm 1 ảnh bìa (1600x900) và ít nhất 4 infographic (rộng 1400, xuất ở tỷ lệ 1,5), mỗi infographic có bản VI và bản EN. Với 4 infographic, mỗi ngôn ngữ có 5 ảnh (cả ảnh bìa) và mỗi bài có 9 tệp. Cả 4 ảnh trong thân bài phải được chèn vào bài ở đúng chỗ liên quan, không dồn về một chỗ và không lặp ý giữa các ảnh. Đặt ở `public/images/blog/<slug>/`, tên tệp `cover.png` và `<tên>-vi.png`, `<tên>-en.png`.
 
 **Nguyên tắc nội dung ảnh:**
 - Mỗi infographic trả lời đúng một câu hỏi của bài và chứa dữ liệu thật của bài: mốc thời gian, bảng so sánh có tiêu chí, biểu đồ cột từ số liệu có nguồn, lộ trình, quy trình, sơ đồ luồng. Không dùng ảnh minh họa rỗng, không ảnh stock.
@@ -143,7 +143,7 @@ Khi viết bài, để căn đều đẹp:
 1. Xác định chủ đề và ý định tìm kiếm; kiểm tra `posts` xem có bài trùng không.
 2. Nghiên cứu nguồn chính; ghi lại số liệu, ngày, phạm vi, giới hạn.
 3. Viết bản VI rồi bản EN vào hai tệp markdown trong thư mục tạm của phiên (scratchpad). Quét lỗi: emoji, "—", "chúng tôi", "we/our", sáo ngữ, số không có nguồn.
-4. Tạo ảnh bìa và 3 infographic VI/EN; xem từng ảnh; sửa đến khi sạch lỗi bố cục.
+4. Tạo ảnh bìa và ít nhất 4 infographic VI/EN (tổng ít nhất 5 ảnh mỗi bài); xem từng ảnh; sửa đến khi sạch lỗi bố cục.
 5. Copy ảnh vào `public/images/blog/<slug>/`, commit, đẩy `main` (chỉ thêm ảnh, fast-forward). Đợi Vercel production Ready và ảnh trả 200. Nếu build lỗi do Turbopack font tạm thời ("next/font/google queries have exactly one entry"), tạo lại deployment từ bản lỗi với `forceNew=1`.
 6. INSERT bài vào `public.posts` bằng `execute_sql` (project `ffcqkrlzgofptspukrmo`), nội dung đặt trong dấu `$c$...$c$`; trả về độ dài và md5 của `content->>'vi'` và `content->>'en'`, so với md5 của tệp (bỏ ký tự xuống dòng ở cuối).
 7. Xóa cache: `invalidate_by_tags` với `projectIdOrName=prj_Y6WQLTRlGJozqb93HtFHpLshpjl4`, `teamId=team_vgn6bhswntTAUYdVbBVdCfQR`, tags `posts`, `pages`, `page:home`, `target=production`.
@@ -159,5 +159,5 @@ Khi viết bài, để căn đều đẹp:
 - [ ] Không emoji, không "—", không "chúng tôi/we/our", không sáo ngữ, không tự khen, không suy giới tính từ tên.
 - [ ] Không có đoạn nào quá khoảng 350 ký tự (kể cả đoạn mở đầu); mỗi đoạn 2 đến 3 câu; có dòng trống giữa các đoạn, ở cả bản VI và EN.
 - [ ] Có bản EN đầy đủ và khớp bản VI.
-- [ ] Ảnh bìa và 3 infographic VI/EN đã xem từng ảnh; chữ khớp bài; chân ảnh có nguồn; alt có nghĩa; mỗi ảnh dưới 1 MB.
+- [ ] Mỗi bài có ít nhất 5 ảnh (1 ảnh bìa và ít nhất 4 infographic) ở cả VI và EN, mỗi infographic nói một ý khác nhau; đã xem từng ảnh; chữ khớp bài; chân ảnh có nguồn; alt có nghĩa; mỗi ảnh dưới 1 MB.
 - [ ] md5 và độ dài nội dung trong DB khớp tệp; cache đã xóa; production 200 ở VI và EN; ảnh 200.
