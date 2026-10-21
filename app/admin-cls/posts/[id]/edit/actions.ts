@@ -7,6 +7,7 @@ import type { Post, PostStatus } from '@/lib/cms/posts'
 import { cleanSeoText, ogUrlError } from '@/lib/seo/admin-seo'
 import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { blogIndexUrls, notifyIndexNow, postUrls } from '@/lib/seo/indexnow'
+import { KIND_LIST, PILLARS, STAGES } from '@/lib/cms/content-plan'
 
 export type PostUpdate = {
   slug: string
@@ -19,6 +20,10 @@ export type PostUpdate = {
   seo_title: { vi: string; en: string } | null
   seo_description: { vi: string; en: string } | null
   og_image: string | null
+  /** Phân loại nội dung (id trong PILLARS / STAGES / KIND_LIST), null = chưa chọn. */
+  topic_pillar: string | null
+  topic_stage: string | null
+  topic_kind: string | null
 }
 
 /**
@@ -51,6 +56,11 @@ function announce(input: PostSave) {
     ...postUrls(input.slug, postHasEnglish({ title: input.title, content: input.content })),
     ...blogIndexUrls(),
   ])
+}
+
+/** Chỉ nhận id có trong danh mục cố định, giá trị lạ hoặc rỗng thì lưu null. */
+function pickId(v: unknown, list: { id: string }[]): string | null {
+  return typeof v === 'string' && list.some((x) => x.id === v) ? v : null
 }
 
 export async function savePost(id: string | 'new', input: PostSave) {
@@ -93,6 +103,9 @@ export async function savePost(id: string | 'new', input: PostSave) {
     tags: input.tags,
     status: input.status,
     published_at: publishedAt,
+    topic_pillar: pickId(input.topic_pillar, PILLARS),
+    topic_stage: pickId(input.topic_stage, STAGES),
+    topic_kind: pickId(input.topic_kind, KIND_LIST),
   }
 
   const patch = input.seo_patch

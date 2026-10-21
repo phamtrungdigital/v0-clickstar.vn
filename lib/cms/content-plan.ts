@@ -276,6 +276,10 @@ export type ContentPostInput = {
   hasEn: boolean
   /** Điểm SEO 0 đến 100 của bài (chấm bằng bộ chấm ở màn SEO). null = chưa chấm được. */
   seoScore: number | null
+  /** Phân loại chọn ngay trong trình sửa bài (cột topic_* của bảng posts). Ô nào bỏ trống thì lấy từ POST_META. */
+  topicPillar?: string | null
+  topicStage?: string | null
+  topicKind?: string | null
 }
 
 export type EnState = 'ok' | 'short' | 'none'
@@ -397,9 +401,17 @@ const normTitle = (v: string) =>
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
 
+const isPillar = (v: unknown): v is PillarId => PILLARS.some((x) => x.id === v)
+const isStage = (v: unknown): v is StageId => STAGES.some((x) => x.id === v)
+const isKind = (v: unknown): v is KindId => KIND_LIST.some((x) => x.id === v)
+
+/** Ưu tiên ô chọn trong trình sửa bài, ô nào trống thì lấy dòng POST_META (bài cũ), cuối cùng mới đoán nhóm theo nhãn. */
 function classify(p: ContentPostInput): { meta: Meta | null; pillar: PillarId | null } {
-  const meta = POST_META[p.slug] ?? null
-  if (meta) return { meta, pillar: meta.pillar }
+  const base = POST_META[p.slug] ?? null
+  const pillar = isPillar(p.topicPillar) ? p.topicPillar : base?.pillar
+  const stage = isStage(p.topicStage) ? p.topicStage : base?.stage
+  const kind = isKind(p.topicKind) ? p.topicKind : base?.kind
+  if (pillar && stage && kind) return { meta: { pillar, stage, kind, offTopic: base?.offTopic }, pillar }
   for (const t of p.tags) {
     const pillar = TAG_PILLAR[t.trim().toLowerCase()]
     if (pillar) return { meta: null, pillar }
@@ -633,7 +645,7 @@ export function analyzeContent(posts: ContentPostInput[], now: number = Date.now
       id: 'unclassified',
       level: 'warn',
       title: 'Bài chưa xếp nhóm',
-      detail: 'Bài mới đăng cần một dòng trong POST_META (lib/cms/content-plan.ts) thì mới được tính vào các biểu đồ trên.',
+      detail: 'Mở bài, chọn đủ 3 ô ở mục "Phân loại nội dung" (nhóm chủ đề, giai đoạn, loại bài) rồi lưu thì bài được tính vào các biểu đồ trên.',
       items: unclassified.map((r) => ({ id: r.id, label: r.title, note: r.slug })),
     })
   const off = pubRows.filter((r) => r.offTopic)

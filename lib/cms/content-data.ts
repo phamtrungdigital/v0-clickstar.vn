@@ -25,7 +25,7 @@ export async function loadContentAnalysis(): Promise<ContentAnalysis> {
   const [{ data }, scores] = await Promise.all([
     supabase
       .from('posts')
-      .select('id, slug, title, tags, status, published_at, cover_image, content')
+      .select('id, slug, title, tags, status, published_at, cover_image, content, topic_pillar, topic_stage, topic_kind')
       .order('published_at', { ascending: false, nullsFirst: true }),
     loadSeoScores(),
   ])
@@ -46,6 +46,9 @@ export async function loadContentAnalysis(): Promise<ContentAnalysis> {
       enChars: en.length,
       hasEn: postHasEnglish({ title: p.title, content: p.content }),
       seoScore: scores.get(String(p.id)) ?? null,
+      topicPillar: p.topic_pillar ?? null,
+      topicStage: p.topic_stage ?? null,
+      topicKind: p.topic_kind ?? null,
     }
   })
   return analyzeContent(posts)
