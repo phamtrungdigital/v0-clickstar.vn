@@ -1,6 +1,7 @@
 'use server'
 
 import { after } from 'next/server'
+import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { createServiceClient } from '@/lib/supabase/service'
 import { z } from 'zod'
@@ -105,6 +106,9 @@ export async function submitContactForm(
   // SELECT trên bảng leads (policy đọc chỉ cho admin). Tránh lỗi 42501
   // "new row violates row-level security policy" khi .insert().select() vì phần
   // RETURNING bị áp policy SELECT.
+  // Mã khách ẩn danh của CDP Click Star (cookie cdp_aid do cdp.js đặt trên clickstar.vn): nối lead với
+  // hành trình truy cập trước khi gửi form (màn Báo cáo, Hành trình lead). Không có cookie thì để trống.
+  const cdpAid = (await cookies()).get('cdp_aid')?.value
   const { data: leadId, error } = await supabase.rpc('submit_lead', {
     p_name: parsed.data.name,
     p_phone: parsed.data.phone,
@@ -112,6 +116,7 @@ export async function submitContactForm(
     p_company: parsed.data.company || null,
     p_message: messageWithMeta || null,
     p_source: 'contact_form',
+    p_cdp_aid: cdpAid && /^[0-9a-f-]{36}$/i.test(cdpAid) ? cdpAid : null,
   })
 
   if (error || !leadId) {

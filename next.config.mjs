@@ -12,6 +12,13 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  turbopack: {
+    resolveAlias: {
+      // Bỏ polyfill trình duyệt cũ mà Next tự chèn vào JS trang (xem lib/no-legacy-polyfills.js).
+      '../build/polyfills/polyfill-module': './lib/no-legacy-polyfills.js',
+      'next/dist/build/polyfills/polyfill-module': './lib/no-legacy-polyfills.js',
+    },
+  },
   experimental: {
     // Tree-shake import từ barrel (icon/date) → giảm JS client (landing + admin).
     optimizePackageImports: ['lucide-react', 'date-fns'],

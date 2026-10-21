@@ -106,10 +106,11 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
             </span>
           </div>
 
-          {/* Heading — split into parts with gradient highlight */}
+          {/* Heading — split into parts with gradient highlight. Tiêu đề và đoạn mô tả chỉ trượt nhẹ, KHÔNG mờ dần từ trong suốt:
+              đây là phần tử lớn nhất màn hình đầu (LCP), mờ dần làm Chrome tính LCP muộn thêm ~1 giây. */}
           <h1
             data-cms-field="heading"
-            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.25] mb-6 tracking-tight animate-in fade-in slide-in-from-bottom-4 duration-700"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.25] mb-6 tracking-tight animate-in slide-in-from-bottom-4 duration-700"
             style={{ animationDelay: '100ms', animationFillMode: 'backwards' }}
           >
             <HighlightedHeading text={heading} language={language} />
@@ -118,7 +119,7 @@ export function AboutHero({ fallback }: { fallback?: PageHeroContent }) {
           {/* Description */}
           <p
             data-cms-field="description"
-            className="text-base sm:text-lg text-[#d2d2d7] leading-relaxed max-w-3xl mx-auto mb-10 animate-in fade-in duration-700"
+            className="text-base sm:text-lg text-[#d2d2d7] leading-relaxed max-w-3xl mx-auto mb-10 animate-in slide-in-from-bottom-2 duration-700"
             style={{ animationDelay: '300ms', animationFillMode: 'backwards' }}
           >
             {description}

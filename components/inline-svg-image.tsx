@@ -16,11 +16,14 @@ export function InlineSvgImage({
   alt,
   className,
   cmsField,
+  loading,
 }: {
   src: string
   alt: string
   className?: string
   cmsField?: string
+  /** 'lazy' cho ảnh dưới màn hình đầu: không tải trước, chỉ tải khi cuộn gần tới. */
+  loading?: 'lazy' | 'eager'
 }) {
   const isLocalSvg = !!src && src.startsWith('/') && src.toLowerCase().endsWith('.svg')
   const [svg, setSvg] = useState<string | null>(null)
@@ -55,5 +58,5 @@ export function InlineSvgImage({
   }
 
   // eslint-disable-next-line @next/next/no-img-element
-  return <img data-cms-field={cmsField} src={src} alt={alt} className={className} />
+  return <img data-cms-field={cmsField} src={src} alt={alt} className={className} loading={loading} />
 }

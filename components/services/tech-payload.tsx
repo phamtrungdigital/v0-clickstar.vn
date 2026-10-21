@@ -224,7 +224,7 @@ export function TechPayload() {
       {/* Nội dung */}
       {tab === 'json' && (
         <div className="bg-slate-900">
-          <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-[#d2d2d7]">
+          <pre className="overflow-x-auto p-4 sm:p-5 text-xs leading-relaxed font-mono text-[#d2d2d7]">
             <code>{jsonPayload}</code>
           </pre>
         </div>
@@ -232,7 +232,7 @@ export function TechPayload() {
 
       {tab === 'api' && (
         <div className="bg-slate-900">
-          <pre className="overflow-x-auto p-4 sm:p-5 text-[11px] sm:text-xs leading-relaxed font-mono text-[#d2d2d7]">
+          <pre className="overflow-x-auto p-4 sm:p-5 text-xs leading-relaxed font-mono text-[#d2d2d7]">
             <code>{webhookSnippet}</code>
           </pre>
           <div className="px-4 sm:px-5 pb-5 -mt-1">

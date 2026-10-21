@@ -532,7 +532,7 @@ export default function DigitalMarketingPage() {
                       <div className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-[#1e6dda] [&>svg]:h-6 [&>svg]:w-6 [&>svg]:text-white">
                         {feature.icon}
                       </div>
-                      <h4 className="mt-4 text-[17px] font-semibold leading-snug text-[#1d1d1f]">{feature.title}</h4>
+                      <h3 className="mt-4 text-[17px] font-semibold leading-snug text-[#1d1d1f]">{feature.title}</h3>
                       <p className="mt-1.5 text-[15px] leading-relaxed text-[#515154]">{feature.description}</p>
                     </div>
                   ))}
@@ -555,7 +555,7 @@ export default function DigitalMarketingPage() {
                 <div className="bg-[#f5f5f7] p-5 sm:p-6">
                   <div className="mb-5 flex items-center justify-between gap-3">
                     <div>
-                      <h4 className="text-base font-semibold text-[#1d1d1f]">{t('Dashboard Overview', 'Dashboard Overview')}</h4>
+                      <h3 className="text-base font-semibold text-[#1d1d1f]">{t('Dashboard Overview', 'Dashboard Overview')}</h3>
                       <p className="text-sm text-[#515154]">{t('Dữ liệu minh họa', 'Sample data')}</p>
                     </div>
                     <span className="rounded-full bg-[#1e6dda] px-3 py-1 text-sm text-white">{t('Đang chạy', 'Running')}</span>

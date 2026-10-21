@@ -5,8 +5,8 @@ import Link from '@/components/app-link'
 import { useLanguage } from '@/contexts/language-context'
 import { InlineSvgImage } from '@/components/inline-svg-image'
 import { Reveal } from '@/components/ui/reveal'
-import { iconByName } from '@/lib/icons'
 import { ArrowRight, RefreshCw, Sparkles } from 'lucide-react'
+import type { ReactNode } from 'react'
 import type { ServicesContent } from '@/lib/cms/types'
 
 /**
@@ -56,7 +56,11 @@ function parseChain(text: string): { steps: string[]; note: string } {
   return steps.length >= 3 ? { steps, note: rest.join(', ') } : { steps: [], note: text }
 }
 
-export function ServicesSection({ content }: { content: ServicesContent }) {
+/**
+ * icons: biểu tượng của từng dịch vụ (theo thứ tự content.services), dựng sẵn ở máy chủ (home-view) từ tên admin nhập.
+ * Tra tên biểu tượng ở máy chủ để trình duyệt không phải tải cả danh sách hơn 100 biểu tượng (lib/icons) chỉ cho khối này.
+ */
+export function ServicesSection({ content, icons }: { content: ServicesContent; icons?: ReactNode[] }) {
   const { t, language } = useLanguage()
   const lang = language === 'en' ? 'en' : 'vi'
   // Ảnh cũ (nền sáng, chữ nhỏ): CMS còn trỏ vào thì tự dùng sơ đồ tối mới có bản mobile dọc và bản tiếng Anh; chọn ảnh khác thì hiện ảnh đó
@@ -153,11 +157,13 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                   <InlineSvgImage
                     src={PIPELINE_DARK[lang].desktop}
                     alt={pipelineAlt}
+                    loading="lazy"
                     className="hidden aspect-[1280/700] w-full h-auto sm:block [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                   />
                   <InlineSvgImage
                     src={PIPELINE_DARK[lang].mobile}
                     alt={pipelineAlt}
+                    loading="lazy"
                     className="aspect-[480/1490] w-full h-auto sm:hidden [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                   />
                 </>
@@ -167,6 +173,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                     <InlineSvgImage
                       src={content.pipeline_image_src}
                       alt={pipelineAlt}
+                      loading="lazy"
                       className="w-full h-auto [&>svg]:w-full [&>svg]:h-auto [&>svg]:block"
                     />
                   </div>
@@ -234,7 +241,6 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
               .map((service, index) => ({ service, index, layer: layerOf(service.href ?? '') }))
               .sort((x, y) => (x.layer < 0 ? 99 : x.layer) - (y.layer < 0 ? 99 : y.layer) || x.index - y.index)
               .map(({ service, index, layer }, order, all) => {
-                const Icon = iconByName(service.icon, Sparkles)
                 // Lưới 3 cột (6 phần): hàng cuối thiếu thẻ thì các thẻ cuối giãn ra cho kín hàng, không để ô trống
                 const rest = all.length % 3
                 const inLast = order >= all.length - rest
@@ -244,7 +250,7 @@ export function ServicesSection({ content }: { content: ServicesContent }) {
                   <Reveal key={index} delay={(order % 3) * 90} className={`h-full min-w-0 ${span}`}>
                     <div data-cms-field="item" data-cms-item-index={index} className="h-full min-w-0">
                       <ServiceCard
-                        icon={<Icon aria-hidden="true" />}
+                        icon={icons?.[index] ?? <Sparkles aria-hidden="true" />}
                         title={t(service.title.vi, service.title.en)}
                         description={t(service.description.vi, service.description.en)}
                         tag={t(service.tag.vi, service.tag.en)}

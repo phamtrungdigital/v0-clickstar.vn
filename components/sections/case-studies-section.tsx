@@ -51,8 +51,8 @@ export function CaseStudiesSection({ content }: { content: CaseStudiesContent })
   useEffect(() => {
     const el = trackRef.current
     if (!el) return
-    measure()
-    let raf = 0
+    // Đo ở khung hình kế tiếp (không đo ngay khi gắn), tránh ép trình duyệt tính lại bố cục giữa lúc hydrate.
+    let raf = requestAnimationFrame(() => ((raf = 0), measure()))
     const onScroll = () => {
       if (!raf) raf = requestAnimationFrame(() => ((raf = 0), measure()))
     }

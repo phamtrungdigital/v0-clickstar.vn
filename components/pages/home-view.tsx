@@ -2,6 +2,8 @@ import nextDynamic from 'next/dynamic'
 import { MainNav } from '@/components/layout/main-nav'
 import { HeroSection } from '@/components/sections/hero-section'
 import { ServicesSection } from '@/components/sections/services-section'
+import { iconByName } from '@/lib/icons'
+import { Sparkles } from 'lucide-react'
 import { AboutSection } from '@/components/sections/about-section'
 import { StatsSection } from '@/components/sections/stats-section'
 import { TeamSection } from '@/components/sections/team-section'
@@ -37,7 +39,17 @@ function renderSection(section: Section, extra: AboutExtra, latestPosts: LatestP
     case 'hero':
       return <HeroSection key={section.id} content={section.content} />
     case 'services':
-      return <ServicesSection key={section.id} content={section.content} />
+      return (
+        <ServicesSection
+          key={section.id}
+          content={section.content}
+          // Biểu tượng dựng ở máy chủ: trình duyệt không phải tải danh sách biểu tượng lib/icons
+          icons={section.content.services.map((service, i) => {
+            const Icon = iconByName(service.icon, Sparkles)
+            return <Icon key={i} aria-hidden="true" />
+          })}
+        />
+      )
     case 'about':
       return <AboutSection key={section.id} content={section.content} timeline={extra.timeline} industries={extra.industries} />
     case 'stats':

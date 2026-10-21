@@ -660,7 +660,8 @@ function Sheet({ children, minWidth, hint, className = 'mt-8' }: { children: Rea
       <div className="rounded-[14px] border border-[#d2d2d7] bg-white overflow-x-auto [-webkit-overflow-scrolling:touch]">
         <div style={{ minWidth }}>{children}</div>
       </div>
-      <p className="mt-2 text-xs text-[#86868b] sm:hidden">{hint}</p>
+      {/* Màu theo chữ của khối chứa (khối nền tối là chữ trắng): một màu xám cố định không đủ tương phản trên cả nền sáng lẫn nền tối */}
+      <p className="mt-2 text-xs text-current opacity-70 sm:hidden">{hint}</p>
     </div>
   )
 }

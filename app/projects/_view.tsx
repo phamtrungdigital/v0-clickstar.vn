@@ -76,7 +76,7 @@ export async function ProjectsListView({ lang }: { lang: Lang }) {
             </div>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {projects.map((p) => (
+              {projects.map((p, i) => (
                 <Link
                   key={p.id}
                   href={`/projects/${p.slug}`}
@@ -88,6 +88,9 @@ export async function ProjectsListView({ lang }: { lang: Lang }) {
                         src={p.cover_image}
                         alt={L(p.title_vi, p.title_en)}
                         fill
+                        // Ảnh dự án đầu là phần tử lớn nhất màn hình đầu (LCP) trên điện thoại; 3 dự án đầu nằm trong màn hình đầu trên máy tính
+                        priority={i === 0}
+                        loading={i > 0 && i < 3 ? 'eager' : undefined}
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
@@ -110,9 +113,9 @@ export async function ProjectsListView({ lang }: { lang: Lang }) {
                         {clientLabel(lang, p.client_name)}
                       </p>
                     )}
-                    <h3 className="text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                    <h2 className="text-lg font-bold text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
                       {L(p.title_vi, p.title_en)}
-                    </h3>
+                    </h2>
                     {L(p.summary_vi, p.summary_en) && (
                       <p className="text-sm text-muted-foreground line-clamp-2">{L(p.summary_vi, p.summary_en)}</p>
                     )}
