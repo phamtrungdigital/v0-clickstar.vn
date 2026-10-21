@@ -47,7 +47,16 @@ Phần dưới nói rõ từng tiêu chí biến thành việc cụ thể thế 
 4. Các mục `##` theo logic phân tích (xem mục 7). Tiêu đề mục là chủ đề hoặc câu hỏi người dùng thật sự đặt ra. Dùng `###` khi mục có nhánh con. Câu đầu tiên của mỗi mục trả lời thẳng, rồi mới giải thích.
 5. Khối nhận định riêng, mở đầu bằng chữ đậm **Đánh giá của Click Star.** (EN: **Click Star's view.**) để tách rõ nhận định khỏi số liệu.
 6. Mục việc nên làm (checklist, lộ trình theo ngày hoặc theo bước) và mục `## Những sai lầm thường gặp` (EN: `## Common mistakes`).
-7. Đoạn kết: chỉ dẫn cách đọc nguyên bản (tên tài liệu, tổ chức, không dán link) và lời nhắc kiểm tra bản mới nhất. Không viết thêm đoạn tóm tắt lặp lại.
+7. Khối kết "Nguồn gốc và lưu ý" (anh chọn kiểu khung viền bốn góc kèm checklist, 21/10/2026): thay cho đoạn chữ dài "Để đọc nguyên bản…". Viết bằng khối trích dẫn Markdown, đúng cú pháp sau (site tự vẽ thành khung, xem `app/blog/[slug]/_components/source-box.tsx`):
+
+   ```
+   > **Nguồn gốc và lưu ý** · Đối chiếu ngày 21/10/2026
+   >
+   > - [x] [Tên tài liệu](https://...) · Tên tổ chức
+   > - [ ] Văn bản pháp luật liên quan: hãy đối chiếu văn bản gốc trước khi áp dụng.
+   > - [ ] Giá, quy định và tài liệu thay đổi nhanh: hãy kiểm tra bản mới nhất trước khi áp dụng.
+   ```
+   Bản EN: `**Sources and notes** · Checked on October 21, 2026`. Dòng đầu phải bắt đầu đúng bằng "Nguồn gốc và lưu ý" hoặc "Sources and notes" (nếu không, khối chỉ hiện như trích dẫn thường). Quy tắc nội dung: `[x]` là tài liệu đã mở và đối chiếu, có link thật, chỉ ghi 3 đến 8 nguồn quan trọng nhất (nguồn còn lại đã nằm trong câu của bài); `[ ]` là việc dành cho người đọc (bắt buộc có dòng "kiểm tra bản mới nhất"; thêm dòng "đối chiếu văn bản gốc" khi bài có văn bản pháp luật chỉ đọc qua bản tóm tắt). Tên tài liệu giữ nguyên tiếng gốc hoặc dịch ngắn, không dán link trần. Mở từng link kiểm tra đúng trang (tiêu đề trang khớp với tên ghi) trước khi đăng; không ghi link chưa kiểm. Không viết thêm đoạn tóm tắt lặp lại.
 
 **Liên kết nội bộ:** nhắc bài liên quan của Click Star bằng văn bản ("Click Star đã có bài riêng về..."). Khối dịch vụ liên quan và khối tác giả do site tự render. Không chèn link ra ngoài trong thân bài; nguồn nêu bằng tên trong câu.
 
@@ -83,7 +92,7 @@ Nền tảng: tài liệu "AI features and your website" và hướng dẫn nộ
 - **Cấm:** emoji và ký tự trang trí; dấu gạch ngang dài (—, –) trong câu (dùng dấu phẩy, hai chấm, ngoặc đơn hoặc tách câu); sáo ngữ ("trong thời đại số", "không thể phủ nhận", "đóng vai trò quan trọng", "hãy cùng tìm hiểu", "chìa khóa vàng", "cuộc cách mạng", "bước ngoặt", "nói tóm lại"); tự khen ("hàng đầu", "số 1", "uy tín nhất", "tốt nhất"); câu giật tít; cường điệu.
 - **Số lượng viết bằng chữ số, không viết bằng chữ** (anh Trung yêu cầu 20/10/2026, áp cả site): "7 thành phần", "6 phần", "3 model", "2 đến 3 ví dụ"; bản EN "7 components", "6-part", "3 or more". Áp cho tiêu đề, mô tả, nội dung và cả chữ trong ảnh. Giữ nguyên thành ngữ và thứ tự: "cả hai", "thứ hai", "hai phần ba", "dấu ba chấm", "một nửa". Số thập phân VI dùng dấu phẩy (73,3%), EN dùng dấu chấm (73.3%).
 - Không suy đoán giới tính của người từ tên. Nhắc người bằng tên và vai trò, hoặc dùng cách nói trung tính.
-- **Không đưa vào bài:** danh sách "Nguồn", mục "Giới hạn của bài này", mục "Về bài viết này", dấu tham chiếu [1][2]. Nguồn chỉ nêu trong câu ("theo Pew Research Center, tháng 7/2025...") và ở chân ảnh minh họa. (Anh Trung yêu cầu từ 18/10/2026.)
+- **Không đưa vào bài:** danh sách "Nguồn" dạng đoạn văn hoặc mục riêng (ngoại lệ duy nhất là khối "Nguồn gốc và lưu ý" ở cuối bài, xem mục cấu trúc thân bài), mục "Giới hạn của bài này", mục "Về bài viết này", dấu tham chiếu [1][2]. Nguồn chỉ nêu trong câu ("theo Pew Research Center, tháng 7/2025...") và ở chân ảnh minh họa. (Anh Trung yêu cầu từ 18/10/2026.)
 - Phân biệt rõ ba loại thông tin và dán nhãn khi dễ nhầm: số đã đo (có nguồn), kịch bản hoặc ước tính (ghi là ước tính), nhận định của Click Star (khối "Đánh giá của Click Star").
 
 ---
@@ -174,7 +183,7 @@ Bảng chỉ là gợi ý để bắt đầu. Điều bắt buộc là ảnh bì
 
 - [ ] Một chủ đề, không trùng bài cũ; từ khóa chính có ở tiêu đề, mở đầu, slug, `seo_title`, `seo_description`.
 - [ ] `seo_title` 34 đến 46 ký tự; `seo_description` không quá 160 ký tự; `excerpt` 1 đến 2 câu.
-- [ ] Có Điểm chính, mục phân tích theo khung, khối "Đánh giá của Click Star", việc nên làm, sai lầm thường gặp, đoạn kết chỉ dẫn đọc nguyên bản.
+- [ ] Có Điểm chính, mục phân tích theo khung, khối "Đánh giá của Click Star", việc nên làm, sai lầm thường gặp, khối "Nguồn gốc và lưu ý" ở cuối bài (checklist có link đã kiểm).
 - [ ] Mỗi số có nguồn và ngày trong câu; không có mục Nguồn, không có [n]; số thứ cấp được ghi rõ; chủ đề pháp lý, tài chính có nhắc đối chiếu văn bản gốc.
 - [ ] Không emoji, không "—", không "chúng tôi/we/our", không sáo ngữ, không tự khen, không suy giới tính từ tên.
 - [ ] Không có đoạn nào quá khoảng 350 ký tự (kể cả đoạn mở đầu); mỗi đoạn 2 đến 3 câu; có dòng trống giữa các đoạn, ở cả bản VI và EN.
