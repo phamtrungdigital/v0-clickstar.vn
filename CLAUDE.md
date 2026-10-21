@@ -146,7 +146,7 @@ Mọi bài đăng ở `/blog` (VI và EN) phải theo file **`docs/blog-writing-
 3. Giọng văn chuyên gia, nghiêm túc (xưng "Click Star", không emoji, không "—", không sáo ngữ, không tự khen).
 4. Chữ căn đều hai bên ở máy tính (đã áp ở code từ 640px; mobile căn trái). Đoạn văn ngắn: mỗi đoạn 2-3 câu, tối đa khoảng 350 ký tự, có dòng trống giữa các đoạn, kể cả đoạn mở đầu (anh yêu cầu 21/10/2026).
 5. Bài chất lượng, mang lại giá trị (mỗi bài có việc làm được ngay; mỗi số có nguồn và ngày trong câu; không mục Nguồn, không [n]).
-6. Hình ảnh mô tả được giá trị nội dung (ít nhất 5 ảnh mỗi bài: ảnh bìa + ít nhất 4 infographic VI/EN, dữ liệu khớp 100% bài, có nguồn ở chân ảnh, xem từng ảnh trước khi đăng).
+6. Hình ảnh mô tả được giá trị nội dung (ít nhất 5 ảnh mỗi bài: ảnh bìa + ít nhất 4 infographic VI/EN, dữ liệu khớp 100% bài, có nguồn ở chân ảnh, xem từng ảnh trước khi đăng; ảnh bìa mỗi bài một họ màu và hình đặc trưng riêng, không giống 10 bài gần nhất, anh yêu cầu 21/10/2026).
 7. Phân tích chuyên sâu (khoảng 11.000-14.000 ký tự mỗi bản, khung bối cảnh, bằng chứng, ý nghĩa, phương án, rủi ro, việc nên làm, cách đo).
 
 Quyền đăng: anh đã cho phép đăng luôn bài viết, không cần duyệt từng bài. Thay đổi code hoặc schema vẫn theo preview-before-prod.

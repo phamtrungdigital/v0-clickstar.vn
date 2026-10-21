@@ -36,6 +36,7 @@ Phần dưới nói rõ từng tiêu chí biến thành việc cụ thể thế 
 | `tags` | 2 thẻ, dùng lại thẻ đã có (ví dụ SEO, AI, Công nghệ, Kỹ năng, Tin tức, Dữ liệu, Pháp lý, Thiết kế). |
 | `cover_image` | Đường dẫn tương đối `/images/blog/<slug>/cover.png`. |
 | `og_image` | URL tuyệt đối `https://clickstar.vn/images/blog/<slug>/cover.png`. |
+| `topic_pillar`, `topic_stage`, `topic_kind` | Phân loại cho trang Quản trị bài viết (từ 21/10/2026), điền ngay trong INSERT. `topic_pillar`: `ai`, `data`, `marketing`, `build`, `news`, `legal`. `topic_stage`: `learn`, `guide`, `decide`. `topic_kind`: `guide`, `opinion`, `news`, `policy`. Không cần thêm dòng vào `POST_META` nữa. |
 | `content` (vi, en) | Markdown, xem cấu trúc bên dưới. |
 
 **Cấu trúc thân bài (không viết H1 trong nội dung vì H1 là `title`):**
@@ -123,6 +124,25 @@ Khi viết bài, để căn đều đẹp:
 
 **Thiết kế:** dựng bằng HTML rồi chụp bằng Playwright; font Plus Jakarta Sans (tắt `calt` và `liga` để không biến "5xx" thành "5×x"); logo Click Star ở chân ảnh; màu xanh thương hiệu cùng cam, xanh lá, tím, đỏ làm màu nhấn có ý nghĩa; chữ đủ lớn để đọc trên điện thoại; bo góc và khoảng thở đồng bộ với các ảnh trước. Ảnh bìa có một cụm chữ lớn và một hình đặc trưng cho chủ đề.
 
+**Ảnh bìa (thumbnail) mỗi bài một diện mạo riêng (anh yêu cầu 21/10/2026).** Ảnh bìa là thứ người đọc thấy đầu tiên ở danh sách blog, nên hai bài khác nhau không được có ảnh bìa trông giống nhau. Lần rà ngày 21/10/2026 cho thấy 42 ảnh bìa cũ đa số cùng một bố cục (chữ trắng lớn bên trái, một thẻ bên phải) và cùng họ nền xanh dương, xanh lục hoặc teal tối. Từ nay:
+- **Mỗi bài một họ màu nền riêng.** Chọn họ màu theo chủ đề (bảng dưới), và không dùng lại họ màu của 5 ảnh bìa gần nhất cùng nhóm chủ đề, cũng không dùng trùng với bài khác trong cùng đợt. Một đợt 8 bài thì có ít nhất 6 họ màu khác nhau; hai bài cùng họ màu phải khác hẳn bố cục.
+- **Mỗi bài một hình đặc trưng riêng, dựng bằng chính nội dung của bài:** bong bóng hội thoại cho chatbot, sóng âm cho cuộc gọi, các cột pipeline cho CRM, vòng đo cho Core Web Vitals, thanh cuộn kết quả tìm kiếm cho SEO. Hình phải là mô hình trung thực của chủ đề, không dùng ảnh stock, không dùng biểu tượng rỗng. Thay đổi cả cách đặt hình (bên trái, giữa, phủ nền, chia đôi), cỡ chữ lớn và kiểu chữ nhấn, đừng lặp mãi bố cục "chữ trái, thẻ phải".
+- **Giữ nhận diện Click Star ở những thứ cố định:** logo, phông Plus Jakarta Sans, dòng nhãn nhỏ phía trên, độ bo góc, màu nhấn vàng nhạt cho từ khóa. Đổi màu nền và hình, giữ phần này.
+- **Chữ trên ảnh bìa là tiếng Anh ngắn** (một cụm lớn, một dòng phụ), độ tương phản chữ so với nền đạt tối thiểu 4,5:1, đọc được ở ảnh thu nhỏ 320 px.
+
+| Nhóm chủ đề | Họ màu gợi ý (chọn một, luân phiên) |
+|---|---|
+| AI và tự động hóa | tím chàm đến tím đậm, cam đồng, hồng tím |
+| Dữ liệu và khách hàng | xanh dương đậm, xanh ngọc, xanh lục rừng |
+| Marketing số và SEO | đỏ rượu, cam đất, vàng nghệ đậm |
+| Website và phần mềm | xanh than, xanh cổ vịt, xám than có nhấn lam |
+| Tin tức và xu hướng | nâu cà phê, xanh đen, đỏ cam |
+| Quy định và bảo mật | xanh navy, đỏ sẫm, lục ô liu |
+
+Bảng chỉ là gợi ý để bắt đầu. Điều bắt buộc là ảnh bìa mới khác ảnh bìa các bài gần nhất cả về màu lẫn bố cục.
+
+**Cách kiểm trước khi đăng:** xếp ảnh bìa mới cạnh ảnh bìa của 10 bài đăng gần nhất (ví dụ ghép thành một tấm bằng Playwright từ `public/images/blog/*/cover.png`), thu nhỏ rồi nhìn: nếu hai ảnh khó phân biệt thì làm lại một trong hai.
+
 **Kiểm tra bắt buộc:** mở xem từng ảnh (cả VI và EN) trước khi đưa lên repo: chữ không tràn, không bị cắt, không chồng lên nhau, các hàng thẳng hàng, tiếng Việt có dấu đúng. Chữ mô tả (alt) trong markdown là câu có nghĩa, mô tả điều ảnh cho thấy.
 
 ---
@@ -145,7 +165,7 @@ Khi viết bài, để căn đều đẹp:
 3. Viết bản VI rồi bản EN vào hai tệp markdown trong thư mục tạm của phiên (scratchpad). Quét lỗi: emoji, "—", "chúng tôi", "we/our", sáo ngữ, số không có nguồn.
 4. Tạo ảnh bìa và ít nhất 4 infographic VI/EN (tổng ít nhất 5 ảnh mỗi bài); xem từng ảnh; sửa đến khi sạch lỗi bố cục.
 5. Copy ảnh vào `public/images/blog/<slug>/`, commit, đẩy `main` (chỉ thêm ảnh, fast-forward). Đợi Vercel production Ready và ảnh trả 200. Nếu build lỗi do Turbopack font tạm thời ("next/font/google queries have exactly one entry"), tạo lại deployment từ bản lỗi với `forceNew=1`.
-6. INSERT bài vào `public.posts` bằng `execute_sql` (project `ffcqkrlzgofptspukrmo`), nội dung đặt trong dấu `$c$...$c$`; trả về độ dài và md5 của `content->>'vi'` và `content->>'en'`, so với md5 của tệp (bỏ ký tự xuống dòng ở cuối).
+6. INSERT bài vào `public.posts` bằng `execute_sql` (project `ffcqkrlzgofptspukrmo`), nội dung đặt trong dấu `$c$...$c$`, kèm `topic_pillar`, `topic_stage`, `topic_kind`; trả về độ dài và md5 của `content->>'vi'` và `content->>'en'`, so với md5 của tệp (bỏ ký tự xuống dòng ở cuối).
 7. Xóa cache (BẮT BUỘC): `invalidate_by_tags` với `projectIdOrName=prj_Y6WQLTRlGJozqb93HtFHpLshpjl4`, `teamId=team_vgn6bhswntTAUYdVbBVdCfQR`, `requestBody {tags: ["posts", "pages", "page:home"], target: "production"}`. Từ 21/10/2026 trang `/blog`, `/blog/<slug>` (và `/en`) là trang tĩnh (ISR): không xóa cache thì danh sách blog chỉ có bài mới sau tối đa 5 phút, bài sửa nội dung chỉ đổi sau tối đa 1 giờ. Sửa dự án bằng SQL cũng xóa tag `case_studies` (hoặc `pages`).
 8. Kiểm production: trang VI và `/en` trả 200, tiêu đề đúng, canonical tự trỏ, không noindex, mọi ảnh tham chiếu trả 200, bài xuất hiện ở `/blog`.
 9. Báo anh: link VI và EN, 2 đến 4 bước test, những điểm cần biết (nguồn thứ cấp, số chưa kiểm chứng được, điều chưa có dữ liệu Việt Nam). Cập nhật ghi chú bộ nhớ.
@@ -160,4 +180,6 @@ Khi viết bài, để căn đều đẹp:
 - [ ] Không có đoạn nào quá khoảng 350 ký tự (kể cả đoạn mở đầu); mỗi đoạn 2 đến 3 câu; có dòng trống giữa các đoạn, ở cả bản VI và EN.
 - [ ] Có bản EN đầy đủ và khớp bản VI.
 - [ ] Mỗi bài có ít nhất 5 ảnh (1 ảnh bìa và ít nhất 4 infographic) ở cả VI và EN, mỗi infographic nói một ý khác nhau; đã xem từng ảnh; chữ khớp bài; chân ảnh có nguồn; alt có nghĩa; mỗi ảnh dưới 1 MB.
+- [ ] Ảnh bìa có họ màu và hình đặc trưng khác 10 bài gần nhất (đã xếp cạnh nhau để kiểm); đợt nhiều bài thì mỗi bài một diện mạo riêng.
+- [ ] Đã điền `topic_pillar`, `topic_stage`, `topic_kind`.
 - [ ] md5 và độ dài nội dung trong DB khớp tệp; cache đã xóa; production 200 ở VI và EN; ảnh 200.
