@@ -11,7 +11,7 @@ import type { I18n } from '@/lib/cms/types'
  *   /sitemap-du-an.xml  dự án, theo thứ tự hiển thị trên website, kèm ảnh
  * Bản /en đứng ngay sau bản tiếng Việt của cùng trang, hai bản khai hreflang qua lại.
  * lastmod lấy theo lần sửa thật (không dùng "bây giờ"); không dùng changefreq/priority vì Google bỏ qua.
- * Mở bằng trình duyệt thì /sitemap.xsl trình bày thành bảng; công cụ tìm kiếm không bị ảnh hưởng.
+ * Không gắn XSLT (xml-stylesheet): Chrome sắp gỡ XSLT và hiện cảnh báo đỏ khi mở sitemap bằng trình duyệt (22/10/2026).
  */
 
 export const BASE_URL = 'https://clickstar.vn'
@@ -46,7 +46,7 @@ const iso = (d: string | null | undefined) => (d ? new Date(d).toISOString() : n
 const latest = (dates: (string | null | undefined)[]) =>
   dates.reduce<string | null>((m, d) => (d && (!m || Date.parse(d) > Date.parse(m)) ? d : m), null)
 
-const HEAD = '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>\n'
+const HEAD = '<?xml version="1.0" encoding="UTF-8"?>\n'
 
 export function xmlResponse(body: string) {
   return new Response(body, {
