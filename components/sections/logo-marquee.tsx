@@ -28,7 +28,6 @@ const BRAND: Record<string, string> = {
   youtube: '#FF0000',
   linkedin: '#0A66C2',
   wordpress: '#21759B',
-  supabase: '#3ECF8E',
   vercel: '#9a9aa0',
   nextdotjs: '#9a9aa0',
   huggingface: '#FFB000',

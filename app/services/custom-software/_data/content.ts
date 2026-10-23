@@ -647,7 +647,7 @@ export const STACK = {
     { layer: { vi: 'Giao diện', en: 'Frontend' }, tech: 'Next.js · React · TypeScript' },
     { layer: { vi: 'Máy chủ', en: 'Backend' }, tech: 'Node.js · TypeScript · REST / Webhook' },
     { layer: { vi: 'Cơ sở dữ liệu', en: 'Database' }, tech: 'PostgreSQL · Row Level Security' },
-    { layer: { vi: 'Hạ tầng', en: 'Hosting' }, tech: 'Vercel · Supabase' },
+    { layer: { vi: 'Hạ tầng', en: 'Hosting' }, tech: 'Vercel' },
     { layer: { vi: 'Tự động hoá', en: 'Automation' }, tech: 'Click Star Automation · Cron · Queue' },
     { layer: { vi: 'AI (khi cần)', en: 'AI (when needed)' }, tech: 'OpenAI · Claude · Gemini' },
   ],
