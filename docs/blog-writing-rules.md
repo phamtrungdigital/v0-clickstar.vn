@@ -1,7 +1,7 @@
 # Quy định viết bài blog Click Star (SEO, chuyên sâu)
 
 > Áp dụng cho MỌI bài viết đăng ở clickstar.vn/blog (VI và EN). Claude đọc file này trước khi viết bất kỳ bài nào.
-> Cập nhật lần cuối: 21/10/2026, theo yêu cầu của anh Trung. Nếu có xung đột, rule trong file này thắng ghi chú cá nhân của Claude.
+> Cập nhật lần cuối: 24/10/2026 (thêm rule tiêu đề hook, không ghi ngày đối chiếu, và viết dễ hiểu), theo yêu cầu của anh Trung. Nếu có xung đột, rule trong file này thắng ghi chú cá nhân của Claude.
 > Quyền đăng: anh đã cho phép đăng luôn bài viết (INSERT `public.posts` ở trạng thái `published`, xóa cache, kiểm production) mà không cần duyệt từng bài. Mọi thay đổi code, SQL schema, cấu hình vẫn theo QUY ĐỊNH 1 của file CLAUDE.md global (preview trước, anh OK rồi mới lên production).
 
 ## Bảy tiêu chí bắt buộc
@@ -29,7 +29,7 @@ Phần dưới nói rõ từng tiêu chí biến thành việc cụ thể thế 
 | Trường | Quy tắc |
 |---|---|
 | `slug` | Tiếng Việt không dấu, chữ thường, nối bằng dấu gạch ngang, mô tả đúng chủ đề, ổn định về sau. Kiểm tra slug chưa tồn tại trước khi INSERT. |
-| `title` (vi, en) | Là H1 của trang, đọc tự nhiên như một tiêu đề báo, nêu rõ chủ đề và lợi ích. Không viết kiểu "Name: explainer". |
+| `title` (vi, en) | Là H1 của trang: câu hook gây chú ý, xem mục "Tiêu đề và độ dễ hiểu" ngay dưới bảng này. Tuyệt đối KHÔNG ghi ngày đối chiếu, "đối chiếu", "checked" hay năm kiểm tra trong tiêu đề. Không viết kiểu "Name: explainer". |
 | `excerpt` (vi, en) | 1 đến 2 câu, nêu bài trả lời câu hỏi gì và dựa trên nguồn nào. Hiển thị ở thẻ bài và khối tóm tắt. |
 | `seo_title` (vi, en) | Từ khóa chính ở đầu, khoảng 34 đến 46 ký tự (hậu tố " \| Click Star" do site tự thêm). Không trùng `title`. |
 | `seo_description` (vi, en) | Tối đa 160 ký tự, một đến hai câu hoàn chỉnh, có lợi ích hoặc con số, không cắt giữa câu. |
@@ -38,6 +38,12 @@ Phần dưới nói rõ từng tiêu chí biến thành việc cụ thể thế 
 | `og_image` | URL tuyệt đối `https://clickstar.vn/images/blog/<slug>/cover.png`. |
 | `topic_pillar`, `topic_stage`, `topic_kind` | Phân loại cho trang Quản trị bài viết (từ 21/10/2026), điền ngay trong INSERT. `topic_pillar`: `ai`, `data`, `marketing`, `build`, `news`, `legal`. `topic_stage`: `learn`, `guide`, `decide`. `topic_kind`: `guide`, `opinion`, `news`, `policy`. Không cần thêm dòng vào `POST_META` nữa. |
 | `content` (vi, en) | Markdown, xem cấu trúc bên dưới. |
+
+**Tiêu đề và độ dễ hiểu (anh Trung yêu cầu 24/10/2026, áp cho mọi bài mới):**
+
+- **Tiêu đề không ghi ngày đối chiếu.** Cấm cụm "(đối chiếu 23/10/2026)", "(checked October 23, 2026)", "đọc ngày…" và mọi ngày kiểm tra trong `title`, `seo_title`, `excerpt`. Ngày đối chiếu chỉ nằm ở đoạn mở đầu và khối "Nguồn gốc và lưu ý" cuối bài. Ngày đăng đã hiện sẵn dưới tiêu đề.
+- **Tiêu đề là câu hook có sức hút cao**: đánh vào điều người đọc đang lo, đang muốn, hoặc đang hiểu sai. Ưu tiên một trong các kiểu: câu hỏi người dùng thật sự đặt ("Website chạy chậm vì đâu?"), lời hứa cụ thể có con số hoặc kết quả ("5 bước tìm truy vấn làm chậm cả hệ thống"), điều trái với thói quen ("Thêm chỉ mục lên mọi cột có làm nhanh hơn không?"), hoặc hậu quả nếu bỏ qua ("Quên một dòng header, khách thấy giá cũ"). Độ dài khoảng 45 đến 70 ký tự, từ khóa chính nằm trong tiêu đề, đọc to lên vẫn tự nhiên. Hook phải đúng với nội dung: không giật tít, không hứa điều bài không chứng minh được, không dùng con số không có trong bài.
+- **Nội dung viết dễ hiểu cho người không chuyên**: câu ngắn, mỗi câu một ý; gặp thuật ngữ lần đầu thì giải thích bằng một vế ngắn (ví dụ "CDN, tức mạng máy chủ đặt gần khách"); đưa ví dụ đời thường hoặc tình huống của doanh nghiệp trước, rồi mới đến tên kỹ thuật; tên chỉ thị, lệnh, tham số để trong dấu `code`, không chen giữa câu giải thích. Không dồn nhiều trích dẫn nguồn trong một câu: nêu kết luận trước, nguồn sau. Vẫn giữ giọng chuyên gia, đủ chiều sâu và số liệu có nguồn; "dễ hiểu" không có nghĩa là bỏ chi tiết.
 
 **Cấu trúc thân bài (không viết H1 trong nội dung vì H1 là `title`):**
 
@@ -182,6 +188,7 @@ Bảng chỉ là gợi ý để bắt đầu. Điều bắt buộc là ảnh bì
 ## Checklist trước khi đăng
 
 - [ ] Một chủ đề, không trùng bài cũ; từ khóa chính có ở tiêu đề, mở đầu, slug, `seo_title`, `seo_description`.
+- [ ] Tiêu đề là câu hook (45 đến 70 ký tự), KHÔNG chứa ngày đối chiếu hay chữ "đối chiếu"/"checked"; nội dung dễ hiểu: câu ngắn, thuật ngữ có giải thích ở lần đầu, ví dụ trước tên kỹ thuật.
 - [ ] `seo_title` 34 đến 46 ký tự; `seo_description` không quá 160 ký tự; `excerpt` 1 đến 2 câu.
 - [ ] Có Điểm chính, mục phân tích theo khung, khối "Đánh giá của Click Star", việc nên làm, sai lầm thường gặp, khối "Nguồn gốc và lưu ý" ở cuối bài (checklist có link đã kiểm).
 - [ ] Mỗi số có nguồn và ngày trong câu; không có mục Nguồn, không có [n]; số thứ cấp được ghi rõ; chủ đề pháp lý, tài chính có nhắc đối chiếu văn bản gốc.
