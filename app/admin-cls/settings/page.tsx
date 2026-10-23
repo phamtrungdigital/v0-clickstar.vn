@@ -1,4 +1,4 @@
-import { getSiteSettings } from '@/lib/cms/settings'
+import { getSiteSettingsRaw } from '@/lib/cms/settings'
 import { getAdminProfile } from '@/lib/admin-cls/auth'
 import { createClient } from '@/lib/supabase/server'
 import { loadCodeState, type CodeState } from '@/lib/cms/code-admin'
@@ -8,7 +8,7 @@ import { CodeSnippetsManager } from './_components/code-snippets-manager'
 export const dynamic = 'force-dynamic'
 
 export default async function AdminSettings() {
-  const [settings, profile] = await Promise.all([getSiteSettings(), getAdminProfile()])
+  const [settings, profile] = await Promise.all([getSiteSettingsRaw(), getAdminProfile()])
   if (!settings) {
     return (
       <div className="text-sm text-slate-500">

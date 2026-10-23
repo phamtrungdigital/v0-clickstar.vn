@@ -2,6 +2,7 @@
 
 import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { maskMedia } from '@/lib/media-url'
 import { createPublicClient } from '@/lib/supabase/public'
 import type { TeamMember } from './team-members-types'
 
@@ -15,7 +16,7 @@ export const getActiveTeamMembers = unstable_cache(
       .eq('enabled', true)
       .order('sort_order', { ascending: false })
       .order('created_at', { ascending: true })
-    return (data as unknown as TeamMember[]) ?? []
+    return maskMedia((data as unknown as TeamMember[]) ?? [])
   },
   ['active-team-members'],
   { tags: ['team_members'], revalidate: 3600 }

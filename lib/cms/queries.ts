@@ -1,6 +1,7 @@
 import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { createPublicClient } from '@/lib/supabase/public'
+import { maskMedia } from '@/lib/media-url'
 import type { Page } from './types'
 
 /**
@@ -19,7 +20,7 @@ export async function getPublishedPage(slug: string): Promise<Page | null> {
         .eq('is_published', true)
         .maybeSingle()
       if (error || !data) return null
-      return data as unknown as Page
+      return maskMedia(data as unknown as Page)
     },
     ['published-page', slug],
     { tags: ['pages', `page:${slug}`], revalidate: 3600 }

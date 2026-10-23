@@ -1,4 +1,5 @@
 import { createPublicClient } from '@/lib/supabase/public'
+import { maskMediaUrl } from '@/lib/media-url'
 import { localizePath, type Lang } from '@/lib/i18n/locale'
 import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { caseStudyHasEnglish } from '@/lib/cms/case-studies-types'
@@ -41,7 +42,10 @@ type Entry = { path: string; lastmod: string | null; hasEn: boolean; images?: st
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 const abs = (path: string, lang: Lang) => `${BASE_URL}${localizePath(path, lang)}`
-const absImage = (src: string) => (/^https?:\/\//i.test(src) ? src : `${BASE_URL}${src.startsWith('/') ? '' : '/'}${src}`)
+const absImage = (raw: string) => {
+  const src = maskMediaUrl(raw)
+  return /^https?:\/\//i.test(src) ? src : `${BASE_URL}${src.startsWith('/') ? '' : '/'}${src}`
+}
 const iso = (d: string | null | undefined) => (d ? new Date(d).toISOString() : null)
 const latest = (dates: (string | null | undefined)[]) =>
   dates.reduce<string | null>((m, d) => (d && (!m || Date.parse(d) > Date.parse(m)) ? d : m), null)

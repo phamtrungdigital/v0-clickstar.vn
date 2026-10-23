@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache'
 import { createPublicClient } from '@/lib/supabase/public'
+import { maskMedia } from '@/lib/media-url'
 import type { I18n } from './types'
 
 export type SiteSettings = {
@@ -34,7 +35,7 @@ export type SiteSettings = {
 
 // Cache cross-request (data cache) — config toàn site, hiếm đổi. Tự làm mới khi
 // admin Lưu (revalidateTag('site_settings')) hoặc fallback sau 1h.
-export const getSiteSettings = unstable_cache(
+export const getSiteSettingsRaw = unstable_cache(
   async (): Promise<SiteSettings | null> => {
     const supabase = createPublicClient()
     const { data } = await supabase.from('site_settings').select('*').eq('id', 1).maybeSingle()
@@ -43,3 +44,8 @@ export const getSiteSettings = unstable_cache(
   ['site-settings'],
   { tags: ['site_settings'], revalidate: 3600 }
 )
+
+/** Bản dùng cho trang công khai: địa chỉ ảnh đã đổi sang /media/... (xem lib/media-url.ts). Trang quản trị dùng getSiteSettingsRaw. */
+export async function getSiteSettings(): Promise<SiteSettings | null> {
+  return maskMedia(await getSiteSettingsRaw())
+}

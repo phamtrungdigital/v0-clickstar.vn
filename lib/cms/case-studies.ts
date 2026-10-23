@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { maskMedia } from '@/lib/media-url'
 import { createPublicClient } from '@/lib/supabase/public'
 import type { CaseStudy } from './case-studies-types'
 
@@ -26,7 +27,7 @@ export async function getPublishedCaseStudies(limit?: number): Promise<CaseStudy
       if (n > 0) query = query.limit(n)
       const { data, error } = await query
       if (error) throw new Error(`getPublishedCaseStudies: ${error.message}`)
-      return (data || []) as unknown as CaseStudy[]
+      return maskMedia((data || []) as unknown as CaseStudy[])
     },
     ['published-case-studies'],
     CASE_STUDY_CACHE
@@ -46,7 +47,7 @@ export async function getPublishedCaseStudyBySlug(slug: string): Promise<CaseStu
         .eq('status', 'published')
         .maybeSingle()
       if (error) throw new Error(`getPublishedCaseStudyBySlug(${s}): ${error.message}`)
-      return (data as unknown as CaseStudy) || null
+      return maskMedia((data as unknown as CaseStudy) || null)
     },
     ['published-case-study'],
     CASE_STUDY_CACHE

@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { maskMedia } from '@/lib/media-url'
 import { createPublicClient } from '@/lib/supabase/public'
 import { postHasEnglish } from './post-i18n'
 import type { I18n } from './types'
@@ -51,7 +52,7 @@ export const listPublishedPostSummaries = unstable_cache(
       .order('published_at', { ascending: false })
     if (error) throw new Error(`listPublishedPostSummaries: ${error.message}`)
     return ((data || []) as unknown as Post[]).map(({ content, ...rest }) => ({
-      ...rest,
+      ...maskMedia(rest),
       has_en: postHasEnglish({ title: rest.title, content }),
     }))
   },
@@ -71,7 +72,7 @@ export async function getPublishedPost(slug: string): Promise<Post | null> {
         .eq('status', 'published')
         .maybeSingle()
       if (error) throw new Error(`getPublishedPost(${s}): ${error.message}`)
-      return (data as unknown as Post) || null
+      return maskMedia((data as unknown as Post) || null)
     },
     ['published-post'],
     { tags: ['posts'], revalidate: 3600 }
@@ -120,7 +121,7 @@ export async function getLatestPosts(limit = 3): Promise<LatestPost[]> {
         .order('published_at', { ascending: false, nullsFirst: false })
         .limit(n)
       if (error || !data) return []
-      return data as unknown as LatestPost[]
+      return maskMedia(data as unknown as LatestPost[])
     },
     ['latest-posts'],
     { tags: ['posts'], revalidate: 300 }
@@ -150,7 +151,7 @@ export async function getNavNews(): Promise<NavNews> {
           .gte('published_at', since),
       ])
       if (latest.error || !latest.data) return { count: 0, items: [] }
-      return { count: recent.count ?? 0, items: latest.data as unknown as LatestPost[] }
+      return { count: recent.count ?? 0, items: maskMedia(latest.data as unknown as LatestPost[]) }
     },
     ['nav-news'],
     { tags: ['posts'], revalidate: 300 }
