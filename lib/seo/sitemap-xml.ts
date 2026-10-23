@@ -182,3 +182,92 @@ export async function sitemapUrlCount(): Promise<number> {
   const data = await loadAll()
   return [...pageEntries(data), ...blogEntries(data), ...projectEntries(data)].reduce((n, e) => n + (e.hasEn ? 2 : 1), 0)
 }
+
+/*
+ * Bản xem bằng trình duyệt (23/10/2026): người mở /sitemap*.xml thấy bảng, trình thu thập vẫn nhận XML thuần ở cùng địa chỉ.
+ * next.config.mjs chuyển hướng ngầm (rewrite) sang /sitemap-xem/<nhóm> chỉ khi có tiêu đề Sec-Fetch-Dest: document,
+ * tiêu đề mà trình duyệt gắn khi mở trang và Googlebot/Bingbot không gửi. Không dùng XSLT (Chrome sắp gỡ).
+ */
+export type SitemapView = 'muc-luc' | 'trang' | 'blog' | 'du-an'
+
+const fmtDate = (d: string | null) => {
+  if (!d) return '<span class="m">không khai</span>'
+  const t = new Date(new Date(d).getTime() + 7 * 3600_000).toISOString()
+  return `${t.slice(8, 10)}/${t.slice(5, 7)}/${t.slice(0, 4)}`
+}
+
+const VIEW_CSS = `:root{color-scheme:light dark;--bg:#f5f5f7;--card:#fff;--fg:#1d1d1f;--mut:#6e6e73;--line:rgba(0,0,0,.08);--acc:#1e6dda;--chip:rgba(0,0,0,.06)}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--card:#1c1c1e;--fg:#f5f5f7;--mut:#98989d;--line:rgba(255,255,255,.12);--acc:#4c9aff;--chip:rgba(255,255,255,.1)}}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 -apple-system,"SF Pro Text",Inter,system-ui,sans-serif}
+main{max-width:1080px;margin:0 auto;padding:32px max(16px,env(safe-area-inset-left)) 56px}
+h1{margin:0;font-size:28px;font-weight:600;letter-spacing:-.02em}
+.sub{margin:6px 0 20px;color:var(--mut)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px}
+.nav a{padding:6px 14px;border-radius:999px;background:var(--chip);color:var(--fg);text-decoration:none;font-size:14px}
+.nav a[aria-current]{background:var(--acc);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:640px}
+th{text-align:left;font-weight:500;font-size:12.5px;color:var(--mut);padding:12px 16px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 16px;border-top:1px solid var(--line);vertical-align:middle}
+tr:first-child td{border-top:0}
+td.n,td.d{color:var(--mut);white-space:nowrap;font-variant-numeric:tabular-nums}
+a{color:var(--acc);text-decoration:none;word-break:break-all}a:hover{text-decoration:underline}
+img{display:block;width:56px;height:36px;object-fit:cover;border-radius:6px;background:var(--chip)}
+.chip{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;background:var(--chip);color:var(--mut)}
+.m{color:var(--mut)}.f{margin-top:16px;color:var(--mut);font-size:13px}`
+
+const VIEW_TITLES: Record<SitemapView, [string, string]> = {
+  'muc-luc': ['Mục lục', 'Ba nhóm sitemap gửi cho công cụ tìm kiếm.'],
+  trang: ['Trang chính', 'Trang chủ, dịch vụ, bảng giá, giới thiệu, liên hệ, theo thứ tự menu.'],
+  blog: ['Bài viết', 'Bài blog, mới đăng nhất ở trên cùng.'],
+  'du-an': ['Dự án', 'Dự án tiêu biểu, theo thứ tự hiển thị trên website.'],
+}
+const VIEW_FILE: Record<Exclude<SitemapView, 'muc-luc'>, string> = { trang: 'sitemap-trang.xml', blog: 'sitemap-blog.xml', 'du-an': 'sitemap-du-an.xml' }
+
+export function isSitemapView(v: string): v is SitemapView {
+  return v === 'muc-luc' || v === 'trang' || v === 'blog' || v === 'du-an'
+}
+
+export async function sitemapViewHtml(view: SitemapView): Promise<string> {
+  const data = await loadAll()
+  const [title, sub] = VIEW_TITLES[view]
+  const nav = (['muc-luc', 'trang', 'blog', 'du-an'] as SitemapView[])
+    .map((v) => `<a href="${v === 'muc-luc' ? '/sitemap.xml' : `/${VIEW_FILE[v]}`}"${v === view ? ' aria-current="page"' : ''}>${VIEW_TITLES[v][0]}</a>`)
+    .join('')
+
+  let head = ''
+  let rows = ''
+  let note = ''
+  if (view === 'muc-luc') {
+    const last = {
+      trang: latest([...data.pages.map((p) => p.updated_at), ...data.posts.map((p) => p.updated_at), ...data.projects.map((p) => p.updated_at)]),
+      blog: latest(data.posts.map((p) => p.updated_at)),
+      'du-an': latest(data.projects.map((p) => p.updated_at)),
+    }
+    const count = { trang: pageEntries(data), blog: blogEntries(data), 'du-an': projectEntries(data) }
+    head = '<tr><th>#</th><th>Nhóm</th><th>Số địa chỉ</th><th>Cập nhật gần nhất</th></tr>'
+    rows = (['trang', 'blog', 'du-an'] as const)
+      .map((k, i) => {
+        const n = count[k].reduce((s, e) => s + (e.hasEn ? 2 : 1), 0)
+        return `<tr><td class="n">${i + 1}</td><td><a href="/${VIEW_FILE[k]}">${BASE_URL}/${VIEW_FILE[k]}</a><div class="m">${esc(VIEW_TITLES[k][0])}</div></td><td class="d">${n}</td><td class="d">${fmtDate(iso(last[k]))}</td></tr>`
+      })
+      .join('')
+  } else {
+    const entries = view === 'trang' ? pageEntries(data) : view === 'blog' ? blogEntries(data) : projectEntries(data)
+    const total = entries.reduce((s, e) => s + (e.hasEn ? 2 : 1), 0)
+    note = `<p class="f">${total} địa chỉ (${entries.filter((e) => e.hasEn).length} có bản tiếng Anh). Đây là bản xem; công cụ tìm kiếm nhận tệp XML ở cùng địa chỉ.</p>`
+    const showImg = view !== 'trang'
+    head = `<tr><th>#</th>${showImg ? '<th>Ảnh</th>' : ''}<th>Tiếng Việt</th><th>Tiếng Anh</th><th>Cập nhật</th></tr>`
+    rows = entries
+      .map((e, i) => {
+        const vi = abs(e.path, 'vi')
+        const en = abs(e.path, 'en')
+        const img = showImg ? `<td>${e.images?.[0] ? `<img src="${esc(absImage(e.images[0]))}" alt="" loading="lazy">` : ''}</td>` : ''
+        return `<tr><td class="n">${i + 1}</td>${img}<td><a href="${esc(vi)}">${esc(localizePath(e.path, 'vi'))}</a></td><td>${
+          e.hasEn ? `<a href="${esc(en)}">${esc(localizePath(e.path, 'en'))}</a>` : '<span class="chip">chưa dịch</span>'
+        }</td><td class="d">${fmtDate(e.lastmod)}</td></tr>`
+      })
+      .join('')
+  }
+  return `<!doctype html><html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Sitemap ${esc(title)} · Click Star</title><style>${VIEW_CSS}</style></head><body><main><h1>Sitemap: ${esc(title)}</h1><p class="sub">${esc(sub)}</p><nav class="nav">${nav}</nav><div class="card"><table>${head}${rows}</table></div>${note}</main></body></html>`
+}

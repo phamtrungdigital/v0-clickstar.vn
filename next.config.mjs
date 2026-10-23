@@ -47,6 +47,17 @@ const nextConfig = {
       { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
     ]
   },
+  async rewrites() {
+    // Sitemap: trình duyệt (Sec-Fetch-Dest: document) xem bảng, trình thu thập vẫn nhận XML thuần ở cùng địa chỉ.
+    const views = { '/sitemap.xml': 'muc-luc', '/sitemap-trang.xml': 'trang', '/sitemap-blog.xml': 'blog', '/sitemap-du-an.xml': 'du-an' }
+    return {
+      beforeFiles: Object.entries(views).map(([source, nhom]) => ({
+        source,
+        has: [{ type: 'header', key: 'sec-fetch-dest', value: 'document' }],
+        destination: `/sitemap-xem/${nhom}`,
+      })),
+    }
+  },
   async redirects() {
     return [
       // URL đăng nhập gọn: clickstar.vn/login → trang login admin (/admin-cls/login vẫn chạy như cũ)
