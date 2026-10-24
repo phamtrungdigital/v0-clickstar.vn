@@ -36,6 +36,7 @@ const PAGE_ORDER = [
   '/about',
   '/blog',
   '/contact',
+  '/cookie-policy',
 ]
 
 type Entry = { path: string; lastmod: string | null; hasEn: boolean; images?: string[] }
@@ -147,6 +148,8 @@ function pageEntries({ pages, posts, projects }: Data): Entry[] {
   if (!byPath.has('/projects')) byPath.set('/projects', { path: '/projects', lastmod: iso(latest(projects.map((p) => p.updated_at))), hasEn: true })
   // Liên hệ: nội dung viết trong mã nguồn, không có ngày sửa đáng tin nên không khai lastmod.
   if (!byPath.has('/contact')) byPath.set('/contact', { path: '/contact', lastmod: null, hasEn: true })
+  // Chính sách cookie: viết trong mã nguồn (app/cookie-policy), ngày áp dụng ghi trên trang.
+  if (!byPath.has('/cookie-policy')) byPath.set('/cookie-policy', { path: '/cookie-policy', lastmod: '2026-10-24', hasEn: true })
 
   const rank = (path: string) => {
     const i = PAGE_ORDER.indexOf(path)

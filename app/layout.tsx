@@ -10,6 +10,7 @@ import { getChatbotSettings, toPublicConfig } from '@/lib/cms/chatbot'
 import { getWebContent, normalizeWebContent } from '@/lib/cms/web-content'
 import { WebContentProvider } from '@/contexts/web-content-context'
 import { DeferredWidgets } from '@/components/deferred-widgets'
+import { ConsentManager } from '@/components/consent/consent-manager'
 import { FloatingContact } from '@/components/floating-contact'
 import { HtmlRoot } from '@/components/html-root'
 import { BodyCode, DeferredCodeLoader, HeadCode } from '@/components/site-code'
@@ -162,6 +163,8 @@ export default async function RootLayout({
             {/* Chatbot, popup hồ sơ, banner cá nhân hoá, lớp sửa trực quan: tải sau khi trang đã hiện. */}
             <DeferredWidgets chatbot={chatbotConfig} />
             <FloatingContact />
+            {/* Thanh đồng ý cookie + bảng Cài đặt cookie (hiện sau khi trang tải xong) */}
+            <ConsentManager />
           </LanguageProvider>
         </TeamMembersProvider>
       </SiteBrandingProvider>

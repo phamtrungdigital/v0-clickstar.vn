@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import nextDynamic from 'next/dynamic'
 import type { ChatbotPublicConfig } from '@/lib/cms/chatbot-shared'
+import { CONSENT_EVENT, hasConsent } from '@/lib/consent/shared'
 
 // Các tiện ích nổi không cần có mặt lúc vẽ trang đầu tiên: chỉ tải mã sau khi trang đã tải xong
 // và trình duyệt rảnh, để điện thoại không phải tải và chạy chúng cùng lúc với phần nội dung chính.
@@ -13,6 +14,15 @@ const CapabilityPopup = nextDynamic(() => import('@/components/capability-popup'
 
 export function DeferredWidgets({ chatbot }: { chatbot: ChatbotPublicConfig }) {
   const [ready, setReady] = useState(false)
+  // Banner gợi ý theo lịch sử xem chỉ chạy khi khách đồng ý nhóm "Cá nhân hóa và quảng cáo".
+  const [personalize, setPersonalize] = useState(false)
+
+  useEffect(() => {
+    const sync = () => setPersonalize(hasConsent('marketing'))
+    sync()
+    window.addEventListener(CONSENT_EVENT, sync)
+    return () => window.removeEventListener(CONSENT_EVENT, sync)
+  }, [])
 
   useEffect(() => {
     let idleId: number | undefined
@@ -36,7 +46,7 @@ export function DeferredWidgets({ chatbot }: { chatbot: ChatbotPublicConfig }) {
     <>
       <ChatbotWidgets config={chatbot} />
       <EditModeOverlay />
-      <PersonalizeBanner />
+      {personalize && <PersonalizeBanner />}
       <CapabilityPopup />
     </>
   )

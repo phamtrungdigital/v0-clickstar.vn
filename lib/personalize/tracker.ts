@@ -5,6 +5,8 @@
  * Schema versioned (cs_personalize_v1) — bump version if breaking changes.
  */
 
+import { hasConsent } from '@/lib/consent/shared'
+
 const STORAGE_KEY = 'cs_personalize_v1'
 const MAX_VISITS = 30 // keep last 30 pages
 const DEFAULT_DISMISS_DAYS = 7
@@ -75,6 +77,8 @@ export function trackVisit(path: string): void {
   if (typeof window === 'undefined') return
   // Skip admin and API routes
   if (path.startsWith('/admin-cls') || path.startsWith('/api')) return
+  // Lịch sử xem chỉ ghi khi khách đồng ý nhóm "Cá nhân hóa và quảng cáo" (cookie cs_consent).
+  if (!hasConsent('marketing')) return
 
   const data = loadVisits()
   const now = Date.now()

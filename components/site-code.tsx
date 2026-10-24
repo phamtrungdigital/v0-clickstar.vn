@@ -1,4 +1,5 @@
 import { parseAttrs, parseHeadCode, type HeadTag } from '@/lib/cms/code-parse'
+import { CONSENT_MAX_AGE_DAYS, POLICY_VERSION, type ConsentCategory } from '@/lib/consent/shared'
 
 /**
  * Chèn mã tuỳ chỉnh (Cài đặt → Mã tuỳ chỉnh) vào website. Server component: HTML nằm sẵn trong bản trả về nên script
@@ -20,6 +21,17 @@ type Item = { id: string; code: string }
  */
 const JS_TYPES = new Set(['', 'text/javascript', 'application/javascript', 'module'])
 
+/*
+ * ĐỒNG Ý COOKIE (lib/consent/shared.ts): mỗi mã tuỳ chỉnh thuộc một nhóm, đoán theo nội dung mã. Bộ nạp chỉ chạy script
+ * tải sau khi khách đã đồng ý nhóm đó (cần thiết luôn chạy). Chưa chọn hoặc từ chối: GA4 và CDP không tải gì cả.
+ * Mã không nhận ra được xếp vào "Đo lường truy cập" cho chắc (chỉ chạy khi khách đồng ý).
+ */
+const MARKETING_RE = /fbevents|connect\.facebook\.net|facebook\.com\/tr|tiktok|doubleclick|googleadservices|\bAW-\d|ads\.linkedin|snap\.licdn|clarity\.ms|hotjar|zalo\.me\/.*pixel/i
+
+export function snippetCategory(code: string): ConsentCategory {
+  return MARKETING_RE.test(code) ? 'marketing' : 'analytics'
+}
+
 function isDeferrableScript(attrs: Record<string, string | true>): boolean {
   const t = typeof attrs.type === 'string' ? attrs.type.trim().toLowerCase() : ''
   return JS_TYPES.has(t)
@@ -30,24 +42,26 @@ function isDeferrableScript(attrs: Record<string, string | true>): boolean {
  * async đổi thành data-cs-async: React 19 coi <script async src> là tài nguyên riêng (đẩy lên đầu <head>, tự quản lý),
  * thẻ giữ chỗ không được để React đụng vào.
  */
-function deferAttrs(attrs: Record<string, string | true>): Record<string, string> {
+function deferAttrs(attrs: Record<string, string | true>, cat: ConsentCategory): Record<string, string> {
   const t = typeof attrs.type === 'string' ? attrs.type.trim().toLowerCase() : ''
   return {
     type: 'text/plain',
     'data-cs-defer': '',
+    'data-cs-cat': cat,
     ...(t === 'module' ? { 'data-cs-type': 'module' } : {}),
     ...(attrs.async !== undefined ? { 'data-cs-async': '' } : {}),
   }
 }
 
 /** Đổi các thẻ <script> JavaScript trong một đoạn HTML (mã "Đầu thân trang" / "Cuối trang") sang dạng tải sau. */
-function deferScriptsInHtml(html: string): string {
+function deferScriptsInHtml(html: string, cat: ConsentCategory): string {
   return html.replace(/<script\b((?:[^>"']|"[^"]*"|'[^']*')*)>/gi, (whole, rawAttrs: string) => {
     if (!isDeferrableScript(parseAttrs(rawAttrs))) return whole
-    const extra = Object.entries(deferAttrs(parseAttrs(rawAttrs)))
+    const extra = Object.entries(deferAttrs(parseAttrs(rawAttrs), cat))
       .map(([k, v]) => (v === '' ? ` ${k}` : ` ${k}="${v}"`))
       .join('')
     const withoutType = rawAttrs
+      .replace(/\sdata-cs-(?:defer|cat|type|async)(\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))?/gi, '')
       .replace(/\stype\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
       .replace(/\sasync(\s*=\s*("[^"]*"|'[^']*'|[^\s>]+))?(?=[\s>]|$)/gi, '')
     return `<script${extra}${withoutType}>`
@@ -79,7 +93,7 @@ function propsOf(attrs: HeadTag['attrs'], id: string): Record<string, unknown> {
   return props
 }
 
-function renderTag(t: HeadTag, id: string, key: string) {
+function renderTag(t: HeadTag, id: string, key: string, cat: ConsentCategory) {
   const props = propsOf(t.attrs, id)
   switch (t.tag) {
     case 'meta':
@@ -87,7 +101,7 @@ function renderTag(t: HeadTag, id: string, key: string) {
     case 'link':
       return <link key={key} {...props} />
     case 'script': {
-      const p: Record<string, unknown> = isDeferrableScript(t.attrs) ? { ...props, ...deferAttrs(t.attrs) } : props
+      const p: Record<string, unknown> = isDeferrableScript(t.attrs) ? { ...props, ...deferAttrs(t.attrs, cat) } : props
       if (p['data-cs-async'] !== undefined) delete p.async
       return t.inner?.trim() ? (
         <script key={key} {...p} dangerouslySetInnerHTML={{ __html: t.inner }} />
@@ -112,13 +126,26 @@ export const SITE_CODE_TRACKING = process.env.VERCEL_ENV === 'production'
 const GA4_ID = /\bG-[A-Z0-9]{6,14}\b/g
 
 /**
- * Tắt theo dõi khi đang ở khu quản trị (và mọi trang của bản preview / máy chạy thử): đặt cờ tắt của Google Analytics (ga-disable-<mã>) và cờ __cdpOptOut cho CDP
- * trước khi các mã khác chạy. Layout gốc không đọc đường dẫn ở máy chủ (để trang tĩnh), nên kiểm tra ngay trên trình duyệt.
+ * Chạy trước mọi mã tuỳ chỉnh, ngay trong <head>:
+ * 1. window.__csConsentRead(): đọc cookie cs_consent (cùng định dạng, phiên bản và hạn với lib/consent/shared.ts), trả {a, m}
+ *    hoặc null khi chưa chọn. Bộ nạp dùng để biết nhóm nào được chạy.
+ * 2. Chế độ đồng ý của Google (Consent Mode v2): mặc định theo cookie, cập nhật khi khách lưu lựa chọn (sự kiện cs-consent).
+ *    Chưa đồng ý cá nhân hóa và quảng cáo: tắt Google Signals và cá nhân hóa quảng cáo.
+ * 3. Tắt ghi số liệu ở khu quản trị (và mọi trang của bản preview / máy chạy thử): cờ ga-disable-<mã> và __cdpOptOut.
+ *    Layout gốc không đọc đường dẫn ở máy chủ (để trang tĩnh), nên kiểm tra ngay trên trình duyệt.
  */
 function TrackingGuard({ codes }: { codes: string[] }) {
   const ids = [...new Set(codes.flatMap((c) => c.match(GA4_ID) ?? []))]
   const off = SITE_CODE_TRACKING ? '' : 'true||'
-  const js = `(function(){try{if(${off}location.pathname.indexOf('/admin-cls')===0){window.__cdpOptOut=true;${ids
+  const read = `window.__csConsentRead=function(){try{var m=document.cookie.match(/(?:^|;\\s*)cs_consent=([^;]*)/);if(!m)return null;var c=JSON.parse(decodeURIComponent(m[1]));if(c.pv!==${JSON.stringify(
+    POLICY_VERSION
+  )}||typeof c.ts!=='number'||Date.now()-c.ts>${CONSENT_MAX_AGE_DAYS}*864e5)return null;return{a:c.a===1,m:c.m===1};}catch(e){return null}};`
+  const gcm = ids.length
+    ? `window.dataLayer=window.dataLayer||[];function g(){dataLayer.push(arguments)}function st(c){var a=c&&c.a?'granted':'denied',m=c&&c.m?'granted':'denied';return{analytics_storage:a,ad_storage:m,ad_user_data:m,ad_personalization:m}}
+var c0=window.__csConsentRead();g('consent','default',st(c0));if(!(c0&&c0.m)){g('set','allow_google_signals',false);g('set','allow_ad_personalization_signals',false);}
+addEventListener('cs-consent',function(){g('consent','update',st(window.__csConsentRead()))});`
+    : ''
+  const js = `(function(){try{${read}${gcm}if(${off}location.pathname.indexOf('/admin-cls')===0){window.__cdpOptOut=true;${ids
     .map((id) => `window['ga-disable-${id}']=true;`)
     .join('')}}}catch(e){}})();`
   return <script data-cs-guard="" dangerouslySetInnerHTML={{ __html: js }} />
@@ -133,7 +160,10 @@ export function HeadCode({ items, legacy, allCodes = [] }: { items: Item[]; lega
   return (
     <>
       <TrackingGuard codes={[...all.map((s) => s.code), ...allCodes]} />
-      {all.flatMap((s) => parseHeadCode(s.code).tags.map((t, i) => renderTag(t, s.id, `${s.id}-${i}`)))}
+      {all.flatMap((s) => {
+        const cat = snippetCategory(s.code)
+        return parseHeadCode(s.code).tags.map((t, i) => renderTag(t, s.id, `${s.id}-${i}`, cat))
+      })}
     </>
   )
 }
@@ -144,7 +174,7 @@ export function BodyCode({ items }: { items: Item[] }) {
     <>
       {items.map((s) =>
         s.code.trim() ? (
-          <div key={s.id} data-cs-code={s.id} dangerouslySetInnerHTML={{ __html: deferScriptsInHtml(s.code) }} suppressHydrationWarning />
+          <div key={s.id} data-cs-code={s.id} dangerouslySetInnerHTML={{ __html: deferScriptsInHtml(s.code, snippetCategory(s.code)) }} suppressHydrationWarning />
         ) : null
       )}
     </>
@@ -154,17 +184,25 @@ export function BodyCode({ items }: { items: Item[] }) {
 // Chạy lại các script đánh dấu data-cs-defer, đúng thứ tự: script ngoài không async/defer thì đợi tải xong mới sang thẻ kế
 // (giữ đúng ngữ nghĩa như khi nằm thẳng trong HTML); script mới chèn ngay sau thẻ giữ chỗ, giữ mọi thuộc tính (data-write-key,
 // data-cs-code...). document.currentScript vẫn đúng với script chèn bằng JS nên cdp.js đọc được data-write-key.
-const LOADER = `(function(){var started=false,EV=['pointerdown','keydown','touchstart','scroll','wheel','mousemove'];
-function start(){if(started)return;started=true;for(var j=0;j<EV.length;j++)removeEventListener(EV[j],start,true);
-var list=document.querySelectorAll('script[data-cs-defer]'),i=0;
-function next(){while(i<list.length){var old=list[i++],s=document.createElement('script'),a=old.attributes;
-for(var k=0;k<a.length;k++){var n=a[k].name;if(n!=='type'&&n!=='data-cs-defer'&&n!=='data-cs-type'&&n!=='data-cs-async')s.setAttribute(n,a[k].value);}
+// Chỉ chạy thẻ thuộc nhóm khách đã đồng ý (data-cs-cat); thẻ đã chạy gắn data-cs-done. Khách lưu lựa chọn (sự kiện cs-consent)
+// thì chạy ngay các nhóm vừa được đồng ý, không chờ.
+const LOADER = `(function(){var started=false,running=false,again=false,EV=['pointerdown','keydown','touchstart','scroll','wheel','mousemove'];
+function ok(cat){if(cat==='necessary')return true;var c=window.__csConsentRead&&window.__csConsentRead();return !!c&&(cat==='marketing'?c.m:c.a);}
+function run(){if(running){again=true;return;}running=true;
+var all=document.querySelectorAll('script[data-cs-defer]:not([data-cs-done])'),list=[],i=0;
+for(var q=0;q<all.length;q++)if(ok(all[q].getAttribute('data-cs-cat')||'analytics'))list.push(all[q]);
+function done(){running=false;if(again){again=false;run();}}
+function next(){while(i<list.length){var old=list[i++],s=document.createElement('script'),a=old.attributes;old.setAttribute('data-cs-done','');
+for(var k=0;k<a.length;k++){var n=a[k].name;if(n!=='type'&&n.indexOf('data-cs-')!==0)s.setAttribute(n,a[k].value);}
+var code=old.getAttribute('data-cs-code');if(code)s.setAttribute('data-cs-code',code);
 var t=old.getAttribute('data-cs-type');if(t)s.type=t;var src=old.getAttribute('src');
 if(src){var wait=!old.hasAttribute('data-cs-async')&&!old.hasAttribute('async')&&!old.hasAttribute('defer');s.async=!wait;
 if(wait){s.onload=s.onerror=next;old.parentNode.insertBefore(s,old.nextSibling);return;}
-old.parentNode.insertBefore(s,old.nextSibling);}else{s.text=old.text;old.parentNode.insertBefore(s,old.nextSibling);}}}
+old.parentNode.insertBefore(s,old.nextSibling);}else{s.text=old.text;old.parentNode.insertBefore(s,old.nextSibling);}}done();}
 next();}
+function start(){if(started)return;started=true;for(var j=0;j<EV.length;j++)removeEventListener(EV[j],start,true);run();}
 for(var j=0;j<EV.length;j++)addEventListener(EV[j],start,{capture:true,passive:true,once:true});
+addEventListener('cs-consent',function(){started=true;run();});
 function arm(){setTimeout(start,8000);}
 if(document.readyState==='complete')arm();else addEventListener('load',arm);})();`
 

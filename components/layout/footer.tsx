@@ -7,7 +7,20 @@ import { useState } from 'react'
 import { useLanguage } from '@/contexts/language-context'
 import { useSiteBranding } from '@/contexts/site-branding-context'
 import { useFooterContent } from '@/contexts/web-content-context'
-import { SOCIAL_KEYS, type FooterSocial } from '@/lib/cms/web-content-shared'
+import { SOCIAL_KEYS, type FooterSocial, type LinkItem } from '@/lib/cms/web-content-shared'
+import { OpenConsentButton } from '@/components/consent/open-consent-button'
+
+/**
+ * Liên kết chính sách nhập ở Quản lý trang → Footer còn để "#": "Chính sách bảo mật" trỏ về bài Quy định bảo vệ dữ liệu
+ * cá nhân, "Chính sách Cookie" trỏ về /cookie-policy (24/10/2026). Liên kết đã có địa chỉ thật thì giữ nguyên.
+ */
+function policyHref(link: LinkItem): string {
+  if (link.href && link.href !== '#') return link.href
+  const label = `${link.label.vi} ${link.label.en}`.toLowerCase()
+  if (label.includes('cookie')) return '/cookie-policy'
+  if (label.includes('bảo mật') || label.includes('privacy') || label.includes('riêng tư')) return '/blog/quy-dinh-bao-ve-du-lieu-ca-nhan'
+  return link.href
+}
 
 const SOCIAL_ICONS: Record<keyof FooterSocial, typeof Facebook> = {
   facebook: Facebook,
@@ -196,16 +209,20 @@ export function Footer() {
             <p className="text-[#d2d2d7] text-sm text-center md:text-left">
               © {new Date().getFullYear()} {footer.copyright[language]}
             </p>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               {footer.policy_links.map((link) => (
                 <Link
                   key={link.href + link.label[language]}
-                  href={link.href}
+                  href={policyHref(link)}
                   className="text-[#d2d2d7] hover:text-white text-sm transition-colors"
                 >
                   {link.label[language]}
                 </Link>
               ))}
+              <OpenConsentButton
+                label={language === 'vi' ? 'Cài đặt cookie' : 'Cookie settings'}
+                className="text-[#d2d2d7] hover:text-white text-sm transition-colors"
+              />
             </div>
           </div>
         </div>
