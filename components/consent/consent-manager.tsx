@@ -48,6 +48,8 @@ export function ConsentManager() {
   const [panel, setPanel] = useState(false)
   const [analytics, setAnalytics] = useState(false)
   const [marketing, setMarketing] = useState(false)
+  // Mã lựa chọn (id trong cookie cs_consent): khách đọc cho Click Star khi cần tra lịch sử đồng ý ở màn Báo cáo.
+  const [consentId, setConsentId] = useState('')
   const saveRef = useRef<HTMLButtonElement | null>(null)
   const isAdmin = pathname.startsWith('/admin-cls')
 
@@ -63,6 +65,7 @@ export function ConsentManager() {
       const c = readConsent()
       setAnalytics(!!c?.analytics)
       setMarketing(!!c?.marketing)
+      setConsentId(c?.id ?? '')
       setPanel(true)
     }
     window.addEventListener(CONSENT_OPEN_EVENT, open)
@@ -221,6 +224,12 @@ export function ConsentManager() {
                 {t('Đồng ý tất cả', 'Accept all')}
               </button>
             </div>
+            {consentId ? (
+              <p className="mt-4 text-[12px] text-[#6e6e73]">
+                {t('Mã lựa chọn của anh chị: ', 'Your consent ID: ')}
+                <span className="select-all font-mono">{consentId}</span>
+              </p>
+            ) : null}
           </div>
         </div>
       )}
