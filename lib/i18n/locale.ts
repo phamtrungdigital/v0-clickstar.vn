@@ -61,7 +61,10 @@ export function localizePath(path: string, lang: Lang): string {
 
 /** Địa chỉ tương ứng ở ngôn ngữ khác: dùng cho nút đổi ngôn ngữ. */
 export function switchLocalePath(pathname: string, target: Lang): string {
-  return localizePath(stripLocale(pathname), target)
+  // Trang chủ dựng sẵn (prerender) nhận pathname "/index": không chuẩn hoá thì HTML gửi cho Google có liên kết /index
+  // (trùng trang chủ) và /en/index (404).
+  const p = pathname.replace(/^(\/en)?\/index$/, (_m, en: string | undefined) => en || '/')
+  return localizePath(stripLocale(p), target)
 }
 
 /** Gốc địa chỉ của chính site (có và không có www): CMS hay dán dạng tuyệt đối https://clickstar.vn/projects/x. */
