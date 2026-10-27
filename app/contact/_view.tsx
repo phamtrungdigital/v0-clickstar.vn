@@ -17,10 +17,10 @@ import { ContactForm } from './_components/contact-form'
 export async function contactMetadata(lang: Lang): Promise<Metadata> {
   const t = makeT(lang)
   return buildMetadata({
-    title: t('Liên hệ tư vấn chuyển đổi số miễn phí', 'Contact us for a free digital transformation consultation'),
+    title: t('Liên hệ tư vấn chuyển đổi số miễn phí', 'Free digital transformation consultation'),
     description: t(
       'Liên hệ Click Star để được tư vấn miễn phí các dịch vụ Digital Marketing, Thiết kế Website, AI Integration, CRM/CDP. Gọi hotline hoặc gửi yêu cầu qua form.',
-      'Contact Click Star for a free consultation on Digital Marketing, Website Design, AI Integration and CRM/CDP services. Call our hotline or send a request through the form.'
+      'Contact Click Star for a free consultation on digital marketing, websites, AI integration and CRM/CDP. Call our hotline or send the form.'
     ),
     path: '/contact',
     lang,
@@ -48,7 +48,7 @@ export async function ContactView({ lang, service }: { lang: Lang; service?: str
   const mapsQuery = encodeURIComponent(address)
   const mapsEmbed = `https://www.google.com/maps?q=${mapsQuery}&output=embed`
 
-  const pageName = t('Liên hệ tư vấn chuyển đổi số miễn phí', 'Contact us for a free digital transformation consultation')
+  const pageName = t('Liên hệ tư vấn chuyển đổi số miễn phí', 'Free digital transformation consultation')
 
   return (
     <div className="min-h-screen">

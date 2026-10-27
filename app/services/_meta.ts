@@ -10,8 +10,8 @@ export async function servicesIndexMetadata(lang: Lang): Promise<Metadata> {
   return buildMetadata({
     title: t('Dịch vụ chuyển đổi số toàn diện', 'Comprehensive digital transformation services'),
     description: t(
-      '8 dịch vụ của Click Star: Digital Marketing, Thiết kế Website, Dashboard dữ liệu, Tích hợp AI, AI Automation, CRM & CDP, Phân tích cuộc gọi AI (Call to Text) và Phần mềm theo yêu cầu.',
-      '8 services from Click Star: Digital Marketing, Website Design, Data Dashboards, AI Integration, AI Automation, CRM & CDP, AI Call Analytics (Call to Text) and Custom Software.'
+      '8 dịch vụ của Click Star: Digital Marketing, Website, Dashboard dữ liệu, Tích hợp AI, Tự động hóa, CRM & CDP, Phân tích cuộc gọi AI và Phần mềm theo yêu cầu.',
+      '8 Click Star services: digital marketing, websites, data dashboards, AI integration, automation, CRM & CDP, AI call analytics and custom software.'
     ),
     path: '/services',
     lang,

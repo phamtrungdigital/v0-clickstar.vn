@@ -12,3 +12,6 @@
 @source '../hooks';
 @source not '../app/admin-cls';
 @source not '../components/admin';
+/* Thành phần giao diện chỉ khu quản trị dùng (trang khách chỉ dùng button, eyebrow, reveal, toast). Trang khách dùng thêm
+   thành phần nào trong danh sách này thì xoá tên đó ở đây, nếu không class của nó sẽ thiếu trên trang khách. */
+@source not '../components/ui/{accordion,alert,alert-dialog,aspect-ratio,avatar,badge,breadcrumb,button-group,calendar,card,carousel,chart,checkbox,collapsible,command,context-menu,dialog,drawer,dropdown-menu,empty,field,form,hover-card,input,input-group,input-otp,item,kbd,label,menubar,navigation-menu,pagination,popover,progress,radio-group,resizable,scroll-area,select,separator,sheet,sidebar,skeleton,slider,sonner,spinner,switch,table,tabs,textarea,toaster,toggle,toggle-group,tooltip,use-mobile,use-toast}.{tsx,ts}';

@@ -32,6 +32,23 @@ export function fitTitle(text: string, max: number): string {
   return cut
 }
 
+/** Độ dài mô tả tối đa: Google thường hiện khoảng 155-160 ký tự, dài hơn bị cắt giữa chừng trên kết quả tìm kiếm. */
+export const DESCRIPTION_MAX = 160
+
+/**
+ * Mô tả quá dài thì rút gọn: ưu tiên dừng ở hết câu (dấu chấm) nếu đoạn còn lại vẫn đủ ý (từ 100 ký tự),
+ * không thì cắt ở ranh giới từ và thêm dấu "…". Mô tả nhập trong admin vẫn lưu đủ chữ, chỉ thẻ meta bị rút.
+ */
+export function fitDescription(text: string | null | undefined, max = DESCRIPTION_MAX): string | undefined {
+  const t = (text || '').trim().replace(/\s+/g, ' ')
+  if (!t) return undefined
+  if (t.length <= max) return t
+  const head = t.slice(0, max)
+  const dot = Math.max(head.lastIndexOf('. '), head.endsWith('.') ? head.length - 1 : -1)
+  if (dot >= 100) return head.slice(0, dot + 1)
+  return `${fitTitle(t, max - 1)}…`
+}
+
 type MetaInput = {
   title: string
   description?: string | null
@@ -67,7 +84,7 @@ export function buildMetadata(o: MetaInput): Metadata {
   const lang: Lang = o.lang ?? 'vi'
   const hasEn = o.hasEn ?? true
   const title = brandTitle(o.title)
-  const description = o.description || undefined
+  const description = fitDescription(o.description)
   const images = (o.images ?? []).filter((x): x is string => !!x).map((x) => localizeOgImage(x, lang))
   const viPath = o.path
   const selfPath = viPath ? localizePath(viPath, lang) : undefined
