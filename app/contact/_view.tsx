@@ -9,6 +9,8 @@ import type { Lang } from '@/lib/i18n/locale'
 import { buildMetadata } from '@/lib/seo/metadata'
 import { ogImageOr } from '@/lib/seo/default-og'
 import { DEFAULT_HOTLINE, DEFAULT_EMAIL } from '@/lib/seo/site'
+import { JsonLd } from '@/components/seo/json-ld'
+import { breadcrumbSchema, contactPageSchema, organizationSchema } from '@/lib/seo/schema'
 import { ContactForm } from './_components/contact-form'
 
 /** Metadata của trang liên hệ ở ngôn ngữ `lang`. */
@@ -46,8 +48,17 @@ export async function ContactView({ lang, service }: { lang: Lang; service?: str
   const mapsQuery = encodeURIComponent(address)
   const mapsEmbed = `https://www.google.com/maps?q=${mapsQuery}&output=embed`
 
+  const pageName = t('Liên hệ tư vấn chuyển đổi số miễn phí', 'Contact us for a free digital transformation consultation')
+
   return (
     <div className="min-h-screen">
+      <JsonLd
+        data={[
+          contactPageSchema({ name: pageName, path: '/contact', lang }),
+          organizationSchema(settings, lang),
+          breadcrumbSchema([{ name: t('Trang chủ', 'Home'), path: '/' }, { name: t('Liên hệ', 'Contact'), path: '/contact' }], lang),
+        ]}
+      />
       <MainNav />
 
       {/* Hero */}

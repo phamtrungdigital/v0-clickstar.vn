@@ -43,7 +43,7 @@ export function IndexNowPanel() {
           </button>
           <button type="button" disabled={pending} onClick={() => run('all')} className={btn('secondary')}>
             {pending && which === 'all' ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-            Gửi tất cả bài đã đăng
+            Gửi toàn bộ website
           </button>
         </div>
       </div>
@@ -59,7 +59,10 @@ export function IndexNowPanel() {
           {outcome.ok ? <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none" /> : <XCircle className="mt-0.5 h-4 w-4 flex-none" />}
           <span>
             {outcome.message}
-            {outcome.ok && ` (${outcome.posts} bài, ${outcome.submitted} địa chỉ gồm bản tiếng Anh và trang danh sách Blog)`}
+            {outcome.ok &&
+              (which === 'all'
+                ? ` (${outcome.submitted} địa chỉ: trang chính, ${outcome.posts} bài viết, dự án, gồm cả bản tiếng Anh)`
+                : ` (${outcome.posts} bài, ${outcome.submitted} địa chỉ gồm bản tiếng Anh và trang danh sách Blog)`)}
           </span>
         </div>
       )}

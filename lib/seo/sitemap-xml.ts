@@ -180,6 +180,14 @@ export const pagesSitemapXml = async () => urlset(pageEntries(await loadAll()))
 export const blogSitemapXml = async () => urlset(blogEntries(await loadAll()))
 export const projectsSitemapXml = async () => urlset(projectEntries(await loadAll()))
 
+/** Mọi địa chỉ trong 3 sitemap con (bản /en tính riêng), đúng thứ tự sitemap: dùng để gửi cả website qua IndexNow. */
+export async function allSitemapUrls(): Promise<string[]> {
+  const data = await loadAll()
+  return [...pageEntries(data), ...blogEntries(data), ...projectEntries(data)].flatMap((e) =>
+    e.hasEn ? [abs(e.path, 'vi'), abs(e.path, 'en')] : [abs(e.path, 'vi')]
+  )
+}
+
 /** Tổng số địa chỉ trong 3 sitemap con (bản /en tính riêng), dùng cho màn kiểm tra SEO. */
 export async function sitemapUrlCount(): Promise<number> {
   const data = await loadAll()

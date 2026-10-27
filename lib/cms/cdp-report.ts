@@ -55,8 +55,28 @@ const SOURCE_LABEL: Record<string, string> = {
   zalo: 'Zalo',
   internal: 'Từ chính website',
 }
+/**
+ * Trợ lý AI dẫn khách tới website: nhận ra qua địa chỉ trang trước (referrer) hoặc utm_source mà trợ lý tự gắn
+ * (ChatGPT gắn utm_source=chatgpt.com). Gemini mở link qua google.com nên CDP gộp vào "Google", chưa tách được.
+ */
+const AI_ASSISTANTS: [RegExp, string][] = [
+  [/chatgpt\.com|chat\.openai\.com|openai\.com/i, 'ChatGPT'],
+  [/perplexity\.ai/i, 'Perplexity'],
+  [/gemini\.google\.com|bard\.google\.com/i, 'Gemini'],
+  [/copilot\.microsoft\.com|copilot\.cloud\.microsoft/i, 'Copilot'],
+  [/claude\.ai/i, 'Claude'],
+  [/grok\.com/i, 'Grok'],
+  [/meta\.ai/i, 'Meta AI'],
+  [/deepseek\.com/i, 'DeepSeek'],
+]
+function aiAssistant(text: string): string | null {
+  return AI_ASSISTANTS.find(([re]) => re.test(text))?.[1] ?? null
+}
+
 function sourceLabel(key: string) {
   if (SOURCE_LABEL[key]) return SOURCE_LABEL[key]
+  const ai = key.startsWith('utm:') || key.startsWith('ref:') ? aiAssistant(key.slice(4)) : null
+  if (ai) return `Trợ lý AI: ${ai}`
   if (key.startsWith('utm:')) return `Chiến dịch UTM: ${key.slice(4)}`
   if (key.startsWith('ref:')) return key.slice(4)
   return key
@@ -141,11 +161,20 @@ export async function loadTraffic(days: number): Promise<TrafficResult> {
         filteredVisitors: traffic.kpis.filtered_visitors,
         leadsLinked: leads.length,
       },
-      sources: traffic.sources.map((s) => ({
-        label: sourceLabel(s.key),
-        sessions: s.sessions,
-        leads: s.aids.filter((a) => leadAids.has(a)).length,
-      })),
+      // Gộp các khoá cùng nhãn (ví dụ ChatGPT đến qua utm và qua referrer), giữ thứ tự nhiều phiên trước.
+      sources: [
+        ...traffic.sources
+          .reduce((m, s) => {
+            const label = sourceLabel(s.key)
+            const cur = m.get(label) ?? { label, sessions: 0, aids: new Set<string>() }
+            cur.sessions += s.sessions
+            for (const a of s.aids) cur.aids.add(a)
+            return m.set(label, cur)
+          }, new Map<string, { label: string; sessions: number; aids: Set<string> }>())
+          .values(),
+      ]
+        .sort((a, b) => b.sessions - a.sessions)
+        .map((s) => ({ label: s.label, sessions: s.sessions, leads: [...s.aids].filter((a) => leadAids.has(a)).length })),
       landings: traffic.landings.map((l) => ({ path: l.path, title: nameOf(l.path, l.title), sessions: l.sessions, bouncePct: l.bounce_pct })),
       articles: traffic.pages
         .filter((p) => isArticle(p.path))
@@ -205,6 +234,14 @@ function classify(s: CdpStep): string {
   if (s.utm && Object.keys(s.utm).length) return `utm:${s.utm.utm_source ?? 'khac'}`
   const r = s.referrer ?? ''
   if (!r) return 'direct'
+  // Trước nhánh Google: gemini.google.com cũng chứa "google."
+  if (aiAssistant(r)) {
+    try {
+      return `ref:${new URL(r).hostname}`
+    } catch {
+      return 'direct'
+    }
+  }
   if (/google\./i.test(r)) return 'google'
   if (/(facebook\.|fb\.)/i.test(r)) return 'facebook'
   if (/zalo/i.test(r)) return 'zalo'

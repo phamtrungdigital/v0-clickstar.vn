@@ -3,7 +3,10 @@
 import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { slugify, type CaseStudyMetric, type CaseStudyStatus } from '@/lib/cms/case-studies-types'
+import { caseStudyHasEnglish, slugify, type CaseStudyMetric, type CaseStudyStatus } from '@/lib/cms/case-studies-types'
+import { notifyIndexNow } from '@/lib/seo/indexnow'
+import { SITE_URL } from '@/lib/seo/site'
+import { localizePath } from '@/lib/i18n/locale'
 
 export type ProjectFormData = {
   slug: string
@@ -22,6 +25,19 @@ export type ProjectFormData = {
   project_url?: string
   status: CaseStudyStatus
   sort_order: number
+}
+
+/** Dự án đã đăng thì báo IndexNow địa chỉ dự án (vi, và en nếu đủ bản dịch, khớp sitemap) cùng trang danh sách Dự án. */
+function announce(p: ReturnType<typeof normalize>) {
+  if (p.status !== 'published') return
+  const path = `/projects/${p.slug}`
+  const hasEn = caseStudyHasEnglish({ title_en: p.title_en, summary_en: p.summary_en, body_en: p.body_en })
+  notifyIndexNow([
+    `${SITE_URL}${localizePath(path, 'vi')}`,
+    ...(hasEn ? [`${SITE_URL}${localizePath(path, 'en')}`] : []),
+    `${SITE_URL}${localizePath('/projects', 'vi')}`,
+    `${SITE_URL}${localizePath('/projects', 'en')}`,
+  ])
 }
 
 function normalize(input: ProjectFormData) {
@@ -82,6 +98,7 @@ export async function createProject(input: ProjectFormData) {
   revalidatePath('/en/projects')
   // Trang dự án công khai là trang tĩnh (ISR): xoá cache dữ liệu dự án để trang danh sách và trang chi tiết dựng lại
   updateTag('case_studies')
+  announce(payload)
   return { ok: true, id: data.id }
 }
 
@@ -104,6 +121,7 @@ export async function updateProject(id: string, input: ProjectFormData) {
   revalidatePath('/en/projects')
   updateTag('case_studies')
   revalidatePath(`/projects/${payload.slug}`)
+  announce(payload)
   return { ok: true }
 }
 

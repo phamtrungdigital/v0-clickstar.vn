@@ -36,14 +36,23 @@ function postalAddress(raw: string) {
   return { '@type': 'PostalAddress', streetAddress: raw, addressCountry: 'VN' }
 }
 
+/** Lĩnh vực chuyên môn, khớp 8 dịch vụ trên menu. */
+const ORG_TOPICS: Record<Lang, string[]> = {
+  vi: ['Digital Marketing', 'Thiết kế website', 'Dashboard dữ liệu', 'Tích hợp AI', 'Tự động hóa quy trình', 'CRM', 'CDP', 'Phân tích cuộc gọi bằng AI', 'Phần mềm theo yêu cầu'],
+  en: ['Digital marketing', 'Website design', 'Data dashboards', 'AI integration', 'Process automation', 'CRM', 'Customer data platform', 'AI call analytics', 'Custom software'],
+}
+
 /** Thông tin tổ chức, chỉ lấy từ Cài đặt trong admin (không tự bịa dữ liệu). Bản /en dùng chữ tiếng Anh nếu có. */
 export function organizationSchema(s: SiteSettings | null, lang: Lang = 'vi') {
   const sameAs = [s?.zalo_url, s?.facebook_url, s?.linkedin_url, s?.youtube_url, s?.instagram_url, s?.twitter_url].filter(Boolean)
   const address = (lang === 'en' ? s?.address?.en : '') || s?.address?.vi
   return {
-    '@type': 'Organization',
+    // ProfessionalService (một loại LocalBusiness): công cụ tìm kiếm và trợ lý AI hiểu đây là doanh nghiệp dịch vụ có địa chỉ.
+    '@type': ['Organization', 'ProfessionalService'],
     '@id': ORG_ID,
     name: BRAND,
+    // Tên gọi khác: tách khỏi công ty ClickStar (Mỹ, 2006) trùng tên trên Wikipedia.
+    alternateName: ['Click Star Digital', 'Clickstar', 'clickstar.vn'],
     legalName: (lang === 'en' ? s?.site_name?.en : '') || s?.site_name?.vi || undefined,
     url: s?.site_url || SITE_URL,
     foundingDate: '2025',
@@ -52,7 +61,9 @@ export function organizationSchema(s: SiteSettings | null, lang: Lang = 'vi') {
         ? 'Click Star provides digital transformation solutions for businesses: digital marketing, website design, data dashboards, AI integration, automation, CRM and CDP, and custom software.'
         : 'Click Star cung cấp giải pháp chuyển đổi số cho doanh nghiệp: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu.',
     areaServed: { '@type': 'Country', name: lang === 'en' ? 'Vietnam' : 'Việt Nam' },
+    knowsAbout: ORG_TOPICS[lang],
     logo: absoluteUrl(s?.logo_url),
+    image: absoluteUrl(s?.logo_url),
     email: s?.contact_email || undefined,
     telephone: phoneIntl(s?.contact_phone),
     address: address ? postalAddress(address) : undefined,
@@ -159,6 +170,22 @@ export function aboutPageSchema(o: { name: string; description?: string; path: s
   const url = absoluteUrl(localizePath(o.path, lang))
   return {
     '@type': 'AboutPage',
+    '@id': `${url}#webpage`,
+    name: o.name,
+    description: o.description || undefined,
+    url,
+    inLanguage: lang,
+    isPartOf: { '@id': lang === 'en' ? `${SITE_URL}/en#website` : WEBSITE_ID },
+    about: { '@id': ORG_ID },
+  }
+}
+
+/** Trang Liên hệ: trỏ tới tổ chức (địa chỉ, điện thoại, email nằm trong dữ liệu Organization). */
+export function contactPageSchema(o: { name: string; description?: string; path: string; lang?: Lang }) {
+  const lang = o.lang ?? 'vi'
+  const url = absoluteUrl(localizePath(o.path, lang))
+  return {
+    '@type': 'ContactPage',
     '@id': `${url}#webpage`,
     name: o.name,
     description: o.description || undefined,
