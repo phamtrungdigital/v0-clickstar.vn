@@ -259,7 +259,7 @@ export function PricingSection() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-extrabold text-[#1859b8] mb-1">10+</div>
-              <div className="text-sm text-muted-foreground">{t('Năm kinh nghiệm', 'Years of experience')}</div>
+              <div className="text-sm text-muted-foreground">{t('Năm kinh nghiệm đội ngũ', 'Years of team experience')}</div>
             </div>
           </div>
         </div>

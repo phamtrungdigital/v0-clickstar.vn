@@ -250,7 +250,7 @@ export default function DigitalMarketingPage() {
 
   const stats = [
     { value: '100+', label: t('Doanh nghiệp đồng hành', 'Businesses served') },
-    { value: '10+', label: t('Năm kinh nghiệm', 'Years of experience') },
+    { value: '10+', label: t('Năm kinh nghiệm đội ngũ', 'Years of team experience') },
     { value: '24/7', label: t('Theo dõi chiến dịch', 'Campaign monitoring') },
     { value: '90%+', label: t('Khách hàng hài lòng', 'Client satisfaction') },
   ]

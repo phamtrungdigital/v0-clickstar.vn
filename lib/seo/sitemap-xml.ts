@@ -4,6 +4,7 @@ import { localizePath, type Lang } from '@/lib/i18n/locale'
 import { postHasEnglish } from '@/lib/cms/post-i18n'
 import { caseStudyHasEnglish } from '@/lib/cms/case-studies-types'
 import type { I18n } from '@/lib/cms/types'
+import { FAQ_UPDATED } from '@/lib/seo/identity'
 
 /**
  * Sitemap chia nhóm (21/10/2026): /sitemap.xml là mục lục, trỏ tới 3 tệp con xếp theo thứ tự cố định:
@@ -34,6 +35,7 @@ const PAGE_ORDER = [
   '/pricing',
   '/projects',
   '/about',
+  '/faq',
   '/blog',
   '/contact',
   '/cookie-policy',
@@ -149,6 +151,8 @@ function pageEntries({ pages, posts, projects }: Data): Entry[] {
   // Liên hệ: nội dung viết trong mã nguồn, không có ngày sửa đáng tin nên không khai lastmod.
   if (!byPath.has('/contact')) byPath.set('/contact', { path: '/contact', lastmod: null, hasEn: true })
   // Chính sách cookie: viết trong mã nguồn (app/cookie-policy), ngày áp dụng ghi trên trang.
+  // Hỏi đáp về Click Star: viết trong mã nguồn (app/faq), ngày cập nhật ghi trên trang.
+  if (!byPath.has('/faq')) byPath.set('/faq', { path: '/faq', lastmod: iso(FAQ_UPDATED), hasEn: true })
   if (!byPath.has('/cookie-policy')) byPath.set('/cookie-policy', { path: '/cookie-policy', lastmod: '2026-10-24', hasEn: true })
 
   const rank = (path: string) => {

@@ -28,7 +28,7 @@ const PLATFORM_SRC = {
 
 // Số liệu thương hiệu đã được chủ site xác nhận (khớp trang Giới thiệu)
 const TRUST = [
-  { value: '10+', vi: 'năm kinh nghiệm', en: 'years of experience' },
+  { value: '10+', vi: 'năm kinh nghiệm đội ngũ', en: 'years of team experience' },
   { value: '100+', vi: 'doanh nghiệp đồng hành', en: 'businesses served' },
   { value: '90%+', vi: 'khách hàng hài lòng', en: 'satisfied clients' },
 ]

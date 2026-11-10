@@ -222,7 +222,7 @@ const useCases = [
 const transformationStats = [
   { value: '73%', label: { vi: 'Doanh nghiệp đã áp dụng AI', en: 'Businesses already using AI' }, desc: { vi: 'Theo McKinsey 2026', en: 'McKinsey, 2026' } },
   { value: '100+', label: { vi: 'Doanh nghiệp đồng hành', en: 'Businesses served' }, desc: { vi: 'Marketing, CRM và vận hành', en: 'Marketing, CRM and operations' } },
-  { value: '10+', label: { vi: 'Năm kinh nghiệm', en: 'Years of experience' }, desc: { vi: 'Của đội ngũ Click Star', en: 'Across the Click Star team' } },
+  { value: '10+', label: { vi: 'Năm kinh nghiệm đội ngũ', en: 'Years of team experience' }, desc: { vi: 'Của đội ngũ Click Star', en: 'Across the Click Star team' } },
   { value: '24/7', label: { vi: 'Hoạt động liên tục', en: 'Always on' }, desc: { vi: 'Chatbot và tự động hóa', en: 'Chatbots and automation' } }
 ]
 
@@ -356,7 +356,7 @@ export default function AIIntegrationPage() {
               {[
                 { v: '24/7', l: t('Hoạt động liên tục', 'Always on') },
                 { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
-                { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
+                { v: '10+', l: t('Năm kinh nghiệm đội ngũ', 'Years of team experience') },
               ].map((x) => (
                 <div key={x.l}>
                   <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>

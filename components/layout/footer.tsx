@@ -6,6 +6,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Youtube, MapPin, Phone, Mail, S
 import { useState } from 'react'
 import { useLanguage } from '@/contexts/language-context'
 import { useSiteBranding } from '@/contexts/site-branding-context'
+import { LEGAL } from '@/lib/seo/identity'
 import { useFooterContent } from '@/contexts/web-content-context'
 import { SOCIAL_KEYS, type FooterSocial, type LinkItem } from '@/lib/cms/web-content-shared'
 import { OpenConsentButton } from '@/components/consent/open-consent-button'
@@ -206,10 +207,21 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-[#d2d2d7] text-sm text-center md:text-left">
-              © {new Date().getFullYear()} {footer.copyright[language]}
-            </p>
+            <div className="text-center md:text-left">
+              <p className="text-[#d2d2d7] text-sm">
+                © {new Date().getFullYear()} {footer.copyright[language]}
+              </p>
+              {/* Thông tin pháp lý (lib/seo/identity.ts): trợ lý AI đối chiếu tên pháp lý, năm thành lập, mã số thuế ở mọi trang. */}
+              <p className="mt-1 text-[#86868b] text-xs">
+                {language === 'vi' ? LEGAL.legalName : LEGAL.legalNameEn}
+                {LEGAL.taxId ? ` · ${language === 'vi' ? 'MST' : 'Tax code'} ${LEGAL.taxId}` : ''}
+                {` · ${language === 'vi' ? 'Thành lập' : 'Founded'} ${LEGAL.founded}`}
+              </p>
+            </div>
             <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              <Link href="/faq" className="text-[#d2d2d7] hover:text-white text-sm transition-colors">
+                {language === 'vi' ? 'Hỏi đáp về Click Star' : 'About Click Star'}
+              </Link>
               {footer.policy_links.map((link) => (
                 <Link
                   key={link.href + link.label[language]}

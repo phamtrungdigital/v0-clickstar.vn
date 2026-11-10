@@ -1,4 +1,5 @@
 import { BRAND, SITE_URL } from './site'
+import { LEGAL, identitySentence } from './identity'
 import type { SiteSettings } from '@/lib/cms/settings'
 import { localizePath, type Lang } from '@/lib/i18n/locale'
 
@@ -56,10 +57,13 @@ export function organizationSchema(s: SiteSettings | null, lang: Lang = 'vi') {
     legalName: (lang === 'en' ? s?.site_name?.en : '') || s?.site_name?.vi || undefined,
     url: s?.site_url || SITE_URL,
     foundingDate: '2025',
-    description:
+    description: `${identitySentence(lang)} ${
       lang === 'en'
-        ? 'Click Star provides digital transformation solutions for businesses: digital marketing, website design, data dashboards, AI integration, automation, CRM and CDP, and custom software.'
-        : 'Click Star cung cấp giải pháp chuyển đổi số cho doanh nghiệp: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu.',
+        ? 'Services: digital marketing, website design, data dashboards, AI integration, automation, CRM and CDP, and custom software.'
+        : 'Dịch vụ: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu.'
+    }`,
+    taxID: LEGAL.taxId || undefined,
+    founder: LEGAL.representative ? { '@type': 'Person', name: LEGAL.representative } : undefined,
     areaServed: { '@type': 'Country', name: lang === 'en' ? 'Vietnam' : 'Việt Nam' },
     knowsAbout: ORG_TOPICS[lang],
     logo: absoluteUrl(s?.logo_url),

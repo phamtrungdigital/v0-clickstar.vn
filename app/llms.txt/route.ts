@@ -1,5 +1,6 @@
 import { createPublicClient } from '@/lib/supabase/public'
 import { localizePath } from '@/lib/i18n/locale'
+import { identitySentence, legalRows } from '@/lib/seo/identity'
 
 // Tệp /llms.txt: trang chữ thuần giới thiệu site cho các công cụ AI (theo đề xuất llmstxt.org).
 // Tự dựng từ dữ liệu đang đăng trên site nên không bị cũ; làm mới mỗi giờ.
@@ -44,9 +45,16 @@ export async function GET() {
   out.push('# Click Star')
   out.push('')
   out.push(
-    '> Click Star là công ty tại Hà Nội cung cấp giải pháp chuyển đổi số cho doanh nghiệp: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu. Đội ngũ có hơn 10 năm kinh nghiệm; bắt đầu từ agency năm 2018, mở rộng sang CRM và hệ thống vận hành từ năm 2021 và thành lập công ty năm 2025. Website có 2 ngôn ngữ: tiếng Việt (địa chỉ gốc) và tiếng Anh (thêm /en vào đầu đường dẫn).'
+    `> ${identitySentence('vi')} Click Star cung cấp giải pháp chuyển đổi số cho doanh nghiệp: Digital Marketing, thiết kế website, dashboard dữ liệu, tích hợp AI, tự động hóa, CRM và CDP, phần mềm theo yêu cầu. Website có 2 ngôn ngữ: tiếng Việt (địa chỉ gốc) và tiếng Anh (thêm /en vào đầu đường dẫn).`
   )
   out.push('')
+  out.push(
+    '## Thông tin doanh nghiệp',
+    '',
+    ...legalRows('vi').map((r) => `- ${r.label}: ${r.value}`),
+    `- [Hỏi đáp về Click Star](${BASE}/faq): Click Star là ai, vì sao ghi hơn 10 năm kinh nghiệm, thông tin pháp lý, quy trình làm việc, quyền sở hữu mã nguồn và dữ liệu.`,
+    ''
+  )
 
   const intro = [...bySlug(/^home$/), ...bySlug(/^about$/)]
   if (intro.length) out.push('## Giới thiệu', '', ...intro.map(pageLine), '')

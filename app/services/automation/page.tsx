@@ -248,7 +248,7 @@ export default function AIAutomationPage() {
               {[
                 { v: '24/7', l: t('Hoạt động liên tục', 'Always on') },
                 { v: '100+', l: t('Doanh nghiệp đồng hành', 'Businesses served') },
-                { v: '10+', l: t('Năm kinh nghiệm', 'Years of experience') },
+                { v: '10+', l: t('Năm kinh nghiệm đội ngũ', 'Years of team experience') },
               ].map((x) => (
                 <div key={x.l}>
                   <div className="text-[clamp(32px,5vw,48px)] font-semibold leading-[1.2] tracking-[-0.03em] tabular-nums text-[#1d1d1f]">{x.v}</div>
