@@ -11,7 +11,7 @@ import { buildMetadata } from '@/lib/seo/metadata'
 import { ogImageOr } from '@/lib/seo/default-og'
 import { DEFAULT_EMAIL, DEFAULT_HOTLINE } from '@/lib/seo/site'
 import { breadcrumbSchema, organizationSchema } from '@/lib/seo/schema'
-import { BUSINESS_REGISTRY_URL, FAQ_UPDATED, LEGAL, identitySentence, legalRows } from '@/lib/seo/identity'
+import { BUSINESS_REGISTRY_URL, FAQ_UPDATED, LEGAL, REGISTERED_INDUSTRIES, identitySentence, legalRows } from '@/lib/seo/identity'
 
 /**
  * Hỏi đáp về Click Star (10/11/2026, phương án GEO nhóm A). Trả lời thẳng những câu trợ lý AI hay được hỏi về một
@@ -41,6 +41,7 @@ export async function FaqView({ lang }: { lang: Lang }) {
   const email = settings?.contact_email || DEFAULT_EMAIL
   const address = pickI18n(lang, settings?.address) || null
   const legal = legalRows(lang, address)
+  const industries = REGISTERED_INDUSTRIES.map((i) => `${lang === 'en' ? i.en : i.vi} (${i.code})`).join('; ')
   const link = 'font-medium text-[#1859b8] underline underline-offset-2'
 
   const groups: { title: string; items: QA[] }[] = [
@@ -76,7 +77,7 @@ export async function FaqView({ lang }: { lang: Lang }) {
         },
         {
           q: t('Thông tin pháp lý của Click Star?', "What are Click Star's legal details?"),
-          text: legal.map((r) => `${r.label}: ${r.value}`).join('. '),
+          text: `${legal.map((r) => `${r.label}: ${r.value}`).join('. ')}. ${t('Ngành đã đăng ký liên quan dịch vụ', 'Registered business lines related to its services')}: ${industries}.`,
           a: (
             <>
               <dl className="grid gap-x-6 gap-y-2 rounded-2xl border border-black/[0.08] bg-white p-5 sm:grid-cols-[180px_1fr]">
@@ -88,7 +89,11 @@ export async function FaqView({ lang }: { lang: Lang }) {
                 ))}
               </dl>
               <p className="mt-3 text-[15px]">
-                {t('Tra cứu công khai tại ', 'Public lookup: ')}
+                {t('Ngành đã đăng ký liên quan dịch vụ: ', 'Registered business lines related to its services: ')}
+                {industries}.
+              </p>
+              <p className="text-[15px]">
+                {t('Tra cứu công khai theo mã số doanh nghiệp tại ', 'Look up the enterprise code on the ')}
                 <a href={BUSINESS_REGISTRY_URL} target="_blank" rel="noopener" className={link}>
                   {t('Cổng thông tin quốc gia về đăng ký doanh nghiệp', 'National Business Registration Portal')}
                 </a>
