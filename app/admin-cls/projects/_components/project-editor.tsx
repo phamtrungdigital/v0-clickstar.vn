@@ -4,8 +4,8 @@ import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Loader2, Plus, Trash2, ExternalLink } from 'lucide-react'
-import type { CaseStudy, CaseStudyMetric, CaseStudyStatus } from '@/lib/cms/case-studies-types'
-import { slugify } from '@/lib/cms/case-studies-types'
+import type { CaseStudy, CaseStudyMetric, CaseStudyStatus, CaseStudyVerification } from '@/lib/cms/case-studies-types'
+import { PROJECT_SERVICES, VERIFICATION_OPTIONS, slugify } from '@/lib/cms/case-studies-types'
 import { ImagePicker } from '@/app/admin-cls/pages/[slug]/edit/_components/image-picker'
 import { EditorBar, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
 import { createProject, updateProject, type ProjectFormData } from '../actions'
@@ -43,6 +43,17 @@ export function ProjectEditor({
     metrics: project?.metrics ?? [],
     tags: project?.tags ?? [],
     project_url: project?.project_url ?? '',
+    delivered_from: project?.delivered_from?.slice(0, 7) ?? '',
+    delivered_to: project?.delivered_to?.slice(0, 7) ?? '',
+    services: project?.services ?? [],
+    verifier_name: project?.verifier_name ?? '',
+    verifier_title: project?.verifier_title ?? '',
+    verifier_url: project?.verifier_url ?? '',
+    testimonial_vi: project?.testimonial_vi ?? '',
+    testimonial_en: project?.testimonial_en ?? '',
+    client_credit_url: project?.client_credit_url ?? '',
+    verification: project?.verification ?? 'unverified',
+    verified_on: project?.verified_on ?? '',
     status: project?.status ?? 'draft',
     sort_order: project?.sort_order ?? 0,
   }))
@@ -188,7 +199,7 @@ export function ProjectEditor({
             />
           </div>
           <div>
-            <Label>URL khách hàng (optional)</Label>
+            <Label>Website khách hàng</Label>
             <input
               type="url"
               value={draft.project_url ?? ''}
@@ -225,6 +236,93 @@ export function ProjectEditor({
               className={inputCls}
               placeholder="digital-marketing, ai, crm"
             />
+          </div>
+        </div>
+      </Section>
+
+      {/* Kiểm chứng (GEO) */}
+      <Section title="Kiểm chứng dự án (cho Google và trợ lý AI)">
+        <p className="text-[13px] leading-snug text-[var(--ad-fg-3)]">
+          Trợ lý AI chỉ tin dự án khi đối chiếu được: website khách, thời gian, người xác nhận. Dữ liệu ở đây đọc được công khai,
+          nên <strong>chỉ nhập tên người xác nhận và lời nhận xét sau khi khách đồng ý</strong>. Lời nhận xét và người xác nhận
+          chỉ hiện trên website khi chọn &quot;Khách đã xác nhận nội dung&quot;.
+        </p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div>
+            <Label>Mức kiểm chứng</Label>
+            <select
+              value={draft.verification}
+              onChange={(e) => update('verification', e.target.value as CaseStudyVerification)}
+              className={inputCls}
+            >
+              {VERIFICATION_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <Label>Bắt đầu (tháng)</Label>
+            <input type="month" value={draft.delivered_from ?? ''} onChange={(e) => update('delivered_from', e.target.value)} className={inputCls} />
+          </div>
+          <div>
+            <Label>Kết thúc (trống = đang làm)</Label>
+            <input type="month" value={draft.delivered_to ?? ''} onChange={(e) => update('delivered_to', e.target.value)} className={inputCls} />
+          </div>
+        </div>
+        <div>
+          <Label>Dịch vụ Click Star đã làm</Label>
+          <div className="flex flex-wrap gap-2">
+            {PROJECT_SERVICES.map((sv) => {
+              const on = draft.services.includes(sv.key)
+              return (
+                <button
+                  key={sv.key}
+                  type="button"
+                  aria-pressed={on}
+                  onClick={() => update('services', on ? draft.services.filter((k) => k !== sv.key) : [...draft.services, sv.key])}
+                  className={
+                    'rounded-full px-3 py-1.5 text-[13px] font-medium transition-colors ' +
+                    (on ? 'bg-[var(--ad-accent)] text-white' : 'bg-[var(--ad-fill)] text-[var(--ad-fg-2)] hover:bg-[var(--ad-fill-2)]')
+                  }
+                >
+                  {sv.vi}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div>
+            <Label>Người xác nhận (họ tên)</Label>
+            <input type="text" value={draft.verifier_name ?? ''} onChange={(e) => update('verifier_name', e.target.value)} className={inputCls} placeholder="VD: Nguyễn Văn A" />
+          </div>
+          <div>
+            <Label>Chức danh</Label>
+            <input type="text" value={draft.verifier_title ?? ''} onChange={(e) => update('verifier_title', e.target.value)} className={inputCls} placeholder="VD: Giám đốc" />
+          </div>
+          <div>
+            <Label>LinkedIn / trang cá nhân</Label>
+            <input type="url" value={draft.verifier_url ?? ''} onChange={(e) => update('verifier_url', e.target.value)} className={inputCls} placeholder="https://..." />
+          </div>
+          <div className="lg:col-span-3 grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <div>
+              <Label>Lời nhận xét của khách (VI)</Label>
+              <textarea value={draft.testimonial_vi ?? ''} onChange={(e) => update('testimonial_vi', e.target.value)} rows={3} className={inputCls} />
+            </div>
+            <div>
+              <Label>Lời nhận xét của khách (EN)</Label>
+              <textarea value={draft.testimonial_en ?? ''} onChange={(e) => update('testimonial_en', e.target.value)} rows={3} className={inputCls} />
+            </div>
+          </div>
+          <div>
+            <Label>Ngày khách xác nhận</Label>
+            <input type="date" value={draft.verified_on ?? ''} onChange={(e) => update('verified_on', e.target.value)} className={inputCls} />
+          </div>
+          <div className="lg:col-span-2">
+            <Label>Trang khách có dòng &quot;Thiết kế bởi Click Star&quot;</Label>
+            <input type="url" value={draft.client_credit_url ?? ''} onChange={(e) => update('client_credit_url', e.target.value)} className={inputCls} placeholder="https://..." />
           </div>
         </div>
       </Section>

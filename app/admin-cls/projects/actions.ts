@@ -3,7 +3,14 @@
 import { revalidatePath, updateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { caseStudyHasEnglish, slugify, type CaseStudyMetric, type CaseStudyStatus } from '@/lib/cms/case-studies-types'
+import {
+  PROJECT_SERVICES,
+  caseStudyHasEnglish,
+  slugify,
+  type CaseStudyMetric,
+  type CaseStudyStatus,
+  type CaseStudyVerification,
+} from '@/lib/cms/case-studies-types'
 import { notifyIndexNow } from '@/lib/seo/indexnow'
 import { SITE_URL } from '@/lib/seo/site'
 import { localizePath } from '@/lib/i18n/locale'
@@ -23,8 +30,31 @@ export type ProjectFormData = {
   metrics: CaseStudyMetric[]
   tags: string[]
   project_url?: string
+  /** Tháng bắt đầu / kết thúc dạng YYYY-MM (ô chọn tháng), lưu thành ngày đầu tháng. */
+  delivered_from?: string
+  delivered_to?: string
+  services: string[]
+  verifier_name?: string
+  verifier_title?: string
+  verifier_url?: string
+  testimonial_vi?: string
+  testimonial_en?: string
+  client_credit_url?: string
+  verification: CaseStudyVerification
+  verified_on?: string
   status: CaseStudyStatus
   sort_order: number
+}
+
+const VERIFICATIONS: CaseStudyVerification[] = ['unverified', 'permission', 'confirmed']
+/** "2025-03" thành "2025-03-01"; giá trị khác thì null. */
+const monthToDate = (v?: string) => (/^\d{4}-\d{2}$/.test(v || '') ? `${v}-01` : null)
+/** Chỉ nhận ngày dạng YYYY-MM-DD. */
+const isoDate = (v?: string) => (/^\d{4}-\d{2}-\d{2}$/.test(v || '') ? v! : null)
+/** Chỉ nhận link http(s). */
+const httpUrl = (v?: string) => {
+  const u = (v || '').trim()
+  return /^https?:\/\/\S+$/i.test(u) ? u : null
 }
 
 /** Dự án đã đăng thì báo IndexNow địa chỉ dự án (vi, và en nếu đủ bản dịch, khớp sitemap) cùng trang danh sách Dự án. */
@@ -68,7 +98,18 @@ function normalize(input: ProjectFormData) {
     body_en: input.body_en?.trim() || null,
     metrics: cleanMetrics,
     tags: cleanTags,
-    project_url: input.project_url?.trim() || null,
+    project_url: httpUrl(input.project_url),
+    delivered_from: monthToDate(input.delivered_from),
+    delivered_to: monthToDate(input.delivered_to),
+    services: (input.services ?? []).filter((k) => PROJECT_SERVICES.some((s) => s.key === k)),
+    verifier_name: input.verifier_name?.trim() || null,
+    verifier_title: input.verifier_title?.trim() || null,
+    verifier_url: httpUrl(input.verifier_url),
+    testimonial_vi: input.testimonial_vi?.trim() || null,
+    testimonial_en: input.testimonial_en?.trim() || null,
+    client_credit_url: httpUrl(input.client_credit_url),
+    verification: VERIFICATIONS.includes(input.verification) ? input.verification : 'unverified',
+    verified_on: isoDate(input.verified_on),
     status: input.status,
     sort_order: Number.isFinite(input.sort_order) ? Math.floor(input.sort_order) : 0,
   }

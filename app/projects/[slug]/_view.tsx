@@ -10,7 +10,7 @@ import { Footer } from '@/components/layout/footer'
 import { getPublishedCaseStudyBySlug, getPublishedCaseStudies } from '@/lib/cms/case-studies'
 import { makeT } from '@/lib/i18n/server'
 import type { Lang } from '@/lib/i18n/locale'
-import { caseStudyHasEnglish, clientLabel } from '@/lib/cms/case-studies-types'
+import { PROJECT_SERVICES, caseStudyHasEnglish, clientLabel, monthLabel, type CaseStudy } from '@/lib/cms/case-studies-types'
 import { buildMetadata, fitTitle } from '@/lib/seo/metadata'
 import { ogImageOr } from '@/lib/seo/default-og'
 import { JsonLd } from '@/components/seo/json-ld'
@@ -148,6 +148,8 @@ export async function ProjectDetailView({ slug, lang }: { slug: string; lang: La
         </section>
       )}
 
+      <ProjectFacts project={project} lang={lang} client={client} />
+
       {/* External link button if project_url */}
       {project.project_url && (
         <section className="pb-12 lg:pb-16 bg-background">
@@ -224,5 +226,117 @@ export async function ProjectDetailView({ slug, lang }: { slug: string; lang: La
 
       <Footer />
     </div>
+  )
+}
+
+/**
+ * Khối "Thông tin dự án" (GEO, 11/11/2026): những gì người đọc và trợ lý AI đối chiếu được ở nơi khác: website khách,
+ * thời gian, dịch vụ đã làm, người xác nhận, trang khách ghi "Thiết kế bởi Click Star". Chỉ hiện dòng có dữ liệu;
+ * lời nhận xét và người xác nhận chỉ hiện khi dự án ở mức "Khách đã xác nhận nội dung".
+ */
+function ProjectFacts({
+  project,
+  lang,
+  client,
+}: {
+  project: CaseStudy
+  lang: Lang
+  client: string
+}) {
+  const t = makeT(lang)
+  const confirmed = project.verification === 'confirmed'
+  const host = (u: string) => {
+    try {
+      return new URL(u).hostname.replace(/^www\./, '')
+    } catch {
+      return u
+    }
+  }
+  const from = monthLabel(project.delivered_from)
+  const to = monthLabel(project.delivered_to)
+  const period = from ? (to ? (to === from ? from : `${from} – ${to}`) : t(`${from} – nay`, `${from} – present`)) : ''
+  const services = PROJECT_SERVICES.filter((sv) => project.services.includes(sv.key))
+  const quote = confirmed ? (lang === 'en' ? project.testimonial_en || project.testimonial_vi : project.testimonial_vi) : null
+  const verifier = confirmed && project.verifier_name ? project.verifier_name : null
+  const verifiedOn = confirmed && project.verified_on ? project.verified_on.split('-').reverse().join('/') : null
+
+  const rows: { label: string; value: React.ReactNode }[] = []
+  if (client)
+    rows.push({
+      label: t('Khách hàng', 'Client'),
+      value: project.project_url ? (
+        <>
+          {client} ·{' '}
+          <a href={project.project_url} target="_blank" rel="noopener" className="text-[#1859b8] underline underline-offset-2">
+            {host(project.project_url)}
+          </a>
+        </>
+      ) : (
+        client
+      ),
+    })
+  if (period) rows.push({ label: t('Thời gian thực hiện', 'Delivered'), value: period })
+  if (services.length)
+    rows.push({
+      label: t('Click Star thực hiện', 'Click Star delivered'),
+      value: services.map((sv, i) => (
+        <span key={sv.key}>
+          {i > 0 ? ', ' : ''}
+          <Link href={sv.path} className="text-[#1859b8] underline underline-offset-2">
+            {lang === 'en' ? sv.en : sv.vi}
+          </Link>
+        </span>
+      )),
+    })
+  if (project.client_credit_url)
+    rows.push({
+      label: t('Kiểm chứng', 'Verification'),
+      value: (
+        <a href={project.client_credit_url} target="_blank" rel="noopener" className="text-[#1859b8] underline underline-offset-2">
+          {t(`Ghi nhận trên website ${host(project.client_credit_url)}`, `Credited on ${host(project.client_credit_url)}`)}
+        </a>
+      ),
+    })
+  if (verifiedOn) rows.push({ label: t('Khách xác nhận nội dung', 'Content confirmed by client'), value: verifiedOn })
+
+  // Chỉ có tên khách thì không hiện khối: tên khách đã nằm ở đầu trang.
+  const onlyClient = rows.length === 1 && !project.project_url && !!client
+  if ((!rows.length || onlyClient) && !quote) return null
+  return (
+    <section className="pb-12 lg:pb-16 bg-background">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 grid gap-6">
+        {rows.length > 0 && (
+          <div className="rounded-2xl border border-border bg-[#f5f5f7] p-5 sm:p-6">
+            <h2 className="text-lg font-bold text-foreground mb-4">{t('Thông tin dự án', 'Project details')}</h2>
+            <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-[190px_1fr] text-[15px]">
+              {rows.map((r) => (
+                <div key={r.label} className="contents">
+                  <dt className="text-muted-foreground">{r.label}</dt>
+                  <dd className="font-medium text-foreground">{r.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+        {quote && (
+          <figure className="rounded-2xl border border-border p-5 sm:p-6">
+            <blockquote className="text-[17px] leading-relaxed text-foreground">&ldquo;{quote}&rdquo;</blockquote>
+            {verifier && (
+              <figcaption className="mt-3 text-sm text-muted-foreground">
+                {project.verifier_url ? (
+                  <a href={project.verifier_url} target="_blank" rel="noopener" className="font-semibold text-foreground underline underline-offset-2">
+                    {verifier}
+                  </a>
+                ) : (
+                  <span className="font-semibold text-foreground">{verifier}</span>
+                )}
+                {project.verifier_title ? `, ${project.verifier_title}` : ''}
+                {client ? `, ${client}` : ''}
+              </figcaption>
+            )}
+          </figure>
+        )}
+      </div>
+    </section>
   )
 }
