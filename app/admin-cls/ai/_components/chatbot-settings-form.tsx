@@ -18,7 +18,6 @@ import {
   type SiteKnowledgeInfo,
 } from '../chatbot-actions'
 import {
-  CHATBOT_MODEL_OPTIONS,
   WIDGET_MODE_OPTIONS,
   DEFAULT_CHATBOT_SYSTEM_PROMPT,
   DEFAULT_CHATBOT_CONFIG,
@@ -29,6 +28,8 @@ import {
 } from '@/lib/cms/chatbot-shared'
 import { EditorBar, SaveStatus, SectionCard, btn, fieldInputClass, fieldLabelClass } from '@/components/admin/ui'
 import { Switch } from '@/components/admin/switch'
+import { AiBrainSettings } from './ai-brain-settings'
+import { DEFAULT_MODEL } from '@/lib/ai/chatbot-models'
 
 function initDraft(initial: ChatbotSettings | null): ChatbotSettingsUpdate {
   const d = DEFAULT_CHATBOT_CONFIG
@@ -40,7 +41,7 @@ function initDraft(initial: ChatbotSettings | null): ChatbotSettingsUpdate {
     quick_prompts: initial?.quick_prompts ?? d.quick_prompts,
     hotline: initial?.hotline ?? d.hotline,
     system_prompt: initial?.system_prompt ?? null,
-    model: initial?.model ?? 'gpt-4o-mini',
+    model: initial?.model ?? DEFAULT_MODEL.openai,
     hidden_paths: initial?.hidden_paths ?? d.hidden_paths,
     show_delay_ms: initial?.show_delay_ms ?? d.show_delay_ms,
     auto_close_ms: initial?.auto_close_ms ?? d.auto_close_ms,
@@ -201,18 +202,7 @@ export function ChatbotSettingsForm({ initial, embedded = false }: { initial: Ch
 
       {/* ───── Bộ não AI ───── */}
       <Section title="Bộ não AI">
-        <Field label="Model">
-          <select value={draft.model} onChange={(e) => update('model', e.target.value)} className={fieldInputClass}>
-            {CHATBOT_MODEL_OPTIONS.map((m) => (
-              <option key={m.value} value={m.value}>
-                {m.label}
-              </option>
-            ))}
-          </select>
-          <p className="mt-1 text-[12.5px] text-[var(--ad-fg-3)]">
-            API key dùng biến môi trường <code className="rounded bg-[var(--ad-fill)] px-1.5 py-0.5 text-[12px]">OPENAI_API_KEY</code> (không lưu trong DB).
-          </p>
-        </Field>
+        <AiBrainSettings model={draft.model} onModelChange={(m) => update('model', m)} />
 
         <div>
           <div className="mb-1.5 flex items-center justify-between">

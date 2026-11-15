@@ -5,6 +5,9 @@ import { createClient } from '@/lib/supabase/server'
 import { runServiceRouter } from '@/lib/ai/chatbot-run'
 import { getSiteKnowledge, SITE_KNOWLEDGE_TAG } from '@/lib/ai/site-knowledge'
 import type { ChatbotSettingsUpdate, WidgetMode, QuickPrompt } from '@/lib/cms/chatbot-shared'
+import { DEFAULT_MODEL, isValidModelId, looksLikeKey, CHAT_PROVIDERS, type ChatProvider } from '@/lib/ai/chatbot-models'
+import { KEY_COLUMN, clearAiKeyCache, getAiKeyInfo, last4 } from '@/lib/ai/ai-keys'
+import { explainLlmError, pingModel } from '@/lib/ai/llm-chat'
 
 const WIDGET_MODES: WidgetMode[] = ['bubble', 'bar', 'both', 'none']
 
@@ -57,7 +60,7 @@ export async function saveChatbotSettings(input: ChatbotSettingsUpdate) {
       typeof input.system_prompt === 'string' && input.system_prompt.trim()
         ? input.system_prompt
         : null,
-    model: typeof input.model === 'string' && input.model.trim() ? input.model.trim() : 'gpt-4o-mini',
+    model: isValidModelId(input.model?.trim()) ? input.model.trim() : DEFAULT_MODEL.openai,
     hidden_paths: Array.isArray(input.hidden_paths)
       ? input.hidden_paths.map((p) => String(p).trim()).filter(Boolean).slice(0, 50)
       : [],
@@ -104,6 +107,7 @@ export async function testChatbot(query: string): Promise<ChatbotTestResult> {
     systemPrompt: cfg?.system_prompt ?? null,
     model: cfg?.model ?? null,
     hotline: cfg?.hotline ?? null,
+    forAdmin: true,
   })
   if (!result.ok) return { error: result.error }
   return { answer: result.answer, links: result.links }
@@ -132,4 +136,91 @@ export async function refreshSiteKnowledge(): Promise<SiteKnowledgeInfo | { erro
     builtAt: k.builtAt,
     preview: k.text,
   }
+}
+
+
+// ───────────────────────── Khóa API của chatbot (OpenAI / Anthropic) ─────────────────────────
+// Khóa lưu ở ai_settings (RLS: chỉ quản trị viên). Các hàm dưới KHÔNG BAO GIỜ trả khóa về trình duyệt, chỉ trả trạng thái
+// và 4 ký tự cuối. Quyền được kiểm bằng chính RLS: người không phải quản trị đọc ai_settings sẽ không thấy dòng nào.
+
+export type AiKeyStatus = { provider: ChatProvider; source: 'db' | 'env' | null; last4: string | null }
+
+async function requireAdmin() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { ok: false as const, error: 'Chưa đăng nhập' }
+  const { data } = await supabase.from('ai_settings').select('id').eq('id', 1).maybeSingle()
+  if (!data) return { ok: false as const, error: 'Chỉ quản trị viên mới được quản lý khóa API' }
+  return { ok: true as const, supabase, user }
+}
+
+export async function getAiKeyStatuses(): Promise<AiKeyStatus[] | { error: string }> {
+  const a = await requireAdmin()
+  if (!a.ok) return { error: a.error }
+  const { data } = await a.supabase.from('ai_settings').select('openai_api_key, anthropic_api_key').eq('id', 1).maybeSingle()
+  const row = (data ?? {}) as Record<string, string | null>
+  return CHAT_PROVIDERS.map((p) => {
+    const v = row[KEY_COLUMN[p.value]]
+    if (typeof v === 'string' && v.trim()) return { provider: p.value, source: 'db' as const, last4: last4(v.trim()) }
+    const env = process.env[p.value === 'openai' ? 'OPENAI_API_KEY' : 'ANTHROPIC_API_KEY']?.trim()
+    return env ? { provider: p.value, source: 'env' as const, last4: last4(env) } : { provider: p.value, source: null, last4: null }
+  })
+}
+
+export async function saveAiKey(provider: ChatProvider, key: string): Promise<{ ok: true; last4: string } | { error: string }> {
+  const a = await requireAdmin()
+  if (!a.ok) return { error: a.error }
+  if (!CHAT_PROVIDERS.some((p) => p.value === provider)) return { error: 'Nhà cung cấp không hợp lệ' }
+  const k = typeof key === 'string' ? key.trim() : ''
+  if (!looksLikeKey(provider, k)) {
+    const hint = CHAT_PROVIDERS.find((p) => p.value === provider)?.keyHint
+    return { error: `Khóa không đúng dạng (phải bắt đầu bằng ${hint?.replace('...', '')} và không có khoảng trắng).` }
+  }
+  const { error } = await a.supabase.from('ai_settings').update({ [KEY_COLUMN[provider]]: k, updated_by: a.user.id }).eq('id', 1)
+  if (error) return { error: error.message }
+  clearAiKeyCache()
+  revalidatePath('/admin-cls/ai')
+  return { ok: true, last4: last4(k) }
+}
+
+export async function removeAiKey(provider: ChatProvider): Promise<{ ok: true } | { error: string }> {
+  const a = await requireAdmin()
+  if (!a.ok) return { error: a.error }
+  if (!CHAT_PROVIDERS.some((p) => p.value === provider)) return { error: 'Nhà cung cấp không hợp lệ' }
+  const { error } = await a.supabase.from('ai_settings').update({ [KEY_COLUMN[provider]]: null, updated_by: a.user.id }).eq('id', 1)
+  if (error) return { error: error.message }
+  clearAiKeyCache()
+  revalidatePath('/admin-cls/ai')
+  return { ok: true }
+}
+
+/**
+ * Gọi thử 1 câu rất ngắn để biết khóa + model có chạy không.
+ * `key` để trống = thử khóa đã lưu (hoặc khóa của hệ thống); có `key` = thử khóa vừa gõ, CHƯA lưu.
+ */
+export async function testAiConnection(input: {
+  provider: ChatProvider
+  model: string
+  key?: string
+}): Promise<{ ok: true; ms: number; message: string } | { ok: false; message: string }> {
+  const a = await requireAdmin()
+  if (!a.ok) return { ok: false, message: a.error }
+  if (!CHAT_PROVIDERS.some((p) => p.value === input.provider)) return { ok: false, message: 'Nhà cung cấp không hợp lệ' }
+  if (!isValidModelId(input.model)) return { ok: false, message: 'Tên model không hợp lệ' }
+
+  const typed = input.key?.trim()
+  let apiKey: string | null = null
+  if (typed) {
+    if (!looksLikeKey(input.provider, typed)) return { ok: false, message: 'Khóa không đúng dạng của nhà cung cấp đã chọn' }
+    apiKey = typed
+  } else {
+    apiKey = (await getAiKeyInfo(input.provider)).key
+  }
+  if (!apiKey) return { ok: false, message: 'Chưa có khóa để thử. Nhập khóa rồi bấm lại.' }
+
+  const r = await pingModel({ provider: input.provider, apiKey, model: input.model })
+  if (!r.ok) return { ok: false, message: explainLlmError(r.kind, input.provider) }
+  return { ok: true, ms: r.ms, message: `Kết nối tốt, model trả lời trong ${(r.ms / 1000).toFixed(1)} giây.` }
 }

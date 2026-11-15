@@ -4,6 +4,9 @@
 // => Test trong admin chạy ĐÚNG đường code thật của bot.
 import { DEFAULT_CHATBOT_SYSTEM_PROMPT } from '@/lib/cms/chatbot-shared'
 import { getSiteKnowledge } from '@/lib/ai/site-knowledge'
+import { getAiKey } from '@/lib/ai/ai-keys'
+import { chatJson, explainLlmError, extractJson } from '@/lib/ai/llm-chat'
+import { DEFAULT_MODEL, providerOfModel, CHAT_PROVIDERS } from '@/lib/ai/chatbot-models'
 
 export type ChatbotLink = { title: string; href: string; type: string }
 export type ChatbotTurn = { role: 'user' | 'assistant'; content: string }
@@ -70,6 +73,8 @@ export async function runServiceRouter(opts: {
   history?: unknown
   lang?: string | null
   hotline?: string | null
+  /** Chạy từ nút Test trong trang quản trị: báo lỗi chi tiết bằng tiếng Việt cho quản trị viên thay vì câu chung cho khách. */
+  forAdmin?: boolean
 }): Promise<ChatbotRunResult> {
   const q = opts.query?.trim()
   if (!q || q.length < 2) {
@@ -79,10 +84,20 @@ export async function runServiceRouter(opts: {
     return { ok: false, error: 'Câu hỏi tối đa 500 ký tự', status: 400 }
   }
 
-  // API key đọc từ env (server-only, encrypted) — KHÔNG lưu trong DB vì đây là endpoint công khai.
-  const openaiKey = process.env.OPENAI_API_KEY
-  if (!openaiKey) {
-    return { ok: false, error: 'AI tạm thời chưa khả dụng. Vui lòng liên hệ hotline 0383 406 735.', status: 503 }
+  // Nhà cung cấp suy ra từ tên model (claude* → Anthropic, còn lại → OpenAI). Khóa API lấy từ ai_settings (do quản trị viên
+  // nhập trong trang quản trị) hoặc biến môi trường; không bao giờ trả xuống trình duyệt.
+  const model = opts.model?.trim() || DEFAULT_MODEL.openai
+  const provider = providerOfModel(model)
+  const apiKey = await getAiKey(provider)
+  if (!apiKey) {
+    const label = CHAT_PROVIDERS.find((p) => p.value === provider)?.label ?? provider
+    return {
+      ok: false,
+      error: opts.forAdmin
+        ? `Chưa có khóa API của ${label}. Nhập khóa ở mục "Bộ não AI" rồi thử lại.`
+        : 'AI tạm thời chưa khả dụng. Vui lòng liên hệ hotline 0383 406 735.',
+      status: 503,
+    }
   }
 
   const hotline = opts.hotline?.trim() || '0383 406 735'
@@ -106,56 +121,32 @@ export async function runServiceRouter(opts: {
       ? 'Khách đang xem website bằng tiếng Anh → trả lời bằng TIẾNG ANH (trừ khi khách chủ động viết tiếng Việt).'
       : 'Khách đang xem website bằng tiếng Việt → trả lời bằng tiếng Việt (nếu khách viết tiếng Anh thì trả lời tiếng Anh).'
 
-  const model = opts.model?.trim() || 'gpt-4o-mini'
-
-  let res: Response
-  try {
-    res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${openaiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model,
-        messages: [
-          { role: 'system', content: system },
-          { role: 'system', content: langNote },
-          ...sanitizeHistory(opts.history),
-          ...(PAST_WORK_RE.test(q) ? [{ role: 'system' as const, content: PAST_WORK_NOTE }] : []),
-          { role: 'user', content: q },
-        ],
-        temperature: 0.2,
-        max_tokens: 1000,
-        response_format: { type: 'json_object' },
-      }),
-    })
-  } catch (err) {
-    console.error('service-router fetch error:', err)
-    return { ok: false, error: `Không kết nối được AI, vui lòng thử lại hoặc gọi ${hotline}.`, status: 502 }
+  const llm = await chatJson({
+    provider,
+    apiKey,
+    model,
+    system,
+    notes: [langNote],
+    history: sanitizeHistory(opts.history),
+    pastNote: PAST_WORK_RE.test(q) ? PAST_WORK_NOTE : null,
+    user: q,
+  })
+  if (!llm.ok) {
+    console.error(`[chatbot] provider=${provider} model=${model} kind=${llm.kind} status=${llm.status} ${llm.detail}`)
+    return {
+      ok: false,
+      error: opts.forAdmin ? explainLlmError(llm.kind, provider) : `AI tạm lỗi, vui lòng thử lại hoặc gọi ${hotline}.`,
+      status: 502,
+    }
   }
 
-  if (!res.ok) {
-    const errText = await res.text()
-    console.error('OpenAI error:', errText)
-    return { ok: false, error: `AI tạm lỗi, vui lòng thử lại hoặc gọi ${hotline}.`, status: 502 }
+  // Theo dõi chi phí trên Vercel logs: prompt chứa cả website (~25k token) nên cần thấy tỉ lệ token đọc từ cache.
+  if (llm.usage) {
+    console.log(`[chatbot] provider=${provider} model=${model} in=${llm.usage.input} cached=${llm.usage.cached} out=${llm.usage.output}`)
   }
 
-  const data = await res.json()
-  // Theo dõi chi phí trên Vercel logs: prompt chứa cả website (~25k token) nên cần
-  // thấy tỉ lệ cached_tokens (OpenAI tự cache tiền tố giống nhau → rẻ 50–75%).
-  const u = data.usage
-  if (u) {
-    console.log(
-      `[chatbot] model=${model} in=${u.prompt_tokens} cached=${u.prompt_tokens_details?.cached_tokens ?? 0} out=${u.completion_tokens}`
-    )
-  }
-  const content = data.choices?.[0]?.message?.content
-  if (!content) return { ok: false, error: 'AI không trả lời được', status: 502 }
-
-  let parsed: any
-  try {
-    parsed = JSON.parse(content)
-  } catch {
-    return { ok: false, error: 'AI trả về định dạng không hợp lệ', status: 502 }
-  }
+  const parsed = extractJson(llm.text) as { answer?: unknown; links?: unknown } | null
+  if (!parsed || typeof parsed !== 'object') return { ok: false, error: 'AI trả về định dạng không hợp lệ', status: 502 }
 
   const links: ChatbotLink[] = Array.isArray(parsed.links)
     ? parsed.links
