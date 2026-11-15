@@ -59,6 +59,7 @@ const navItemsData = {
       ],
     },
     { label: 'ADS hub', href: '/ads-hub', badge: 'MỚI' },
+    { label: 'Khám phá 3D', href: '/kham-pha', xlOnly: true },
     { label: 'Bảng giá', href: '/pricing' },
     { label: 'Tin tức', href: '/blog', isNews: true },
     { label: 'Giới thiệu', href: '/about' },
@@ -81,6 +82,7 @@ const navItemsData = {
       ],
     },
     { label: 'ADS hub', href: '/ads-hub', badge: 'NEW' },
+    { label: 'Explore 3D', href: '/kham-pha', xlOnly: true },
     { label: 'Pricing', href: '/pricing' },
     { label: 'Blog', href: '/blog', isNews: true },
     { label: 'About', href: '/about' },
@@ -247,7 +249,8 @@ export function MainNav() {
               ) : (
               <div
                 key={item.label}
-                className="relative"
+                // Mục phụ chỉ hiện từ màn rộng (>=1280px): ở 1024px thêm mục nữa làm mọi mục xuống hai dòng.
+                className={cn('relative', 'xlOnly' in item && item.xlOnly && 'hidden xl:block')}
                 onMouseEnter={() => item.hasDropdown && setOpenDropdown(item.label)}
                 onMouseLeave={() => setOpenDropdown(null)}
               >

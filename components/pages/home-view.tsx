@@ -10,6 +10,7 @@ import { TeamSection } from '@/components/sections/team-section'
 import { FAQSection } from '@/components/sections/faq-section'
 import { BlogSection } from '@/components/sections/blog-section'
 import { CTASection } from '@/components/sections/cta-section'
+import { ExploreInvite } from '@/components/sections/explore-invite'
 import { ClientLogos } from '@/components/sections/client-logos'
 import { LogoMarquee } from '@/components/sections/logo-marquee'
 import { Footer } from '@/components/layout/footer'
@@ -99,6 +100,8 @@ export async function HomeView({ lang = 'vi' }: { lang?: Lang }) {
     industries: getSection(aboutPage, 'about_story')?.content.industries,
   }
 
+  const inviteAfter = page.sections.some((s) => s.type === 'logo_marquee' && s.enabled) ? 'logo_marquee' : 'hero'
+
   return (
     <div className="min-h-screen theme-apple">
       <JsonLd data={[organizationSchema(settings, lang), websiteSchema(settings, lang)]} />
@@ -113,7 +116,13 @@ export async function HomeView({ lang = 'vi' }: { lang?: Lang }) {
           if (!node) return <div key={section.id} />
           // Hiện dần khi cuộn tới. Không bọc: hero (có hiệu ứng vào riêng), thanh logo/công nghệ và khối dịch vụ, FAQ (đã tự có hiệu ứng bên trong).
           const own = ['hero', 'logo_marquee', 'services', 'faq'].includes(section.type)
-          return <div key={section.id}>{own ? node : <Reveal>{node}</Reveal>}</div>
+          return (
+            <div key={section.id}>
+              {own ? node : <Reveal>{node}</Reveal>}
+              {/* Dải mời vào trang 3D /kham-pha: ngay sau thanh logo (khối thứ 2), trước khối Tin tức; không có thanh logo thì sau khối đầu trang */}
+              {section.type === inviteAfter ? <ExploreInvite lang={lang} /> : null}
+            </div>
+          )
         })}
       </main>
 

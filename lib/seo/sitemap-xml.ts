@@ -38,6 +38,7 @@ const PAGE_ORDER = [
   '/faq',
   '/blog',
   '/contact',
+  '/kham-pha',
   '/cookie-policy',
 ]
 
@@ -150,6 +151,8 @@ function pageEntries({ pages, posts, projects }: Data): Entry[] {
   if (!byPath.has('/projects')) byPath.set('/projects', { path: '/projects', lastmod: iso(latest(projects.map((p) => p.updated_at))), hasEn: true })
   // Liên hệ: nội dung viết trong mã nguồn, không có ngày sửa đáng tin nên không khai lastmod.
   if (!byPath.has('/contact')) byPath.set('/contact', { path: '/contact', lastmod: null, hasEn: true })
+  // Khám phá 3D: trang viết trong mã nguồn (app/kham-pha).
+  if (!byPath.has('/kham-pha')) byPath.set('/kham-pha', { path: '/kham-pha', lastmod: '2026-11-16', hasEn: true })
   // Chính sách cookie: viết trong mã nguồn (app/cookie-policy), ngày áp dụng ghi trên trang.
   // Hỏi đáp về Click Star: viết trong mã nguồn (app/faq), ngày cập nhật ghi trên trang.
   if (!byPath.has('/faq')) byPath.set('/faq', { path: '/faq', lastmod: iso(FAQ_UPDATED), hasEn: true })
