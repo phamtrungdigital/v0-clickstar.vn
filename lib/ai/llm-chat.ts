@@ -99,16 +99,21 @@ async function callOpenAI(opts: ChatJsonOpts): Promise<LlmResult> {
   if (!res.ok) {
     const raw = await res.text()
     let code = ''
+    let type = ''
     let message = raw
     try {
       const j = JSON.parse(raw)
-      code = j?.error?.code || j?.error?.type || ''
+      code = String(j?.error?.code ?? '')
+      type = String(j?.error?.type ?? '')
       message = j?.error?.message || raw
     } catch {}
+    // Hết số dư báo bằng nhiều dạng: type "insufficient_quota", code "credit_balance_exhausted" / "billing_hard_limit_reached"...
+    const outOfCredit =
+      type === 'insufficient_quota' || /quota|credit|billing/i.test(code) || /no credits|credit balance|exceeded your current quota|billing/i.test(String(message))
     let kind: LlmErrorKind = 'other'
     if (res.status === 401) kind = 'auth'
     else if (res.status === 404 || code === 'model_not_found') kind = 'model'
-    else if (code === 'insufficient_quota' || code === 'billing_hard_limit_reached') kind = 'billing'
+    else if (outOfCredit) kind = 'billing'
     else if (res.status === 429) kind = 'rate'
     return { ok: false, kind, status: res.status, detail: String(message).slice(0, 300) }
   }
