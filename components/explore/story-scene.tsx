@@ -3,7 +3,7 @@
 /**
  * Cảnh 3D kể chuyện của trang /kham-pha, đợt 1 (chương 1-3): văn phòng nơi chủ doanh nghiệp đang rối, con phố tới trụ sở
  * Click Star, cánh cửa mở và sảnh bên trong. Mọi thứ là hàm của tiến độ cuộn p (story-timeline.ts), nên cuộn tới hay lui
- * đều đúng, không có "thời gian chạy" riêng. Dựng bằng hình khối, không tệp mô hình; nhân vật là Person (person.tsx).
+ * đều đúng, không có "thời gian chạy" riêng. Dựng bằng hình khối, không tệp mô hình; nhân vật là ảnh thật dựng đứng (Cutout, cutout.tsx).
  *
  * Hai bối cảnh đặt cách nhau theo trục x (phố ở x = STREET_X) và chỉ hiện bối cảnh đang dùng; giữa chương 1 và 2 có một
  * lần cắt cảnh che bằng màn tối (ở lớp chữ). Đèn điểm giữ nguyên số lượng, chỉ đổi cường độ (đổi số đèn làm dựng lại shader).
@@ -11,7 +11,7 @@
 import { useEffect, useMemo, useRef, type MutableRefObject } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Color, Fog, InstancedMesh, Matrix4, Mesh, Group, PointLight, Vector3, MeshStandardMaterial } from 'three'
-import { Person, type PersonControl, type PersonLook } from './person'
+import { Cutout, newCutoutState, type CutoutState } from './cutout'
 import { CUT, DOOR_END, DOOR_START, STREET_START, clamp01, lerp, smooth } from './story-timeline'
 
 const STREET_X = 60
@@ -31,7 +31,6 @@ export type StorySceneProps = {
   onReady: () => void
 }
 
-const OWNER: PersonLook = { skin: '#d6a07a', shirt: '#4a5d86', pants: '#262d40', hair: '#2a1c1a', hairStyle: 'long' }
 
 // Số giả ngẫu nhiên cố định (cảnh giống nhau mỗi lần tải).
 function seeded(seed: number) {
@@ -41,8 +40,6 @@ function seeded(seed: number) {
 
 export default function StoryScene({ progressRef, shownRef, anchorRefs, active, reduced, onReady }: StorySceneProps) {
   const prog = useRef(0)
-  const ownerControl = useRef<PersonControl>({ pose: 'sit-stress', phase: 0 })
-  const streetControl = useRef<PersonControl>({ pose: 'walk', phase: 0 })
   return (
     <Canvas
       dpr={[1, 1.5]}
@@ -54,12 +51,12 @@ export default function StoryScene({ progressRef, shownRef, anchorRefs, active, 
       aria-hidden="true"
     >
       <fog attach="fog" args={['#1a2033', 14, 44]} />
-      <Director progressRef={progressRef} shownRef={shownRef} prog={prog} reduced={reduced} streetControl={streetControl} />
+      <Director progressRef={progressRef} shownRef={shownRef} prog={prog} reduced={reduced} />
       <ambientLight intensity={1.15} color="#b4c4ee" />
       <directionalLight position={[5, 9, 6]} intensity={1.9} color="#e4ecff" />
       <directionalLight position={[-6, 5, 4]} intensity={0.8} color="#9fb6ff" />
-      <OfficeSet prog={prog} reduced={reduced} control={ownerControl} />
-      <StreetSet prog={prog} reduced={reduced} control={streetControl} />
+      <OfficeSet prog={prog} reduced={reduced} />
+      <StreetSet prog={prog} reduced={reduced} />
       <Anchors refs={anchorRefs} prog={prog} />
     </Canvas>
   )
@@ -76,13 +73,11 @@ function Director({
   shownRef,
   prog,
   reduced,
-  streetControl,
 }: {
   progressRef: StorySceneProps['progressRef']
   shownRef: StorySceneProps['shownRef']
   prog: MutableRefObject<number>
   reduced: boolean
-  streetControl: MutableRefObject<PersonControl>
 }) {
   const pos = useMemo(() => new Vector3(), [])
   const look = useMemo(() => new Vector3(), [])
@@ -101,29 +96,32 @@ function Director({
     if (p < CUT) {
       // Chương 1: vòng từ sau lưng nhân vật sang phía trước để thấy nét mặt, kèm 3 rắc rối.
       const u = smooth(0, CUT, p)
-      pos.set(lerp(3.6, -2.9, u) + Math.sin(t * 0.35) * 0.06 * sway, lerp(2.5, 2.2, u), lerp(6.0, 5.2, u))
-      look.set(lerp(0.2, 0, u), lerp(1.85, 1.8, u), -0.5)
+      pos.set(lerp(3.6, -2.9, u) + Math.sin(t * 0.35) * 0.06 * sway, lerp(2.1, 1.95, u), lerp(5.4, 4.7, u))
+      look.set(lerp(0.2, 0, u), lerp(1.5, 1.45, u), -0.5)
     } else {
       const u = clamp01((p - STREET_START) / (DOOR_START - STREET_START)) // tiến độ chương 2
       const v = clamp01((p - DOOR_START) / (DOOR_END - DOOR_START)) // tiến độ chương 3
       const px = STREET_X + streetX(u)
       if (p < DOOR_START) {
         // Máy quay đi theo nhân vật, rồi lùi ra thấy toàn mặt tiền Click Star.
-        a.set(px + 3.4, 1.8, 7.4)
+        a.set(px + 2.7, 1.6, 5.8)
         b.set(STREET_X + DOOR_X, 2.0, 8.2)
         pos.lerpVectors(a, b, smooth(0.55, 1, u))
-        a.set(px + 1.0, 1.35, 0.4)
+        a.set(px + 0.8, 1.25, 0.4)
         b.set(STREET_X + DOOR_X, 2.1, WALL_Z)
         look.lerpVectors(a, b, smooth(0.55, 1, u))
       } else {
-        // Chương 3: bám theo nhân vật vào cửa rồi đi thẳng vào sảnh.
-        const z = streetZ(v)
+        // Chương 3: tới sát cửa, rồi máy quay đẩy dần qua khung cửa vào sảnh (khách "bước vào").
         a.set(STREET_X + DOOR_X, 2.0, 8.2)
-        b.set(STREET_X + DOOR_X, 1.8, Math.max(z + 5.4, 0.6))
-        pos.lerpVectors(a, b, smooth(0, 0.3, v))
+        b.set(STREET_X + DOOR_X, 1.55, 5.0)
+        pos.lerpVectors(a, b, smooth(0, 0.25, v))
+        a.set(STREET_X + DOOR_X, 1.45, -1.0)
+        pos.lerp(a, smooth(0.25, 0.95, v))
         a.set(STREET_X + DOOR_X, 2.0, WALL_Z)
-        b.set(STREET_X + DOOR_X, 1.5, z - 1.2)
-        look.lerpVectors(a, b, smooth(0, 0.3, v))
+        b.set(STREET_X + DOOR_X, 1.1, -2.4)
+        look.lerpVectors(a, b, smooth(0, 0.25, v))
+        a.set(STREET_X + DOOR_X, 1.2, -6.5)
+        look.lerp(a, smooth(0.25, 0.95, v))
       }
     }
     // Màn dọc (điện thoại): lùi máy quay ra theo hướng nhìn và hạ cảnh xuống nửa dưới để chừa chỗ cho chữ ở trên.
@@ -146,52 +144,38 @@ function Director({
       scene.fog.near = p < CUT ? 14 : lerp(16, 30, smooth(DOOR_START, DOOR_END, p))
       scene.fog.far = p < CUT ? 44 : lerp(46, 80, smooth(DOOR_START, DOOR_END, p))
     }
-
-    // Nhân vật trên phố: dáng và pha bước chân theo quãng đường đã đi.
-    const sc = streetControl.current
-    if (p < DOOR_START) {
-      const u = clamp01((p - STREET_START) / (DOOR_START - STREET_START))
-      sc.pose = u < 0.8 ? 'walk' : 'stand'
-      sc.phase = (streetX(u) + 9) * 3.3
-    } else {
-      const v = clamp01((p - DOOR_START) / (DOOR_END - DOOR_START))
-      sc.pose = v < 0.18 ? 'walk' : v < 0.42 ? 'push' : 'walk'
-      sc.phase = (15 + (0.4 - streetZ(v))) * 3.3
-    }
   })
   return null
 }
 
-/** Hoành độ (hệ phố) của nhân vật theo tiến độ u của chương 2: đi đều tới cửa trong 80% đầu, rồi đứng quay mặt vào cửa. */
+/** Hoành độ (hệ phố) của nhân vật theo tiến độ u của chương 2: đi đều dọc vỉa hè, dừng cạnh cửa ở 80% rồi đứng chờ. */
 function streetX(u: number) {
-  return lerp(-9, DOOR_X, clamp01(u / 0.8))
-}
-/** Cao độ z của nhân vật trong chương 3: bước tới sát cửa, đứng đẩy cửa, rồi đi vào sảnh. */
-function streetZ(v: number) {
-  if (v < 0.18) return lerp(0.4, -1.5, smooth(0, 0.18, v))
-  if (v < 0.42) return -1.5
-  return lerp(-1.5, -5.2, smooth(0.42, 1, v))
+  return lerp(-9, DOOR_X - 1.1, clamp01(u / 0.8))
 }
 
 /* ---------- Văn phòng (chương 1) ---------- */
 
-function OfficeSet({ prog, reduced, control }: { prog: MutableRefObject<number>; reduced: boolean; control: MutableRefObject<PersonControl> }) {
+const SIT = { url: '/images/story/ngoi-ban.webp', height: 1.8, aspect: 848 / 1000 }
+
+function OfficeSet({ prog, reduced }: { prog: MutableRefObject<number>; reduced: boolean }) {
   const group = useRef<Group>(null)
   const lamp = useRef<PointLight>(null)
-  useFrame(() => {
-    if (group.current) group.current.visible = prog.current < CUT + 0.002
-    if (lamp.current) lamp.current.intensity = prog.current < CUT ? 14 : 0
+  const owner = useRef<CutoutState>(newCutoutState())
+  useFrame((s) => {
+    const p = prog.current
+    if (group.current) group.current.visible = p < CUT + 0.002
+    if (lamp.current) lamp.current.intensity = p < CUT ? 14 : 0
+    const o = owner.current
+    o.z = 0.1
+    o.opacity = 1
+    // Thở nhẹ: chỉ nhún rất ít cho có sự sống (tắt khi giảm chuyển động).
+    o.bob = reduced ? 0 : Math.sin(s.clock.elapsedTime * 0.9) * 0.008
   })
 
+  // Giấy tờ bừa dưới sàn quanh ghế
   const papers = useMemo(() => {
     const r = seeded(11)
-    return Array.from({ length: 12 }, (_, i) => ({
-      x: i < 7 ? (r() - 0.5) * 2.0 : (r() - 0.5) * 4,
-      y: i < 7 ? 0.8 : 0.01,
-      z: i < 7 ? -0.75 + (r() - 0.5) * 0.6 : (r() - 0.2) * 3,
-      ry: r() * TAU,
-      tilt: (r() - 0.5) * 0.12,
-    }))
+    return Array.from({ length: 7 }, () => ({ x: (r() - 0.5) * 4, z: (r() - 0.1) * 2.6, ry: r() * TAU, tilt: (r() - 0.5) * 0.1 }))
   }, [])
   const cityLights = useMemo(() => {
     const r = seeded(5)
@@ -219,75 +203,25 @@ function OfficeSet({ prog, reduced, control }: { prog: MutableRefObject<number>;
           <meshBasicMaterial color={c.c} />
         </mesh>
       ))}
-
-      {/* Bàn làm việc */}
-      <mesh position={[0, 0.76, -0.75]}>
-        <boxGeometry args={[2.4, 0.07, 0.95]} />
-        <meshStandardMaterial color="#4b3d36" flatShading />
-      </mesh>
-      {[-1.12, 1.12].flatMap((x) => [-1.15, -0.35].map((z) => ({ x, z }))).map((l, i) => (
-        <mesh key={i} position={[l.x, 0.38, l.z]}>
-          <boxGeometry args={[0.07, 0.76, 0.07]} />
-          <meshStandardMaterial color="#2c2624" flatShading />
-        </mesh>
-      ))}
-      {/* Máy tính xách tay */}
-      <mesh position={[0.15, 0.815, -0.7]}>
-        <boxGeometry args={[0.6, 0.025, 0.4]} />
-        <meshStandardMaterial color="#9aa6bd" flatShading />
-      </mesh>
-      <mesh position={[0.15, 1.0, -0.9]} rotation={[-0.22, 0, 0]}>
-        <boxGeometry args={[0.6, 0.38, 0.02]} />
-        <meshStandardMaterial color="#10162a" emissive="#d4524a" emissiveIntensity={0.55} />
-      </mesh>
-      {/* Giấy tờ bừa bộn */}
       {papers.map((pp, i) => (
-        <mesh key={i} position={[pp.x, pp.y, pp.z]} rotation={[pp.tilt, pp.ry, 0]}>
+        <mesh key={i} position={[pp.x, 0.01, pp.z]} rotation={[pp.tilt, pp.ry, 0]}>
           <boxGeometry args={[0.3, 0.006, 0.21]} />
           <meshStandardMaterial color="#e6ecf8" flatShading />
         </mesh>
       ))}
-      {/* Cốc, đèn bàn */}
-      <mesh position={[-0.7, 0.85, -0.6]}>
-        <cylinderGeometry args={[0.05, 0.045, 0.1, 12]} />
-        <meshStandardMaterial color="#c8d2e8" flatShading />
-      </mesh>
-      <mesh position={[-1.0, 0.81, -0.9]}>
-        <cylinderGeometry args={[0.12, 0.14, 0.04, 12]} />
+      {/* Đèn cây ấm bên trái */}
+      <mesh position={[-3.0, 0.9, -0.9]}>
+        <cylinderGeometry args={[0.02, 0.02, 1.8, 8]} />
         <meshStandardMaterial color="#222" flatShading />
       </mesh>
-      <mesh position={[-1.0, 1.2, -0.9]} rotation={[0, 0, 0.35]}>
-        <cylinderGeometry args={[0.015, 0.015, 0.8, 8]} />
-        <meshStandardMaterial color="#222" flatShading />
-      </mesh>
-      <mesh position={[-0.85, 1.58, -0.9]} rotation={[0, 0, 0.9]}>
-        <coneGeometry args={[0.15, 0.22, 12, 1, true]} />
+      <mesh position={[-3.0, 1.85, -0.9]}>
+        <coneGeometry args={[0.22, 0.3, 14, 1, true]} />
         <meshStandardMaterial color="#ffb86b" emissive="#ffb86b" emissiveIntensity={0.9} side={2} />
       </mesh>
-      <pointLight ref={lamp} position={[-0.8, 1.45, -0.6]} color="#ffb86b" distance={7} intensity={14} />
+      <pointLight ref={lamp} position={[-2.9, 1.7, -0.5]} color="#ffb86b" distance={7} intensity={14} />
 
-      {/* Ghế */}
-      <mesh position={[0, 0.46, 0.12]}>
-        <boxGeometry args={[0.52, 0.06, 0.52]} />
-        <meshStandardMaterial color="#2d3550" flatShading />
-      </mesh>
-      <mesh position={[0, 0.8, 0.38]}>
-        <boxGeometry args={[0.5, 0.6, 0.06]} />
-        <meshStandardMaterial color="#2d3550" flatShading />
-      </mesh>
-      <mesh position={[0, 0.22, 0.12]}>
-        <cylinderGeometry args={[0.04, 0.04, 0.44, 8]} />
-        <meshStandardMaterial color="#1d2234" flatShading />
-      </mesh>
-      <mesh position={[0, 0.03, 0.12]}>
-        <cylinderGeometry args={[0.3, 0.3, 0.05, 5]} />
-        <meshStandardMaterial color="#1d2234" flatShading />
-      </mesh>
-
-      {/* Nhân vật: ngồi quay mặt vào bàn (nhìn về -z) */}
-      <group position={[0, 0, 0.12]} rotation={[0, Math.PI, 0]}>
-        <Person look={OWNER} control={control} still={reduced} />
-      </group>
+      {/* Chủ doanh nghiệp ngồi ôm trán trước laptop (ảnh có sẵn bàn và ghế) */}
+      <Cutout url={SIT.url} height={SIT.height} aspect={SIT.aspect} state={owner} tint="#b4c0e2" follow={0.6} />
 
       {/* Ba rắc rối nổi lên quanh nhân vật */}
       <HoloLeak prog={prog} reduced={reduced} />
@@ -325,7 +259,7 @@ function HoloLeak({ prog, reduced }: { prog: MutableRefObject<number>; reduced: 
     })
   })
   return (
-    <group ref={g} position={[-1.7, 2.15, -0.6]}>
+    <group ref={g} position={[-1.8, 2.5, -0.6]}>
       <mesh rotation={[Math.PI, 0, 0]}>
         <coneGeometry args={[0.45, 0.7, 6]} />
         <meshStandardMaterial color={ALERT} emissive={ALERT} emissiveIntensity={0.5} flatShading />
@@ -356,7 +290,7 @@ function HoloScatter({ prog, reduced }: { prog: MutableRefObject<number>; reduce
     })
   }, [])
   return (
-    <group ref={g} position={[0, 2.8, -1.2]}>
+    <group ref={g} position={[0, 3.2, -1.2]}>
       <group ref={spin}>
         {panels.map((p, i) => (
           <mesh key={i} position={[p.x, p.y, p.z]} rotation={[0, p.ry, p.rz]}>
@@ -384,7 +318,7 @@ function HoloCalls({ prog, reduced }: { prog: MutableRefObject<number>; reduced:
     })
   })
   return (
-    <group ref={g} position={[1.7, 2.15, -0.6]}>
+    <group ref={g} position={[1.8, 2.5, -0.6]}>
       <mesh>
         <boxGeometry args={[0.3, 0.55, 0.05]} />
         <meshStandardMaterial color="#10162a" emissive={ALERT} emissiveIntensity={0.45} flatShading />
@@ -408,34 +342,45 @@ function HoloCalls({ prog, reduced }: { prog: MutableRefObject<number>; reduced:
 
 /* ---------- Phố và trụ sở Click Star (chương 2, 3) ---------- */
 
-function StreetSet({ prog, reduced, control }: { prog: MutableRefObject<number>; reduced: boolean; control: MutableRefObject<PersonControl> }) {
+const WALK = { url: '/images/story/di-bo.webp', height: 1.8, aspect: 574 / 1000 }
+// Ảnh đẩy cửa có sẵn khung cửa: đặt khung khớp lỗ cửa của trụ sở. Người cao 1,8 thì cả ảnh cao 2,03; chân khung cách đáy ảnh 0,17.
+const DOOR_IMG = { url: '/images/story/day-cua.webp', height: 2.03, aspect: 577 / 1000, groundOffset: 0.17, anchorX: -0.094 }
+
+function StreetSet({ prog, reduced }: { prog: MutableRefObject<number>; reduced: boolean }) {
   const group = useRef<Group>(null)
-  const person = useRef<Group>(null)
   const door = useRef<Group>(null)
   const gem = useRef<Mesh>(null)
   const inside = useRef<PointLight>(null)
   const lampLight = useRef<PointLight>(null)
   const interiorMat = useRef<MeshStandardMaterial>(null)
+  const walker = useRef<CutoutState>(newCutoutState())
+  const pusher = useRef<CutoutState>(newCutoutState())
 
   useFrame((s, dt) => {
     const p = prog.current
     if (group.current) group.current.visible = p >= CUT - 0.002
-    const g = person.current
-    if (g) {
-      if (p < DOOR_START) {
-        const u = clamp01((p - STREET_START) / (DOOR_START - STREET_START))
-        g.position.set(streetX(u), 0, 0.4)
-        // Đi dọc vỉa hè hướng +x, tới cửa thì quay mặt vào cửa (hướng -z).
-        g.rotation.y = lerp(Math.PI / 2, Math.PI, smooth(0.8, 0.96, u))
-      } else {
-        const v = clamp01((p - DOOR_START) / (DOOR_END - DOOR_START))
-        g.position.set(DOOR_X, 0, streetZ(v))
-        g.rotation.y = Math.PI
-      }
-    }
     const v = clamp01((p - DOOR_START) / (DOOR_END - DOOR_START))
-    const open = smooth(0.22, 0.5, v)
-    if (door.current) door.current.rotation.y = open * 1.75
+
+    // Người đi bộ (ảnh nghiêng): đi dọc vỉa hè rồi dừng cạnh cửa; mờ đi khi ảnh đẩy cửa hiện lên.
+    const u = clamp01((p - STREET_START) / (DOOR_START - STREET_START))
+    const w = walker.current
+    const x = streetX(u)
+    const walking = p < DOOR_START && u < 0.8 && !reduced
+    w.x = x
+    w.z = 0.4
+    w.bob = walking ? Math.abs(Math.sin(x * 4.2)) * 0.035 : 0
+    w.tilt = walking ? Math.sin(x * 4.2) * 0.012 : 0
+    w.opacity = 1 - smooth(0.1, 0.22, v)
+
+    // Người đẩy cửa (ảnh nhìn từ sau lưng, kèm khung cửa mở): hiện đúng lỗ cửa.
+    const d = pusher.current
+    d.x = DOOR_X
+    d.z = WALL_Z + 0.03
+    d.opacity = smooth(0.1, 0.22, v)
+
+    // Cánh cửa 3D đóng chỉ dùng trước khi ảnh đẩy cửa hiện lên.
+    if (door.current) door.current.visible = v < 0.17
+    const open = smooth(0.25, 0.7, v)
     if (inside.current) inside.current.intensity = 6 + open * 34
     if (lampLight.current) lampLight.current.intensity = 10
     if (interiorMat.current) interiorMat.current.emissiveIntensity = 0.45 + open * 0.55
@@ -510,10 +455,9 @@ function StreetSet({ prog, reduced, control }: { prog: MutableRefObject<number>;
 
       <ClickStarBuilding door={door} gem={gem} interiorMat={interiorMat} />
 
-      {/* Nhân vật chủ doanh nghiệp */}
-      <group ref={person}>
-        <Person look={OWNER} control={control} still={reduced} />
-      </group>
+      {/* Chủ doanh nghiệp bằng ảnh thật: đi bộ trên phố, rồi đẩy cửa bước vào */}
+      <Cutout url={WALK.url} height={WALK.height} aspect={WALK.aspect} state={walker} tint="#c4cef0" follow={0.4} />
+      <Cutout url={DOOR_IMG.url} height={DOOR_IMG.height} aspect={DOOR_IMG.aspect} groundOffset={DOOR_IMG.groundOffset} anchorX={DOOR_IMG.anchorX} state={pusher} tint="#aebbe0" follow={0} shadow={0} />
     </group>
   )
 }
@@ -538,7 +482,7 @@ function Windows({ x, w, h, seed, minY = 0 }: { x: number; w: number; h: number;
     cells.forEach((cell, i) => {
       mat.makeTranslation(cell.x, cell.y, WALL_Z + 0.02)
       m.setMatrixAt(i, mat)
-      m.setColorAt(i, c.set(cell.warm ? '#ffd9a0' : '#7ab3ff'))
+      m.setColorAt(i, c.set(cell.warm ? '#cdb185' : '#5a86c8'))
     })
     m.instanceMatrix.needsUpdate = true
     if (m.instanceColor) m.instanceColor.needsUpdate = true
@@ -565,52 +509,48 @@ function ClickStarBuilding({
   const wall = '#12285a'
   return (
     <group>
-      {/* Mặt tiền: hai trụ hai bên cửa, dầm trên có biển hiệu, các tầng trên */}
-      {[X - 1.55, X + 1.55].map((x) => (
-        <mesh key={x} position={[x, 1.1, WALL_Z - 0.15]}>
-          <boxGeometry args={[1.9, 2.2, 0.3]} />
+      {/* Mặt tiền: hai trụ hai bên lỗ cửa (rộng 0,9, cao 1,85 khớp khung cửa trong ảnh), dầm trên có biển hiệu, các tầng trên */}
+      {[X - 1.4, X + 1.4].map((x) => (
+        <mesh key={x} position={[x, 0.925, WALL_Z - 0.15]}>
+          <boxGeometry args={[1.9, 1.85, 0.3]} />
           <meshStandardMaterial color={wall} flatShading />
         </mesh>
       ))}
-      <mesh position={[X, 3.0, WALL_Z - 0.15]}>
-        <boxGeometry args={[5, 1.6, 0.3]} />
+      <mesh position={[X, 2.65, WALL_Z - 0.15]}>
+        <boxGeometry args={[4.7, 1.6, 0.3]} />
         <meshStandardMaterial color={wall} flatShading />
       </mesh>
-      <mesh position={[X, 5.9, WALL_Z - 0.15]}>
-        <boxGeometry args={[5, 4.2, 0.3]} />
+      <mesh position={[X, 5.55, WALL_Z - 0.15]}>
+        <boxGeometry args={[4.7, 4.2, 0.3]} />
         <meshStandardMaterial color="#0f2250" flatShading />
       </mesh>
       {/* Kính hai bên cửa, sáng nhẹ */}
-      {[X - 1.55, X + 1.55].map((x) => (
-        <mesh key={x} position={[x, 1.2, WALL_Z + 0.02]}>
-          <boxGeometry args={[1.35, 1.6, 0.04]} />
+      {[X - 1.4, X + 1.4].map((x) => (
+        <mesh key={x} position={[x, 1.05, WALL_Z + 0.02]}>
+          <boxGeometry args={[1.3, 1.4, 0.04]} />
           <meshStandardMaterial color="#1f4fa8" emissive="#3b86f0" emissiveIntensity={0.5} flatShading />
         </mesh>
       ))}
       {/* Biển hiệu: tấm sáng + viên ngọc 4 cánh giống logo; chữ là nhãn HTML gắn theo (xem Anchors) */}
-      <mesh position={[X, 3.0, WALL_Z + 0.03]}>
+      <mesh position={[X, 2.65, WALL_Z + 0.03]}>
         <boxGeometry args={[3.6, 0.7, 0.1]} />
         <meshStandardMaterial color="#0b1f4a" emissive="#1e6dda" emissiveIntensity={0.9} flatShading />
       </mesh>
-      <mesh ref={gem} position={[X - 1.45, 3.0, WALL_Z + 0.2]}>
+      <mesh ref={gem} position={[X - 1.45, 2.65, WALL_Z + 0.2]}>
         <octahedronGeometry args={[0.26, 0]} />
         <meshStandardMaterial color="#ffffff" emissive="#cfe3ff" emissiveIntensity={1.2} flatShading />
       </mesh>
       {/* Các tầng trên có cửa sổ sáng */}
-      <Windows x={X} w={5} h={9} seed={99} minY={4.4} />
+      <Windows x={X} w={4.7} h={9} seed={99} minY={4.2} />
 
-      {/* Khung cửa và cánh cửa (bản lề ở mép trái, mở vào trong) */}
-      <mesh position={[X, 2.24, WALL_Z - 0.02]}>
-        <boxGeometry args={[1.3, 0.06, 0.12]} />
-        <meshStandardMaterial color="#9fb6e6" flatShading />
-      </mesh>
-      <group ref={door} position={[X - 0.6, 0, WALL_Z - 0.02]}>
-        <mesh position={[0.6, 1.1, 0]}>
-          <boxGeometry args={[1.2, 2.2, 0.06]} />
+      {/* Cánh cửa 3D đóng (bản lề ở mép trái), chỉ hiện trước khi ảnh đẩy cửa thế chỗ */}
+      <group ref={door} position={[X - 0.44, 0, WALL_Z - 0.02]}>
+        <mesh position={[0.44, 0.9, 0]}>
+          <boxGeometry args={[0.88, 1.8, 0.06]} />
           <meshStandardMaterial color="#2a4f9a" emissive="#4c9aff" emissiveIntensity={0.35} flatShading />
         </mesh>
-        <mesh position={[1.08, 1.05, 0.06]}>
-          <boxGeometry args={[0.04, 0.35, 0.04]} />
+        <mesh position={[0.78, 0.9, 0.06]}>
+          <boxGeometry args={[0.04, 0.3, 0.04]} />
           <meshStandardMaterial color="#e6eefc" flatShading />
         </mesh>
       </group>
@@ -649,10 +589,10 @@ function ClickStarBuilding({
 /* ---------- Nhãn chữ HTML gắn theo vị trí 3D ---------- */
 
 const ANCHORS: { id: AnchorId; pos: [number, number, number]; show: [number, number, number, number]; space: 'office' | 'street' }[] = [
-  { id: 'leak', pos: [-1.7, 2.95, -0.6], show: [0.08, 0.11, 0.29, 0.325], space: 'office' },
-  { id: 'scatter', pos: [0, 3.65, -1.2], show: [0.14, 0.17, 0.29, 0.325], space: 'office' },
-  { id: 'calls', pos: [1.7, 2.95, -0.6], show: [0.2, 0.23, 0.29, 0.325], space: 'office' },
-  { id: 'sign', pos: [STREET_X + DOOR_X + 0.3, 2.9, WALL_Z + 0.1], show: [0.5, 0.56, 0.84, 0.88], space: 'street' },
+  { id: 'leak', pos: [-1.8, 3.3, -0.6], show: [0.08, 0.11, 0.29, 0.325], space: 'office' },
+  { id: 'scatter', pos: [0, 4.05, -1.2], show: [0.14, 0.17, 0.29, 0.325], space: 'office' },
+  { id: 'calls', pos: [1.8, 3.3, -0.6], show: [0.2, 0.23, 0.29, 0.325], space: 'office' },
+  { id: 'sign', pos: [STREET_X + DOOR_X + 0.3, 2.75, WALL_Z + 0.1], show: [0.5, 0.56, 0.84, 0.88], space: 'street' },
 ]
 
 function Anchors({ refs, prog }: { refs: StorySceneProps['anchorRefs']; prog: MutableRefObject<number> }) {
