@@ -53,22 +53,21 @@ export function ExploreExperience() {
     return () => mq.removeEventListener('change', on)
   }, [])
 
-  // Nạp cảnh 3D sau khi trang tải xong và trình duyệt rảnh.
+  // Nạp cảnh 3D khi sân khấu sắp tới gần màn hình (phần kể chuyện nằm phía trên nên không cần nạp sớm).
   useEffect(() => {
-    if (!webgl) return
-    let idle: number | undefined
-    let timer: ReturnType<typeof setTimeout> | undefined
-    const start = () => {
-      if (window.requestIdleCallback) idle = window.requestIdleCallback(() => setLoad3d(true), { timeout: 1500 })
-      else timer = setTimeout(() => setLoad3d(true), 200)
-    }
-    if (document.readyState === 'complete') start()
-    else window.addEventListener('load', start, { once: true })
-    return () => {
-      window.removeEventListener('load', start)
-      if (idle !== undefined) window.cancelIdleCallback?.(idle)
-      if (timer) clearTimeout(timer)
-    }
+    const el = stage.current
+    if (!webgl || !el || typeof IntersectionObserver === 'undefined') return
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setLoad3d(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '900px 0px' }
+    )
+    io.observe(el)
+    return () => io.disconnect()
   }, [webgl])
 
   // Tạm dừng vẽ khi sân khấu ra khỏi màn hình.
@@ -117,7 +116,7 @@ export function ExploreExperience() {
       className="relative isolate h-[calc(100svh-64px)] min-h-[620px] max-h-[920px] w-full overflow-hidden text-white"
       style={{ background: 'radial-gradient(120% 90% at 50% 42%, #14377a 0%, #0a1a3d 48%, #050d22 100%)' }}
     >
-      <h1 className="sr-only">{t('Thế giới Click Star: khám phá các sản phẩm công nghệ bằng 3D', 'The Click Star world: explore our technology products in 3D')}</h1>
+      <h2 className="sr-only">{t('Khám phá các khu sản phẩm bằng 3D', 'Explore the product areas in 3D')}</h2>
 
       {/* Lớp 3D (kéo ngang để xoay; cuộn dọc vẫn cuộn trang) */}
       {load3d && webgl ? (

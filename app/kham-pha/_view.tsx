@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import { MainNav } from '@/components/layout/main-nav'
 import { Footer } from '@/components/layout/footer'
 import { ExploreExperience } from '@/components/explore/explore-experience'
+import { StoryExperience } from '@/components/explore/story-experience'
 import { ZONES } from '@/components/explore/zones'
 import { makeT } from '@/lib/i18n/server'
 import type { Lang } from '@/lib/i18n/locale'
@@ -35,7 +36,10 @@ export function KhamPhaView({ lang }: { lang: Lang }) {
   return (
     <div className="min-h-screen bg-background">
       <MainNav />
-      <ExploreExperience />
+      <StoryExperience />
+      <div id="the-gioi" className="scroll-mt-14">
+        <ExploreExperience />
+      </div>
 
       <section id="san-pham" className="scroll-mt-20 bg-[#f5f5f7] py-14 lg:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
