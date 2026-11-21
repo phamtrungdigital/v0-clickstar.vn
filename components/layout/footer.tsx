@@ -180,7 +180,7 @@ export function Footer() {
               <span className="absolute -bottom-2 left-0 w-8 h-0.5 bg-primary" />
             </h3>
             <p className="text-[#d2d2d7] text-sm mb-4">{footer.newsletter_desc[language]}</p>
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form method="post" onSubmit={handleSubmit} className="space-y-3">
               <div className="relative">
                 <input
                   type="email"

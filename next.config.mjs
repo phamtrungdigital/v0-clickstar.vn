@@ -8,6 +8,8 @@ const HTML_LIMITED_BOTS =
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Không gửi header x-powered-by (đỡ lộ công nghệ).
+  poweredByHeader: false,
   htmlLimitedBots: HTML_LIMITED_BOTS,
   typescript: {
     ignoreBuildErrors: true,
@@ -42,7 +44,16 @@ const nextConfig = {
   },
   async headers() {
     // Lớp bảo vệ thứ hai ngoài thẻ meta: khu quản trị và API không bao giờ được lập chỉ mục.
+    // Header bảo mật cho mọi trang. frame-ancestors chỉ cho chính site và các tên miền *.clickstar.vn (heatmap, CDP)
+    // nhúng trang vào iframe, chặn clickjacking từ site lạ. Không dùng X-Frame-Options vì header đó không khai báo được danh sách.
+    const security = [
+      { key: 'Content-Security-Policy', value: "frame-ancestors 'self' https://*.clickstar.vn; object-src 'none'; base-uri 'self'" },
+      { key: 'X-Content-Type-Options', value: 'nosniff' },
+      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      { key: 'Permissions-Policy', value: 'camera=(), geolocation=(), payment=(), usb=()' },
+    ]
     return [
+      { source: '/:path*', headers: security },
       { source: '/admin-cls/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
       { source: '/api/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] },
     ]
