@@ -84,7 +84,12 @@ const COPY = {
 
 // Lightweight markdown-ish formatter: **bold**, *italic*, line breaks
 function formatAnswer(text: string): string {
+  // Lọc HTML trước: câu trả lời của mô hình không được chèn thẻ hay script vào trang.
   return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
     .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
     .replace(/\n/g, '<br/>')

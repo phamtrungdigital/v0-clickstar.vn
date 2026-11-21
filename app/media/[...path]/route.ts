@@ -32,6 +32,8 @@ export async function GET(_req: Request, ctx: { params: Promise<{ path: string[]
     'cache-control': 'public, max-age=31536000, s-maxage=31536000, immutable',
     'x-content-type-options': 'nosniff',
   })
+  // SVG tải lên có thể chứa script: khi mở thẳng link ảnh, khóa hết script và cô lập trang (sandbox).
+  if (/svg/i.test(type)) headers.set('content-security-policy', "default-src 'none'; img-src data:; style-src 'unsafe-inline'; sandbox")
   const len = up.headers.get('content-length')
   if (len) headers.set('content-length', len)
   return new Response(up.body, { status: 200, headers })

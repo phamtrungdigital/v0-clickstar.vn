@@ -17,6 +17,15 @@ import { useEffect, useRef, useState } from 'react'
  * Bảo mật: chỉ inline SVG same-origin path nội bộ (bắt đầu '/'), KHÔNG inline SVG
  * upload/ngoài (tránh XSS từ nội dung không tin cậy).
  */
+/** Lớp phòng thủ thứ hai: bỏ <script>, <foreignObject>, thuộc tính sự kiện on* và liên kết javascript: trước khi nhúng. */
+function stripSvgScripts(svg: string): string {
+  return svg
+    .replace(/<script[\s\S]*?<\/script\s*>/gi, '')
+    .replace(/<foreignObject[\s\S]*?<\/foreignObject\s*>/gi, '')
+    .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/(href\s*=\s*["']?)\s*javascript:/gi, '$1#')
+}
+
 export function InlineSvgImage({
   src,
   alt,
@@ -34,7 +43,8 @@ export function InlineSvgImage({
   /** 'high' cho ảnh là phần tử lớn nhất màn hình đầu (LCP). */
   fetchPriority?: 'high' | 'low' | 'auto'
 }) {
-  const isLocalSvg = !!src && src.startsWith('/') && src.toLowerCase().endsWith('.svg')
+  // Chỉ SVG trong mã nguồn (/images/...). Ảnh tải lên đi qua /media/ thì giữ <img> (trình duyệt không chạy script trong <img>).
+  const isLocalSvg = !!src && src.startsWith('/') && !src.startsWith('//') && !src.startsWith('/media/') && src.toLowerCase().endsWith('.svg')
   const imgRef = useRef<HTMLImageElement | null>(null)
   const [svg, setSvg] = useState<string | null>(null)
   const [animate, setAnimate] = useState(false)
@@ -51,7 +61,7 @@ export function InlineSvgImage({
     fetch(src)
       .then((r) => (r.ok ? r.text() : null))
       .then((txt) => {
-        if (alive && txt && txt.includes('<svg')) setSvg(txt)
+        if (alive && txt && txt.includes('<svg')) setSvg(stripSvgScripts(txt))
       })
       .catch(() => {})
     return () => {
