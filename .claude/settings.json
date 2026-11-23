@@ -128,5 +128,19 @@
       "mcp__ccd_session_mgmt__search_session_transcripts",
       "mcp__ccd_session_mgmt__archive_session"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR}/.autodeploy/claude-hook.sh\"",
+            "timeout": 600
+          }
+        ]
+      }
+    ]
   }
 }
