@@ -150,3 +150,7 @@ Mọi bài đăng ở `/blog` (VI và EN) phải theo file **`docs/blog-writing-
 7. Phân tích chuyên sâu (khoảng 11.000-14.000 ký tự mỗi bản, khung bối cảnh, bằng chứng, ý nghĩa, phương án, rủi ro, việc nên làm, cách đo).
 
 Quyền đăng: anh đã cho phép đăng luôn bài viết, không cần duyệt từng bài. Thay đổi code hoặc schema vẫn theo preview-before-prod.
+
+<!-- AutoDeploy: managed block, do not edit -->
+@.autodeploy/CLAUDE.md
+<!-- /AutoDeploy -->
