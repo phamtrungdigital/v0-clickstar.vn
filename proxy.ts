@@ -40,11 +40,12 @@ export async function proxy(request: NextRequest) {
   if (match) {
     const exists = await publishedSlugExists(match[1], match[2])
     if (exists === false) {
-      // Nhân bản nextUrl (không dựng từ request.url): sau nginx trên máy chủ riêng, request.url mang giao thức
-      // https của X-Forwarded-Proto nhưng tiến trình Next chỉ nghe http, rewrite sẽ bị coi là địa chỉ ngoài → lỗi 500.
       const notFoundUrl = request.nextUrl.clone()
       notFoundUrl.pathname = '/trang-khong-ton-tai'
       notFoundUrl.search = ''
+      // Máy chủ riêng (sau nginx): nextUrl mang giao thức https của X-Forwarded-Proto nhưng tiến trình Next chỉ nghe
+      // http, nên rewrite bị coi là địa chỉ ngoài và gọi https://localhost:<cổng> → lỗi SSL, trả 500. Vercel không cần.
+      if (process.env.VERCEL !== '1') notFoundUrl.protocol = 'http:'
       return NextResponse.rewrite(notFoundUrl, { status: 404 })
     }
   }
