@@ -1,13 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# Chạy trong thư mục bản phát hành mới. Build Next.js tại chỗ với biến của shared/.env.
-APP_DIR="${APP_DIR:-/var/www/dev-clickstar-vn}"
-set -a; . "$APP_DIR/shared/.env"; set +a
-export NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 COREPACK_ENABLE_DOWNLOAD_PROMPT=0
-export NODE_OPTIONS="--max-old-space-size=4096"
-# Dùng lại cache build giữa các bản phát hành cho nhanh
-mkdir -p "$APP_DIR/shared/next-cache" .next
-ln -sfn "$APP_DIR/shared/next-cache" .next/cache
-pnpm install --frozen-lockfile --prod=false
-pnpm build
+export NEXT_TELEMETRY_DISABLED=1
+cd "$RELEASE_DIR"
+echo "==> Node $(node -v), pnpm $(pnpm -v)"
+ln -sfn "$SHARED_DIR/.env" .env
+for V in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY SUPABASE_SERVICE_ROLE_KEY; do
+  grep -qs "^$V=" "$SHARED_DIR/.env" || { echo "!! Thiếu $V trong shared/.env" >&2; exit 1; }
+done
+# Dùng lại cache build giữa các bản phát hành
+mkdir -p "$SHARED_DIR/next-cache" .next
+ln -sfn "$SHARED_DIR/next-cache" .next/cache
+echo "==> pnpm install"
+pnpm install --frozen-lockfile
+echo "==> pnpm build"
+( set -a; . "$SHARED_DIR/.env"; set +a; unset PORT HOSTNAME; export NODE_OPTIONS="--max-old-space-size=4096"; pnpm build )
+[ -d .next/static ] || { echo "!! Không thấy .next/static sau build" >&2; exit 1; }
+cat > .autodeploy-start.sh <<'SH'
+#!/usr/bin/env bash
+set -eo pipefail
+[ -n "${PORT:-}" ] || { echo "PORT chưa được đặt" >&2; exit 1; }
+export HOSTNAME=127.0.0.1 NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
+cd "$(dirname "$0")"
+exec node_modules/.bin/next start -H 127.0.0.1 -p "$PORT"
+SH
+chmod 755 .autodeploy-start.sh
+echo "==> Bản phát hành sẵn sàng"
 

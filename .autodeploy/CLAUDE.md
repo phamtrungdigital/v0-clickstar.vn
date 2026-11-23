@@ -2,7 +2,7 @@
 
 Every push to the `main` branch deploys this repo to **https://dev.clickstar.vn** through GitLab CI
 (job `autodeploy`).
-The code is built on the GitLab Runner (node:22-bookworm-slim), copied to the server, `.autodeploy/deploy.sh` runs, then the new release is
+The code is copied to the server and built there, `.autodeploy/deploy.sh` runs, then the new release is
 switched in with a health check. A deploy usually takes 15 seconds to a few minutes.
 
 ## Rules for AI agents
