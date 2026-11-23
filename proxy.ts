@@ -40,7 +40,12 @@ export async function proxy(request: NextRequest) {
   if (match) {
     const exists = await publishedSlugExists(match[1], match[2])
     if (exists === false) {
-      return NextResponse.rewrite(new URL('/trang-khong-ton-tai', request.url), { status: 404 })
+      // Nhân bản nextUrl (không dựng từ request.url): sau nginx trên máy chủ riêng, request.url mang giao thức
+      // https của X-Forwarded-Proto nhưng tiến trình Next chỉ nghe http, rewrite sẽ bị coi là địa chỉ ngoài → lỗi 500.
+      const notFoundUrl = request.nextUrl.clone()
+      notFoundUrl.pathname = '/trang-khong-ton-tai'
+      notFoundUrl.search = ''
+      return NextResponse.rewrite(notFoundUrl, { status: 404 })
     }
   }
   return NextResponse.next()
