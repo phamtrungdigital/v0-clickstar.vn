@@ -5,13 +5,24 @@
  * Cơ sở dữ liệu vẫn lưu địa chỉ gốc (trang quản trị đọc và ghi nguyên bản). Mọi hàm đọc dữ liệu CÔNG KHAI phải chạy
  * kết quả qua maskMedia() trước khi trả ra, để HTML, thẻ og:image, JSON-LD, sitemap và /_next/image không lộ tên máy chủ.
  */
-const MEDIA_URL = /https?:\/\/[a-z0-9-]+\.supabase\.co\/storage\/v1\/object\/public\/media\//gi
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+// Supabase tự dựng (máy chủ riêng) có tên miền khác *.supabase.co: lấy từ NEXT_PUBLIC_SUPABASE_URL.
+const SELF_HOST = (() => {
+  try {
+    const h = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '').host
+    return h && !h.endsWith('.supabase.co') ? h : ''
+  } catch {
+    return ''
+  }
+})()
+const HOSTS = `[a-z0-9-]+\\.supabase\\.co${SELF_HOST ? `|${escapeRe(SELF_HOST)}` : ''}`
+const MEDIA_URL = new RegExp(`https?:\\/\\/(?:${HOSTS})\\/storage\\/v1\\/object\\/public\\/media\\/`, 'gi')
 
 export const MEDIA_PATH_PREFIX = '/media/'
 
 /** Đổi địa chỉ ảnh gốc (trong một chuỗi, kể cả đoạn HTML/markdown dài) thành /media/... của website. */
 export function maskMediaUrl<T extends string | null | undefined>(s: T): T {
-  if (typeof s !== 'string' || s.indexOf('supabase.co') === -1) return s
+  if (typeof s !== 'string' || s.indexOf('/storage/v1/object/public/media/') === -1) return s
   return s.replace(MEDIA_URL, MEDIA_PATH_PREFIX) as T
 }
 

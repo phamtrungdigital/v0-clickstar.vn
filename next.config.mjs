@@ -40,6 +40,15 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.unsplash.com' },
       { protocol: 'https', hostname: 'ffcqkrlzgofptspukrmo.supabase.co' },
       { protocol: 'https', hostname: '*.supabase.co' },
+      // Supabase tự dựng trên máy chủ riêng (vd supabase-dev.clickstar.vn)
+      ...(() => {
+        try {
+          const h = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL || '').hostname
+          return h && !h.endsWith('.supabase.co') ? [{ protocol: 'https', hostname: h }] : []
+        } catch {
+          return []
+        }
+      })(),
     ],
   },
   async headers() {

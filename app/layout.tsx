@@ -168,7 +168,8 @@ export default async function RootLayout({
           </LanguageProvider>
         </TeamMembersProvider>
       </SiteBrandingProvider>
-      {process.env.NODE_ENV === 'production' && <Analytics />}
+      {/* Chỉ có trên Vercel (VERCEL=1 do Vercel tự đặt); máy chủ riêng không có /_vercel/insights nên bỏ qua. */}
+      {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
 
       {/* Mã tuỳ chỉnh "Cuối trang": remarketing, công cụ phụ. body_end_code cũ đã chuyển sang bảng mới. */}
       <BodyCode items={codeAt('body_end')} />
